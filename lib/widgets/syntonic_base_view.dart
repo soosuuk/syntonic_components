@@ -42,23 +42,6 @@ enum PlatformType {
   Web,
 }
 
-enum Microservice {
-  account,
-  accounting,
-  appointment,
-  customer,
-  contract,
-  ec,
-  integrator,
-  information,
-  message,
-  product,
-  sales,
-  service,
-  settlement,
-  staff,
-}
-
 abstract class ExtendedStatelessWidget extends StatelessWidget {
   const ExtendedStatelessWidget({Key? key}) : super(key: key);
 }
