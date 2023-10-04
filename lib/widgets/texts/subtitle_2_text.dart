@@ -10,7 +10,6 @@ class Subtitle2Text extends BaseText {
   final Color? textColor;
   final int? maxLines;
   final bool needsSeeMore;
-  final bool needsLineThrough;
 
   Subtitle2Text(
       {required this.text,
@@ -20,15 +19,14 @@ class Subtitle2Text extends BaseText {
       Color? linkColor,
       this.maxLines,
       bool needsLinkify = false,
-      this.needsSeeMore = false,
-      this.needsLineThrough = false})
+      this.needsSeeMore = false,})
       : super(linkColor: linkColor, needsLinkify: needsLinkify);
 
   @override
   Widget get textWidget {
     return Text(
       this.text,
-      style: (needsLineThrough) ? lineThroughStyle : textStyle,
+      style: textStyle,
       textHeightBehavior: TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
@@ -43,6 +41,4 @@ class Subtitle2Text extends BaseText {
 
   @override
   TextStyle get textStyle => SyntonicTextTheme.subtitle2(context: context, textColor: textColor);
-
-  TextStyle get lineThroughStyle => SyntonicTextTheme.subtitle2WithLineThrough(context: context, textColor: textColor);
 }

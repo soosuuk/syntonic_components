@@ -250,7 +250,7 @@ class SyntonicListItem extends ListItem {
             textAlign: textAlign,
             maxLines: titleMaxLines);
         if (this.subtitle != null) {
-          subtitleWidget = Body2Text(
+          subtitleWidget = Subtitle2Text(
               text: this.subtitle!,
               textColor: this.subTitleColor,
               overflow: this.needsSubtitleOverFlowStateVisible!

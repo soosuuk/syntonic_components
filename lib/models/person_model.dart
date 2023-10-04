@@ -12,12 +12,14 @@ class PersonModel {
   String? email;
   String? name;
   String? photoUrl;
+  bool? isEnabled = true;
 
   PersonModel({
     this.id,
     this.email,
     this.name,
     this.photoUrl,
+    this.isEnabled,
   });
 
   // /// Get a [PersonModel] for dummy.

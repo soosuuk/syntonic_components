@@ -290,6 +290,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       iconTheme: IconThemeData(
         color: this.accentColor, //change your color here
       ),
+      stretch: true,
       // snap: isFadedTitle ? false : true,
       // floating: true,
       // pinned: (this.isFullscreenDialog || this.hasTabBar || isFadedTitle) ? true : false,
@@ -390,14 +391,14 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
         child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
-                  Divider(
-                    height: 0,
-                    color: overlapsContent
-                        ? null
-                        : isDarkTheme
-                            ? Colors.white54
-                            : Colors.black12,
-                  ),
+                  // Divider(
+                  //   height: 0,
+                  //   color: overlapsContent
+                  //       ? null
+                  //       : isDarkTheme
+                  //           ? Colors.white54
+                  //           : Colors.black12,
+                  // ),
                   Container(
                     width: double.infinity,
                     child: tabBar,

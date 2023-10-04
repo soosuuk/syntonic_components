@@ -62,8 +62,8 @@ class SyntonicFloatingActionButton extends StatelessWidget {
               child: this.isExtended
                   ? Icon(this.floatingActionButtonModel.icon ?? Icons.add,
                       color: this.isSecondary
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.primary.getColorByLuminance)
+                          ? Theme.of(context).colorScheme.onSurface
+                          : null)
                   : Row(
                       key: UniqueKey(),
                       children: [
@@ -72,15 +72,15 @@ class SyntonicFloatingActionButton extends StatelessWidget {
                           child: Icon(
                             this.floatingActionButtonModel.icon ?? Icons.add,
                             color: this.isSecondary
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).colorScheme.primary.getColorByLuminance,
+                                ? Theme.of(context).colorScheme.onSurface
+                                : null,
                           ),
                         ),
                         Subtitle2Text(
                           text: this.floatingActionButtonModel.text,
                           textColor: this.isSecondary
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.primary.getColorByLuminance,
+                              ? Theme.of(context).colorScheme.onSurface
+                              : null,
                           needsLinkify: false,
                         )
                       ],

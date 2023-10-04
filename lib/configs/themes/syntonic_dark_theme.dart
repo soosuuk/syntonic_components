@@ -1,5 +1,8 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
+import 'package:syntonic_components/services/navigation_service.dart';
 
 import '../constants/syntonic_color.dart';
 import 'syntonic_tab_bar_theme.dart';
@@ -11,13 +14,13 @@ const backgroundColor = Colors.white70;
 ThemeData darkTheme({Color? primaryColor}) {
   return ThemeData(
     useMaterial3: true,
-    colorSchemeSeed: primaryColor,
-    // colorScheme: ColorScheme.dark(
-    //     primary: primaryColor ?? SyntonicColor.primary_color,
-    //     secondary: primaryColor ?? SyntonicColor.primary_color,
-    //     surface: SyntonicColor.raisinBlack,
-    //     background: SyntonicColor.raisinBlack,
-    //
+    // colorSchemeSeed: primaryColor,
+    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor ?? SyntonicColor.primary_color, brightness: Brightness.dark, onSurface: ColorScheme.fromSeed(seedColor: primaryColor ?? SyntonicColor.primary_color, brightness: Brightness.dark).onSurface.harmonizeWith(primaryColor ?? SyntonicColor.primary_color.tone(60))),
+        // .dark(
+        // onSurface: primaryColor!.tone(50),
+        // surface: SyntonicColor.raisinBlack,
+        // background: SyntonicColor.raisinBlack,
+
     // ),
     applyElevationOverlayColor: true,
     // scaffoldBackgroundColor: SyntonicColor.raisinBlack,

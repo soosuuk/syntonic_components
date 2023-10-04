@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
 
 import 'syntonic_app_bar_theme.dart';
 import '../constants/syntonic_color.dart';
@@ -11,7 +12,8 @@ const backgroundColor = Colors.white70;
 ThemeData lightTheme({Color? primaryColor}) {
   return ThemeData(
     useMaterial3: true,
-    colorSchemeSeed: primaryColor,
+    // colorSchemeSeed: primaryColor,
+    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor!, brightness: Brightness.light, onSurface: primaryColor.tone(30)),
     // colorScheme: ColorScheme.light(
     //   primary: primaryColor ?? SyntonicColor.primary_color,
     //   secondary: primaryColor ?? SyntonicColor.primary_color,

@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 // import 'package:syntonic_components/models/fcm_data_model.dart';
 import 'package:syntonic_components/services/localization_service.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';

@@ -21,22 +21,23 @@ class SyntonicToggleButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EdgeInsets _padding = EdgeInsets.symmetric(horizontal: 8, vertical: 16,);
     return ListenableProvider(
       create: (context) => SyntonicToggleButtonsManager(selectedStates: this.selectedStates),
       child: Consumer<SyntonicToggleButtonsManager>(
         builder: (context, model, child) {
           return LayoutBuilder(
-              builder: (context, constraints) => ToggleButtons(
-                  constraints: BoxConstraints.expand(width: constraints.maxWidth/buttonNames.length - 4),
-                  borderWidth: 1,
-                  borderRadius: BorderRadius.circular(4),
-                  children: getButtonTexts(),
-                  onPressed: (int index) {
-                    model.changeSelection(index);
-                    onToggleButtonPressed(index);
-                  },
-                  isSelected: model.selectedStates,
-              )
+              builder: (context, constraints) => Padding(padding: _padding, child: ToggleButtons(
+                constraints: BoxConstraints.expand(width: constraints.maxWidth/buttonNames.length - _padding.horizontal, height: 40),
+                borderWidth: 1,
+                borderRadius: BorderRadius.circular(24),
+                children: getButtonTexts(),
+                onPressed: (int index) {
+                  model.changeSelection(index);
+                  onToggleButtonPressed(index);
+                },
+                isSelected: model.selectedStates,
+              ))
           );
         }, // a
       ),
@@ -47,11 +48,8 @@ class SyntonicToggleButtons extends StatelessWidget {
   List<Widget> getButtonTexts() {
     List<Widget> buttonTexts = [];
     for (int i = 0; i < this.buttonNames.length; i++) {
-      buttonTexts.add(Padding(
-        padding: const EdgeInsets.all(12),
-        child: Text(
-          this.buttonNames[i],
-        ),
+      buttonTexts.add(Text(
+        this.buttonNames[i],
       ));
     }
     return buttonTexts;

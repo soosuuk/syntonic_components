@@ -40,14 +40,14 @@ class SyntonicChoiceChip extends StatelessWidget {
         backgroundColor: isSelected
             ? Theme.of(context).colorScheme.primary.toAlpha
             : Colors.transparent,
-        shape: StadiumBorder(
-            side: BorderSide(
-                width: 0.5,
-                color: isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : isDarkTheme
-                        ? Colors.white60
-                        : SyntonicColor.black40)),
+        // shape: StadiumBorder(
+        //     side: BorderSide(
+        //         width: 0.5,
+        //         color: isSelected
+        //             ? Theme.of(context).colorScheme.primary
+        //             : isDarkTheme
+        //                 ? Colors.white60
+        //                 : SyntonicColor.black40)),
         selectedColor: Theme.of(context).colorScheme.primary.toAlpha,
         selected: isSelected,
         onSelected: (bool isSelected) {
@@ -56,7 +56,7 @@ class SyntonicChoiceChip extends StatelessWidget {
         avatar: trailingIcon != null ? trailingIcon :  icon != null
             ? Icon(icon,
                 color:
-                    isSelected ? Theme.of(context).colorScheme.primary : null)
+                    isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary)
             : null,
         showCheckmark: icon != null || trailingIcon != null ? false : true,
         checkmarkColor: Theme.of(context).colorScheme.primary);

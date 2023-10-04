@@ -22,11 +22,12 @@ class SyntonicActionChip extends StatelessWidget {
     var brightness = SchedulerBinding.instance.window.platformBrightness;
     bool _isDarkTheme = brightness == Brightness.dark;
     return ActionChip(
-        shape: StadiumBorder(
-            side: BorderSide(
-              width: 0.5,
-              color: _isDarkTheme ? Colors.white12 : Colors.black12,
-            )),
+        // shape: StadiumBorder(
+        //     side: BorderSide(
+        //       width: 0.5,
+        //       color: _isDarkTheme ? Colors.white12 : Colors.black12,
+        //     )
+        // ),
         onPressed: onPressed,
         // メモ： Expandedをそのまま使うと以下のExceptionがあるためWrapにした
         // Exception：Incorrect use of ParentDataWidget.

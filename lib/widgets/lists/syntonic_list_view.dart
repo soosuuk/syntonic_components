@@ -1,3 +1,4 @@
+import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,19 @@ enum _BasicListViewState {
   reorderable,
   specifiable,
 }
+
+const TextStyle _kStepStyle = TextStyle(
+  fontSize: 12.0,
+  color: Colors.white,
+);
+const Color _kErrorLight = Colors.red;
+final Color _kErrorDark = Colors.red.shade400;
+const Color _kCircleActiveLight = Colors.white;
+const Color _kCircleActiveDark = Colors.black87;
+const Color _kDisabledLight = Colors.black38;
+const Color _kDisabledDark = Colors.white38;
+const double _kStepSize = 24.0;
+const double _kTriangleHeight = _kStepSize * 0.866025; // T
 
 /// A basic list view.
 /// [BasicListView] is a general-purpose [List] that can use any situation of
@@ -51,6 +65,8 @@ class SyntonicListView extends ExtendedStatelessWidget {
 
   final Widget Function(int index, double width)? gridItem;
 
+  final Widget? Function(int index)? stepIcon;
+
   /// Execute [onReordered] when an item has been reordered.
   late Function(int newIndex, int oldIndex)? onReordered;
 
@@ -64,6 +80,8 @@ class SyntonicListView extends ExtendedStatelessWidget {
   /// In case of nested, change [shrinkWrap], [physics] for give priority to
   /// parent [List] or [ScrollView].
   final bool isNested;
+
+  final bool hasStep;
 
   /// A [scrollDirection] of [List].
   final Axis? scrollDirection;
@@ -85,6 +103,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
     this.listItem,
     required _BasicListViewState state,
     this.gridItem,
+    this.stepIcon,
     this.initialScrollIndex,
     this.isNested = false,
     this.itemScrollController,
@@ -97,6 +116,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
     this.padding,
     this.isReverse = false,
     this.isReorderMode = false,
+    this.hasStep = false,
     this.scrollDirection = Axis.vertical,
     int? numberOfRow,
     int? numberOfColumn,
@@ -182,8 +202,10 @@ class SyntonicListView extends ExtendedStatelessWidget {
     required int numberOfItems,
     required Function(int newIndex, int oldIndex)? onReordered,
     required bool isReorderMode,
+    Widget? Function(int index)? stepIcon,
     bool isNested = false,
     bool isReverse = false,
+    bool hasStep = false,
     ItemScrollController? itemScrollController,
     Axis? scrollDirection,
   }) : this._(
@@ -191,8 +213,10 @@ class SyntonicListView extends ExtendedStatelessWidget {
             numberOfItems: numberOfItems,
             onReordered: onReordered,
             isReorderMode: isReorderMode,
+            stepIcon: stepIcon,
             isNested: isNested,
             isReverse: isReverse,
+            hasStep: hasStep,
             itemScrollController: itemScrollController,
             scrollDirection: scrollDirection,
             state: _BasicListViewState.reorderable);
@@ -295,6 +319,18 @@ class SyntonicListView extends ExtendedStatelessWidget {
               return ReorderableListView.builder(
                   itemCount: numberOfItems!,
                   itemBuilder: (BuildContext context, int index) {
+                    return Row(key: ValueKey(index), children: [Column(
+                      children: <Widget>[
+                        // Line parts are always added in order for the ink splash to
+                        // flood the tips of the connector lines.
+                        Padding(padding: EdgeInsets.only(left: stepIcon!(index) == null ? 0 : 27), child: _buildLine(!_isFirst(index), stepIcon!(index) != null),),
+                        stepIcon!(index) != null ? stepIcon!(index)! : _buildIcon(index),
+                        Padding(padding: EdgeInsets.only(left: stepIcon!(index) == null ? 0 : 27), child: _buildLine(!_isLast(index), stepIcon!(index) != null),),
+                      ],
+                    ),
+                      Expanded(
+                        child: listItem!(index),
+                      )],);
                     return listItem!(index);
                   },
                   scrollDirection: scrollDirection ?? Axis.vertical,
@@ -337,6 +373,103 @@ class SyntonicListView extends ExtendedStatelessWidget {
   /// Index.
   int _index(int i, int j, int _numberOfItemsInColumn) {
     return (((numberOfItems! - (numberOfItems! - i * _numberOfItemsInColumn)) + j + 1));
+  }
+
+  Widget _buildLine(bool visible, bool isShort) {
+    return Container(
+      width: visible ? 1.0 : 0.0,
+      height: 48,
+      color: Colors.grey.shade400,
+    );
+  }
+
+  bool _isFirst(int index) {
+    return index == 0;
+  }
+
+  bool _isLast(int index) {
+    return numberOfItems! - 1 == index;
+  }
+
+  Widget _buildIcon(int index) {
+    if (true) {
+      return AnimatedCrossFade(
+        firstChild: _buildCircle(index, true),
+        secondChild: _buildCircle(index, true),
+        // secondChild: _buildTriangle(index, true),
+        firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+        secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+        sizeCurve: Curves.fastOutSlowIn,
+        crossFadeState:CrossFadeState.showFirst,
+        // crossFadeState: widget.steps[index].state == StepState.error ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        duration: kThemeAnimationDuration,
+      );
+    } else {
+      // if (widget.steps[index].state != StepState.error) {
+      //   return _buildCircle(index, false);
+      // } else {
+      //   return _buildTriangle(index, false);
+      // }
+    }
+  }
+
+  Widget _buildCircle(int index, bool oldState) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+      width: _kStepSize,
+      height: _kStepSize,
+      child: AnimatedContainer(
+        curve: Curves.fastOutSlowIn,
+        duration: kThemeAnimationDuration,
+        decoration: BoxDecoration(
+          color: _circleColor(index),
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: _buildCircleChild(index, false),
+        ),
+      ),
+    );
+  }
+
+  // Widget _buildTriangle(int index, bool oldState) {
+  //   return Container(
+  //     margin: const EdgeInsets.symmetric(vertical: 8.0),
+  //     width: _kStepSize,
+  //     height: _kStepSize,
+  //     child: Center(
+  //       child: SizedBox(
+  //         width: _kStepSize,
+  //         height: _kTriangleHeight, // Height of 24dp-long-sided equilateral triangle.
+  //         child: CustomPaint(
+  //           painter: _TrianglePainter(
+  //             color: _isDark() ? _kErrorDark : _kErrorLight,
+  //           ),
+  //           child: Align(
+  //             alignment: const Alignment(0.0, 0.8), // 0.8 looks better than the geometrical 0.33.
+  //             child: _buildCircleChild(index, oldState && widget.steps[index].state != StepState.error),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Color _circleColor(int index) {
+    return SyntonicColor.yellow;
+    // final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    // if (!_isDark()) {
+    //   return widget.steps[index].isActive ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.38);
+    // } else {
+    //   return widget.steps[index].isActive ? colorScheme.secondary : colorScheme.background;
+    // }
+  }
+
+  Widget _buildCircleChild(int index, bool oldState) {
+    return Text(
+      '${index + 1}',
+      style: _kStepStyle.copyWith(color: Colors.black87),
+    );
   }
 }
 

@@ -19,7 +19,7 @@ class SyntonicInputChip extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
         ),),
       backgroundColor: Theme.of(context).colorScheme.primary.toAlpha,
-      shape: StadiumBorder(side: BorderSide(width: 0, color: Colors.transparent)),
+      // shape: StadiumBorder(side: BorderSide(width: 0, color: Colors.transparent)),
       onDeleted: onDeleted != null ? () {
         onDeleted!(index);
       } : null,
