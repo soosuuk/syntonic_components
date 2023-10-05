@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../syntonic_base_view.dart';
@@ -319,18 +320,71 @@ class SyntonicListView extends ExtendedStatelessWidget {
               return ReorderableListView.builder(
                   itemCount: numberOfItems!,
                   itemBuilder: (BuildContext context, int index) {
-                    return Row(key: ValueKey(index), children: [Column(
-                      children: <Widget>[
-                        // Line parts are always added in order for the ink splash to
-                        // flood the tips of the connector lines.
-                        Padding(padding: EdgeInsets.only(left: stepIcon!(index) == null ? 0 : 27), child: _buildLine(!_isFirst(index), stepIcon!(index) != null),),
-                        stepIcon!(index) != null ? stepIcon!(index)! : _buildIcon(index),
-                        Padding(padding: EdgeInsets.only(left: stepIcon!(index) == null ? 0 : 27), child: _buildLine(!_isLast(index), stepIcon!(index) != null),),
-                      ],
-                    ),
-                      Expanded(
-                        child: listItem!(index),
-                      )],);
+                    // final child = children[index];
+                    // final _indicators = indicators;
+
+                    // Widget? indicator;
+                    // if (_indicators != null) {
+                    //   indicator = _indicators[index];
+                    // }
+
+                    final isFirst = index == 0;
+                    final isLast = index == numberOfItems! - 1;
+
+                    final timelineTile = <Widget>[
+                      SizedBox(width: 8),
+                      CustomPaint(
+                        foregroundPainter: _TimelinePainter(
+                          hideDefaultIndicator: true,
+                          lineColor: Colors.grey,
+                          indicatorColor: Colors.blue,
+                          indicatorSize: 30.0,
+                          indicatorStyle: PaintingStyle.fill,
+                          isFirst: isFirst,
+                          isLast: isLast,
+                          lineGap: 4.0,
+                          strokeCap: StrokeCap.butt,
+                          strokeWidth: 2.0,
+                          style: PaintingStyle.stroke,
+                          itemGap: 12.0,
+                        ),
+                        child: SizedBox(
+                          height: double.infinity,
+                          width: 30,
+                          child: stepIcon!(index),
+                          // child: Icon(Icons.access_alarm),
+                        ),
+                      ),
+                      // SizedBox(width: 4),
+                      Expanded(child:
+                      Padding(padding: EdgeInsets.only(left: 8, top: isFirst ? 16 : 4, bottom: isLast ? 16 : 4, right: 16), child: listItem!(index),),
+                      ),
+                    ];
+
+                    return IntrinsicHeight(
+                        key: ValueKey(index),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children:
+                        timelineTile
+                        // isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
+                      ),
+                    );
+                    return Column(key: ValueKey(index), children: [
+                      Row(children: [Column(
+                        children: <Widget>[
+                          // Line parts are always added in order for the ink splash to
+                          // flood the tips of the connector lines.
+                          Padding(padding: EdgeInsets.only(left: stepIcon!(index) == null ? 0 : 27), child: _buildLine(!_isFirst(index), stepIcon!(index) != null),),
+                          stepIcon!(index) != null ? stepIcon!(index)! : _buildIcon(index),
+                          Padding(padding: EdgeInsets.only(left: stepIcon!(index) == null ? 0 : 27), child: _buildLine(!_isLast(index), stepIcon!(index) != null),),
+                        ],
+                      ),
+                        Expanded(
+                          child: listItem!(index),
+                        )],),
+                      // _buildVerticalBody(index),
+                    ],);
                     return listItem!(index);
                   },
                   scrollDirection: scrollDirection ?? Axis.vertical,
@@ -345,6 +399,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                     onReordered!(newIndex, oldIndex);
                   });
             case _BasicListViewState.gallery:
+              // Container(height: 200, width: 200, child:    gridItem!(0, 200),)
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
 
@@ -376,6 +431,14 @@ class SyntonicListView extends ExtendedStatelessWidget {
   }
 
   Widget _buildLine(bool visible, bool isShort) {
+    // return FractionallySizedBox(
+    //   // widthFactor: 0.1,
+    //   heightFactor: 0.5,
+    //   child: Container(
+    //     width: visible ? 1.0 : 0.0,
+    //     color: Colors.red,
+    //   ),
+    // );
     return Container(
       width: visible ? 1.0 : 0.0,
       height: 48,
@@ -471,6 +534,139 @@ class SyntonicListView extends ExtendedStatelessWidget {
       style: _kStepStyle.copyWith(color: Colors.black87),
     );
   }
+
+  Color _connectorColor(bool isActive) {
+    // final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    // final Set<MaterialState> states = <MaterialState>{
+    //   if (isActive) MaterialState.selected else MaterialState.disabled,
+    // };
+    // final Color? resolvedConnectorColor = widget.connectorColor?.resolve(states);
+    // if (resolvedConnectorColor != null) {
+    //   return resolvedConnectorColor;
+    // }
+    return Colors.grey.shade400;
+  }
+
+  Widget _buildVerticalBody(int index) {
+    return Stack(
+      children: <Widget>[
+        PositionedDirectional(
+          start: 24.0,
+          top: 0.0,
+          bottom: 0.0,
+          child: SizedBox(
+            width: 24.0,
+            child: Center(
+              child: SizedBox(
+                width: 1.0,
+                child: Container(
+                  color: _connectorColor(true),
+                ),
+              ),
+            ),
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: Container(height: 0.0),
+          secondChild: Container(
+            margin: const EdgeInsetsDirectional.only(
+              start: 60.0,
+              end: 24.0,
+              bottom: 24.0,
+            ),
+            child: Column(
+              children: <Widget>[
+                // widget.steps[index].content,
+                _buildVerticalControls(index),
+              ],
+            ),
+          ),
+          firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+          secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+          sizeCurve: Curves.fastOutSlowIn,
+          crossFadeState: CrossFadeState.showFirst,
+          duration: kThemeAnimationDuration,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildVerticalControls(int stepIndex) {
+    // if (widget.controlsBuilder != null) {
+    //   return widget.controlsBuilder!(
+    //     context,
+    //     ControlsDetails(
+    //       currentStep: widget.currentStep,
+    //       onStepContinue: widget.onStepContinue,
+    //       onStepCancel: widget.onStepCancel,
+    //       stepIndex: stepIndex,
+    //     ),
+    //   );
+    // }
+
+    final Color cancelColor;
+    // switch (Theme.of(context).brightness) {
+    //   case Brightness.light:
+    //     cancelColor = Colors.black54;
+    //   case Brightness.dark:
+    //     cancelColor = Colors.white70;
+    // }
+
+    // final ThemeData themeData = Theme.of(context);
+    // final ColorScheme colorScheme = themeData.colorScheme;
+    // final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+
+    const OutlinedBorder buttonShape = RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2)));
+    const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 16.0);
+
+    return Container(
+      margin: const EdgeInsets.only(top: 16.0),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints.tightFor(height: 48.0),
+        child: Row(
+          // The Material spec no longer includes a Stepper widget. The continue
+          // and cancel button styles have been configured to match the original
+          // version of this widget.
+          children: <Widget>[
+            // TextButton(
+            //   onPressed: widget.onStepContinue,
+            //   style: ButtonStyle(
+            //     foregroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+            //       return states.contains(MaterialState.disabled) ? null : (_isDark() ? colorScheme.onSurface : colorScheme.onPrimary);
+            //     }),
+            //     backgroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+            //       return _isDark() || states.contains(MaterialState.disabled) ? null : colorScheme.primary;
+            //     }),
+            //     padding: const MaterialStatePropertyAll<EdgeInsetsGeometry>(buttonPadding),
+            //     shape: const MaterialStatePropertyAll<OutlinedBorder>(buttonShape),
+            //   ),
+            //   child: Text(
+            //       themeData.useMaterial3
+            //           ? localizations.continueButtonLabel
+            //           : localizations.continueButtonLabel.toUpperCase()
+            //   ),
+            // ),
+            // Container(
+            //   margin: const EdgeInsetsDirectional.only(start: 8.0),
+            //   child: TextButton(
+            //     onPressed: widget.onStepCancel,
+            //     style: TextButton.styleFrom(
+            //       foregroundColor: cancelColor,
+            //       padding: buttonPadding,
+            //       shape: buttonShape,
+            //     ),
+            //     child: Text(
+            //         themeData.useMaterial3
+            //             ? localizations.cancelButtonLabel
+            //             : localizations.cancelButtonLabel.toUpperCase()
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class InfiniteLoadingListViewModel extends ChangeNotifier {
@@ -490,5 +686,75 @@ class InfiniteLoadingListViewModel extends ChangeNotifier {
 
   void changeMoreDataStatus(bool hasMoreData){
     // notifyListeners();
+  }
+}
+
+class _TimelinePainter extends CustomPainter {
+  _TimelinePainter({
+    required this.hideDefaultIndicator,
+    required this.indicatorColor,
+    required this.indicatorStyle,
+    required this.indicatorSize,
+    required this.lineGap,
+    required this.strokeCap,
+    required this.strokeWidth,
+    required this.style,
+    required this.lineColor,
+    required this.isFirst,
+    required this.isLast,
+    required this.itemGap,
+  })  : linePaint = Paint()
+    ..color = lineColor
+    ..strokeCap = strokeCap
+    ..strokeWidth = strokeWidth
+    ..style = style,
+        circlePaint = Paint()
+          ..color = indicatorColor
+          ..style = indicatorStyle;
+
+  final bool hideDefaultIndicator;
+  final Color indicatorColor;
+  final PaintingStyle indicatorStyle;
+  final double indicatorSize;
+  final double lineGap;
+  final StrokeCap strokeCap;
+  final double strokeWidth;
+  final PaintingStyle style;
+  final Color lineColor;
+  final Paint linePaint;
+  final Paint circlePaint;
+  final bool isFirst;
+  final bool isLast;
+  final double itemGap;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final indicatorRadius = indicatorSize / 2;
+    final halfItemGap = itemGap / 2;
+    final indicatorMargin = indicatorRadius + lineGap;
+
+    final top = size.topLeft(Offset(indicatorRadius, 0.0 - halfItemGap));
+    final centerTop = size.centerLeft(
+      Offset(indicatorRadius, -indicatorMargin),
+    );
+
+    final bottom = size.bottomLeft(Offset(indicatorRadius, 0.0 + halfItemGap));
+    final centerBottom = size.centerLeft(
+      Offset(indicatorRadius, indicatorMargin),
+    );
+
+    if (!isFirst) canvas.drawLine(top, centerTop, linePaint);
+    if (!isLast) canvas.drawLine(centerBottom, bottom, linePaint);
+
+    if (!hideDefaultIndicator) {
+      final Offset offsetCenter = size.centerLeft(Offset(indicatorRadius, 0));
+
+      canvas.drawCircle(offsetCenter, indicatorRadius, circlePaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }

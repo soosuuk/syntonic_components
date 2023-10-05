@@ -17,6 +17,7 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_ticket_provider_mixin.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:provider/single_child_widget.dart';
 import 'package:tuple/tuple.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,10 @@ abstract class ExtendedModel {
 
 // ignore: must_be_immutable
 abstract class SyntonicBaseView extends StatelessWidget {
+  // final _viewModel = riverpod.ChangeNotifierProvider((ref) => BaseViewModel());
+
+  final isInitializedProvider = riverpod.StateProvider<bool>((ref) => false);
+
   Function? willPopCallback;
   PlatformType? platformType;
   late BuildContext context;
@@ -63,15 +68,18 @@ abstract class SyntonicBaseView extends StatelessWidget {
 
   /// Use this variable as check whether number of build is one (initialize)
   /// or two and more(rebuild), when execute [initialize] function.
-  bool _isInitialized = false;
+  bool isInitialized = false;
 
   @Deprecated('Should use "onReachBottom" function instead of this variable.')
   final _streamController = StreamController<bool>();
 
   List<SyntonicBaseView> childViews = [];
 
+  // late riverpod.WidgetRef _ref;
   @override
   Widget build(BuildContext context) {
+    // _ref = ref;
+
     if (kIsWeb) {
       this.platformType = PlatformType.Web;
     } else if (Platform.isIOS) {
@@ -112,9 +120,66 @@ abstract class SyntonicBaseView extends StatelessWidget {
   /// Change [appBar] and [floatingActionButton] state to invisible depends on
   /// view permission ([authority.canView]) in account's [model.authority].
   Widget get _screen {
-    // skip initialization, depending on whether [_isInitialized] is "true".
+    // skip initialization, depending on whether [isInitialized] is "true".
     // Because, A screen is Rebuilt if you focus to any text-field.
-    if (needsInitialize && !_isInitialized) {
+    return riverpod.Consumer(
+      builder: (context, riverpod.WidgetRef ref, child) {
+    if (needsInitialize && !isInitialized) {
+      // ref.read(isInitializedProvider.notifier).state = false;
+    return FutureBuilder(
+    future: initialize(),
+    builder: (context, projectSnap) {
+    if (projectSnap.hasError) {
+    return NestedScrollView(
+    headerSliverBuilder:
+    (BuildContext context, bool innerBoxIsScrolled) {
+    return <Widget>[
+    Consumer<BaseViewModel>(builder: (context, model, child) {
+    return SyntonicSliverAppBar(
+    isFullscreenDialog: appBar != null
+    ? appBar!.isFullscreenDialog
+        : false,
+    title: appBar != null ? appBar!.title : null);
+    }),
+    ];
+    },
+    body: _errorScreen,
+    );
+    } else if (projectSnap.connectionState == ConnectionState.done) {
+      print('ステート');
+      isInitialized = true;
+      // print(ref.read(isInitializedProvider.notifier).state);
+      // ref.read(isInitializedProvider.notifier).state = true;
+      // print(ref.read(isInitializedProvider.notifier).state);
+    return _body;
+    } else {
+    if (isSkeletonLoadingApplied) {
+    return _body;
+    } else {
+    return Stack(children: [
+    Scaffold(
+    drawer: appBar != null ? navigationDrawer : null,
+    appBar: appBar != null
+    ? SyntonicSliverAppBar.fixed(
+    title: appBar!.title ?? '',
+    context: context,
+    needsNavigationDrawer: appBar!.needsNavigationDrawer,
+    trailing: appBar!.trailing)
+        : null,
+    bottomSheet: bottomSheet,
+    ),
+    Container(child: Center(child: CircularProgressIndicator()))
+    ]);
+    }
+    }
+    },
+    );
+    } else {
+    return _body;
+    }
+    }
+    );
+    if (needsInitialize && !isInitialized) {
       return FutureBuilder(
         future: initialize(),
         builder: (context, projectSnap) {
@@ -135,23 +200,27 @@ abstract class SyntonicBaseView extends StatelessWidget {
               body: _errorScreen,
             );
           } else if (projectSnap.connectionState == ConnectionState.done) {
-            _isInitialized = true;
+            isInitialized = true;
             return _body;
           } else {
-            return Stack(children: [
-              Scaffold(
-                drawer: appBar != null ? navigationDrawer : null,
-                appBar: appBar != null
-                    ? SyntonicSliverAppBar.fixed(
-                    title: appBar!.title ?? '',
-                    context: context,
-                    needsNavigationDrawer: appBar!.needsNavigationDrawer,
-                    trailing: appBar!.trailing)
-                    : null,
-                bottomSheet: bottomSheet,
-              ),
-              Container(child: Center(child: CircularProgressIndicator()))
-            ]);
+            if (isSkeletonLoadingApplied) {
+              return _body;
+            } else {
+              return Stack(children: [
+                Scaffold(
+                  drawer: appBar != null ? navigationDrawer : null,
+                  appBar: appBar != null
+                      ? SyntonicSliverAppBar.fixed(
+                      title: appBar!.title ?? '',
+                      context: context,
+                      needsNavigationDrawer: appBar!.needsNavigationDrawer,
+                      trailing: appBar!.trailing)
+                      : null,
+                  bottomSheet: bottomSheet,
+                ),
+                Container(child: Center(child: CircularProgressIndicator()))
+              ]);
+            }
           }
         },
       );
@@ -159,6 +228,8 @@ abstract class SyntonicBaseView extends StatelessWidget {
       return _body;
     }
   }
+
+  bool isSkeletonLoadingApplied = false;
 
   /// Initialize the screen.
   ///
@@ -713,6 +784,8 @@ class BaseViewModel with ChangeNotifier {
   bool isStickyingAppBar = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int? currentTabIndex = 0;
+
+  bool isInitialized = false;
 
   BaseViewModel();
 

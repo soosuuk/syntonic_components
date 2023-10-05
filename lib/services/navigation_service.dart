@@ -1,9 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syntonic_components/services/localization_service.dart';
 import 'package:syntonic_components/widgets/snack_bars/syntonic_snack_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
+
+import '../widgets/syntonic_base_view.dart';
 
 class NavigationService {
   static final _instance = NavigationService._internal();
@@ -21,7 +24,7 @@ class NavigationService {
 
   /// Transition the [screen] to next screen.
   static Future<dynamic> pushScreen(
-      {required context, required Widget screen}) {
+      {required context, required SyntonicBaseView screen}) {
     return Navigator.push(
       context,
       MaterialPageRoute(
@@ -31,12 +34,30 @@ class NavigationService {
   }
 
   /// Display the [screen] as modal screen over a current screen.
-  static Future<dynamic> pushFullscreenDialog({required Widget screen}) {
+  static Future<dynamic> pushFullscreenDialog({required SyntonicBaseView screen, BuildContext? context}) {
     return Navigator.push(
-      NavigationService().navigatorKey.currentContext!,
-      MaterialPageRoute(
-        builder: (context) => screen,
+      context ?? NavigationService().navigatorKey.currentContext!,
+      // MaterialPageRoute(
+      //   builder: (context) => screen,
+      //   fullscreenDialog: true,
+      // ),
+      PageRouteBuilder(
         fullscreenDialog: true,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          // ProviderContainer container = ProviderContainer(
+          //   overrides: [
+          //     isInitializedProvider.(StateProvider<bool>((ref) => false)),
+          //   ],
+          // );
+          return ProviderScope(child: screen,);
+          return screen;
+        },
+          transitionDuration: Duration(milliseconds: 600),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const curve = Curves.easeInOutCubicEmphasized; // ここでカスタムのCurveを指定
+          var curvedAnimation = CurvedAnimation(parent: animation, curve: curve);
+          return FadeTransition(opacity: curvedAnimation, child: child);
+        },
       ),
     );
   }

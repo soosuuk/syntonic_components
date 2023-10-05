@@ -22,17 +22,18 @@ class SyntonicBottomNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      initialRoute: '/',
-      onGenerateRoute: (settings) {
-        return MaterialPageRoute<Widget>(
-          builder: (context) {
-            return screen;
-          },
-        );
-      },
-    );
+    return screen;
+    // return Navigator(
+    //   key: navigatorKey,
+    //   initialRoute: '/',
+    //   onGenerateRoute: (settings) {
+    //     return MaterialPageRoute<Widget>(
+    //       builder: (context) {
+    //         return screen;
+    //       },
+    //     );
+    //   },
+    // );
   }
 
 }

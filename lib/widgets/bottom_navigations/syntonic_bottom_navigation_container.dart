@@ -29,10 +29,7 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
   Widget get mainContents {
     return Consumer<BottomNavigationContainerManager>(builder: (context, model, child) {
       return Scaffold(
-        body: IndexedStack(
-          index: model.currentIndex,
-          children: bottomNavigationItems,
-        ),
+        body: bottomNavigationItems[0],
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) {
                   if (onTapBottomNavigationBar != null) {

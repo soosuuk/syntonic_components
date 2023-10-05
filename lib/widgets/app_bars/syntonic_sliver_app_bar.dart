@@ -9,6 +9,7 @@ import '../../configs/constants/syntonic_color.dart';
 import '../../services/navigation_service.dart';
 import '../enhancers/syntonic_fade.dart';
 import '../lists/syntonic_list_item.dart';
+import '../syntonic_base_view.dart';
 
 enum _AppBarState {
   flexible,
@@ -415,7 +416,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
 
 class TabModel {
   String tabTitle;
-  Widget tabView;
+  SyntonicBaseView tabView;
 
   TabModel({required this.tabTitle, required this.tabView});
 }
