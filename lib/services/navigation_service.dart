@@ -52,7 +52,7 @@ class NavigationService {
           return ProviderScope(child: screen,);
           return screen;
         },
-          transitionDuration: Duration(milliseconds: 600),
+          transitionDuration: Duration(milliseconds: 500),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const curve = Curves.easeInOutCubicEmphasized; // ここでカスタムのCurveを指定
           var curvedAnimation = CurvedAnimation(parent: animation, curve: curve);

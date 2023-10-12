@@ -55,7 +55,8 @@ class SyntonicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(data: color != null ? darkTheme(primaryColor: color) : Theme.of(context), child: Card(
+    bool isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    return Theme(data: color != null ? isDarkTheme ? darkTheme(primaryColor: color) : lightTheme(primaryColor: color) : Theme.of(context), child: Card(
       // color: null,
       // surfaceTintColor: colorScheme != null ? colorScheme!.surfaceTint : null,
       // shadowColor: colorScheme != null ? colorScheme!.shadow : null,

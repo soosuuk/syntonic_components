@@ -1,5 +1,6 @@
 // import 'package:badges/badges.dart';
 // import 'package:syntonic_components/models/fcm_data_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:syntonic_components/services/localization_service.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 import 'package:syntonic_components/widgets/bottom_navigations/syntonic_bottom_navigation_item.dart';
@@ -26,8 +27,7 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
   SyntonicSliverAppBar? get appBar => null;
 
   @override
-  Widget get mainContents {
-    return Consumer<BottomNavigationContainerManager>(builder: (context, model, child) {
+  Widget mainContents({required riverpod.WidgetRef ref}) {
       return Scaffold(
         body: bottomNavigationItems[0],
         bottomNavigationBar: NavigationBar(
@@ -35,14 +35,14 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
                   if (onTapBottomNavigationBar != null) {
                     onTapBottomNavigationBar!();
                   }
-                  if (model.currentIndex == index) {
+                  if ((viewModel as BottomNavigationContainerManager).currentIndex == index) {
                     bottomNavigationItems[index]
                         .navigatorKey
                         .currentState!
                         .popUntil((route) => route.isFirst);
                     bottomNavigationItems[index]
                         .screen
-                        .model
+                        .provider
                         .scrollController
                         .animateTo(
                       0.0,
@@ -53,7 +53,7 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
                     for (SyntonicBaseView _childView
                     in bottomNavigationItems[index].screen.childViews) {
                       for (SyntonicBaseView _childView in _childView.childViews) {
-                        _childView.model.scrollController.animateTo(
+                        _childView.provider.scrollController.animateTo(
                           0.0,
                           curve: Curves.easeOut,
                           duration: const Duration(milliseconds: 300),
@@ -61,10 +61,10 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
                       }
                     }
                   } else {
-                    model.setCurrentIndex(index);
+                    (viewModel as BottomNavigationContainerManager).setCurrentIndex(index);
                   }
           },
-          selectedIndex: model.currentIndex,
+          selectedIndex: (viewModel as BottomNavigationContainerManager).currentIndex,
           destinations: [
             for (final item in bottomNavigationItems)
               NavigationDestination(
@@ -74,8 +74,10 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
           ],
         ),
       );
-    });
   }
+
+  @override
+  BottomNavigationContainerManager getViewModelBy(BuildContext context) => BottomNavigationContainerManager();
 
 // Widget _getIconWithBadge(Icon icon, int badgeVal) {
 //   return Stack(
@@ -112,7 +114,7 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
 // }
 }
 
-class BottomNavigationContainerManager with ChangeNotifier {
+class BottomNavigationContainerManager extends BaseViewModel {
   int currentIndex = 0;
 
   void setCurrentIndex(int index) {

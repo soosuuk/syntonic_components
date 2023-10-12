@@ -10,7 +10,7 @@ class SyntonicModalBottomSheet {
   static const double maxExtent = 1.0;
 
   /// Open modal bottom sheet.
-  openModalBottomSheet({required BuildContext context, required List<Widget> menus, List<SingleChildWidget>? providers, Function? onPop}) {
+  openModalBottomSheet({required BuildContext context, required List<Widget> menus, Function? onPop}) {
     contents = menus;
 
     showModalBottomSheet(
@@ -19,24 +19,20 @@ class SyntonicModalBottomSheet {
       showDragHandle: true,
         context: context,
         builder: (_) {
-          return providers != null ?
-          MultiProvider(
-              providers: [ChangeNotifierProvider(create: (_) => SyntonicModalBottomSheetViewModel()), ...providers],
-          child:WillPopScope(
-          onWillPop: () async {
-            if (onPop != null) {
-              onPop!();
-            }
-            return true;
-          }, child: _contents,),) :
-          _contents;
+          return WillPopScope(
+            onWillPop: () async {
+              if (onPop != null) {
+                onPop!();
+              }
+              return true;
+            }, child: _contents,);
         }
     );
   }
 
   Widget get _contents {
-    return Consumer<SyntonicModalBottomSheetViewModel>(
-      builder: (context, model, child) => DraggableScrollableActuator(
+    return Consumer(
+      builder: (context, ref, child) => DraggableScrollableActuator(
         child: DraggableScrollableSheet(
           // key: Key(model.initialExtent.toString()),
           maxChildSize: maxExtent,

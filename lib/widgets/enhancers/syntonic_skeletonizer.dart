@@ -6,13 +6,14 @@ import '../syntonic_base_view.dart';
 
 class SyntonicSkeletonizer extends ConsumerWidget {
   final Widget child;
+  final bool isEnabled;
 
 
   SyntonicSkeletonizer(
-      {required this.child});
+      {required this.child, this.isEnabled = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Skeletonizer(child: child, enabled: false);
+    return Skeletonizer(child: child, enabled: isEnabled);
   }
 }

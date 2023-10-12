@@ -8,6 +8,7 @@ import 'package:syntonic_components/widgets/texts/body_1_text.dart';
 import '../../configs/constants/syntonic_color.dart';
 import '../../services/navigation_service.dart';
 import '../enhancers/syntonic_fade.dart';
+import '../icons/syntonic_icon.dart';
 import '../lists/syntonic_list_item.dart';
 import '../syntonic_base_view.dart';
 
@@ -239,9 +240,6 @@ class SyntonicSliverAppBar extends StatelessWidget
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
-    /// Get web layout drawer.
-    bool isLandscape = MediaQuery.of(context).size.width > 671;
-
     // Widget _title = SyntonicSearchBox(
     //     value: "null",
     //     // value: context.read<SearchViewModel>().searchWord,
@@ -283,18 +281,16 @@ class SyntonicSliverAppBar extends StatelessWidget
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
-          ? CloseButton(
-          onPressed: this.onBackButtonPressed,
-          color: this.accentColor)
+          ? SyntonicIcon(icon: Icons.close, padding: 0, onPressed: () => onBackButtonPressed ?? Navigator.pop(context))
           : BackButton(
           onPressed: this.onBackButtonPressed, color: this.accentColor),
       iconTheme: IconThemeData(
         color: this.accentColor, //change your color here
       ),
       stretch: true,
-      // snap: isFadedTitle ? false : true,
-      // floating: true,
-      // pinned: (this.isFullscreenDialog || this.hasTabBar || isFadedTitle) ? true : false,
+      snap: isFadedTitle ? false : true,
+      floating: true,
+      pinned: (this.isFullscreenDialog || this.hasTabBar || isFadedTitle) ? true : false,
       title: isFadedTitle
           ? SyntonicFade(
               zeroOpacityOffset: expandedHeight! - kToolbarHeight,
@@ -386,26 +382,14 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
+    Color _color = Theme.of(context).colorScheme.surface;
     return Material(
         elevation: overlapsContent ? 4.0 : 0,
-        color: Theme.of(context).colorScheme.surface,
-        child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  // Divider(
-                  //   height: 0,
-                  //   color: overlapsContent
-                  //       ? null
-                  //       : isDarkTheme
-                  //           ? Colors.white54
-                  //           : Colors.black12,
-                  // ),
-                  Container(
-                    width: double.infinity,
-                    child: tabBar,
-                  )
-                ],
-              ));
+        color: _color,
+        child: Container(
+          width: double.infinity,
+          child: tabBar,
+        ));
   }
 
   @override
