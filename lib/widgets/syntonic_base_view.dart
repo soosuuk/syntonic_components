@@ -7,6 +7,7 @@ import 'package:syntonic_components/configs/constants/syntonic_language.dart';
 import 'package:syntonic_components/gen/l10n/app_localizations.dart';
 import 'package:syntonic_components/services/localization_service.dart';
 import 'package:syntonic_components/services/navigation_service.dart';
+import 'package:syntonic_components/widgets/enhancers/syntonic_fade.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:syntonic_components/services/localization_service.dart';
@@ -76,11 +77,6 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
   Function? willPopCallback;
   PlatformType? platformType;
   late BuildContext context;
-  // late BaseViewModel model;
-
-  /// Use this variable as check whether number of build is one (initialize)
-  /// or two and more(rebuild), when execute [initialize] function.
-  // bool isInitialized = false;
 
   List<SyntonicBaseView> childViews = [];
 
@@ -97,7 +93,7 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
     } else if (Platform.isAndroid) {
       this.platformType = PlatformType.Android;
     }
-    var viewModel = getViewModelBy(context)..injectBy(context);
+    var viewModel = getViewModelBy(context);
     provider = riverpod.ChangeNotifierProvider<T>((ref) => viewModel);
     this.context = context;
 
@@ -119,7 +115,6 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
     // skip initialization, depending on whether [isInitialized] is "true".
     // Because, A screen is Rebuilt if you focus to any text-field.
       if ((viewModel as T).needsInitialize && !(viewModel as T).isInitialized) {
-        // ref.read(isInitializedProvider.notifier).state = false;
         return FutureBuilder(
           future: (viewModel as T).onInit(),
           builder: (context, projectSnap) {
@@ -137,11 +132,7 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
                 body: _errorScreen,
               );
             } else if (projectSnap.connectionState == ConnectionState.done) {
-              print('ステート');
               (viewModel as T).isInitialized = true;
-              // print(ref.read(isInitializedProvider.notifier).state);
-              // ref.read(isInitializedProvider.notifier).state = true;
-              // print(ref.read(isInitializedProvider.notifier).state);
               return _body();
             } else {
               if ((viewModel as T).isSkeletonLoadingApplied) {
@@ -169,61 +160,7 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
       } else {
         return _body();
       }
-    // if (needsInitialize && !isInitialized) {
-    //   return FutureBuilder(
-    //     future: initialize(),
-    //     builder: (context, projectSnap) {
-    //       if (projectSnap.hasError) {
-    //         return NestedScrollView(
-    //           headerSliverBuilder:
-    //               (BuildContext context, bool innerBoxIsScrolled) {
-    //             return <Widget>[
-    //               Consumer<BaseViewModel>(builder: (context, model, child) {
-    //                 return SyntonicSliverAppBar(
-    //                     isFullscreenDialog: appBar != null
-    //                         ? appBar!.isFullscreenDialog
-    //                         : false,
-    //                     title: appBar != null ? appBar!.title : null);
-    //               }),
-    //             ];
-    //           },
-    //           body: _errorScreen,
-    //         );
-    //       } else if (projectSnap.connectionState == ConnectionState.done) {
-    //         isInitialized = true;
-    //         return _body;
-    //       } else {
-    //         if (isSkeletonLoadingApplied) {
-    //           return _body;
-    //         } else {
-    //           return Stack(children: [
-    //             Scaffold(
-    //               drawer: appBar != null ? navigationDrawer : null,
-    //               appBar: appBar != null
-    //                   ? SyntonicSliverAppBar.fixed(
-    //                   title: appBar!.title ?? '',
-    //                   context: context,
-    //                   needsNavigationDrawer: appBar!.needsNavigationDrawer,
-    //                   trailing: appBar!.trailing)
-    //                   : null,
-    //               bottomSheet: bottomSheet,
-    //             ),
-    //             Container(child: Center(child: CircularProgressIndicator()))
-    //           ]);
-    //         }
-    //       }
-    //     },
-    //   );
-    // } else {
-    //   return _body;
-    // }
   }
-
-  // /// Initialize the screen.
-  // ///
-  // /// Typically call initialization API in the screen.
-  // Future<dynamic>? initialize({bool isRefreshed = false}) => null;
-  // bool get needsInitialize => false;
 
   /// Get body.
   Widget _body() {
@@ -234,40 +171,36 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
           return Scaffold(
             drawer: navigationDrawer,
             floatingActionButton: _floatingActionButtons(ref: ref),
-            body: SafeArea(
-                top: false,
-                bottom: false,
-                child: DefaultTabController(
-                    length: tabs != null ? tabs!.length : 0,
-                    child: NestedScrollView(
-                      controller: ref
-                          .read(provider)
-                          .scrollController,
-                      headerSliverBuilder:
-                          (BuildContext context, bool innerBoxIsScrolled) {
-                        return <Widget>[
-                          _appBar(ref: ref),
-                          SliverList(
-                            delegate: SliverChildListDelegate(
-                              [_headerContents],
-                            ),
-                          ),
-                          tabs != null
-                              ? SliverPersistentHeader(
-                              pinned: true,
-                              delegate: StickyTabBarDelegate(
-                                  tabBar: _tabBar(ref: ref)!,
-                                  setStickyState: (isSticking) {
-                                    ref
-                                        .read(provider)
-                                        .isStickyingAppBar = isSticking;
-                                    ref.read(provider).notifier();
-                                  }))
-                              : _blank,
-                        ];
-                      },
-                      body: _notificationListener(ref: ref),
-                    ))),
+            body: DefaultTabController(
+                length: tabs != null ? tabs!.length : 0,
+                child: NestedScrollView(
+                  controller: ref
+                      .read(provider)
+                      .scrollController,
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      _appBar(ref: ref),
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [_headerContents],
+                        ),
+                      ),
+                      tabs != null
+                          ? SliverPersistentHeader(
+                          pinned: true,
+                          delegate: StickyTabBarDelegate(
+                              tabBar: _tabBar(ref: ref)!,
+                              setStickyState: (isSticking) {
+                                print('スティッキー通知');
+                                viewModel
+                                    .isStickyingAppBar = isSticking;
+                              }))
+                          : _blank,
+                    ];
+                  },
+                  body: _notificationListener(ref: ref),
+                )),
             bottomSheet: bottomSheet,
           );
         } else {
@@ -275,20 +208,18 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
               length: tabs != null ? tabs!.length : 0,
               child: Scaffold(
                 drawer: navigationDrawer,
-                appBar: _appBar as PreferredSizeWidget,
-                body: SafeArea(
-                    top: false,
-                    bottom: false,
-                    child: NestedScrollView(
-                      controller: ref
-                          .read(provider)
-                          .scrollController,
-                      headerSliverBuilder:
-                          (BuildContext context, bool innerBoxIsScrolled) {
-                        return <Widget>[];
-                      },
-                      body: _notificationListener(ref: ref),
-                    )),
+                appBar: AppBar(title: Body2Text(text: 'title',), flexibleSpace: headerContents, toolbarHeight: MediaQuery.of(context).size.height * 0.7,),
+                // appBar: _appBar as PreferredSizeWidget,
+                body: NestedScrollView(
+                  controller: ref
+                      .read(provider)
+                      .scrollController,
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[];
+                  },
+                  body: _notificationListener(ref: ref),
+                ),
                 bottomSheet: bottomSheet,
               ));
         }
@@ -405,20 +336,20 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
           }
         }
 
-        if (!needsSliverAppBar) {
-          if (scrollNotification.metrics.pixels <=
-              scrollNotification.metrics.minScrollExtent) {
-            if (!ref.read(provider).isStickyingAppBar) {
-              ref.read(provider).isStickyingAppBar = true;
-              ref.read(provider).notifier();
-            }
-          } else {
-            if (ref.read(provider).isStickyingAppBar) {
-              ref.read(provider).isStickyingAppBar = false;
-              ref.read(provider).notifier();
-            }
-          }
-        }
+        // if (!needsSliverAppBar) {
+        //   if (scrollNotification.metrics.pixels <=
+        //       scrollNotification.metrics.minScrollExtent) {
+        //     if (!ref.read(provider).isStickyingAppBar) {
+        //       ref.read(provider).isStickyingAppBar = true;
+        //       ref.read(provider).notifier();
+        //     }
+        //   } else {
+        //     if (ref.read(provider).isStickyingAppBar) {
+        //       ref.read(provider).isStickyingAppBar = false;
+        //       ref.read(provider).notifier();
+        //     }
+        //   }
+        // }
 
         return false;
       },
@@ -511,12 +442,6 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
   /// If use [AppBar], contents is show in [AppBar] bellow.
   bool get needsSliverAppBar => true;
 
-  /// Whether this view is root view.
-  ///
-  /// If this view is a root view, apply [StreamProvider] to notify that the
-  /// scroll position is bottom.
-  bool get isRootView => false;
-
   /// Get app bar.
   ///
   /// Type of an app bar ([AppBar], [SliverAppBar]) depends on
@@ -537,7 +462,7 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
           flexibleSpace: _appBar.flexibleSpace,
           isFadedTitle: _appBar.isFadedTitle,
           isFullscreenDialog: _appBar.isFullscreenDialog,
-          isStickying: ref.read(provider).isStickyingAppBar,
+          isStickying: ref.watch(provider).isStickyingAppBar,
           onBackButtonPressed: _appBar.onBackButtonPressed,
           onTap: _appBar.onTap,
           needsNavigationDrawer: _appBar.needsNavigationDrawer,
@@ -618,7 +543,7 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
   /// And also, can hide FAB with fading animation.
   Widget _floatingActionButton({required riverpod.WidgetRef ref, bool isSecondary = false,}) {
     return AnimatedOpacity(
-      opacity: ref.read(provider).isFloatingActionButtonVisible ? 1.0 : 0.0,
+      opacity: ref.watch(provider).isFloatingActionButtonVisible ? 1.0 : 0.0,
       duration: Duration(milliseconds: 300),
       child: SyntonicFloatingActionButton(
           floatingActionButtonModel: isSecondary
@@ -658,7 +583,7 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
       onTap: () {
         FocusManager.instance.primaryFocus!.unfocus();
       },
-      child: headerContents,
+      child: SyntonicFade(zeroOpacityOffset: 0, fullOpacityOffset: 0, scrollController: viewModel.scrollController, child: headerContents),
     );
   }
 
@@ -726,17 +651,23 @@ class BaseViewModel extends ChangeNotifier {
   bool isFloatingActionButtonVisible = true;
   ScrollController scrollController = ScrollController();
   // ..addListener(scrollListener);
-  bool isStickyingAppBar = false;
+  bool _isStickyingAppBar = false;
+  bool get isStickyingAppBar => _isStickyingAppBar;
+  set isStickyingAppBar(bool value) {
+    if (_isStickyingAppBar == value) {
+      return;
+    }
+    _isStickyingAppBar = value;
+    notifyListeners();
+  }
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int? currentTabIndex = 0;
 
+  /// Use this variable as check whether number of build is one (initialize)
+  /// or two and more(rebuild), when execute [initialize] function.
   bool isInitialized = false;
 
-  BaseViewModel() {
-    // onInit();
-  }
-
-  late BuildContext context;
+  BaseViewModel();
 
   bool get needsInitialize => false;
   bool isSkeletonLoadingApplied = false;
@@ -747,17 +678,10 @@ class BaseViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<dynamic>? onInit() {
-    print('きた');
-    return null;
-  }
+  Future<dynamic>? onInit() => null;
 
   @protected
   void onDispose() {}
-
-  void injectBy(BuildContext contextArg) {
-    context = contextArg;
-  }
 
   /// Update the screen.
   void notifier() {
