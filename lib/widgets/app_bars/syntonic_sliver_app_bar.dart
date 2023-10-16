@@ -1,5 +1,6 @@
 import 'package:syntonic_components/configs/themes/syntonic_elevated_button_theme.dart';
 import 'package:syntonic_components/widgets/buttons/syntonic_button.dart';
+import 'package:syntonic_components/widgets/enhancers/syntonic_animation_enhancer.dart';
 import 'package:syntonic_components/widgets/text_fields/syntonic_search_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -277,11 +278,13 @@ class SyntonicSliverAppBar extends StatelessWidget
         );
 
         return SliverAppBar(
+          surfaceTintColor: isStickying ? Theme.of(context).colorScheme.surfaceTint : Colors.transparent,
+            backgroundColor: isStickying ? Theme.of(context).colorScheme.surface : Colors.transparent,
       // backgroundColor: !isStickying ? ElevationOverlay.applyOverlay(context, Theme.of(context).colorScheme.surface, 4) : null,
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
-          ? SyntonicIcon(icon: Icons.close, padding: 0, onPressed: () => onBackButtonPressed ?? Navigator.pop(context))
+          ? SyntonicAnimationEnhancer(child: SyntonicIcon(icon: Icons.close, padding: 0, onPressed: () => onBackButtonPressed ?? Navigator.pop(context)))
           : BackButton(
           onPressed: this.onBackButtonPressed, color: this.accentColor),
       iconTheme: IconThemeData(
@@ -292,9 +295,11 @@ class SyntonicSliverAppBar extends StatelessWidget
       floating: true,
       pinned: (this.isFullscreenDialog || this.hasTabBar || isFadedTitle) ? true : false,
       title: isFadedTitle
-          ? SyntonicFade(
-              zeroOpacityOffset: expandedHeight! - kToolbarHeight,
-              fullOpacityOffset: expandedHeight!,
+          ? SyntonicFade.on(
+          zeroOpacityOffset: 0,
+          fullOpacityOffset: expandedHeight!,
+              // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
+              // fullOpacityOffset: expandedHeight!,
               child: _title,
               scrollController: scrollController!)
           : _title,
@@ -307,8 +312,8 @@ class SyntonicSliverAppBar extends StatelessWidget
 
       ] : actions,
       elevation: elevation ?? (this.isStickying ? 0 : 4),
-      expandedHeight: this.expandedHeight,
-      flexibleSpace: flexibleSpace,
+      // expandedHeight: this.expandedHeight,
+      // flexibleSpace: flexibleSpace,
       bottom: bottom,
       // bottom: bottom != null ? PreferredSize(preferredSize: Size.fromHeight(kToolbarHeight), child: Material(
       //     // elevation: overlapsContent ? 4.0 : 0,
@@ -384,6 +389,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
 
     Color _color = Theme.of(context).colorScheme.surface;
     return Material(
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
         elevation: overlapsContent ? 4.0 : 0,
         color: _color,
         child: Container(

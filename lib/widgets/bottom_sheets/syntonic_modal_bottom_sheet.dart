@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 
@@ -8,6 +9,7 @@ class SyntonicModalBottomSheet {
   late final List<Widget> contents;
   static const double minExtent = 0.5;
   static const double maxExtent = 1.0;
+  late WidgetRef ref;
 
   /// Open modal bottom sheet.
   openModalBottomSheet({required BuildContext context, required List<Widget> menus, Function? onPop}) {
@@ -32,17 +34,20 @@ class SyntonicModalBottomSheet {
 
   Widget get _contents {
     return Consumer(
-      builder: (context, ref, child) => DraggableScrollableActuator(
-        child: DraggableScrollableSheet(
-          // key: Key(model.initialExtent.toString()),
-          maxChildSize: maxExtent,
-          initialChildSize: minExtent,
-          minChildSize: minExtent,
-          // snap: true,
-          expand: false,
-          builder: _draggableScrollableSheetBuilder,
-        ),
-      ),);
+      builder: (context, ref, child) {
+        this.ref = ref;
+        return DraggableScrollableActuator(
+          child: DraggableScrollableSheet(
+            // key: Key(model.initialExtent.toString()),
+            maxChildSize: maxExtent,
+            initialChildSize: minExtent,
+            minChildSize: minExtent,
+            // snap: true,
+            expand: false,
+            builder: _draggableScrollableSheetBuilder,
+          ),
+        );
+      },);
 
 
     return Column(
@@ -54,20 +59,21 @@ class SyntonicModalBottomSheet {
   Widget _draggableScrollableSheetBuilder(
       BuildContext context, ScrollController scrollController) {
     // draggableSheetContext = context;
-    SyntonicModalBottomSheetViewModel _viewModel =
-    context.read<SyntonicModalBottomSheetViewModel>();
+    // SyntonicModalBottomSheetViewModel _viewModel =
+    // context.read<SyntonicModalBottomSheetViewModel>();
+    var _provider = ChangeNotifierProvider<SyntonicModalBottomSheetViewModel>((ref) => SyntonicModalBottomSheetViewModel());
 
     return NotificationListener<DraggableScrollableNotification>(
       onNotification: (scrollNotification) {
         print(scrollNotification.extent);
 
-        if (_viewModel.isExpanded) {
-          _viewModel.initialExtent = minExtent;
+        if (ref.read(_provider).isExpanded) {
+          ref.read(_provider).initialExtent = minExtent;
         }
         if (scrollNotification.extent == maxExtent) {
-          _viewModel.changeExpanded(true);
+          ref.read(_provider).changeExpanded(true);
         } else {
-          _viewModel.changeExpanded(false);
+          ref.read(_provider).changeExpanded(false);
         }
 
         // if (scrollNotification.extent > minExtent) {

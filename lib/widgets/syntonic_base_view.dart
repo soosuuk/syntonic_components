@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:sliver_tools/sliver_tools.dart';
 import 'package:syntonic_components/configs/constants/syntonic_date_and_time.dart';
 import 'package:syntonic_components/configs/constants/syntonic_language.dart';
 import 'package:syntonic_components/gen/l10n/app_localizations.dart';
@@ -28,6 +29,11 @@ import 'app_bars/syntonic_app_bar.dart';
 import 'app_bars/syntonic_sliver_app_bar.dart';
 import 'lists/syntonic_list_item.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
+
+
+import 'package:flutter/widgets.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 
 part '../extensions/syntonic_color_extension.dart';
 part '../extensions/syntonic_date_time_extension.dart';
@@ -59,6 +65,7 @@ abstract class ExtendedModel {
 // ignore: must_be_immutable
 abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget {
   late var provider;
+  final _globalKey = GlobalKey();
 
   // @protected
   // T viewModel(BuildContext context) => Provider.of<T>(context, listen: false);
@@ -180,12 +187,17 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
                   headerSliverBuilder:
                       (BuildContext context, bool innerBoxIsScrolled) {
                     return <Widget>[
-                      _appBar(ref: ref),
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [_headerContents],
-                        ),
+                      SliverStack(
+                        children: [
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [_headerContents],
+                            ),
+                          ),
+                          _appBar(ref: ref),
+                        ],
                       ),
+                      // _appBar(ref: ref),
                       tabs != null
                           ? SliverPersistentHeader(
                           pinned: true,
@@ -458,7 +470,8 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
           accentColor: _appBar.accentColor,
           isBackButtonEnabled: _appBar.isBackButtonEnabled,
           elevation: _appBar.elevation,
-          expandedHeight: _appBar.expandedHeight,
+          expandedHeight: viewModel.height,
+          // expandedHeight: _appBar.expandedHeight,
           flexibleSpace: _appBar.flexibleSpace,
           isFadedTitle: _appBar.isFadedTitle,
           isFullscreenDialog: _appBar.isFullscreenDialog,
@@ -583,7 +596,15 @@ abstract class SyntonicBaseView<T extends BaseViewModel> extends StatelessWidget
       onTap: () {
         FocusManager.instance.primaryFocus!.unfocus();
       },
-      child: SyntonicFade(zeroOpacityOffset: 0, fullOpacityOffset: 0, scrollController: viewModel.scrollController, child: headerContents),
+      child: SizeListenableContainer(key: _globalKey, onSizeChanged: (Size size) {
+        viewModel.height = size.height;
+        // print('高さ');
+        // print(viewModel.height - kToolbarHeight);
+        // print(viewModel.height);
+        viewModel.notifier();
+        },
+      child: SyntonicFade.off(zeroOpacityOffset: viewModel.height - kToolbarHeight < 0 ? 0 : viewModel.height - (kToolbarHeight * 3),
+          fullOpacityOffset: viewModel.height, scrollController: viewModel.scrollController, child: headerContents),),
     );
   }
 
@@ -647,6 +668,7 @@ class BaseViewModel extends ChangeNotifier {
     _isFloatingActionButtonExtended = value;
     notifyListeners();
   }
+  double height = 0;
 
   bool isFloatingActionButtonVisible = true;
   ScrollController scrollController = ScrollController();
@@ -707,5 +729,52 @@ class BaseViewModel extends ChangeNotifier {
         onFailed();
       }
     }
+  }
+}
+
+typedef SizeChangedCallback = void Function(Size size);
+
+class SizeListenableContainer extends SingleChildRenderObjectWidget {
+  const SizeListenableContainer({
+    required Key key,
+    Widget? child,
+    required this.onSizeChanged,
+  })  : assert(onSizeChanged != null),
+        super(key: key, child: child);
+
+  final SizeChangedCallback onSizeChanged;
+
+  @override
+  _SizeListenableRenderObject createRenderObject(BuildContext context) {
+    return _SizeListenableRenderObject(onSizeChanged: onSizeChanged);
+  }
+}
+
+class _SizeListenableRenderObject extends RenderProxyBox {
+  _SizeListenableRenderObject({
+    RenderBox? child,
+    required this.onSizeChanged,
+  })  : assert(onSizeChanged != null),
+        super(child);
+
+  final SizeChangedCallback onSizeChanged;
+
+  Size? _oldSize;
+
+  @override
+  void performLayout() {
+    super.performLayout();
+
+    final Size size = this.size;
+    if (size != _oldSize) {
+      _oldSize = size;
+      _callback(size);
+    }
+  }
+
+  void _callback(Size size) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration _) {
+      onSizeChanged(size);
+    });
   }
 }

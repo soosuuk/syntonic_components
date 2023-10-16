@@ -13,31 +13,44 @@ import '../../configs/themes/syntonic_dark_theme.dart';
 import '../../configs/themes/syntonic_light_theme.dart';
 
 class SyntonicBarChart extends StatelessWidget {
-  Color? color;
-  int? basedValue;
-  SyntonicBarChart({this.color, this.basedValue});
+  final Color? color;
+  final int? basedValue;
+  final int value;
+  final IconData? icon;
+  final String title;
+  final VoidCallback? onTap;
+  const SyntonicBarChart({required this.value, this.color, this.basedValue, this.onTap, this.icon, required this.title});
 
   @override
   Widget build(BuildContext context) {
+    final double _height = 120;
+    final double _percentage = basedValue != null ? value / basedValue! * 100 : 0;
+    final double _valueHeight = _height * _percentage / 100;
     bool isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
     ThemeData _theme = color != null ? isDarkTheme ? darkTheme(primaryColor: color) : lightTheme(primaryColor: color) : Theme.of(context);
-    return Theme(data: _theme, child: Container(height: 120, decoration: BoxDecoration(
-      color: basedValue != null ? _theme.colorScheme.primary.tone(95) : _theme.colorScheme.surface,
+    Color? inkColor = onTap != null ? null : Colors.transparent;
+
+    return Theme(data: _theme, child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(40)), child: InkWell(
+      splashColor: inkColor,
+      highlightColor: inkColor,
+      hoverColor: inkColor,
+      onTap: onTap, child: Container(height: _height, decoration: BoxDecoration(
+      color: basedValue != null ? _theme.colorScheme.primary.tone(isDarkTheme? 5 : 95) : _theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(40),
       border: basedValue == null ? Border.all(
         width: 1.4,
         color: _theme.colorScheme.outlineVariant,
       ) : null,
     ), child: Stack(alignment: Alignment.bottomLeft, children: [
-      basedValue != null ? Container(height: 70, decoration: BoxDecoration(
-        color: _theme.colorScheme.primary.tone(80),
-        borderRadius: BorderRadius.circular(40),
+      basedValue != null ? Container(height: _valueHeight, decoration: BoxDecoration(
+        color: _theme.colorScheme.primary.tone(isDarkTheme ? 15 : 80),
+        // borderRadius: BorderRadius.circular(40),
       )) : const SizedBox(),
       Padding(padding: EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        basedValue != null ? Icon(Icons.train) : const SizedBox(),
-      SizedBox(height: 8,),
-      Body2Text(text: 'Transportation'),
-      Headline4Text(text: '23K'),
-    ],))],),));
+        basedValue != null ? Icon(icon) : const SizedBox(),
+        SizedBox(height: 8,),
+        Body2Text(text: title),
+        Headline4Text(text: value.toString() + 'K'),
+      ],))],),),),));
   }
 }

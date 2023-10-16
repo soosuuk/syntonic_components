@@ -14,6 +14,6 @@ class SyntonicSkeletonizer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Skeletonizer(child: child, enabled: isEnabled);
+    return Skeletonizer(child: child, enabled: isEnabled, containersColor: Theme.of(context).colorScheme.secondaryContainer,);
   }
 }
