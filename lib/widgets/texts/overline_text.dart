@@ -14,7 +14,7 @@ class OverlineText extends BaseText {
   final int? maxLines;
   final bool needsSeeMore;
 
-  OverlineText(
+  const OverlineText(
       {required this.text,
       this.backgroundColor,
       this.overflow = TextOverflow.ellipsis,
@@ -27,17 +27,17 @@ class OverlineText extends BaseText {
       : super(linkColor: linkColor, needsLinkify: needsLinkify);
 
   @override
-  Widget get textWidget {
+  Widget textWidget({required BuildContext context}) {
     return Container(
-        padding: backgroundColor != null ? EdgeInsets.all(4) : null,
+        padding: backgroundColor != null ? const EdgeInsets.all(4) : null,
         decoration: BoxDecoration(
             borderRadius:
             BorderRadius.circular(2),
             color: backgroundColor),
         child: Text(
           this.text,
-          style: textStyle,
-          textHeightBehavior: TextHeightBehavior(
+          style: textStyle(context: context),
+          textHeightBehavior: const TextHeightBehavior(
               applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
           textAlign: textAlign,
           overflow: needsSeeMore
@@ -50,5 +50,5 @@ class OverlineText extends BaseText {
   }
 
   @override
-  TextStyle get textStyle => SyntonicTextTheme.overline(context: context, textColor: textColor);
+  TextStyle textStyle({required BuildContext context}) => SyntonicTextTheme.overline(context: context, textColor: textColor);
 }

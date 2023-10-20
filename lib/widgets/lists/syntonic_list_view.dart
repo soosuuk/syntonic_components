@@ -69,7 +69,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
   final Widget? Function(int index)? stepIcon;
 
   /// Execute [onReordered] when an item has been reordered.
-  late Function(int newIndex, int oldIndex)? onReordered;
+  final Function(int newIndex, int oldIndex)? onReordered;
 
   /// Enable the [buildDefaultDragHandles], when the [isReorderMode] is true.
   final bool isReorderMode;
@@ -88,21 +88,20 @@ class SyntonicListView extends ExtendedStatelessWidget {
   final Axis? scrollDirection;
 
   /// A state of [BasicListView].
-  late _BasicListViewState _state = _BasicListViewState.normal;
+  final _BasicListViewState state;
 
   /// Number of row in [listItem] of [BasicListView.gallery].
-  late int _numberOfRow = 3;
+  final int numberOfRow;
 
   /// Number of column in [listItem] of [BasicListView.gallery].
-  late int _numberOfColumn = 3;
+  final int numberOfColumn;
 
   // ScrollController? scrollController;
 
   /// A [BasicListView] is a redirect constructor (private) from other named
   /// constructor.
-  SyntonicListView._({
+  const SyntonicListView._({
     this.listItem,
-    required _BasicListViewState state,
     this.gridItem,
     this.stepIcon,
     this.initialScrollIndex,
@@ -119,16 +118,13 @@ class SyntonicListView extends ExtendedStatelessWidget {
     this.isReorderMode = false,
     this.hasStep = false,
     this.scrollDirection = Axis.vertical,
-    int? numberOfRow,
-    int? numberOfColumn,
-  }) {
-    _state = state;
-    _numberOfRow = numberOfRow ?? 3;
-    _numberOfColumn = numberOfColumn ?? 3;
-  }
+    this.state = _BasicListViewState.normal,
+    this.numberOfRow = 3,
+    this.numberOfColumn = 3,
+  });
 
   /// Create a [BasicListView] without any events.
-  SyntonicListView({
+  const SyntonicListView({
     required Widget Function(int index) listItem,
     required int numberOfItems,
     bool isNested = false,
@@ -143,11 +139,11 @@ class SyntonicListView extends ExtendedStatelessWidget {
             state: _BasicListViewState.normal);
 
   /// Create a [BasicListView] without any events.
-  SyntonicListView.gallery({
+  const SyntonicListView.gallery({
     required Widget Function(int index, double? width) listItem,
     required int numberOfItems,
-    int? numberOfRow,
-    int? numberOfColumn,
+    int numberOfRow = 3,
+    int numberOfColumn = 3,
     bool isNested = false,
     ItemScrollController? itemScrollController,
     Axis? scrollDirection,
@@ -169,7 +165,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
   /// of [BasicListView.specifiable].
   /// Typically use for a [BasicListView] that has these features (Search
   /// messages and load more messages).
-  SyntonicListView.infinite({
+  const SyntonicListView.infinite({
     required Widget Function(int index) listItem,
     required int numberOfItems,
     required int numberOfItemsTotal,
@@ -198,7 +194,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
             state: _BasicListViewState.infinite);
 
   /// Create a [BasicListView] whose it can reorder items.
-  SyntonicListView.reorderable({
+  const SyntonicListView.reorderable({
     required Widget Function(int index) listItem,
     required int numberOfItems,
     required Function(int newIndex, int oldIndex)? onReordered,
@@ -224,7 +220,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
 
   /// Create a [BasicListView] whose it can specify an index of item, and can
   /// scroll to a scroll position of an index.
-  SyntonicListView.specifiable({
+  const SyntonicListView.specifiable({
     required Widget Function(int index, {double width, double height}) listItem,
     required int numberOfItems,
     int initialScrollIndex = 0,
@@ -240,13 +236,13 @@ class SyntonicListView extends ExtendedStatelessWidget {
             scrollDirection: scrollDirection,
             state: _BasicListViewState.specifiable);
 
+  final _circularProgressIndicatorCount = 1;
+  int get _itemCount => numberOfItems! +
+      numberOfAdditionalItems! +
+      _circularProgressIndicatorCount;
+
   @override
   Widget build(BuildContext context) {
-    int _circularProgressIndicatorCount = 1;
-    int _itemCount = numberOfItems! +
-        numberOfAdditionalItems! +
-        _circularProgressIndicatorCount;
-
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
@@ -255,7 +251,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
         ],
         child: Consumer<InfiniteLoadingListViewModel>(
             builder: (context, model, child) {
-          switch (_state) {
+          switch (state) {
             case _BasicListViewState.normal:
             case _BasicListViewState.infinite:
               return ListView.builder(
@@ -332,7 +328,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                     final isLast = index == numberOfItems! - 1;
 
                     final timelineTile = <Widget>[
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       CustomPaint(
                         foregroundPainter: _TimelinePainter(
                           hideDefaultIndicator: true,
@@ -357,7 +353,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                       ),
                       // SizedBox(width: 4),
                       Expanded(child:
-                      Padding(padding: EdgeInsets.only(left: 8, top: isFirst ? 16 : 4, bottom: isLast ? 16 : 4, right: 16), child: listItem!(index),),
+                      Padding(padding: EdgeInsets.only(left: 8, top: isFirst ? 16 : 4, bottom: isLast ? 16 : 4, right: 16), child: RepaintBoundary(child: listItem!(index),),),
                       ),
                     ];
 
@@ -370,26 +366,10 @@ class SyntonicListView extends ExtendedStatelessWidget {
                         // isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
                       ),
                     );
-                    return Column(key: ValueKey(index), children: [
-                      Row(children: [Column(
-                        children: <Widget>[
-                          // Line parts are always added in order for the ink splash to
-                          // flood the tips of the connector lines.
-                          Padding(padding: EdgeInsets.only(left: stepIcon!(index) == null ? 0 : 27), child: _buildLine(!_isFirst(index), stepIcon!(index) != null),),
-                          stepIcon!(index) != null ? stepIcon!(index)! : _buildIcon(index),
-                          Padding(padding: EdgeInsets.only(left: stepIcon!(index) == null ? 0 : 27), child: _buildLine(!_isLast(index), stepIcon!(index) != null),),
-                        ],
-                      ),
-                        Expanded(
-                          child: listItem!(index),
-                        )],),
-                      // _buildVerticalBody(index),
-                    ],);
-                    return listItem!(index);
                   },
                   scrollDirection: scrollDirection ?? Axis.vertical,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  // shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   buildDefaultDragHandles: isReorderMode,
                   onReorder: (oldIndex, newIndex) {
                     // Removing the item at oldIndex will shorten the list by 1.
@@ -407,14 +387,14 @@ class SyntonicListView extends ExtendedStatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    for (var i = 0; i < (numberOfItems! / _numberOfRow).ceil(); i++)
+                    for (var i = 0; i < (numberOfItems! / numberOfRow).ceil(); i++)
                       Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Container(width: 700, height:50, color: i == 0 ? Colors.red : Colors.blue)
-                            for (var j = 0; j < (numberOfItems! - _index(i, j, _numberOfRow) < 0 ? _index(i, j, _numberOfRow) * - 1 : _numberOfRow); j++)
-                              Container(alignment: Alignment.topLeft, width: MediaQuery.of(context).size.width * (1 / _numberOfColumn) + (MediaQuery.of(context).size.width * (1 / _numberOfColumn) / _numberOfColumn), child: gridItem!(((numberOfItems! - (numberOfItems! - i * _numberOfRow)) + j), MediaQuery.of(context).size.width * (1 / _numberOfColumn) + (MediaQuery.of(context).size.width * (1 / _numberOfColumn) / _numberOfColumn))),
+                            for (var j = 0; j < (numberOfItems! - _index(i, j, numberOfRow) < 0 ? _index(i, j, numberOfRow) * - 1 : numberOfRow); j++)
+                              Container(alignment: Alignment.topLeft, width: MediaQuery.of(context).size.width * (1 / numberOfColumn) + (MediaQuery.of(context).size.width * (1 / numberOfColumn) / numberOfColumn), child: gridItem!(((numberOfItems! - (numberOfItems! - i * numberOfRow)) + j), MediaQuery.of(context).size.width * (1 / numberOfColumn) + (MediaQuery.of(context).size.width * (1 / numberOfColumn) / numberOfColumn))),
 
                             //   Container(width: MediaQuery.of(context).size.width - 56, child: Expanded(child: listItem(((numberOfItems! - (numberOfItems! - i * _numberOfItemsInColumn)) + j)),)),
                           ]
@@ -428,244 +408,6 @@ class SyntonicListView extends ExtendedStatelessWidget {
   /// Index.
   int _index(int i, int j, int _numberOfItemsInColumn) {
     return (((numberOfItems! - (numberOfItems! - i * _numberOfItemsInColumn)) + j + 1));
-  }
-
-  Widget _buildLine(bool visible, bool isShort) {
-    // return FractionallySizedBox(
-    //   // widthFactor: 0.1,
-    //   heightFactor: 0.5,
-    //   child: Container(
-    //     width: visible ? 1.0 : 0.0,
-    //     color: Colors.red,
-    //   ),
-    // );
-    return Container(
-      width: visible ? 1.0 : 0.0,
-      height: 48,
-      color: Colors.grey.shade400,
-    );
-  }
-
-  bool _isFirst(int index) {
-    return index == 0;
-  }
-
-  bool _isLast(int index) {
-    return numberOfItems! - 1 == index;
-  }
-
-  Widget _buildIcon(int index) {
-    if (true) {
-      return AnimatedCrossFade(
-        firstChild: _buildCircle(index, true),
-        secondChild: _buildCircle(index, true),
-        // secondChild: _buildTriangle(index, true),
-        firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-        secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-        sizeCurve: Curves.fastOutSlowIn,
-        crossFadeState:CrossFadeState.showFirst,
-        // crossFadeState: widget.steps[index].state == StepState.error ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-        duration: kThemeAnimationDuration,
-      );
-    } else {
-      // if (widget.steps[index].state != StepState.error) {
-      //   return _buildCircle(index, false);
-      // } else {
-      //   return _buildTriangle(index, false);
-      // }
-    }
-  }
-
-  Widget _buildCircle(int index, bool oldState) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-      width: _kStepSize,
-      height: _kStepSize,
-      child: AnimatedContainer(
-        curve: Curves.fastOutSlowIn,
-        duration: kThemeAnimationDuration,
-        decoration: BoxDecoration(
-          color: _circleColor(index),
-          shape: BoxShape.circle,
-        ),
-        child: Center(
-          child: _buildCircleChild(index, false),
-        ),
-      ),
-    );
-  }
-
-  // Widget _buildTriangle(int index, bool oldState) {
-  //   return Container(
-  //     margin: const EdgeInsets.symmetric(vertical: 8.0),
-  //     width: _kStepSize,
-  //     height: _kStepSize,
-  //     child: Center(
-  //       child: SizedBox(
-  //         width: _kStepSize,
-  //         height: _kTriangleHeight, // Height of 24dp-long-sided equilateral triangle.
-  //         child: CustomPaint(
-  //           painter: _TrianglePainter(
-  //             color: _isDark() ? _kErrorDark : _kErrorLight,
-  //           ),
-  //           child: Align(
-  //             alignment: const Alignment(0.0, 0.8), // 0.8 looks better than the geometrical 0.33.
-  //             child: _buildCircleChild(index, oldState && widget.steps[index].state != StepState.error),
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  Color _circleColor(int index) {
-    return SyntonicColor.yellow;
-    // final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    // if (!_isDark()) {
-    //   return widget.steps[index].isActive ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.38);
-    // } else {
-    //   return widget.steps[index].isActive ? colorScheme.secondary : colorScheme.background;
-    // }
-  }
-
-  Widget _buildCircleChild(int index, bool oldState) {
-    return Text(
-      '${index + 1}',
-      style: _kStepStyle.copyWith(color: Colors.black87),
-    );
-  }
-
-  Color _connectorColor(bool isActive) {
-    // final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    // final Set<MaterialState> states = <MaterialState>{
-    //   if (isActive) MaterialState.selected else MaterialState.disabled,
-    // };
-    // final Color? resolvedConnectorColor = widget.connectorColor?.resolve(states);
-    // if (resolvedConnectorColor != null) {
-    //   return resolvedConnectorColor;
-    // }
-    return Colors.grey.shade400;
-  }
-
-  Widget _buildVerticalBody(int index) {
-    return Stack(
-      children: <Widget>[
-        PositionedDirectional(
-          start: 24.0,
-          top: 0.0,
-          bottom: 0.0,
-          child: SizedBox(
-            width: 24.0,
-            child: Center(
-              child: SizedBox(
-                width: 1.0,
-                child: Container(
-                  color: _connectorColor(true),
-                ),
-              ),
-            ),
-          ),
-        ),
-        AnimatedCrossFade(
-          firstChild: Container(height: 0.0),
-          secondChild: Container(
-            margin: const EdgeInsetsDirectional.only(
-              start: 60.0,
-              end: 24.0,
-              bottom: 24.0,
-            ),
-            child: Column(
-              children: <Widget>[
-                // widget.steps[index].content,
-                _buildVerticalControls(index),
-              ],
-            ),
-          ),
-          firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-          secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-          sizeCurve: Curves.fastOutSlowIn,
-          crossFadeState: CrossFadeState.showFirst,
-          duration: kThemeAnimationDuration,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildVerticalControls(int stepIndex) {
-    // if (widget.controlsBuilder != null) {
-    //   return widget.controlsBuilder!(
-    //     context,
-    //     ControlsDetails(
-    //       currentStep: widget.currentStep,
-    //       onStepContinue: widget.onStepContinue,
-    //       onStepCancel: widget.onStepCancel,
-    //       stepIndex: stepIndex,
-    //     ),
-    //   );
-    // }
-
-    final Color cancelColor;
-    // switch (Theme.of(context).brightness) {
-    //   case Brightness.light:
-    //     cancelColor = Colors.black54;
-    //   case Brightness.dark:
-    //     cancelColor = Colors.white70;
-    // }
-
-    // final ThemeData themeData = Theme.of(context);
-    // final ColorScheme colorScheme = themeData.colorScheme;
-    // final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-
-    const OutlinedBorder buttonShape = RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2)));
-    const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 16.0);
-
-    return Container(
-      margin: const EdgeInsets.only(top: 16.0),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints.tightFor(height: 48.0),
-        child: Row(
-          // The Material spec no longer includes a Stepper widget. The continue
-          // and cancel button styles have been configured to match the original
-          // version of this widget.
-          children: <Widget>[
-            // TextButton(
-            //   onPressed: widget.onStepContinue,
-            //   style: ButtonStyle(
-            //     foregroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-            //       return states.contains(MaterialState.disabled) ? null : (_isDark() ? colorScheme.onSurface : colorScheme.onPrimary);
-            //     }),
-            //     backgroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-            //       return _isDark() || states.contains(MaterialState.disabled) ? null : colorScheme.primary;
-            //     }),
-            //     padding: const MaterialStatePropertyAll<EdgeInsetsGeometry>(buttonPadding),
-            //     shape: const MaterialStatePropertyAll<OutlinedBorder>(buttonShape),
-            //   ),
-            //   child: Text(
-            //       themeData.useMaterial3
-            //           ? localizations.continueButtonLabel
-            //           : localizations.continueButtonLabel.toUpperCase()
-            //   ),
-            // ),
-            // Container(
-            //   margin: const EdgeInsetsDirectional.only(start: 8.0),
-            //   child: TextButton(
-            //     onPressed: widget.onStepCancel,
-            //     style: TextButton.styleFrom(
-            //       foregroundColor: cancelColor,
-            //       padding: buttonPadding,
-            //       shape: buttonShape,
-            //     ),
-            //     child: Text(
-            //         themeData.useMaterial3
-            //             ? localizations.cancelButtonLabel
-            //             : localizations.cancelButtonLabel.toUpperCase()
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
-      ),
-    );
   }
 }
 

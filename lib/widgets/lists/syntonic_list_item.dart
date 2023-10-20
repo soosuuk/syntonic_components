@@ -447,7 +447,7 @@ class SyntonicListItem extends ListItem {
             optionalWidgetTitle: optionalWidgetTitle,
             subtitle: subtitle,
             trailingWidget: Container(
-                padding: EdgeInsets.only(left: 16, right: 8),
+                padding: const EdgeInsets.only(left: 16, right: 8),
                 child: SyntonicButton.transparent(
                     onTap: onTextButtonTap, text: textButtonText)),
             titleTextStyle: titleTextStyle ?? TitleTextStyle.Headline6);
@@ -461,7 +461,7 @@ class SyntonicListItem extends ListItem {
             title: title,
             needsTitleOverFlowStateVisible: needsTitleOverFlowStateVisible,
             trailingWidget: Container(
-                padding: EdgeInsets.only(left: 16, right: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16),
                 child: Subtitle2Text(text: trailingText)),
             titleTextStyle: TitleTextStyle.Body2);
 
@@ -557,9 +557,7 @@ class SyntonicListItem extends ListItem {
                 ? SyntonicCheckbox(
                     isChecked: isChecked,
                     onCheckStateChanged: onCheckStateChanged)
-                : widget != null
-                    ? widget
-                    : null,
+                : widget,
             mainAxisAlignmentTitle: mainAxisAlignmentTitle,
             needsTitleOverFlowStateVisible: needsTitleOverFlowStateVisible,
             optionalWidgetTitle: optionalWidgetTitle,
@@ -568,9 +566,7 @@ class SyntonicListItem extends ListItem {
                 ? SyntonicCheckbox(
                     isChecked: isChecked,
                     onCheckStateChanged: onCheckStateChanged)
-                : widget != null
-                    ? widget
-                    : null,
+                : widget,
             titleTextStyle: titleTextStyle ??
                 (subtitle != null
                     ? TitleTextStyle.Caption
@@ -627,7 +623,7 @@ class SyntonicListItem extends ListItem {
             topWidget: topWidget,
             bottomWidget: bottomWidget,
             trailingWidget: (isReorderMode)
-                ? Icon(Icons.drag_handle)
+                ? const Icon(Icons.drag_handle)
                 : (popupMenuButton != null)
                     ? popupMenuButton
                     : SyntonicPopupMenuButton(
@@ -641,69 +637,62 @@ class SyntonicListItem extends ListItem {
 
     return Opacity(
       opacity: isEnabled ? 1 : 0.38,
-      child: ConstrainedBox(
-          constraints: new BoxConstraints(
-              // minHeight: this.minHeight ?? 56,
-              ),
-          child: Center(
-              child: Container(
-                  child: InkWell(
-                      splashColor: inkColor,
-                      highlightColor: inkColor,
-                      hoverColor: inkColor,
-                      onLongPress: isReorderMode ? null : this.onLongPress,
-                      onTap: isReorderMode ? null : this.onTap,
-                      child: Column(children: [
-                        Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: hasPadding ? _verticalPadding : 0),
-                            color: backgroundColor,
-                            child: Row(
-                              crossAxisAlignment: this.textCrossAxisAlignment,
-                              children: [
-                                this.leadingWidget != null
-                                    ? ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                            minWidth: 48, minHeight: 32
-                                            // minHeight: 48
-                                            ),
-                                        child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
-                                        // Positioned(
-                                        // top: -10,
-                                        // child: this.leadingWidget!)
-                                        )
-                                    : SizedBox(width: this.hasPadding ? 16 : 0),
-                                Expanded(
-                                  child: Container(
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              crossAxisAlignment,
-                                          children: [
-                                        if (bottomWidget != null)
-                                          SizedBox(height: 6),
-                                        topWidget != null
-                                            ? Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 4),
-                                                child: topWidget)
-                                            : SizedBox(),
-                                        _texts,
-                                        bottomWidget ?? SizedBox()
-                                      ])),
-                                ),
-                                this.trailingWidget != null
-                                    ? ConstrainedBox(
-                                        constraints: new BoxConstraints(
-                                            minWidth: 48, minHeight: 48),
-                                        child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(
-                                            child: isReorderMode
-                                                ? Icon(Icons.drag_handle)
-                                                : this.trailingWidget),))
-                                    : SizedBox(width: this.hasPadding ? 16 : 0),
-                              ],
-                            )),
-                        if (this.hasDivider) SyntonicDivider()
-                      ]))))),
+      child: InkWell(
+          splashColor: inkColor,
+          highlightColor: inkColor,
+          hoverColor: inkColor,
+          onLongPress: isReorderMode ? null : onLongPress,
+          onTap: isReorderMode ? null : onTap,
+          child: Column(children: [
+            Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: hasPadding ? _verticalPadding : 0),
+                color: backgroundColor,
+                child: Row(
+                  crossAxisAlignment: textCrossAxisAlignment,
+                  children: [
+                    leadingWidget != null
+                        ? ConstrainedBox(
+                        constraints: const BoxConstraints(
+                            minWidth: 48, minHeight: 32
+                          // minHeight: 48
+                        ),
+                        child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
+                      // Positioned(
+                      // top: -10,
+                      // child: this.leadingWidget!)
+                    )
+                        : SizedBox(width: hasPadding ? 16 : 0),
+                    Expanded(
+                      child: Column(
+                          crossAxisAlignment:
+                          crossAxisAlignment,
+                          children: [
+                            if (bottomWidget != null)
+                              const SizedBox(height: 6),
+                            topWidget != null
+                                ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4),
+                                child: topWidget)
+                                : const SizedBox(),
+                            _texts,
+                            bottomWidget ?? const SizedBox()
+                          ]),
+                    ),
+                    trailingWidget != null
+                        ? ConstrainedBox(
+                        constraints: const BoxConstraints(
+                            minWidth: 48, minHeight: 48),
+                        child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(
+                            child: isReorderMode
+                                ? const Icon(Icons.drag_handle)
+                                : trailingWidget),))
+                        : SizedBox(width: hasPadding ? 16 : 0),
+                  ],
+                )),
+            if (hasDivider) SyntonicDivider()
+          ])),
     );
   }
 
@@ -712,7 +701,7 @@ class SyntonicListItem extends ListItem {
   /// If needs [optionalWidgetTitle] or[optionalWidgetSubtitle], Set after
   /// [titleWidget] or [subtitleWidget].
   Widget get _texts {
-    if (this.subtitle != null) {
+    if (subtitle != null) {
       return Column(
         children: <Widget>[
           Row(
@@ -720,25 +709,25 @@ class SyntonicListItem extends ListItem {
               mainAxisAlignment: mainAxisAlignmentTitle ?? mainAxisAlignment,
               children: [
                 Flexible(child: titleWidget),
-                this.optionalWidgetTitle != null
+                optionalWidgetTitle != null
                     ? Row(children: [
-                        SizedBox(width: 4),
-                        this.optionalWidgetTitle!
+                        const SizedBox(width: 4),
+                        optionalWidgetTitle!
                       ])
-                    : SizedBox(width: 0)
+                    : const SizedBox(width: 0)
               ]),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: mainAxisAlignmentSubtitle ?? mainAxisAlignment,
               children: [
                 Flexible(child: subtitleWidget!),
-                this.optionalWidgetSubtitle != null
+                optionalWidgetSubtitle != null
                     ? Row(children: [
-                        SizedBox(width: 4),
-                        this.optionalWidgetSubtitle!
+                        const SizedBox(width: 4),
+                        optionalWidgetSubtitle!
                       ])
-                    : SizedBox(width: 0)
+                    : const SizedBox(width: 0)
               ]),
         ],
       );
@@ -748,8 +737,8 @@ class SyntonicListItem extends ListItem {
           children: [
             Flexible(child: titleWidget),
             this.optionalWidgetTitle != null
-                ? Row(children: [SizedBox(width: 4), this.optionalWidgetTitle!])
-                : SizedBox(width: 0)
+                ? Row(children: [const SizedBox(width: 4), optionalWidgetTitle!])
+                : const SizedBox(width: 0)
           ]);
     }
   }

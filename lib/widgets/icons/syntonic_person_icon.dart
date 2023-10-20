@@ -45,12 +45,12 @@ class SyntonicPersonIcon extends StatelessWidget {
   // final double borderRadius;
 
   const SyntonicPersonIcon(
-      {required this.person,
+      {Key? key, required this.person,
       required this.type,
       this.shape = IconShape.circle,
       this.hasPadding = true,
       this.needsBorder = false,
-      this.needsMainStaffBorder = false});
+      this.needsMainStaffBorder = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +113,6 @@ class SyntonicPersonIcon extends StatelessWidget {
         break;
     }
 
-    print(person.name);
-    print('画像');
-
     return Padding(
       padding: EdgeInsets.all(hasPadding ? 16 : 0),
       child: Stack(alignment: Alignment.bottomRight, children: <Widget>[
@@ -176,15 +173,16 @@ class SyntonicPersonIcon extends StatelessWidget {
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return !_needsInitial || person.id == null
-        ? Stack(
+        ? const Stack(
             children: [
-              SvgPicture.asset(
-                "assets/images/account_circle.svg",
-                color: isDarkTheme ? Colors.white54 : SyntonicColor.black56,
-                width: type.size,
-                height: type.size,
-                package: 'syntonic_components',
-              ),
+              Icon(Icons.person),
+              // SvgPicture.asset(
+              //   "assets/images/account_circle.svg",
+              //   color: isDarkTheme ? Colors.white54 : SyntonicColor.black56,
+              //   width: type.size,
+              //   height: type.size,
+              //   package: 'syntonic_components',
+              // ),
             ],
           )
         : Container(

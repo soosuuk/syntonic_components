@@ -27,7 +27,7 @@ class SyntonicPopupMenuButton extends StatelessWidget {
       'Should use [onEdit], [onDelete], [additionalMenus] instead of this')
   final List<PopUpMenuItem>? popUpMenuItem;
 
-  const SyntonicPopupMenuButton({
+  const SyntonicPopupMenuButton({Key? key,
     this.icon = Icons.more_vert,
     this.color,
     this.isEnabled = true,
@@ -35,7 +35,7 @@ class SyntonicPopupMenuButton extends StatelessWidget {
     this.onDeleteTap,
     this.additionalMenus,
     this.popUpMenuItem,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class SyntonicPopupMenuButton extends StatelessWidget {
 
     return PopupMenuButton<String>(
       enabled: isEnabled,
-      offset: Offset(-26, -20),
+      offset: const Offset(-26, -20),
       icon: Icon(
         icon,
         color: color,

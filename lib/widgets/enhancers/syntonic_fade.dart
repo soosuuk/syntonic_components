@@ -105,8 +105,9 @@ class _FadeState extends State<SyntonicFade> {
 
             print((widget.fullOpacityOffset - (widget.fullOpacityOffset - _offset)) /
                 widget.fullOpacityOffset);
-            return (widget.fullOpacityOffset - _offset) /
+            double _value = (widget.fullOpacityOffset - _offset) /
                 widget.fullOpacityOffset;
+            return _value < 0 ? 0 : _value;
           }
       }
     } else {
@@ -135,7 +136,7 @@ class _FadeState extends State<SyntonicFade> {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: _calculateOpacity(),
-      child: widget.child,
+      child: RepaintBoundary(child: widget.child,),
     );
   }
 }

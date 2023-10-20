@@ -8,30 +8,30 @@ import 'package:flutter/scheduler.dart';
 class SyntonicSupplementLabel extends StatelessWidget {
   @required
   final String text;
-  late Color? color;
+  final Color? color;
   final bool isFilled;
   final bool hasPadding;
 
-  SyntonicSupplementLabel({
+  const SyntonicSupplementLabel({Key? key,
     required this.text,
     this.color,
     this.isFilled = true,
     this.hasPadding = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: hasPadding ? EdgeInsets.all(16) : EdgeInsets.all(0), child: Container(
+    return Padding(padding: hasPadding ? const EdgeInsets.all(16) : const EdgeInsets.all(0), child: Container(
       height: 40,
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Body2Text(text: text),
-        ),
-      ),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           color: Theme.of(context).colorScheme.secondaryContainer),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Body2Text(text: text),
+        ),
+      ),
     ),);
   }
 }

@@ -9,7 +9,7 @@ class SyntonicDateRangePicker {
     DateTimeRange? selectedDateTimeRange,
   ) {
     // var brightness = SchedulerBinding.instance.window.platformBrightness;
-    bool _isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    // bool _isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return showDateRangePicker(
         context: context,
         firstDate: DateTime(1920),

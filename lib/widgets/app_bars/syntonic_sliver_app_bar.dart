@@ -238,8 +238,8 @@ class SyntonicSliverAppBar extends StatelessWidget
     final ModalRoute<dynamic>? parentRoute = ModalRoute.of(context);
     final bool useCloseButton =
         parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
-    bool isDarkTheme =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    // bool isDarkTheme =
+    //     MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     // Widget _title = SyntonicSearchBox(
     //     value: "null",
@@ -294,15 +294,15 @@ class SyntonicSliverAppBar extends StatelessWidget
       snap: isFadedTitle ? false : true,
       floating: true,
       pinned: (this.isFullscreenDialog || this.hasTabBar || isFadedTitle) ? true : false,
-      title: isFadedTitle
-          ? SyntonicFade.on(
-          zeroOpacityOffset: 0,
-          fullOpacityOffset: expandedHeight!,
-              // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
-              // fullOpacityOffset: expandedHeight!,
-              child: _title,
-              scrollController: scrollController!)
-          : _title,
+      // title: isFadedTitle
+      //     ? SyntonicFade.on(
+      //     zeroOpacityOffset: 0,
+      //     fullOpacityOffset: expandedHeight!,
+      //         // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
+      //         // fullOpacityOffset: expandedHeight!,
+      //         child: _title,
+      //         scrollController: scrollController!)
+      //     : _title,
       actions: manualUrl != null && actions != null
           ?
       [ _getManualIcon(manualUrl: manualUrl, context: context),

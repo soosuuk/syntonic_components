@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
  class ExpandableText extends StatelessWidget {
-  const ExpandableText({
+  const ExpandableText({Key? key,
       required this.text,
       required this.textStyle,
         this.trimLines = 2,
-      });
+      }) : super(key: key);
 
   final String text;
   final TextStyle textStyle;

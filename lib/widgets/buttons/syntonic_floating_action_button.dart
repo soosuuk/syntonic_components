@@ -24,19 +24,19 @@ class SyntonicFloatingActionButton extends StatelessWidget {
   /// to define custom width.
   final double? width;
 
-  SyntonicFloatingActionButton(
-      {required this.isExtended,
+  const SyntonicFloatingActionButton(
+      {Key? key, required this.isExtended,
       required this.floatingActionButtonModel,
       this.isSecondary = false,
       this.heroTag = '',
-      this.width});
+      this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var brightness = SchedulerBinding.instance.window.platformBrightness;
-    bool isDarkTheme = brightness == Brightness.dark;
+    // var brightness = SchedulerBinding.instance.window.platformBrightness;
+    // bool isDarkTheme = brightness == Brightness.dark;
 
-    return Container(
+    return SizedBox(
       width: width,
       height: this.isExtended ? 56 : 48,
       child: SizedBox(
@@ -49,14 +49,14 @@ class SyntonicFloatingActionButton extends StatelessWidget {
             onPressed: floatingActionButtonModel.onTap,
             heroTag: floatingActionButtonModel.heroTag,
             label: AnimatedSwitcher(
-              duration: Duration(milliseconds: 180),
+              duration: const Duration(milliseconds: 180),
               transitionBuilder: (Widget child, Animation<double> animation) =>
                   FadeTransition(
                 opacity: animation,
                 child: SizeTransition(
-                  child: child,
                   sizeFactor: animation,
                   axis: Axis.horizontal,
+                  child: child,
                 ),
               ),
               child: this.isExtended

@@ -12,7 +12,7 @@ class CaptionText extends BaseText {
   final int? maxLines;
   final bool needsSeeMore;
 
-  CaptionText(
+  const CaptionText(
       {required this.text,
       this.overflow = TextOverflow.visible,
       this.textAlign = TextAlign.left,
@@ -24,11 +24,11 @@ class CaptionText extends BaseText {
       : super(linkColor: linkColor, needsLinkify: needsLinkify);
 
   @override
-  Widget get textWidget {
+  Widget textWidget({required BuildContext context}) {
     return Text(
       this.text,
-      style: textStyle,
-      textHeightBehavior: TextHeightBehavior(
+      style: textStyle(context: context),
+      textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
       overflow: needsSeeMore
@@ -41,5 +41,5 @@ class CaptionText extends BaseText {
   }
 
   @override
-  TextStyle get textStyle => SyntonicTextTheme.caption(context: context, textColor: textColor);
+  TextStyle textStyle({required BuildContext context}) => SyntonicTextTheme.caption(context: context, textColor: textColor);
 }

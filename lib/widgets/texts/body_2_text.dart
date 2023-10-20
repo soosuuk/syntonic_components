@@ -12,7 +12,7 @@ class Body2Text extends BaseText {
   final int? maxLines;
   final bool needsSeeMore;
 
-  Body2Text(
+  const Body2Text(
       {required this.text,
       this.overflow = TextOverflow.ellipsis,
       this.textAlign = TextAlign.left,
@@ -24,11 +24,11 @@ class Body2Text extends BaseText {
       : super(linkColor: linkColor, needsLinkify: needsLinkify);
 
   @override
-  Widget get textWidget {
+  Widget textWidget({required BuildContext context}) {
     return Text(
       this.text,
-      style: textStyle,
-      textHeightBehavior: TextHeightBehavior(
+      style: textStyle(context: context),
+      textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
       overflow: needsSeeMore
@@ -41,5 +41,5 @@ class Body2Text extends BaseText {
   }
 
   @override
-  TextStyle get textStyle => SyntonicTextTheme.body2(context: context, textColor: textColor);
+  TextStyle textStyle({required BuildContext context}) => SyntonicTextTheme.body2(context: context, textColor: textColor);
 }

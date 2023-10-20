@@ -10,13 +10,13 @@ class SyntonicIcon extends StatelessWidget {
   final double padding;
   final VoidCallback? onPressed;
 
-  SyntonicIcon({required this.icon, this.color, this.padding = 16, this.onPressed});
+  const SyntonicIcon({Key? key, required this.icon, this.color, this.padding = 16, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(padding),
-      child: Theme(data: darkTheme(primaryColor: color), child: IconButton(
+      child: Theme(data: darkTheme(primaryColor: color), child: RepaintBoundary(child: IconButton(
           icon: Icon(icon),
           onPressed: onPressed,
           style: IconButton.styleFrom(
@@ -26,7 +26,7 @@ class SyntonicIcon extends StatelessWidget {
             hoverColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
             focusColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
             highlightColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
-          )))
+          )),))
     );
   }
 }

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'expandable_text.dart';
 
 abstract class BaseText extends StatelessWidget {
-  late BuildContext context;
+  // late BuildContext context;
 
   /// Apply linkify to text depending on text style
   /// The default value of body 1, body 2, caption is true.
@@ -16,47 +16,47 @@ abstract class BaseText extends StatelessWidget {
   /// Link color.
   final Color? linkColor;
 
-  final _urlRegExp = RegExp(
+  RegExp get _urlRegExp => RegExp(
       r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
 
-  BaseText({this.linkColor, this.needsLinkify = true,});
+  const BaseText({this.linkColor, this.needsLinkify = true,});
   
   @override
   Widget build(BuildContext context) {
-    this.context = context;
+    // this.context = context;
 
     if (needsSeeMore) {
       return ExpandableText(
         text: text,
-        textStyle: textStyle,
+        textStyle: textStyle(context: context),
       );
     } else {
       if (textWidget is Text) {
         if (needsLinkify &&
             (textWidget as Text).overflow == TextOverflow.visible) {
           return SelectableText.rich(
-            TextSpan(children: _toLinkify(text: text), style: textStyle),
+            TextSpan(children: _toLinkify(text: text, context: context), style: textStyle(context: context)),
           );
         } else {
-          return textWidget;
+          return textWidget(context: context);
         }
       } else {
-        return textWidget;
+        return textWidget(context: context);
       }
     }
   }
 
-  Widget get textWidget;
+  Widget textWidget({required BuildContext context});
 
   String get text;
 
   bool get needsSeeMore;
 
-  TextStyle get textStyle;
+  TextStyle textStyle({required BuildContext context});
 
   /// Linkify take a piece of text and a regular expression and turns all of the regex matches in the text into clickable links.
   /// Matching things like web URLs.
-  List<TextSpan> _toLinkify({required String text}) {
+  List<TextSpan> _toLinkify({required String text, required BuildContext context}) {
     List<TextSpan> textSpan = [];
 
     /// Get linkable text with a matched text.

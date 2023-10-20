@@ -1,7 +1,3 @@
-import 'package:dynamic_color/dynamic_color.dart';
-import 'package:syntonic_components/configs/constants/syntonic_color.dart';
-import 'package:syntonic_components/widgets/syntonic_base_view.dart';
-import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +15,7 @@ class SyntonicCard extends StatelessWidget {
   final bool hasPadding;
   final double borderRadius;
 
-  SyntonicCard(
+  const SyntonicCard(
       {
         this.borderRadius = 12,
         this.onTap,
@@ -31,7 +27,7 @@ class SyntonicCard extends StatelessWidget {
         this.needsBorder = false,
       this.hasPadding = true});
 
-  SyntonicCard.transparent(
+  const SyntonicCard.transparent(
       {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true})
       : this(
             onTap: onTap,
@@ -42,7 +38,7 @@ class SyntonicCard extends StatelessWidget {
             hasPadding: hasPadding,
             color: Colors.transparent);
 
-  SyntonicCard.outlined(
+  const SyntonicCard.outlined(
       {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true})
       : this(
       onTap: onTap,
@@ -73,7 +69,7 @@ class SyntonicCard extends StatelessWidget {
             onTap!();
           }
         },
-        child: Column(children: [image ?? SizedBox(), Container(
+        child: Column(children: [image ?? const SizedBox(), Container(
           decoration: needsBorder ? BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadius),
               border: Border.all(width: 1, color: Theme.of(context).colorScheme.outlineVariant)
@@ -83,30 +79,5 @@ class SyntonicCard extends StatelessWidget {
         )],),
       ),
     ));
-
-    return Card(
-      elevation: elevation,
-      // color: isSelected ? Theme.of(context).colorScheme.primary.toAlpha : color,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(borderRadius),
-        onTap: () {
-          if (onTap != null) {
-            onTap!();
-          }
-        },
-        child: Container(
-          decoration: needsBorder ? BoxDecoration(
-              borderRadius: BorderRadius.circular(borderRadius),
-              border: Border.all(width: 1, color: Theme.of(context).colorScheme.outlineVariant)
-          ) : null,
-          padding: const EdgeInsets.symmetric(vertical: 0),
-          child: child,
-        ),
-      ),
-    );
   }
 }

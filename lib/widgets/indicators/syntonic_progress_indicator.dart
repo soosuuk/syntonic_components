@@ -26,10 +26,10 @@ class SyntonicProgressIndicator extends StatelessWidget {
     showGeneralDialog(
         context: context,
         barrierDismissible: false,
-        transitionDuration: Duration(milliseconds: 300),
+        transitionDuration: const Duration(milliseconds: 300),
         barrierColor: Colors.black.withOpacity(0.5),
         pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }

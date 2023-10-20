@@ -23,10 +23,10 @@ class SyntonicTextField extends StatelessWidget {
   /// If you need to set height of the text field, set a number into [maxLines] or [minLines].
   /// If you need to left or right padding, set true into [hasPadding].
   /// [onTextChanged] is called when focused out from the text field .
-  String? errorMessage;
-  String? helperText;
+  final String? errorMessage;
+  final String? helperText;
   @required
-  String? label;
+  final String? label;
   @required
   String? value;
   int? maxLines;
@@ -124,7 +124,7 @@ class SyntonicTextField extends StatelessWidget {
             builder: (context, model, child) {
           return Container(
             padding:
-                this.hasPadding ? EdgeInsets.only(left: 16, right: 16) : null,
+                this.hasPadding ? const EdgeInsets.only(left: 16, right: 16) : null,
             child: getTextFormField(context, model),
           );
         }));
@@ -133,7 +133,7 @@ class SyntonicTextField extends StatelessWidget {
   /// Get text form field depends on [outlinedTextFieldType].
   Widget getTextFormField(
       BuildContext context, OutlinedTextFieldManager outlinedTextFieldManager) {
-    final controller = new TextEditingController();
+    final controller = TextEditingController();
 
     // set value of the text fields.
     controller.text = this.value ?? '';
@@ -156,9 +156,9 @@ class SyntonicTextField extends StatelessWidget {
             labelText: label,
             errorText: errorMessage,
             helperText: helperText,
-            border: theme == TextFieldTheme.outlined ? OutlineInputBorder() : InputBorder.none,
+            border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
             suffixIcon: this.errorMessage != null
-                ? SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
+                ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
                 : null,
           ),
           textInputAction: this.textInputAction,
@@ -184,7 +184,7 @@ class SyntonicTextField extends StatelessWidget {
               hintText: hintText,
               labelText: label,
               errorText: errorMessage,
-              border: theme == TextFieldTheme.outlined ? OutlineInputBorder() : InputBorder.none,
+              border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
             ),
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (text) {

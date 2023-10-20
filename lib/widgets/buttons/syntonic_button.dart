@@ -31,12 +31,12 @@ class SyntonicButton extends StatelessWidget {
         Brightness.dark;
 
     final Widget _button = Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          (this.leadingWidget != null) ? this.leadingWidget! : SizedBox(width: 0,),
-          (this.leadingWidget != null) ? SizedBox(width: 16,) : SizedBox(width: 0,),
+          (this.leadingWidget != null) ? this.leadingWidget! : const SizedBox(width: 0,),
+          (this.leadingWidget != null) ? const SizedBox(width: 16,) : const SizedBox(width: 0,),
           // Subtitle2Text(text: text, textColor: isEnabled ? Colors.white : (_isDarkTheme ? Colors.white : SyntonicColor.black40),),
           Text(text.toUpperCase(),
             // textColor: isEnabled ? Theme.of(context).colorScheme.primary : (_isDarkTheme ? Colors.white38 : SyntonicColor.black40),
@@ -47,20 +47,20 @@ class SyntonicButton extends StatelessWidget {
 
     switch (style) {
       case _SyntonicButtonStyle.elevated:
-        return Container(child: FilledButton(
+        return Container(padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),child: FilledButton(
             onPressed: isEnabled ? onTap : null,
             child: _button
-        ), padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),);
+        ),);
       case _SyntonicButtonStyle.tonal:
-        return Container(child: FilledButton.tonal(
+        return Container(padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),child: FilledButton.tonal(
             onPressed: isEnabled ? onTap : null,
             child: _button
-        ), padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),);
+        ),);
       case _SyntonicButtonStyle.outlined:
-        return Container(child: OutlinedButton(
+        return Container(padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),child: OutlinedButton(
             onPressed: isEnabled ? onTap : null,
             child: _button
-        ), padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),);
+        ),);
       case _SyntonicButtonStyle.text:
         return TextButton(
           onPressed: onTap,

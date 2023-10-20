@@ -9,11 +9,11 @@ class SyntonicSkeletonizer extends ConsumerWidget {
   final bool isEnabled;
 
 
-  SyntonicSkeletonizer(
-      {required this.child, this.isEnabled = false});
+  const SyntonicSkeletonizer(
+      {Key? key, required this.child, this.isEnabled = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Skeletonizer(child: child, enabled: isEnabled, containersColor: Theme.of(context).colorScheme.secondaryContainer,);
+    return Skeletonizer(enabled: isEnabled, containersColor: Theme.of(context).colorScheme.secondaryContainer,child: child,);
   }
 }

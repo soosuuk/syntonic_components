@@ -12,7 +12,7 @@ class Subtitle1Text extends BaseText {
   final int? maxLines;
   final bool needsSeeMore;
 
-  Subtitle1Text(
+  const Subtitle1Text(
       {required this.text,
       this.overflow = TextOverflow.ellipsis,
       this.textAlign = TextAlign.left,
@@ -24,11 +24,11 @@ class Subtitle1Text extends BaseText {
       : super(linkColor: linkColor, needsLinkify: needsLinkify);
 
   @override
-  Widget get textWidget {
+  Widget textWidget({required BuildContext context}) {
     return Text(
       this.text,
-      style: textStyle,
-      textHeightBehavior: TextHeightBehavior(
+      style: textStyle(context: context),
+      textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
       overflow: needsSeeMore
@@ -41,5 +41,5 @@ class Subtitle1Text extends BaseText {
   }
 
   @override
-  TextStyle get textStyle => SyntonicTextTheme.subtitle1(context: context, textColor: textColor);
+  TextStyle textStyle({required BuildContext context}) => SyntonicTextTheme.subtitle1(context: context, textColor: textColor);
 }

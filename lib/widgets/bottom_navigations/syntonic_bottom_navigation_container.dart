@@ -1,6 +1,7 @@
 // import 'package:badges/badges.dart';
 // import 'package:syntonic_components/models/fcm_data_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syntonic_components/services/localization_service.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 import 'package:syntonic_components/widgets/bottom_navigations/syntonic_bottom_navigation_item.dart';
@@ -16,18 +17,18 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
   final List<SyntonicBottomNavigationItem> bottomNavigationItems;
   final Function()? onTapBottomNavigationBar;
 
-  SyntonicBottomNavigationContainer({required this.bottomNavigationItems, this.onTapBottomNavigationBar});
+  SyntonicBottomNavigationContainer({required this.bottomNavigationItems, this.onTapBottomNavigationBar}) : super(vm: BottomNavigationContainerManager());
+
+  // @override
+  // List<SingleChildWidget>? get providers => [
+  //   ChangeNotifierProvider(create: (_) => BottomNavigationContainerManager()),
+  // ];
 
   @override
-  List<SingleChildWidget>? get providers => [
-    ChangeNotifierProvider(create: (_) => BottomNavigationContainerManager()),
-  ];
+  SyntonicSliverAppBar? appBar({required BuildContext context, required WidgetRef ref}) => null;
 
   @override
-  SyntonicSliverAppBar? get appBar => null;
-
-  @override
-  Widget mainContents({required riverpod.WidgetRef ref}) {
+  Widget mainContents({required BuildContext context, required WidgetRef ref}) {
       return Scaffold(
         body: bottomNavigationItems[0],
         bottomNavigationBar: NavigationBar(
@@ -35,7 +36,7 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
                   if (onTapBottomNavigationBar != null) {
                     onTapBottomNavigationBar!();
                   }
-                  if ((viewModel as BottomNavigationContainerManager).currentIndex == index) {
+                  if ((viewModel(ref) as BottomNavigationContainerManager).currentIndex == index) {
                     bottomNavigationItems[index]
                         .navigatorKey
                         .currentState!
@@ -51,8 +52,8 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
                     );
 
                     for (SyntonicBaseView _childView
-                    in bottomNavigationItems[index].screen.childViews) {
-                      for (SyntonicBaseView _childView in _childView.childViews) {
+                    in bottomNavigationItems[index].screen.childViews!) {
+                      for (SyntonicBaseView _childView in _childView.childViews!) {
                         _childView.provider.scrollController.animateTo(
                           0.0,
                           curve: Curves.easeOut,
@@ -61,10 +62,10 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
                       }
                     }
                   } else {
-                    (viewModel as BottomNavigationContainerManager).setCurrentIndex(index);
+                    (viewModel(ref) as BottomNavigationContainerManager).setCurrentIndex(index);
                   }
           },
-          selectedIndex: (viewModel as BottomNavigationContainerManager).currentIndex,
+          selectedIndex: (viewModel(ref) as BottomNavigationContainerManager).currentIndex,
           destinations: [
             for (final item in bottomNavigationItems)
               NavigationDestination(
@@ -76,8 +77,8 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
       );
   }
 
-  @override
-  BottomNavigationContainerManager getViewModelBy(BuildContext context) => BottomNavigationContainerManager();
+  // @override
+  // BottomNavigationContainerManager getViewModelBy(BuildContext context) => BottomNavigationContainerManager();
 
 // Widget _getIconWithBadge(Icon icon, int badgeVal) {
 //   return Stack(
@@ -114,11 +115,15 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
 // }
 }
 
+class BottomNavigationContainerState extends BaseViewState {
+  
+}
+
 class BottomNavigationContainerManager extends BaseViewModel {
   int currentIndex = 0;
-
+  BottomNavigationContainerManager() : super(viewState: BottomNavigationContainerState());
   void setCurrentIndex(int index) {
     this.currentIndex = index;
-    notifyListeners();
+    // notifyListeners();
   }
 }

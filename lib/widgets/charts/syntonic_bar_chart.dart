@@ -19,18 +19,18 @@ class SyntonicBarChart extends StatelessWidget {
   final IconData? icon;
   final String title;
   final VoidCallback? onTap;
-  const SyntonicBarChart({required this.value, this.color, this.basedValue, this.onTap, this.icon, required this.title});
+  const SyntonicBarChart({Key? key, required this.value, this.color, this.basedValue, this.onTap, this.icon, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final double _height = 120;
-    final double _percentage = basedValue != null ? value / basedValue! * 100 : 0;
-    final double _valueHeight = _height * _percentage / 100;
+    const double _height = 120;
+    final double percentage = basedValue != null ? value / basedValue! * 100 : 0;
+    final double _valueHeight = _height * percentage / 100;
     bool isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
     ThemeData _theme = color != null ? isDarkTheme ? darkTheme(primaryColor: color) : lightTheme(primaryColor: color) : Theme.of(context);
     Color? inkColor = onTap != null ? null : Colors.transparent;
 
-    return Theme(data: _theme, child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(40)), child: InkWell(
+    return Theme(data: _theme, child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(40)), child: InkWell(
       splashColor: inkColor,
       highlightColor: inkColor,
       hoverColor: inkColor,
@@ -48,9 +48,9 @@ class SyntonicBarChart extends StatelessWidget {
       )) : const SizedBox(),
       Padding(padding: EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         basedValue != null ? Icon(icon) : const SizedBox(),
-        SizedBox(height: 8,),
+        const SizedBox(height: 8,),
         Body2Text(text: title),
-        Headline4Text(text: value.toString() + 'K'),
+        Headline4Text(text: '${value}K'),
       ],))],),),),));
   }
 }

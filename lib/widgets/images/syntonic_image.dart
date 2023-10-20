@@ -28,12 +28,12 @@ class SyntonicImage extends StatelessWidget {
 
   final bool isEditable;
   final bool needsTrimAsCircle;
-  bool isMini;
+  final bool isMini;
 
-  double? width;
-  double? height;
+  final double? width;
+  final double? height;
 
-  SyntonicImage._({
+  const SyntonicImage._({
     required this.image,
     this.onClear,
     this.onUpload,
@@ -44,17 +44,17 @@ class SyntonicImage extends StatelessWidget {
     this.height,
   });
 
-  SyntonicImage.displayOnly({
+  const SyntonicImage.displayOnly({
     required Image? image,
     double? width,
     double? height,
   }) : this._(image: image, isEditable: false, width: width, height: height);
 
-  SyntonicImage.displayOnlyMini({
+  const SyntonicImage.displayOnlyMini({
     required Image? image,
   }) : this._(image: image, isEditable: false, isMini: true);
 
-  SyntonicImage.editable({
+  const SyntonicImage.editable({
     required Image? image,
     required Function? onClear,
     required Function(
@@ -75,7 +75,7 @@ class SyntonicImage extends StatelessWidget {
     var brightness = SchedulerBinding.instance.window.platformBrightness;
     bool isDarkTheme = brightness == Brightness.dark;
 
-    return Container(
+    return SizedBox(
       width: width ?? ((this.isMini)
           ? IconSize.large.size
           : null),
@@ -84,78 +84,74 @@ class SyntonicImage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-              // margin: isMini
-              //     ? null
-              //     : EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Container(
-                child: Container(
-                  width: width,
-                  height: height,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(32),
-                      child: image),
-                ),
-                // child: Stack(alignment: AlignmentDirectional.topEnd, children: [
-                //   Container(
-                //       width:
-                //       (this.isMini) ? IconSize.large.size : double.infinity,
-                //       height: (this.isMini)
-                //           ? IconSize.large.size
-                //           : MediaQuery.of(context).size.width -
-                //           MediaQuery.of(context).size.width / 3,
-                //       child: image != null
-                //           ? image
-                //           : Container(
-                //         color: isDarkTheme
-                //             ? Colors.white10
-                //             : SyntonicColor.black4,
-                //         child: Center(
-                //           child: Icon(Icons.image,
-                //               size: (this.isMini) ? 32 : 112,
-                //               color: isDarkTheme
-                //                   ? Colors.white70
-                //                   : SyntonicColor.black56),
-                //         ),
-                //       )),
-                //   needsTrimAsCircle && image != null
-                //       ? CustomPaint(
-                //     painter: _HolePainter(
-                //         height: MediaQuery.of(context).size.width -
-                //             MediaQuery.of(context).size.width / 3),
-                //     child: Container(),
-                //   )
-                //       : image != null
-                //       ? Container(
-                //     width: width ?? ((this.isMini)
-                //         ? IconSize.large.size
-                //         : double.infinity),
-                //     height: height ?? ((this.isMini) ? IconSize.large.size : 112),
-                //     decoration: BoxDecoration(
-                //       gradient: LinearGradient(
-                //         colors: [Colors.black12, Colors.transparent],
-                //         begin: Alignment.topCenter,
-                //         end: Alignment.bottomCenter,
-                //       ),
-                //     ),
-                //   )
-                //       : SizedBox(),
-                //   isEditable
-                //       ? SyntonicPopupMenuButton(
-                //       icon: Icons.more_vert,
-                //       popUpMenuItem: [
-                //         PopUpMenuItem(
-                //             title: LocalizationService().localize.upload,
-                //             onTap: () =>
-                //             // _imageOverSizeAlert(context: context)),
-                //             _browseImageExplorer(context: context)),
-                //         PopUpMenuItem(
-                //           title: LocalizationService().localize.clear,
-                //           onTap: () => onClear!(),
-                //         )
-                //       ])
-                //       : SizedBox(),
-                // ]),
-              ))
+            child: SizedBox(
+              width: width,
+              height: height,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(32),
+                  child: image),
+            ),
+            // child: Stack(alignment: AlignmentDirectional.topEnd, children: [
+            //   Container(
+            //       width:
+            //       (this.isMini) ? IconSize.large.size : double.infinity,
+            //       height: (this.isMini)
+            //           ? IconSize.large.size
+            //           : MediaQuery.of(context).size.width -
+            //           MediaQuery.of(context).size.width / 3,
+            //       child: image != null
+            //           ? image
+            //           : Container(
+            //         color: isDarkTheme
+            //             ? Colors.white10
+            //             : SyntonicColor.black4,
+            //         child: Center(
+            //           child: Icon(Icons.image,
+            //               size: (this.isMini) ? 32 : 112,
+            //               color: isDarkTheme
+            //                   ? Colors.white70
+            //                   : SyntonicColor.black56),
+            //         ),
+            //       )),
+            //   needsTrimAsCircle && image != null
+            //       ? CustomPaint(
+            //     painter: _HolePainter(
+            //         height: MediaQuery.of(context).size.width -
+            //             MediaQuery.of(context).size.width / 3),
+            //     child: Container(),
+            //   )
+            //       : image != null
+            //       ? Container(
+            //     width: width ?? ((this.isMini)
+            //         ? IconSize.large.size
+            //         : double.infinity),
+            //     height: height ?? ((this.isMini) ? IconSize.large.size : 112),
+            //     decoration: BoxDecoration(
+            //       gradient: LinearGradient(
+            //         colors: [Colors.black12, Colors.transparent],
+            //         begin: Alignment.topCenter,
+            //         end: Alignment.bottomCenter,
+            //       ),
+            //     ),
+            //   )
+            //       : SizedBox(),
+            //   isEditable
+            //       ? SyntonicPopupMenuButton(
+            //       icon: Icons.more_vert,
+            //       popUpMenuItem: [
+            //         PopUpMenuItem(
+            //             title: LocalizationService().localize.upload,
+            //             onTap: () =>
+            //             // _imageOverSizeAlert(context: context)),
+            //             _browseImageExplorer(context: context)),
+            //         PopUpMenuItem(
+            //           title: LocalizationService().localize.clear,
+            //           onTap: () => onClear!(),
+            //         )
+            //       ])
+            //       : SizedBox(),
+            // ]),
+          )
         ],
       ),
     );
