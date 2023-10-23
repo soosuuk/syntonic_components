@@ -14,19 +14,16 @@ class SyntonicIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(padding),
-      child: Theme(data: darkTheme(primaryColor: color), child: RepaintBoundary(child: IconButton(
-          icon: Icon(icon),
-          onPressed: onPressed,
-          style: IconButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            disabledBackgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-            hoverColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
-            focusColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
-            highlightColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
-          )),))
-    );
+    return Padding(padding: EdgeInsets.all(padding), child: Theme(data: darkTheme(primaryColor: color), child: RepaintBoundary(child: IconButton(
+        icon: Icon(icon),
+        onPressed: onPressed,
+        style: IconButton.styleFrom(
+          foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          disabledBackgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
+          hoverColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
+          focusColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
+          highlightColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
+        )),)),);
   }
 }

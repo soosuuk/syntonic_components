@@ -28,9 +28,10 @@ class SyntonicCard extends StatelessWidget {
       this.hasPadding = true});
 
   const SyntonicCard.transparent(
-      {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true})
+      {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true, Widget? image})
       : this(
             onTap: onTap,
+            image: image,
             isSelected: isSelected,
             child: child,
             elevation: 0,
@@ -39,10 +40,11 @@ class SyntonicCard extends StatelessWidget {
             color: Colors.transparent);
 
   const SyntonicCard.outlined(
-      {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true})
+      {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true, Widget? image})
       : this(
       onTap: onTap,
       isSelected: isSelected,
+      image: image,
       child: child,
       elevation: 0,
       needsBorder: true,

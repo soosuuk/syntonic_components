@@ -30,7 +30,7 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
   @override
   Widget mainContents({required BuildContext context, required WidgetRef ref}) {
       return Scaffold(
-        body: bottomNavigationItems[0],
+        body: bottomNavigationItems[(viewModel(ref) as BottomNavigationContainerManager).currentIndex],
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) {
                   if (onTapBottomNavigationBar != null) {

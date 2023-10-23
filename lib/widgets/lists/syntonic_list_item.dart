@@ -460,9 +460,7 @@ class SyntonicListItem extends ListItem {
       : this(
             title: title,
             needsTitleOverFlowStateVisible: needsTitleOverFlowStateVisible,
-            trailingWidget: Container(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: Subtitle2Text(text: trailingText)),
+            trailingWidget: Padding(padding: const EdgeInsets.only(left: 16, right: 16), child: Subtitle2Text(text: trailingText),),
             titleTextStyle: TitleTextStyle.Body2);
 
   /// Radio Button.
@@ -634,6 +632,69 @@ class SyntonicListItem extends ListItem {
   @override
   Widget build(BuildContext context) {
     Color? inkColor = onTap != null ? null : Colors.transparent;
+
+    if (isEnabled) {
+      return InkWell(
+          splashColor: inkColor,
+          highlightColor: inkColor,
+          hoverColor: inkColor,
+          onLongPress: isReorderMode ? null : onLongPress,
+          onTap: isReorderMode ? null : onTap,
+          child: Column(children: [
+            Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: hasPadding ? _verticalPadding : 0),
+                color: backgroundColor,
+                child: Row(
+                  crossAxisAlignment: textCrossAxisAlignment,
+                  children: [
+                    leadingWidget != null
+                        ?
+                    Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
+                    // ConstrainedBox(
+                    //     constraints: const BoxConstraints(
+                    //         minWidth: 48, minHeight: 32
+                    //       // minHeight: 48
+                    //     ),
+                    //     child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
+                    // )
+                        : SizedBox(width: hasPadding ? 16 : 0),
+                    Expanded(
+                      child: Column(
+                          crossAxisAlignment:
+                          crossAxisAlignment,
+                          children: [
+                            if (bottomWidget != null)
+                              const SizedBox(height: 6),
+                            topWidget != null
+                                ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4),
+                                child: topWidget)
+                                : const SizedBox(),
+                            _texts,
+                            bottomWidget ?? const SizedBox()
+                          ]),
+                    ),
+                    trailingWidget != null
+                        ?
+                    Padding(padding: SyntonicConstraint.horizontal16, child: Center(
+                        child: isReorderMode
+                            ? const Icon(Icons.drag_handle)
+                            : trailingWidget),)
+                    // ConstrainedBox(
+                    //     constraints: const BoxConstraints(
+                    //         minWidth: 48, minHeight: 48),
+                    //     child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(
+                    //         child: isReorderMode
+                    //             ? const Icon(Icons.drag_handle)
+                    //             : trailingWidget),))
+                        : SizedBox(width: hasPadding ? 16 : 0),
+                  ],
+                )),
+            if (hasDivider) SyntonicDivider()
+          ]));
+    }
 
     return Opacity(
       opacity: isEnabled ? 1 : 0.38,

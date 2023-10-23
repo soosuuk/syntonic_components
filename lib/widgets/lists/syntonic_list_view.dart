@@ -310,7 +310,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                     if (index < numberOfItems! + numberOfAdditionalItems!) {
                       return listItem!(index);
                     }
-                    return SizedBox();
+                    return const SizedBox();
                   });
             case _BasicListViewState.reorderable:
               return ReorderableListView.builder(
@@ -353,19 +353,20 @@ class SyntonicListView extends ExtendedStatelessWidget {
                       ),
                       // SizedBox(width: 4),
                       Expanded(child:
-                      Padding(padding: EdgeInsets.only(left: 8, top: isFirst ? 16 : 4, bottom: isLast ? 16 : 4, right: 16), child: RepaintBoundary(child: listItem!(index),),),
+                      Padding(padding: EdgeInsets.only(left: 8, top: isFirst ? 16 : 4, bottom: isLast ? 16 : 4, right: 16), child: listItem!(index),),
                       ),
                     ];
 
-                    return IntrinsicHeight(
-                        key: ValueKey(index),
+                    return RepaintBoundary(
+                      key: ValueKey(index),
+                      child: IntrinsicHeight(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children:
-                        timelineTile
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children:
+                          timelineTile
                         // isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
                       ),
-                    );
+                    ),);
                   },
                   scrollDirection: scrollDirection ?? Axis.vertical,
                   // shrinkWrap: true,

@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../configs/themes/syntonic_text_theme.dart';
-
 enum OutlinedTextFieldType {
   Normal,
   Obscure,
@@ -25,29 +23,29 @@ class SyntonicTextField extends StatelessWidget {
   /// [onTextChanged] is called when focused out from the text field .
   final String? errorMessage;
   final String? helperText;
-  @required
   final String? label;
-  @required
-  String? value;
-  int? maxLines;
-  int minLines;
-  bool hasPadding = false;
-  @required late Function(String text) onTextChanged;
-  @required late OutlinedTextFieldType outlinedTextFieldType;
-  FormFieldValidator<String>? validator;
-  TextInputType? keyboardType;
-  TextInputAction? textInputAction;
-  List<TextInputFormatter>? inputFormatters;
-  TextEditingController? controller;
-  bool isEnabled = true;
-  bool needsMasking = false;
-  int? itemKey;
-  TextFieldTheme? theme;
-  TextStyle? textStyle;
-  String? hintText;
+  final String? value;
+  final int? maxLines;
+  final int minLines;
+  final bool hasPadding;
+  final Function(String text) onTextChanged;
+  final FormFieldValidator<String>? validator;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextEditingController? controller;
+  final bool isEnabled;
+  final bool needsMasking;
+  final int? itemKey;
+  final TextFieldTheme? theme;
+  final TextStyle? textStyle;
+  final String? hintText;
+
+  TextInputAction? get _textInputAction => textInputAction ?? ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
+  OutlinedTextFieldType get outlinedTextFieldType => needsMasking ? OutlinedTextFieldType.Obscure : OutlinedTextFieldType.Normal;
 
   /// Normal.
-  SyntonicTextField._(
+  const SyntonicTextField._(
       {required this.label,
       required this.onTextChanged,
       required this.value,
@@ -67,17 +65,9 @@ class SyntonicTextField extends StatelessWidget {
         this.theme = TextFieldTheme.outlined,
         this.textStyle,
         this.hintText,
-      }) {
-    textInputAction = (minLines > 1) ? TextInputAction.newline : TextInputAction.done;
+      });
 
-    if (needsMasking) {
-      outlinedTextFieldType = OutlinedTextFieldType.Obscure;
-    } else {
-      outlinedTextFieldType = OutlinedTextFieldType.Normal;
-    }
-  }
-
-  SyntonicTextField.outlined({String? label,
+  const SyntonicTextField.outlined({String? label,
     required Function(String text) onTextChanged,
     required String? value,
     String? errorMessage,
@@ -116,40 +106,74 @@ class SyntonicTextField extends StatelessWidget {
       textStyle: textStyle,
       hintText: hintText);
 
+  static final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    // set value of the text fields.
+    // _controller.text = value ?? '';
+
+    // set cursor position at the end of the value.
+    // _controller.selection = TextSelection.fromPosition(
+    //     TextPosition(offset: _controller.text.length));
+
+    return TextFormField(
+      key: PageStorageKey(itemKey),
+      initialValue: value,
+      enabled: isEnabled,
+      // controller: controller ?? _controller,
+      maxLines: maxLines,
+      minLines: minLines,
+      validator: validator,
+      decoration: InputDecoration(
+        hintText: hintText,
+        labelText: label,
+        errorText: errorMessage,
+        helperText: helperText,
+        border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
+        suffixIcon: errorMessage != null
+            ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
+            : null,
+      ),
+      textInputAction: _textInputAction,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      onFieldSubmitted: (text) {
+        onTextChanged(text);
+      },
+      onChanged: (text) {
+        onTextChanged(text);
+      },
+      style: textStyle,
+    );
+
     return ListenableProvider(
         create: (context) => OutlinedTextFieldManager(),
         child: Consumer<OutlinedTextFieldManager>(
             builder: (context, model, child) {
-          return Container(
-            padding:
-                this.hasPadding ? const EdgeInsets.only(left: 16, right: 16) : null,
-            child: getTextFormField(context, model),
-          );
+              return Padding(padding: hasPadding ? const EdgeInsets.only(left: 16, right: 16) : EdgeInsets.zero, child: getTextFormField(context, model),);
         }));
   }
 
   /// Get text form field depends on [outlinedTextFieldType].
   Widget getTextFormField(
       BuildContext context, OutlinedTextFieldManager outlinedTextFieldManager) {
-    final controller = TextEditingController();
 
     // set value of the text fields.
-    controller.text = this.value ?? '';
+    _controller.text = value ?? '';
 
     // set cursor position at the end of the value.
-    controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: controller.text.length));
+    _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length));
 
-    switch (this.outlinedTextFieldType) {
+    switch (outlinedTextFieldType) {
       case OutlinedTextFieldType.Normal:
         return TextFormField(
           key: PageStorageKey(itemKey),
-          enabled: this.isEnabled,
-          controller: this.controller ?? controller,
-          maxLines: this.maxLines,
-          minLines: this.minLines,
+          enabled: isEnabled,
+          controller: controller ?? _controller,
+          maxLines: maxLines,
+          minLines: minLines,
           validator: validator,
           decoration: InputDecoration(
             hintText: hintText,
@@ -157,22 +181,21 @@ class SyntonicTextField extends StatelessWidget {
             errorText: errorMessage,
             helperText: helperText,
             border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
-            suffixIcon: this.errorMessage != null
+            suffixIcon: errorMessage != null
                 ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
                 : null,
           ),
-          textInputAction: this.textInputAction,
+          textInputAction: _textInputAction,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
           onFieldSubmitted: (text) {
-            this.onTextChanged(text);
+            onTextChanged(text);
           },
           onChanged: (text) {
-            this.onTextChanged(text);
+            onTextChanged(text);
           },
-          style: textStyle ?? null,
+          style: textStyle,
         );
-        break;
       case OutlinedTextFieldType.Obscure:
         return Stack(alignment: Alignment.centerRight, children: [
           TextFormField(
@@ -188,12 +211,12 @@ class SyntonicTextField extends StatelessWidget {
             ),
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (text) {
-              this.onTextChanged(text);
+              onTextChanged(text);
             },
             onChanged: (text) {
-              this.onTextChanged(text);
+              onTextChanged(text);
             },
-            style: textStyle ?? null,
+            style: textStyle,
           ),
           Positioned(
             top: 6,
@@ -203,7 +226,7 @@ class SyntonicTextField extends StatelessWidget {
                   ? Icons.visibility_off
                   : Icons.visibility),
               onPressed: () {
-                this.value = controller.text;
+                // value = controller.text;
                 outlinedTextFieldManager.changeTextVisibilityState();
               },
             ),

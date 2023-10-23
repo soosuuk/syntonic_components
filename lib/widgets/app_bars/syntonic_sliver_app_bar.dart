@@ -294,15 +294,15 @@ class SyntonicSliverAppBar extends StatelessWidget
       snap: isFadedTitle ? false : true,
       floating: true,
       pinned: (this.isFullscreenDialog || this.hasTabBar || isFadedTitle) ? true : false,
-      // title: isFadedTitle
-      //     ? SyntonicFade.on(
-      //     zeroOpacityOffset: 0,
-      //     fullOpacityOffset: expandedHeight!,
-      //         // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
-      //         // fullOpacityOffset: expandedHeight!,
-      //         child: _title,
-      //         scrollController: scrollController!)
-      //     : _title,
+      title: isFadedTitle
+          ? SyntonicFade.on(
+          zeroOpacityOffset: 0,
+          fullOpacityOffset: expandedHeight!,
+              // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
+              // fullOpacityOffset: expandedHeight!,
+              child: _title,
+              scrollController: scrollController!)
+          : _title,
       actions: manualUrl != null && actions != null
           ?
       [ _getManualIcon(manualUrl: manualUrl, context: context),

@@ -223,7 +223,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                             delegate: StickyTabBarDelegate(
                                 tabBar: _tabBar(context: context, ref: ref)!,
                                 setStickyState: (isSticking) {
-                                  print('スティッキー通知');
                                   viewModel(ref)
                                       .state.isStickyingAppBar = isSticking;
                                 }))
@@ -263,7 +262,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
           floatingActionButton: _floatingActionButtons(context: context, ref: ref),
           body: riverpod.Consumer(builder: (context, ref, child) {
             // _ref = ref;
-            return _notificationListener(context: context, ref: ref);
+            return mainContents(context: context, ref: ref);
+            // return _notificationListener(context: context, ref: ref);
           },),
           bottomSheet: bottomSheet,
         );
@@ -347,20 +347,16 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   NotificationListener _notificationListener({required BuildContext context, required riverpod.WidgetRef ref}) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
-        if (floatingActionButton != null &&
+        if (floatingActionButton(context: context, ref: ref) != null &&
             scrollNotification is UserScrollNotification) {
           if (scrollNotification.direction == ScrollDirection.reverse) {
             // viewModel.state.isFloatingActionButtonExtended = true;
             VS vs = (BaseViewState()..isFloatingActionButtonExtended = true) as VS;
             viewModel(ref).state = vs;
-            print('スクロール');
-            print(viewModel(ref).state.isFloatingActionButtonExtended);
           } else if (scrollNotification.direction == ScrollDirection.forward) {
             // viewModel.state.isFloatingActionButtonExtended = false;
             VS vs = (BaseViewState()..isFloatingActionButtonExtended = false) as VS;
             viewModel(ref).state = vs;
-            print('スクロール');
-            print(viewModel(ref).state.isFloatingActionButtonExtended);
           }
         }
 
