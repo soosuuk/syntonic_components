@@ -22,9 +22,9 @@ extension Material3Palette on Color {
 /// If set a value to "letterSpacing", need to convert ems(character spacing / 1000) to pt.
 class SyntonicTextTheme {
   static TextStyle headline1({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.roboto(
+    return GoogleFonts.elsie(
       textStyle: Theme.of(context).textTheme.displayMedium,
-      // fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       // color: textColor,
       // color: textColor ?? Theme.of(context).colorScheme.onSurface,
       // height: 1.4,
@@ -32,9 +32,9 @@ class SyntonicTextTheme {
   }
 
   static TextStyle headline4({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.roboto(
+    return GoogleFonts.playfairDisplay(
       textStyle: Theme.of(context).textTheme.headlineMedium,
-      // fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w500,
       // color: textColor,
       color: textColor ?? Theme.of(context).colorScheme.onSurface,
       height: 1.4,
@@ -42,7 +42,7 @@ class SyntonicTextTheme {
   }
 
   static TextStyle headline5({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.roboto(
+    return GoogleFonts.playfairDisplay(
       textStyle: Theme.of(context).textTheme.headline5,
       // fontWeight: FontWeight.w300,
       color: textColor,
@@ -67,8 +67,9 @@ class SyntonicTextTheme {
   }
 
   static TextStyle subtitle2({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.roboto(
+    return GoogleFonts.robotoCondensed(
         textStyle: Theme.of(context).textTheme.titleMedium,
+        fontWeight: FontWeight.w500,
         color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
         height: 1.4);
   }
@@ -85,7 +86,7 @@ class SyntonicTextTheme {
 
   static TextStyle body2({required BuildContext context, Color? textColor}) {
     var brightness = MediaQuery.of(context).platformBrightness;
-    return GoogleFonts.openSans(
+    return GoogleFonts.notoSerif(
         textStyle: Theme.of(context).textTheme.bodyText2,
         // color: textColor ?? (brightness == Brightness.dark
         //     ? Colors.white.withAlpha(textLabelMedium)

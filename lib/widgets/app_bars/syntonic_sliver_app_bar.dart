@@ -277,6 +277,8 @@ class SyntonicSliverAppBar extends StatelessWidget
           optionalWidgetTitle: onTap != null ? const Icon(Icons.arrow_drop_down_outlined) : null,
         );
 
+    print('Appbar スティッキー');
+
         return SliverAppBar(
           surfaceTintColor: isStickying ? Theme.of(context).colorScheme.surfaceTint : Colors.transparent,
             backgroundColor: isStickying ? Theme.of(context).colorScheme.surface : Colors.transparent,
@@ -382,20 +384,17 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      this.setStickyState(overlapsContent);
+      setStickyState(overlapsContent);
     });
-    bool isDarkTheme =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    // bool isDarkTheme =
+    //     MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     Color _color = Theme.of(context).colorScheme.surface;
     return Material(
         surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
         elevation: overlapsContent ? 4.0 : 0,
         color: _color,
-        child: Container(
-          width: double.infinity,
-          child: tabBar,
-        ));
+        child: tabBar);
   }
 
   @override

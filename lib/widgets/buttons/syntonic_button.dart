@@ -1,4 +1,5 @@
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
+import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,22 +28,20 @@ class SyntonicButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _isDarkTheme = MediaQuery.of(context).platformBrightness ==
-        Brightness.dark;
+    // bool _isDarkTheme = MediaQuery.of(context).platformBrightness ==
+    //     Brightness.dark;
 
-    final Widget _button = Container(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          (this.leadingWidget != null) ? this.leadingWidget! : const SizedBox(width: 0,),
-          (this.leadingWidget != null) ? const SizedBox(width: 16,) : const SizedBox(width: 0,),
-          // Subtitle2Text(text: text, textColor: isEnabled ? Colors.white : (_isDarkTheme ? Colors.white : SyntonicColor.black40),),
-          Text(text.toUpperCase(),
-            // textColor: isEnabled ? Theme.of(context).colorScheme.primary : (_isDarkTheme ? Colors.white38 : SyntonicColor.black40),
-          ),
-        ],
-      ),
+    final Widget _button = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        if (leadingWidget != null) leadingWidget!,
+        if (leadingWidget != null) const SizedBox(width: 16,),
+        // Subtitle2Text(text: text, textColor: isEnabled ? Colors.white : (_isDarkTheme ? Colors.white : SyntonicColor.black40),),
+        // Text(text.toUpperCase(),
+        //   // textColor: isEnabled ? Theme.of(context).colorScheme.primary : (_isDarkTheme ? Colors.white38 : SyntonicColor.black40),
+        // ),
+        Subtitle2Text(text: text),
+      ],
     );
 
     switch (style) {
@@ -64,12 +63,12 @@ class SyntonicButton extends StatelessWidget {
       case _SyntonicButtonStyle.text:
         return TextButton(
           onPressed: onTap,
-          child: _button,
           style: ButtonStyle(
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
             minimumSize: MaterialStateProperty.all(Size.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),);
+          ),
+          child: _button,);
     }
 
     // return OutlinedButton(

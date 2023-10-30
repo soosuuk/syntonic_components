@@ -315,7 +315,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
             case _BasicListViewState.reorderable:
               return ReorderableListView.builder(
                   itemCount: numberOfItems!,
-                  itemBuilder: (BuildContext context, int index) {
+                  itemBuilder: (_, int index) {
                     // final child = children[index];
                     // final _indicators = indicators;
 

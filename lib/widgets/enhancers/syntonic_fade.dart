@@ -11,19 +11,19 @@ class SyntonicFade extends StatefulWidget {
   final Widget child;
   final _FadeMode fadeMode;
 
-  SyntonicFade._(
+  const SyntonicFade._(
       {required this.scrollController,
       required this.child,
       this.zeroOpacityOffset = 0,
       this.fullOpacityOffset = kToolbarHeight, required this.fadeMode});
 
-  SyntonicFade.on(
+  const SyntonicFade.on(
       {required ScrollController scrollController,
         required Widget child,
         double zeroOpacityOffset = 0,
         double fullOpacityOffset = kToolbarHeight}) : this._(scrollController: scrollController, child: child, zeroOpacityOffset: zeroOpacityOffset, fullOpacityOffset: fullOpacityOffset, fadeMode: _FadeMode.on);
 
-  SyntonicFade.off(
+  const SyntonicFade.off(
       {required ScrollController scrollController,
         required Widget child,
         double zeroOpacityOffset = 0,
@@ -56,9 +56,9 @@ class _FadeState extends State<SyntonicFade> {
   }
 
   double _calculateOpacity() {
-    print('高さ');
-    print(widget.zeroOpacityOffset);
-    print(widget.fullOpacityOffset);
+    // print('高さ');
+    // print(widget.zeroOpacityOffset);
+    // print(widget.fullOpacityOffset);
     // return (_offset - 0) / (widget.fullOpacityOffset - 0).clamp(0.0, 1.0);
     // return _offset/widget.fullOpacityOffset;
 

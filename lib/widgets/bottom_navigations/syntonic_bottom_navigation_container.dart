@@ -10,6 +10,7 @@ import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 
 import '../app_bars/syntonic_sliver_app_bar.dart';
+import '../base_view_state.dart';
 // import 'package:syntonic_components/widgets/syntonic_sliver_app_bar.dart';
 
 class SyntonicBottomNavigationContainer extends SyntonicBaseView {
@@ -116,12 +117,13 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
 }
 
 class BottomNavigationContainerState extends BaseViewState {
+  BottomNavigationContainerState({required bool needsInitialize, required bool isSkeletonLoadingApplied}) : super(needsInitialize: needsInitialize, isSkeletonLoadingApplied: isSkeletonLoadingApplied);
   
 }
 
 class BottomNavigationContainerManager extends BaseViewModel {
   int currentIndex = 0;
-  BottomNavigationContainerManager() : super(viewState: BottomNavigationContainerState());
+  BottomNavigationContainerManager() : super(viewState: BottomNavigationContainerState(needsInitialize: false, isSkeletonLoadingApplied: false));
   void setCurrentIndex(int index) {
     this.currentIndex = index;
     // notifyListeners();

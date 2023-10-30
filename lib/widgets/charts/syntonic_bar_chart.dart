@@ -19,11 +19,12 @@ class SyntonicBarChart extends StatelessWidget {
   final IconData? icon;
   final String title;
   final VoidCallback? onTap;
-  const SyntonicBarChart({Key? key, required this.value, this.color, this.basedValue, this.onTap, this.icon, required this.title}) : super(key: key);
+  final double height;
+  const SyntonicBarChart({Key? key, required this.value, this.color, this.basedValue, this.onTap, this.icon, required this.title, this.height = 120}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const double _height = 120;
+    double _height = height;
     final double percentage = basedValue != null ? value / basedValue! * 100 : 0;
     final double _valueHeight = _height * percentage / 100;
     bool isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
@@ -41,12 +42,13 @@ class SyntonicBarChart extends StatelessWidget {
         width: 1.4,
         color: _theme.colorScheme.outlineVariant,
       ) : null,
-    ), child: Stack(alignment: Alignment.bottomLeft, children: [
-      basedValue != null ? Container(height: _valueHeight, decoration: BoxDecoration(
+    ),
+      child: Stack(alignment: Alignment.bottomLeft, children: [
+      basedValue != null ? Container(width: height, height: _valueHeight, decoration: BoxDecoration(
         color: _theme.colorScheme.primary.tone(isDarkTheme ? 15 : 80),
         // borderRadius: BorderRadius.circular(40),
-      )) : const SizedBox(),
-      Padding(padding: EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      )) : SizedBox(width: height),
+      Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         basedValue != null ? Icon(icon) : const SizedBox(),
         const SizedBox(height: 8,),
         Body2Text(text: title),

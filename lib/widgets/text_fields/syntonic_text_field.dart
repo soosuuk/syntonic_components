@@ -117,7 +117,7 @@ class SyntonicTextField extends StatelessWidget {
     // _controller.selection = TextSelection.fromPosition(
     //     TextPosition(offset: _controller.text.length));
 
-    return TextFormField(
+    return RepaintBoundary(child: TextFormField(
       key: PageStorageKey(itemKey),
       initialValue: value,
       enabled: isEnabled,
@@ -145,7 +145,7 @@ class SyntonicTextField extends StatelessWidget {
         onTextChanged(text);
       },
       style: textStyle,
-    );
+    ),);
 
     return ListenableProvider(
         create: (context) => OutlinedTextFieldManager(),
