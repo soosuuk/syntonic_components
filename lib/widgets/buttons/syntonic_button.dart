@@ -1,8 +1,11 @@
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
+import 'package:syntonic_components/widgets/texts/body_1_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../configs/themes/syntonic_text_theme.dart';
 
 /// A state of [BasicListView].
 enum _SyntonicButtonStyle {
@@ -37,10 +40,10 @@ class SyntonicButton extends StatelessWidget {
         if (leadingWidget != null) leadingWidget!,
         if (leadingWidget != null) const SizedBox(width: 16,),
         // Subtitle2Text(text: text, textColor: isEnabled ? Colors.white : (_isDarkTheme ? Colors.white : SyntonicColor.black40),),
-        // Text(text.toUpperCase(),
-        //   // textColor: isEnabled ? Theme.of(context).colorScheme.primary : (_isDarkTheme ? Colors.white38 : SyntonicColor.black40),
-        // ),
-        Subtitle2Text(text: text),
+        Body1Text(text: text,
+          textColor: isEnabled ? Theme.of(context).colorScheme.primary : null,
+        ),
+        // Subtitle2Text(text: text),
       ],
     );
 

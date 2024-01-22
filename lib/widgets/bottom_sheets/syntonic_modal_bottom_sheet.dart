@@ -10,13 +10,19 @@ class SyntonicModalBottomSheet {
   static const double minExtent = 0.5;
   static const double maxExtent = 1.0;
   late WidgetRef ref;
+  final _controller = DraggableScrollableController();
+  PageController? pageController;
+  var provider;
 
   /// Open modal bottom sheet.
-  openModalBottomSheet({required BuildContext context, required List<Widget> menus, Function? onPop}) {
-    contents = menus;
+  openModalBottomSheet({required BuildContext context, required List<Widget> children, Function? onPop, PageController? pageController}) {
+    this.pageController = pageController;
+    contents = children;
+    provider = ChangeNotifierProvider<SyntonicModalBottomSheetViewModel>((ref) => SyntonicModalBottomSheetViewModel());
 
     showModalBottomSheet(
         enableDrag: true,
+        useSafeArea: true,
         isScrollControlled: true,
       showDragHandle: true,
         context: context,
@@ -38,13 +44,20 @@ class SyntonicModalBottomSheet {
         this.ref = ref;
         return DraggableScrollableActuator(
           child: DraggableScrollableSheet(
-            // key: Key(model.initialExtent.toString()),
-            maxChildSize: maxExtent,
-            initialChildSize: minExtent,
-            minChildSize: minExtent,
-            // snap: true,
+            key: GlobalKey(),
+            initialChildSize: 0.5,
+            maxChildSize: 1,
+            minChildSize: 0,
             expand: false,
-            builder: _draggableScrollableSheetBuilder,
+            snap: true,
+            snapSizes: const [0.5],
+            controller: _controller,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return  PageView(
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: pageController ?? PageController(),
+              children: _pageViews(scrollController: scrollController));
+            },
           ),
         );
       },);
@@ -65,7 +78,7 @@ class SyntonicModalBottomSheet {
 
     return NotificationListener<DraggableScrollableNotification>(
       onNotification: (scrollNotification) {
-        print(scrollNotification.extent);
+        print("noti extent" + scrollNotification.extent.toString());
 
         if (ref.read(_provider).isExpanded) {
           ref.read(_provider).initialExtent = minExtent;
@@ -73,7 +86,7 @@ class SyntonicModalBottomSheet {
         if (scrollNotification.extent == maxExtent) {
           ref.read(_provider).changeExpanded(true);
         } else {
-          ref.read(_provider).changeExpanded(false);
+          ref.read(_provider).changeExpanded(true);
         }
 
         // if (scrollNotification.extent > minExtent) {
@@ -87,7 +100,31 @@ class SyntonicModalBottomSheet {
         // }
         return true;
       },
-      child: Column(children: contents,),
+      child: Column(children: contents),
+    );
+  }
+
+  List<Widget> _pageViews({required ScrollController scrollController,}) {
+  List<Widget> _pageViews = [];
+
+  for (int i = 0; i < contents.length; i++) {
+    _pageViews.add(_pageView(scrollController: scrollController, index: i));
+  }
+
+  return _pageViews;
+  }
+
+  Widget _pageView({required ScrollController scrollController, required int index}) {
+    return CustomScrollView(
+      controller: scrollController,
+      slivers: [
+        // SliverToBoxAdapter(
+        //   child: Column(children: contents,),
+        // ),
+        SliverList.list(
+          children: [contents[index]],
+        ),
+      ],
     );
   }
 

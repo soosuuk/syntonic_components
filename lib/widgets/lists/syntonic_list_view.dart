@@ -127,12 +127,14 @@ class SyntonicListView extends ExtendedStatelessWidget {
   const SyntonicListView({
     required Widget Function(int index) listItem,
     required int numberOfItems,
+    required int numberOfItemsTotal,
     bool isNested = false,
     ItemScrollController? itemScrollController,
     Axis? scrollDirection,
   }) : this._(
             listItem: listItem,
             numberOfItems: numberOfItems,
+            numberOfItemsTotal: numberOfItemsTotal,
             isNested: isNested,
             itemScrollController: itemScrollController,
             scrollDirection: scrollDirection,
@@ -395,7 +397,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                           children: [
                             // Container(width: 700, height:50, color: i == 0 ? Colors.red : Colors.blue)
                             for (var j = 0; j < (numberOfItems! - _index(i, j, numberOfRow) < 0 ? _index(i, j, numberOfRow) * - 1 : numberOfRow); j++)
-                              Container(alignment: Alignment.topLeft, width: MediaQuery.of(context).size.width * (1 / numberOfColumn) + (MediaQuery.of(context).size.width * (1 / numberOfColumn) / numberOfColumn), child: gridItem!(((numberOfItems! - (numberOfItems! - i * numberOfRow)) + j), MediaQuery.of(context).size.width * (1 / numberOfColumn) + (MediaQuery.of(context).size.width * (1 / numberOfColumn) / numberOfColumn))),
+                              Container(alignment: Alignment.topLeft, width: MediaQuery.of(context).size.width * (1 / numberOfColumn) + (MediaQuery.of(context).size.width * (1 / numberOfColumn) / numberOfColumn), child: Padding(padding: EdgeInsets.only(left: (numberOfItems! - (numberOfItems! - i * numberOfRow)) + j == 0 ? 16 : 4, right: (numberOfItems! - (numberOfItems! - i * numberOfRow)) + j == numberOfItems ? 16 : 4), child: gridItem!((numberOfItems! - (numberOfItems! - i * numberOfRow)) + j, MediaQuery.of(context).size.width * (1 / numberOfColumn) + (MediaQuery.of(context).size.width * (1 / numberOfColumn) / numberOfColumn)),)),
 
                             //   Container(width: MediaQuery.of(context).size.width - 56, child: Expanded(child: listItem(((numberOfItems! - (numberOfItems! - i * _numberOfItemsInColumn)) + j)),)),
                           ]

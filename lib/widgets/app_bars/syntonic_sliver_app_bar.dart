@@ -300,6 +300,7 @@ class SyntonicSliverAppBar extends StatelessWidget
           ? SyntonicFade.on(
           zeroOpacityOffset: 0,
           fullOpacityOffset: expandedHeight!,
+          // fullOpacityOffset: expandedHeight! - (kToolbarHeight*2.5),
               // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
               // fullOpacityOffset: expandedHeight!,
               child: _title,
@@ -392,7 +393,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
     Color _color = Theme.of(context).colorScheme.surface;
     return Material(
         surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
-        elevation: overlapsContent ? 4.0 : 0,
+        elevation: overlapsContent ? 3.0 : 0,
         color: _color,
         child: tabBar);
   }

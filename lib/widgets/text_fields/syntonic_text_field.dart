@@ -117,7 +117,7 @@ class SyntonicTextField extends StatelessWidget {
     // _controller.selection = TextSelection.fromPosition(
     //     TextPosition(offset: _controller.text.length));
 
-    return RepaintBoundary(child: TextFormField(
+    return RepaintBoundary(child: Padding(padding: hasPadding ? const EdgeInsets.symmetric(vertical: 8, horizontal: 16) : EdgeInsets.zero, child: TextFormField(
       key: PageStorageKey(itemKey),
       initialValue: value,
       enabled: isEnabled,
@@ -136,7 +136,7 @@ class SyntonicTextField extends StatelessWidget {
             : null,
       ),
       textInputAction: _textInputAction,
-      keyboardType: keyboardType,
+      keyboardType: maxLines != null ? TextInputType.multiline : keyboardType,
       inputFormatters: inputFormatters,
       onFieldSubmitted: (text) {
         onTextChanged(text);
@@ -145,7 +145,7 @@ class SyntonicTextField extends StatelessWidget {
         onTextChanged(text);
       },
       style: textStyle,
-    ),);
+    ),),);
 
     return ListenableProvider(
         create: (context) => OutlinedTextFieldManager(),

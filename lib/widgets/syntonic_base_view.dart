@@ -51,7 +51,7 @@ abstract class ExtendedModel {
 // ignore: must_be_immutable
 abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseViewState> extends StatelessWidget {
 
-  const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false}) : super(key: key);
+  const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false, this.hasFAB = false, this.hasFABSecondary = false}) : super(key: key);
 
   final VM vm;
   // final provider;
@@ -60,6 +60,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   final bool hasHeader;
   final bool hasTabBar;
   final bool isChild;
+  final bool hasFAB;
+  final bool hasFABSecondary;
 
   GlobalKey get _globalKey => globalKey ?? GlobalKey();
 
@@ -112,9 +114,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
         onTap: () {
           FocusManager.instance.primaryFocus!.unfocus();
         },
-      child: _screen(vm),
+      child: _screen(vm, context),
     );
-    return _screen(vm);
+    // return _screen(vm);
   }
 
   /// Get a screen.
@@ -128,47 +130,47 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   ///
   /// Change [appBar] and [floatingActionButton] state to invisible depends on
   /// view permission ([authority.canView]) in account's [model.authority].
-  Widget _screen(VM viewModel) {
+  Widget _screen(VM viewModel, BuildContext context) {
     // skip initialization, depending on whether [isInitialized] is "true".
     // Because, A screen is Rebuilt if you focus to any text-field.
-    return riverpod.Consumer(builder: (context, ref, _) {
+    // return riverpod.Consumer(builder: (context, ref, _) {
       print('ビルド');
-      if ((viewModel as VM).state.needsInitialize && !(viewModel as VM).state.isInitialized) {
+      if (viewModel.state.needsInitialize && !viewModel.state.isInitialized) {
         return FutureBuilder(
-          future: (viewModel as VM).onInit(context: context),
+          future: viewModel.onInit(context: context),
           builder: (context, projectSnap) {
             if (projectSnap.hasError) {
               return NestedScrollView(
                 headerSliverBuilder:
                     (_, __) {
                   return <Widget>[
-                    SyntonicSliverAppBar(
-                        isFullscreenDialog:
-                        hasAppBar ? appBar(context: context, ref: ref)!.isFullscreenDialog : false,
-                        title: hasAppBar ? appBar(context: context, ref: ref)!.title : null),
+                    // SyntonicSliverAppBar(
+                    //     isFullscreenDialog:
+                    //     hasAppBar ? appBar(context: context, ref: ref)!.isFullscreenDialog : false,
+                    //     title: hasAppBar ? appBar(context: context, ref: ref)!.title : null),
                   ];
                 },
                 body: _errorScreen,
               );
             } else if (projectSnap.connectionState == ConnectionState.done) {
-              (viewModel as VM).state.isInitialized = true;
+              viewModel.state.isInitialized = true;
               // (viewModel as VM).state = (viewModel as VM).state.copyWith(isInitialized: true) as VS;
-              return _body(context: context, ref: ref);
+              return _body(context: context);
             } else {
-              if ((viewModel as VM).state.isSkeletonLoadingApplied) {
-                return _body(context: context, ref: ref);
+              if (viewModel.state.isSkeletonLoadingApplied) {
+                return _body(context: context);
               } else {
                 return Stack(children: [
                   Scaffold(
                     drawer: hasAppBar ? navigationDrawer : null,
-                    appBar: hasAppBar
-                        ? SyntonicSliverAppBar.fixed(
-                        title: appBar(context: context, ref: ref)!.title ?? '',
-                        context: context,
-                        needsNavigationDrawer:
-                        appBar(context: context, ref: ref)!.needsNavigationDrawer,
-                        trailing: appBar(context: context, ref: ref)!.trailing)
-                        : null,
+                    // appBar: hasAppBar
+                    //     ? SyntonicSliverAppBar.fixed(
+                    //     title: appBar(context: context, ref: ref)!.title ?? '',
+                    //     context: context,
+                    //     needsNavigationDrawer:
+                    //     appBar(context: context, ref: ref)!.needsNavigationDrawer,
+                    //     trailing: appBar(context: context, ref: ref)!.trailing)
+                    //     : null,
                     bottomSheet: bottomSheet,
                   ),
                   const Center(child: CircularProgressIndicator())
@@ -178,13 +180,13 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
           },
         );
       } else {
-        return _body(context: context, ref: ref);
+        return _body(context: context);
       }
-    },);
+    // );
   }
 
   /// Get body.
-  Widget _body({required BuildContext context, required riverpod.WidgetRef ref}) {
+  Widget _body({required BuildContext context}) {
     print('ボディー');
     // return riverpod.Consumer(builder: (context, ref, child) {
       // _ref = ref;
@@ -192,10 +194,13 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
         if (needsSliverAppBar) {
           return Scaffold(
             drawer: navigationDrawer,
-            floatingActionButton: _floatingActionButtons(context: context, ref: ref),
+            floatingActionButton: _floatingActionButtons(context: context),
             body: DefaultTabController(
-                length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
-                child: NestedScrollView(
+              length: hasTabBar ? 2 : 0,
+              // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
+                child:
+                riverpod.Consumer(builder: (context, ref, child) {
+                return NestedScrollView(
                   controller: viewModel(ref).state
                       .scrollController,
                   headerSliverBuilder:
@@ -209,9 +214,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                               [_headerContents(context: context, ref: ref)],
                             ),
                           ),
-                          _appBar(context: context, ref: ref),
+                          _appBar(context: context),
                         ],
-                      ) : _appBar(context: context, ref: ref),
+                      ) : _appBar(context: context),
                       hasTabBar
                           ? SliverPersistentHeader(
                           pinned: true,
@@ -232,15 +237,18 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                     ];
                   },
                   body: _notificationListener(context: context, ref: ref),
-                )),
+                );
+                }),
+            ),
             bottomSheet: bottomSheet,
           );
         } else {
           return DefaultTabController(
-              length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
+              length: hasTabBar ? 2 : 0,
+              // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
               child: Scaffold(
                 drawer: navigationDrawer,
-                appBar: AppBar(title: const Body2Text(text: 'title',), flexibleSpace: headerContents(context: context, ref: ref), toolbarHeight: MediaQuery.of(context).size.height * 0.7,),
+                // appBar: AppBar(title: const Body2Text(text: 'title',), flexibleSpace: headerContents(context: context, ref: ref), toolbarHeight: MediaQuery.of(context).size.height * 0.7,),
                 // appBar: _appBar as PreferredSizeWidget,
                 body: riverpod.Consumer(builder: (context, ref, child) {
                   // _ref = ref;
@@ -267,7 +275,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
           },);
         } else {
           return Scaffold(
-            floatingActionButton: _floatingActionButtons(context: context, ref: ref),
+            // floatingActionButton: _floatingActionButtons(context: context, ref: ref),
             body: riverpod.Consumer(builder: (context, ref, child) {
               // _ref = ref;
               return mainContents(context: context, ref: ref);
@@ -357,14 +365,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
         if (floatingActionButton(context: context, ref: ref) != null &&
             scrollNotification is UserScrollNotification) {
           if (scrollNotification.direction == ScrollDirection.reverse) {
-            // viewModel.state.isFloatingActionButtonExtended = true;
-            // VS vs = (BaseViewState()..isFloatingActionButtonExtended = true) as VS;
             if (viewModel(ref).state.isFloatingActionButtonExtended != true) {
               viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: true) as VS;
             }
           } else if (scrollNotification.direction == ScrollDirection.forward) {
-            // viewModel.state.isFloatingActionButtonExtended = false;
-            // VS vs = (BaseViewState()..isFloatingActionButtonExtended = false) as VS;
             if (viewModel(ref).state.isFloatingActionButtonExtended != false) {
               viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: false) as VS;
             }
@@ -498,8 +502,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   /// Type of an app bar ([AppBar], [SliverAppBar]) depends on
   /// [needsSliverAppBar], and also If an app bar is [AppBar] and has [_tabBar],
   /// set [_tabBar] to bottom of [Appbar].
-  Widget _appBar({required BuildContext context, required riverpod.WidgetRef ref}) {
-    // return riverpod.Consumer(builder: (context, ref, child) {
+  Widget _appBar({required BuildContext context}) {
+    return riverpod.Consumer(builder: (context, ref, child) {
       if (needsSliverAppBar) {
         SyntonicSliverAppBar _appBar = appBar(context: context, ref: ref)!;
 
@@ -510,7 +514,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
             accentColor: _appBar.accentColor,
             isBackButtonEnabled: _appBar.isBackButtonEnabled,
             elevation: _appBar.elevation,
-            expandedHeight: viewModel(ref).state.height,
+            expandedHeight: ref.watch(provider).height,
             // expandedHeight: _appBar.expandedHeight,
             flexibleSpace: _appBar.flexibleSpace,
             isFadedTitle: _appBar.isFadedTitle,
@@ -567,15 +571,15 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
               trailing: _appBar.trailing,
             ));
       }
-    // });
+    });
   }
 
   /// Get floating action buttons.
   ///
   /// Apply different color to Secondary FAB than to primary FAB.
-  Widget? _floatingActionButtons({required BuildContext context, required riverpod.WidgetRef ref}) {
-    if (floatingActionButton(context: context, ref: ref) != null) {
-      if (floatingActionButtonSecondary(context: context, ref: ref) != null) {
+  Widget? _floatingActionButtons({required BuildContext context}) {
+    if (hasFAB) {
+      if (hasFABSecondary) {
         return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -648,7 +652,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     }
 
     return SizeListenableContainer(key: _globalKey, onSizeChanged: (Size size) {
-        // viewModel(ref).state = viewModel(ref).state.copyWith(height: size.height) as VS;
+        viewModel(ref).state = viewModel(ref).state.copyWith(height: size.height) as VS;
         // print('高さ');
         // print(viewModel.height - kToolbarHeight);
         // print(viewModel.height);
@@ -656,7 +660,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
         },
       child: SyntonicFade.off(
         zeroOpacityOffset: 0,
-          // zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
+        //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
           fullOpacityOffset: viewModel(ref).state.height, scrollController: viewModel(ref).state.scrollController, child: headerContents(context: context, ref: ref)!),);
   }
 
@@ -667,6 +671,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     int _currentIndex = 0;
     if (hasTabBar) {
       return TabBar(
+        dividerColor: ref.read(provider).isStickyingAppBar ? Colors.transparent : null,
         controller: tabController,
         isScrollable: tabs(context: context, ref: ref)!.length > 2 ? true : false,
         onTap: (_index) {
@@ -708,8 +713,16 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   }
 }
 
-class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNotifier<VS> {
+abstract class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNotifier<VS> {
   BaseViewModel({required VS viewState}) : super(viewState);
+
+  @override
+  set state(VS value) {
+    super.state = value;
+  }
+
+  @override
+  VS get state => super.state;
 
   @override
   void dispose() {

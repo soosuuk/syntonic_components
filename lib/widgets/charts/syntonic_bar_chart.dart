@@ -45,6 +45,7 @@ class SyntonicBarChart extends StatelessWidget {
     ),
       child: Stack(alignment: Alignment.bottomLeft, children: [
       basedValue != null ? Container(width: height, height: _valueHeight, decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(40),
         color: _theme.colorScheme.primary.tone(isDarkTheme ? 15 : 80),
         // borderRadius: BorderRadius.circular(40),
       )) : SizedBox(width: height),

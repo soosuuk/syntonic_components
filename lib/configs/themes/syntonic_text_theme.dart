@@ -22,9 +22,11 @@ extension Material3Palette on Color {
 /// If set a value to "letterSpacing", need to convert ems(character spacing / 1000) to pt.
 class SyntonicTextTheme {
   static TextStyle headline1({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.elsie(
-      textStyle: Theme.of(context).textTheme.displayMedium,
-      fontWeight: FontWeight.w600,
+    // return GoogleFonts.elsie(
+    return GoogleFonts.playfairDisplay(
+    textStyle: Theme.of(context).textTheme.displayMedium,
+      fontWeight: FontWeight.w700,
+        letterSpacing: 0.9,
       // color: textColor,
       // color: textColor ?? Theme.of(context).colorScheme.onSurface,
       // height: 1.4,
@@ -43,7 +45,7 @@ class SyntonicTextTheme {
 
   static TextStyle headline5({required BuildContext context, Color? textColor}) {
     return GoogleFonts.playfairDisplay(
-      textStyle: Theme.of(context).textTheme.headline5,
+      textStyle: Theme.of(context).textTheme.headlineSmall,
       // fontWeight: FontWeight.w300,
       color: textColor,
       height: 1.4,
@@ -75,7 +77,7 @@ class SyntonicTextTheme {
   }
 
   static TextStyle body1({required BuildContext context, Color? textColor, bool? isLineThrough}) {
-    return GoogleFonts.openSans(
+    return GoogleFonts.roboto(
       color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
       textStyle: Theme.of(context).textTheme.bodyText1,
       // fontWeight: FontWeight.w400,
