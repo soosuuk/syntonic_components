@@ -63,6 +63,10 @@ class _SyntonicAnimationEnhancerState extends State<SyntonicAnimationEnhancer> w
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.isEnabled) {
+      return widget.child;
+    }
+
     return FadeTransition(opacity: _animation, child: RepaintBoundary(child: ScaleTransition(
       scale: _animation,
       child: widget.child,

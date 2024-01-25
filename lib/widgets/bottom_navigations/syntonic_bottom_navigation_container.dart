@@ -38,30 +38,30 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
                     onTapBottomNavigationBar!();
                   }
                   if ((viewModel(ref) as BottomNavigationContainerManager).currentIndex == index) {
-                    bottomNavigationItems[index]
-                        .navigatorKey
-                        .currentState!
-                        .popUntil((route) => route.isFirst);
-                    bottomNavigationItems[index]
-                        .screen
-                        .provider
-                        .scrollController
-                        .animateTo(
-                      0.0,
-                      curve: Curves.easeOut,
-                      duration: const Duration(milliseconds: 300),
-                    );
-
-                    for (SyntonicBaseView _childView
-                    in bottomNavigationItems[index].screen.childViews!) {
-                      for (SyntonicBaseView _childView in _childView.childViews!) {
-                        _childView.provider.scrollController.animateTo(
-                          0.0,
-                          curve: Curves.easeOut,
-                          duration: const Duration(milliseconds: 300),
-                        );
-                      }
-                    }
+                    // bottomNavigationItems[index]
+                    //     .navigatorKey
+                    //     .currentState!
+                    //     .popUntil((route) => route.isFirst);
+                    // bottomNavigationItems[index]
+                    //     .screen
+                    //     .provider
+                    //     .scrollController
+                    //     .animateTo(
+                    //   0.0,
+                    //   curve: Curves.easeOut,
+                    //   duration: const Duration(milliseconds: 300),
+                    // );
+                    //
+                    // for (SyntonicBaseView _childView
+                    // in bottomNavigationItems[index].screen.childViews!) {
+                    //   for (SyntonicBaseView _childView in _childView.childViews!) {
+                    //     _childView.provider.scrollController.animateTo(
+                    //       0.0,
+                    //       curve: Curves.easeOut,
+                    //       duration: const Duration(milliseconds: 300),
+                    //     );
+                    //   }
+                    // }
                   } else {
                     (viewModel(ref) as BottomNavigationContainerManager).setCurrentIndex(index);
                   }

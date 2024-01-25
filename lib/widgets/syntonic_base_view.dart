@@ -77,7 +77,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   // late riverpod.WidgetRef _ref;
   VM viewModel(riverpod.WidgetRef ref) => ref.read(provider.notifier);
   // VM get vm => _ref.read(provider);
-  get provider => riverpod.StateNotifierProvider<VM, VS>((ref) => vm);
+  riverpod.StateNotifierProvider<VM, VS> get provider => riverpod.StateNotifierProvider<VM, VS>((ref) => vm);
 
   // Function? willPopCallback;
   // PlatformType? platformType;
@@ -135,7 +135,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     // Because, A screen is Rebuilt if you focus to any text-field.
     // return riverpod.Consumer(builder: (context, ref, _) {
       print('ビルド');
-      if (viewModel.state.needsInitialize && !viewModel.state.isInitialized) {
+      if (viewModel.state.needsInitialize && !viewModel.isInitialized) {
         return FutureBuilder(
           future: viewModel.onInit(context: context),
           builder: (context, projectSnap) {
@@ -153,7 +153,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                 body: _errorScreen,
               );
             } else if (projectSnap.connectionState == ConnectionState.done) {
-              viewModel.state.isInitialized = true;
+              print('初期化');
+              viewModel.isInitialized = true;
               // (viewModel as VM).state = (viewModel as VM).state.copyWith(isInitialized: true) as VS;
               return _body(context: context);
             } else {
@@ -223,9 +224,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                           delegate: StickyTabBarDelegate(
                               tabBar: _tabBar(context: context, ref: ref)!,
                               setStickyState: (isSticking) {
-                                print('スティッキー');
                                 if (viewModel(ref)
                                     .state.isStickyingAppBar != isSticking) {
+                                  print('スティッキー');
                                   viewModel(ref)
                                       .state = viewModel(ref)
                                       .state.copyWith(isStickyingAppBar: isSticking) as VS;
@@ -309,11 +310,11 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   ///
   /// Validate this when the function ([model.validate()]) was called.
   Widget _mainContents({required BuildContext context, required riverpod.WidgetRef ref}) {
-    print('メイン');
     return Form(
-          // key: viewModel(ref).state._formKey,
+          key: viewModel(ref).state.formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: mainContents(context: context, ref: ref));
+          child: Container(padding: !isChild ? EdgeInsets.zero : const EdgeInsets.only(bottom: 100), child: mainContents(context: context, ref: ref),)
+    );
           // child: Center(
           //     child: Container(
           //         alignment: Alignment.topLeft,
@@ -359,7 +360,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   Widget? get navigationDrawer => null;
 
   NotificationListener _notificationListener({required BuildContext context, required riverpod.WidgetRef ref}) {
-    print('ノーティ');
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
         if (floatingActionButton(context: context, ref: ref) != null &&
@@ -652,16 +652,16 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     }
 
     return SizeListenableContainer(key: _globalKey, onSizeChanged: (Size size) {
+      if (viewModel(ref).state.height == 0) {
+        print('高さ');
+        print(viewModel(ref).state.height);
         viewModel(ref).state = viewModel(ref).state.copyWith(height: size.height) as VS;
-        // print('高さ');
-        // print(viewModel.height - kToolbarHeight);
-        // print(viewModel.height);
-        // viewModel.notifier();
+      }
         },
       child: SyntonicFade.off(
         zeroOpacityOffset: 0,
         //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
-          fullOpacityOffset: viewModel(ref).state.height, scrollController: viewModel(ref).state.scrollController, child: headerContents(context: context, ref: ref)!),);
+          fullOpacityOffset: viewModel(ref).state.height, scrollController: viewModel(ref).state.scrollController!, child: headerContents(context: context, ref: ref)!),);
   }
 
   ///TODO: InfiniteLoadingListViewなどで、scrollControllerをセットしていないと、エラーになるので、必ずセットするようにするなどチェックを検討する。
@@ -678,7 +678,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
           if (tabController != null
               ? !tabController!.indexIsChanging
               : _currentIndex == _index) {
-            ref.read(provider).changeFloatingActionButtonState(true);
+            // ref.read(provider).changeFloatingActionButtonState(true);
 
             // IF [headerContents] is exist.
             // ref.read(provider).scrollController.animateTo(
@@ -702,7 +702,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
             //   );
             // }
           }
-          ref.read(provider).setCurrentTabIndex(_index);
+
+          // ref.read(provider).setCurrentTabIndex(_index);
           _currentIndex = _index;
         },
         tabs: tabs(context: context, ref: ref)!,
@@ -715,6 +716,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
 
 abstract class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNotifier<VS> {
   BaseViewModel({required VS viewState}) : super(viewState);
+
+  bool isInitialized = false;
 
   @override
   set state(VS value) {
@@ -744,7 +747,7 @@ abstract class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNot
   /// Execute [onSucceeded] when on the validation pass.
   /// In the case validation failed, execute [onFailed].
   validate({Function()? onSucceeded, Function()? onFailed}) async {
-    if (state.formKey.currentState!.validate()) {
+    if (state.formKey!.currentState!.validate()) {
       if (onSucceeded != null) {
         onSucceeded();
       }

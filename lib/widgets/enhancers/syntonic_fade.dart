@@ -76,35 +76,35 @@ class _FadeState extends State<SyntonicFade> {
       switch (widget.fadeMode) {
         case _FadeMode.on:
           if (_offset <= widget.zeroOpacityOffset) {
-            print("fade onnn if");
+            // print("fade onnn if");
             return 0;
           } else if (_offset >= widget.fullOpacityOffset) {
-            print("fade onnn else if");
+            // print("fade onnn else if");
             return 1;
           } else {
             // print((_offset - widget.zeroOpacityOffset) /
             //     (widget.fullOpacityOffset - widget.zeroOpacityOffset));
-            print("fade onnn else");
+            // print("fade onnn else");
             return (_offset - widget.zeroOpacityOffset) /
                 (widget.fullOpacityOffset - widget.zeroOpacityOffset);
           }
         case _FadeMode.off:
           if (_offset == widget.fullOpacityOffset) {
-            print("fade off if");
+            // print("fade off if");
 
             return 0;
           } else if (_offset == widget.zeroOpacityOffset) {
-            print("fade off else if");
+            // print("fade off else if");
 
             return 1;
           } else {
             // if (_offset <= widget.zeroOpacityOffset) {
             //   return 1;
             // }
-            print("fade off else");
+            // print("fade off else");
 
-            print((widget.fullOpacityOffset - (widget.fullOpacityOffset - _offset)) /
-                widget.fullOpacityOffset);
+            // print((widget.fullOpacityOffset - (widget.fullOpacityOffset - _offset)) /
+            //     widget.fullOpacityOffset);
             double _value = (widget.fullOpacityOffset - _offset) /
                 widget.fullOpacityOffset;
             return _value < 0 ? 0 : _value;

@@ -17,7 +17,7 @@ targets:
           generic_argument_factories: false
           ignore_unannotated: false
           include_if_null: false
-      source_gen|combining_builder:
+      copy_with_extension_gen:
         options:
           build_extensions:
             '^lib/{{}}.dart': 'lib/gen/models/{{}}.g.dart'
