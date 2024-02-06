@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path/path.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:syntonic_components/configs/constants/syntonic_date_and_time.dart';
@@ -54,7 +55,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false, this.hasFAB = false, this.hasFABSecondary = false}) : super(key: key);
 
   final VM vm;
-  // final provider;
   final GlobalKey? globalKey;
   final bool hasAppBar;
   final bool hasHeader;
@@ -63,10 +63,20 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   final bool hasFAB;
   final bool hasFABSecondary;
 
-  GlobalKey get _globalKey => globalKey ?? GlobalKey();
+  Future<AdSize?> _getAdSize(BuildContext context) async {
 
-  // @protected
-  // T viewModel(BuildContext context) => Provider.of<T>(context, listen: false);
+    if (vm.adSize != null) {
+      return vm.adSize;
+    }
+    vm.adSize = await AdSize.getAnchoredAdaptiveBannerAdSize(
+        MediaQuery.of(context).orientation == Orientation.portrait
+            ? Orientation.portrait
+            : Orientation.landscape,
+        MediaQuery.of(context).size.width.toInt()) as AdSize;
+    return vm.adSize;
+  }
+
+  GlobalKey get _globalKey => globalKey ?? GlobalKey();
 
   // @protected
   // T vmR(BuildContext context) => context.read<V>();
@@ -74,9 +84,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   // @protected
   // VM vmW(BuildContext context) => context.watch<VM>();
 
-  // late riverpod.WidgetRef _ref;
   VM viewModel(riverpod.WidgetRef ref) => ref.read(provider.notifier);
-  // VM get vm => _ref.read(provider);
   riverpod.StateNotifierProvider<VM, VS> get provider => riverpod.StateNotifierProvider<VM, VS>((ref) => vm);
 
   // Function? willPopCallback;
@@ -84,12 +92,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   // late BuildContext context;
 
   final List<SyntonicBaseView>? childViews;
-
-  // @protected
-  // VM getViewModelBy(BuildContext context);
-
-  // @protected
-  // VS getVS(BuildContext context);
 
   @override
   Widget build(BuildContext context) {
@@ -101,14 +103,60 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     // } else if (Platform.isAndroid) {
     //   this.platformType = PlatformType.Android;
     // }
-    // final viewModel = getViewModelBy(context);
 
-    // var viewState = getVS(context);
-    // provider = riverpod.StateNotifierProvider<VM, VS>((ref) => viewModel);
-    // final userDetailViewModelProvider = riverpod.StateNotifierProvider<VM, VS>((ref) {
-    //   return viewModel;
-    // });
-    // this.context = context;
+    return Column(children: [Expanded(child: GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus!.unfocus();
+      },
+      child: _screen(vm, context),
+    )), isChild || !vm.hasAds ? const SizedBox() : Builder(builder: (context) {
+      return Container(
+        alignment: Alignment.center,
+        height: 88,
+        width: 88,
+        // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
+        // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
+        child: FutureBuilder(
+            future: _getAdSize(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState ==
+                  ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString(),
+                        textAlign: TextAlign.center,
+                        textScaleFactor: 1.3),
+                  );
+                }
+
+                // if (!vm.isAdLoaded) {
+                //   vm.ad = BannerAd(
+                //     adUnitId: AdHelper.bannerAdUnitId,
+                //     size: vm.adSize!,
+                //     request: AdRequest(),
+                //     listener: BannerAdListener(
+                //       onAdLoaded: (_) {
+                //         vm.isAdLoaded = true;
+                //       },
+                //       onAdFailedToLoad: (ad, error) {
+                //         //Load失敗時の処理
+                //         ad.dispose();
+                //         print(
+                //             'Ad load failed (code=${error.code} message=${error.message})');
+                //       },
+                //     ),
+                //   );
+                //   vm.ad.load();
+                //   return Container();
+                // }
+                return AdWidget(ad: vm.ad);
+              }
+              else {
+                return Container();
+              }
+            }),
+      );
+    })],);
 
     return GestureDetector(
         onTap: () {
@@ -189,12 +237,15 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   /// Get body.
   Widget _body({required BuildContext context}) {
     print('ボディー');
+    print(this.runtimeType);
     // return riverpod.Consumer(builder: (context, ref, child) {
       // _ref = ref;
       if (hasAppBar) {
         if (needsSliverAppBar) {
           return Scaffold(
             drawer: navigationDrawer,
+              floatingActionButtonLocation:
+              FloatingActionButtonLocation.endContained,
             floatingActionButton: _floatingActionButtons(context: context),
             body: DefaultTabController(
               length: hasTabBar ? 2 : 0,
@@ -202,7 +253,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                 child:
                 riverpod.Consumer(builder: (context, ref, child) {
                 return NestedScrollView(
-                  controller: viewModel(ref).state
+                  controller: viewModel(ref)
                       .scrollController,
                   headerSliverBuilder:
                       (_, __) {
@@ -212,7 +263,14 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                         children: [
                           SliverList(
                             delegate: SliverChildListDelegate(
-                              [_headerContents(context: context, ref: ref)],
+                              [Material(
+                                  type: MaterialType.button,
+                                  animationDuration: viewModel(ref).state.isStickyingAppBar ? Duration(milliseconds: 100) : Duration(milliseconds: 150),
+                                  surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
+                                  shadowColor: Colors.transparent,
+                                  elevation: ref.watch(provider.select((viewState) => viewState.isStickyingAppBar)) ? 3 : 0,
+                                  color: Theme.of(context).colorScheme.surface,
+                                  child: _headerContents(context: context, ref: ref))],
                             ),
                           ),
                           _appBar(context: context),
@@ -223,6 +281,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                           pinned: true,
                           delegate: StickyTabBarDelegate(
                               tabBar: _tabBar(context: context, ref: ref)!,
+                              tabBarHeader: _tabBarHeader(context: context, ref: ref),
                               setStickyState: (isSticking) {
                                 if (viewModel(ref)
                                     .state.isStickyingAppBar != isSticking) {
@@ -233,7 +292,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                                 }
                                 print(viewModel(ref)
                                     .state.isStickyingAppBar);
-                              }))
+                              },
+                            height: viewModel(ref)
+                                .state.tabBarHeight ?? 0
+                              ))
                           : _blank,
                     ];
                   },
@@ -254,9 +316,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
                 body: riverpod.Consumer(builder: (context, ref, child) {
                   // _ref = ref;
                   return NestedScrollView(
-                    controller: ref
-                        .read(provider)
-                        .scrollController,
+                    controller: viewModel(ref).scrollController,
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[];
@@ -311,7 +371,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   /// Validate this when the function ([model.validate()]) was called.
   Widget _mainContents({required BuildContext context, required riverpod.WidgetRef ref}) {
     return Form(
-          key: viewModel(ref).state.formKey,
+          key: viewModel(ref).formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Container(padding: !isChild ? EdgeInsets.zero : const EdgeInsets.only(bottom: 100), child: mainContents(context: context, ref: ref),)
     );
@@ -365,12 +425,12 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
         if (floatingActionButton(context: context, ref: ref) != null &&
             scrollNotification is UserScrollNotification) {
           if (scrollNotification.direction == ScrollDirection.reverse) {
-            if (viewModel(ref).state.isFloatingActionButtonExtended != true) {
-              viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: true) as VS;
+            if (viewModel(ref).state.isFloatingActionButtonExtended == true) {
+              viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: false) as VS;
             }
           } else if (scrollNotification.direction == ScrollDirection.forward) {
-            if (viewModel(ref).state.isFloatingActionButtonExtended != false) {
-              viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: false) as VS;
+            if (viewModel(ref).state.isFloatingActionButtonExtended == false) {
+              viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: true) as VS;
             }
           }
         }
@@ -524,7 +584,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
             onTap: _appBar.onTap,
             needsNavigationDrawer: _appBar.needsNavigationDrawer,
             searchBox: _appBar.searchBox,
-            scrollController: ref.read(provider).scrollController,
+            scrollController: viewModel(ref).scrollController,
             subtitle: _appBar.subtitle,
             hasTabBar: hasTabBar,
             manualUrl: _appBar.manualUrl,
@@ -555,7 +615,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
               onBackButtonPressed: _appBar.onBackButtonPressed,
               needsNavigationDrawer: _appBar.needsNavigationDrawer,
               searchBox: _appBar.searchBox,
-              scrollController: viewModel(ref).state.scrollController,
+              scrollController: viewModel(ref).scrollController,
               subtitle: _appBar.subtitle,
               hasTabBar: hasTabBar,
               bottom: PreferredSize(
@@ -600,25 +660,15 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   /// Extending state of fFAB depends on Scroll direction in a screen ([model.isFloatingActionButtonExtended]).
   /// And also, can hide FAB with fading animation.
   Widget _floatingActionButton({bool isSecondary = false,}) {
+    print("FABビルド");
+    print(vm.state.isFloatingActionButtonExtended);
     return riverpod.Consumer(builder: (context, ref, child) {
       return SyntonicFloatingActionButton(
           floatingActionButtonModel: isSecondary
               ? floatingActionButtonSecondary(context: context, ref: ref)!
               : floatingActionButton(context: context, ref: ref)!,
-          isExtended: ref.watch(provider).isFloatingActionButtonExtended,
-          // isExtended: ref.watch(riverpod.StateNotifierProvider<VM, VS>((ref) => viewModel).select((value) => value.isFloatingActionButtonExtended)),
+          isExtended: ref.watch(provider.select((viewState) => viewState.isFloatingActionButtonExtended)),
           isSecondary: isSecondary);
-      // return AnimatedOpacity(
-      //   opacity: ref.watch(provider).isFloatingActionButtonVisible ? 1.0 : 0.0,
-      //   duration: const Duration(milliseconds: 300),
-      //   child: SyntonicFloatingActionButton(
-      //       floatingActionButtonModel: isSecondary
-      //           ? floatingActionButtonSecondary(context: context, ref: ref)!
-      //           : floatingActionButton(context: context, ref: ref)!,
-      //       isExtended: ref.watch(provider).isFloatingActionButtonExtended,
-      //       // isExtended: ref.watch(riverpod.StateNotifierProvider<VM, VS>((ref) => viewModel).select((value) => value.isFloatingActionButtonExtended)),
-      //       isSecondary: isSecondary),
-      // );
     });
   }
 
@@ -651,8 +701,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
       return const SizedBox();
     }
 
-    return SizeListenableContainer(key: _globalKey, onSizeChanged: (Size size) {
-      if (viewModel(ref).state.height == 0) {
+    return _SizeListenableContainer(key: _globalKey, onSizeChanged: (Size size) {
+      if (viewModel(ref).state.height == null) {
         print('高さ');
         print(viewModel(ref).state.height);
         viewModel(ref).state = viewModel(ref).state.copyWith(height: size.height) as VS;
@@ -661,8 +711,23 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
       child: SyntonicFade.off(
         zeroOpacityOffset: 0,
         //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
-          fullOpacityOffset: viewModel(ref).state.height, scrollController: viewModel(ref).state.scrollController!, child: headerContents(context: context, ref: ref)!),);
+          fullOpacityOffset: (viewModel(ref).state.height ?? 0) - (viewModel(ref).state.tabBarHeight ?? 0) - (kToolbarHeight * 1.5), scrollController: viewModel(ref).scrollController!, child: headerContents(context: context, ref: ref)!)
+      ,);
   }
+
+  /// Get header contents.
+  /// For listen focus event by tap, and focus out from some widgets.
+  Widget _tabBarHeader({required BuildContext context, required riverpod.WidgetRef ref}) {
+    return _SizeListenableContainer(key: _globalKey, onSizeChanged: (Size size) {
+      if (viewModel(ref).state.tabBarHeight == null) {
+        viewModel(ref).state = viewModel(ref).state.copyWith(tabBarHeight: size.height) as VS;
+      }
+    },
+      child: tabBarHeader(context: context, ref: ref)
+      ,);
+  }
+
+  Widget? tabBarHeader({required BuildContext context, required riverpod.WidgetRef ref}) => null;
 
   ///TODO: InfiniteLoadingListViewなどで、scrollControllerをセットしていないと、エラーになるので、必ずセットするようにするなどチェックを検討する。
   /// Get tab bar.
@@ -671,7 +736,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     int _currentIndex = 0;
     if (hasTabBar) {
       return TabBar(
-        dividerColor: ref.read(provider).isStickyingAppBar ? Colors.transparent : null,
+        dividerColor: ref.watch(provider.select((viewState) => viewState.isStickyingAppBar)) ? Colors.transparent : null,
         controller: tabController,
         isScrollable: tabs(context: context, ref: ref)!.length > 2 ? true : false,
         onTap: (_index) {
@@ -718,6 +783,13 @@ abstract class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNot
   BaseViewModel({required VS viewState}) : super(viewState);
 
   bool isInitialized = false;
+  final GlobalKey<FormState>? formKey = GlobalKey<FormState>();
+  late ScrollController? scrollController = ScrollController();
+  // ..addListener(scrollListener);
+  late BannerAd ad;
+  late AdSize? adSize;
+  late bool isAdLoaded = false;
+  late bool hasAds = true;
 
   @override
   set state(VS value) {
@@ -747,7 +819,7 @@ abstract class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNot
   /// Execute [onSucceeded] when on the validation pass.
   /// In the case validation failed, execute [onFailed].
   validate({Function()? onSucceeded, Function()? onFailed}) async {
-    if (state.formKey!.currentState!.validate()) {
+    if (formKey!.currentState!.validate()) {
       if (onSucceeded != null) {
         onSucceeded();
       }
@@ -761,8 +833,8 @@ abstract class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNot
 
 typedef SizeChangedCallback = void Function(Size size);
 
-class SizeListenableContainer extends SingleChildRenderObjectWidget {
-  const SizeListenableContainer({
+class _SizeListenableContainer extends SingleChildRenderObjectWidget {
+  const _SizeListenableContainer({
     required Key key,
     Widget? child,
     required this.onSizeChanged,

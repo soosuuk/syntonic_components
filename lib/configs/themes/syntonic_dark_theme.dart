@@ -15,7 +15,7 @@ ThemeData darkTheme({Color? primaryColor}) {
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
-    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor ?? SyntonicColor.primary_color, brightness: Brightness.dark, onSurface: ColorScheme.fromSeed(seedColor: primaryColor ?? SyntonicColor.primary_color, brightness: Brightness.dark).onSurface.harmonizeWith(primaryColor ?? SyntonicColor.primary_color.tone(60))),
+    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor ?? SyntonicColor.primary_color, brightness: Brightness.dark, onSurface: (primaryColor ?? SyntonicColor.primary_color).tone(95)),
         // .dark(
         // onSurface: primaryColor!.tone(50),
         // surface: SyntonicColor.raisinBlack,

@@ -175,7 +175,7 @@ class SyntonicPersonIcon extends StatelessWidget {
     return !_needsInitial || person.id == null
         ? const Stack(
             children: [
-              Icon(Icons.person),
+              Icon(Icons.account_circle, size: 26,),
               // SvgPicture.asset(
               //   "assets/images/account_circle.svg",
               //   color: isDarkTheme ? Colors.white54 : SyntonicColor.black56,

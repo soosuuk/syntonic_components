@@ -12,10 +12,13 @@ class SyntonicTabBarTheme {
               borderSide: BorderSide(
                   color: primaryColor ?? SyntonicColor.primary_color,
                   width: 3,
-                  style: BorderStyle.solid)),
+                  style: BorderStyle.solid
+              )
+          ),
         ),
         labelColor: primaryColor ?? SyntonicColor.primary_color,
-        unselectedLabelColor:
-            isDarkTheme ? Colors.white70 : SyntonicColor.black56);
+        // unselectedLabelColor:
+        //     isDarkTheme ? Colors.white70 : SyntonicColor.black56
+    );
   }
 }

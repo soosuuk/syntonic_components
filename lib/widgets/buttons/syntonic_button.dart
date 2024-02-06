@@ -22,6 +22,7 @@ class SyntonicButton extends StatelessWidget {
   final Widget? leadingWidget;
   final double? maxWidth;
   final _SyntonicButtonStyle style;
+  Color? _textColor;
 
   SyntonicButton._({required this.onTap, required this.text, required this.style, this.isEnabled = true, this.leadingWidget, this.maxWidth});
   SyntonicButton.filled({required VoidCallback onTap, required String text, bool isEnabled = true, Widget? leadingWidget, double? maxWidth}) : this._(onTap: onTap, text: text, isEnabled: isEnabled, leadingWidget: leadingWidget, maxWidth: maxWidth, style: _SyntonicButtonStyle.elevated);
@@ -33,6 +34,16 @@ class SyntonicButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // bool _isDarkTheme = MediaQuery.of(context).platformBrightness ==
     //     Brightness.dark;
+    switch (style) {
+      case _SyntonicButtonStyle.elevated:
+      case _SyntonicButtonStyle.outlined:
+      case _SyntonicButtonStyle.tonal:
+      _textColor = Theme.of(context).colorScheme.onPrimary;
+      break;
+      case _SyntonicButtonStyle.text:
+       _textColor = Theme.of(context).colorScheme.primary;
+       break;
+    }
 
     final Widget _button = Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -40,8 +51,8 @@ class SyntonicButton extends StatelessWidget {
         if (leadingWidget != null) leadingWidget!,
         if (leadingWidget != null) const SizedBox(width: 16,),
         // Subtitle2Text(text: text, textColor: isEnabled ? Colors.white : (_isDarkTheme ? Colors.white : SyntonicColor.black40),),
-        Body1Text(text: text.toUpperCase(),
-          textColor: isEnabled ? Theme.of(context).colorScheme.onPrimaryContainer : null,
+        Body1Text(text: text,
+          textColor: isEnabled ? _textColor : null,
         ),
         // Subtitle2Text(text: text),
       ],
@@ -67,7 +78,7 @@ class SyntonicButton extends StatelessWidget {
         return TextButton(
           onPressed: onTap,
           style: ButtonStyle(
-            padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(0)),
             minimumSize: MaterialStateProperty.all(Size.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),

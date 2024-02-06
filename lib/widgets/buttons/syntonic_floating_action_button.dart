@@ -36,58 +36,60 @@ class SyntonicFloatingActionButton extends StatelessWidget {
     // var brightness = SchedulerBinding.instance.window.platformBrightness;
     // bool isDarkTheme = brightness == Brightness.dark;
 
-    return SizedBox(
-      width: width,
-      height: this.isExtended ? 56 : 48,
-      child: SizedBox(
+    if (isSecondary) {
+      return FloatingActionButton.small(backgroundColor: Theme.of(context).colorScheme.secondaryContainer, onPressed: floatingActionButtonModel.onTap, child: Icon(this.floatingActionButtonModel.icon ?? Icons.add),);
+    } else {
+      return SizedBox(
+        width: width,
+        height: 56,
         child: FloatingActionButton.extended(
             backgroundColor:
-                this.isSecondary ? Theme.of(context).colorScheme.surface : null,
+            this.isSecondary ? Theme.of(context).colorScheme.surface : null,
             isExtended: true,
             extendedPadding:
-                this.isExtended ? SyntonicConstraint.horizontal16 : null,
+            !this.isExtended ? SyntonicConstraint.horizontal16 : null,
             onPressed: floatingActionButtonModel.onTap,
             heroTag: floatingActionButtonModel.heroTag,
             label: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 180),
+              duration: const Duration(milliseconds: 120),
               transitionBuilder: (Widget child, Animation<double> animation) =>
                   FadeTransition(
-                opacity: animation,
-                child: SizeTransition(
-                  sizeFactor: animation,
-                  axis: Axis.horizontal,
-                  child: child,
-                ),
-              ),
-              child: this.isExtended
+                    opacity: animation,
+                    child: SizeTransition(
+                      sizeFactor: animation,
+                      axis: Axis.horizontal,
+                      child: child,
+                    ),
+                  ),
+              child: !this.isExtended
                   ? Icon(this.floatingActionButtonModel.icon ?? Icons.add,
+                  color: this.isSecondary
+                      ? Theme.of(context).colorScheme.onSurface
+                      : null)
+                  : Row(
+                key: UniqueKey(),
+                children: [
+                  Padding(
+                    padding: SyntonicConstraint.trailing8,
+                    child: Icon(
+                      this.floatingActionButtonModel.icon ?? Icons.add,
                       color: this.isSecondary
                           ? Theme.of(context).colorScheme.onSurface
-                          : null)
-                  : Row(
-                      key: UniqueKey(),
-                      children: [
-                        Padding(
-                          padding: SyntonicConstraint.trailing8,
-                          child: Icon(
-                            this.floatingActionButtonModel.icon ?? Icons.add,
-                            color: this.isSecondary
-                                ? Theme.of(context).colorScheme.onSurface
-                                : null,
-                          ),
-                        ),
-                        Subtitle2Text(
-                          text: this.floatingActionButtonModel.text,
-                          textColor: this.isSecondary
-                              ? Theme.of(context).colorScheme.onSurface
-                              : null,
-                          needsLinkify: false,
-                        )
-                      ],
+                          : null,
                     ),
+                  ),
+                  Subtitle2Text(
+                    text: this.floatingActionButtonModel.text,
+                    textColor: this.isSecondary
+                        ? Theme.of(context).colorScheme.onSurface
+                        : null,
+                    needsLinkify: false,
+                  )
+                ],
+              ),
             )),
-      ),
-    );
+      );
+    }
   }
 }
 

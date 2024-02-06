@@ -51,8 +51,10 @@ class SyntonicLabel extends StatelessWidget {
                     ? null
                     : Border.all(
                     color: (constColor != null) ? constColor! : _isDarkTheme ? Colors.white38 : Colors.black38),
-                borderRadius: BorderRadius.circular(2),
-                color: isFilled ? _colorAlpha12 : null),
+                borderRadius: BorderRadius.circular(4),
+                // color: isFilled ? _colorAlpha12 : null
+              color: Colors.black54
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -62,7 +64,8 @@ class SyntonicLabel extends StatelessWidget {
                 ) : const SizedBox(),
                 Flexible(child: CaptionText(
                   text: text,
-                  textColor: isFilled ? color : (constColor != null) ? constColor! : null,
+                  // textColor: isFilled ? color : (constColor != null) ? constColor! : null,
+                  textColor: Colors.white,
                   overflow: TextOverflow.ellipsis,
                 )),
                 onTap != null ? Icon(Icons.keyboard_arrow_right, size: 16, color: color,) : const SizedBox(),

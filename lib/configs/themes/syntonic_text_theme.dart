@@ -23,10 +23,10 @@ extension Material3Palette on Color {
 class SyntonicTextTheme {
   static TextStyle headline1({required BuildContext context, Color? textColor}) {
     // return GoogleFonts.elsie(
-    return GoogleFonts.playfairDisplay(
+    return GoogleFonts.raleway(
     textStyle: Theme.of(context).textTheme.displayMedium,
-      fontWeight: FontWeight.w700,
-        letterSpacing: 0.9,
+      fontWeight: FontWeight.w500,
+        // letterSpacing: 1,
       // color: textColor,
       // color: textColor ?? Theme.of(context).colorScheme.onSurface,
       // height: 1.4,
@@ -34,9 +34,10 @@ class SyntonicTextTheme {
   }
 
   static TextStyle headline4({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.playfairDisplay(
+    return GoogleFonts.raleway(
       textStyle: Theme.of(context).textTheme.headlineMedium,
       fontWeight: FontWeight.w500,
+      letterSpacing: 1,
       // color: textColor,
       color: textColor ?? Theme.of(context).colorScheme.onSurface,
       height: 1.4,
@@ -44,7 +45,7 @@ class SyntonicTextTheme {
   }
 
   static TextStyle headline5({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.playfairDisplay(
+    return GoogleFonts.montserrat(
       textStyle: Theme.of(context).textTheme.headlineSmall,
       // fontWeight: FontWeight.w300,
       color: textColor,
@@ -69,7 +70,7 @@ class SyntonicTextTheme {
   }
 
   static TextStyle subtitle2({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.robotoCondensed(
+    return GoogleFonts.poppins(
         textStyle: Theme.of(context).textTheme.titleMedium,
         fontWeight: FontWeight.w500,
         color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
@@ -77,18 +78,19 @@ class SyntonicTextTheme {
   }
 
   static TextStyle body1({required BuildContext context, Color? textColor, bool? isLineThrough}) {
-    return GoogleFonts.roboto(
+    return GoogleFonts.poppins(
       color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
       textStyle: Theme.of(context).textTheme.bodyText1,
-      // fontWeight: FontWeight.w400,
-      height: 1.4,
+      fontWeight: FontWeight.w400,
+      // letterSpacing: 1,
+      // height: 1.4,
       decoration: isLineThrough == true ? TextDecoration.lineThrough : null,
     );
   }
 
   static TextStyle body2({required BuildContext context, Color? textColor}) {
     var brightness = MediaQuery.of(context).platformBrightness;
-    return GoogleFonts.notoSerif(
+    return GoogleFonts.roboto(
         textStyle: Theme.of(context).textTheme.bodyText2,
         // color: textColor ?? (brightness == Brightness.dark
         //     ? Colors.white.withAlpha(textLabelMedium)

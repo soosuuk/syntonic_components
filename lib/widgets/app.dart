@@ -7,6 +7,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../services/rating_service.dart';
+
 /// The widget is an initial widget for the app.
 class App extends StatelessWidget {
   App({required this.home, required this.primaryColor});
@@ -20,6 +22,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RatingService();
     return MaterialApp(
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {

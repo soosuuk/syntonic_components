@@ -8,18 +8,18 @@ import '../utils/helpers/image_helper/image_helper.dart';
 
 class PersonModel {
 
-  String? id;
-  String? email;
-  String? name;
-  String? photoUrl;
-  bool? isEnabled = true;
+  final String? id;
+  final String? email;
+  final String? name;
+  final String? photoUrl;
+  final bool isEnabled;
 
-  PersonModel({
+  const PersonModel({
     this.id,
     this.email,
     this.name,
     this.photoUrl,
-    this.isEnabled,
+    this.isEnabled = true,
   });
 
   // /// Get a [PersonModel] for dummy.

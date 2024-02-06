@@ -13,7 +13,7 @@ ThemeData lightTheme({Color? primaryColor}) {
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
-    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor!, brightness: Brightness.light, onSurface: primaryColor.tone(30)),
+    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor!, brightness: Brightness.light, onSurface: primaryColor.tone(30), surface: primaryColor.tone(95), background: primaryColor.tone(95)),
     // colorScheme: ColorScheme.light(
     //   primary: primaryColor ?? SyntonicColor.primary_color,
     //   secondary: primaryColor ?? SyntonicColor.primary_color,
@@ -37,7 +37,7 @@ ThemeData lightTheme({Color? primaryColor}) {
     //   backgroundColor: primaryColor,
     //   foregroundColor: Colors.white,
     // ),
-    dividerColor: Colors.transparent,
+    // dividerColor: Colors.transparent,
     toggleableActiveColor: primaryColor ?? SyntonicColor.primary_color,
     // iconTheme:
     // inputDecorationTheme:

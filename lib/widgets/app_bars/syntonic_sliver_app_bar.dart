@@ -281,8 +281,8 @@ class SyntonicSliverAppBar extends StatelessWidget
 
         return SliverAppBar(
           surfaceTintColor: isStickying ? Theme.of(context).colorScheme.surfaceTint : Colors.transparent,
+            // backgroundColor: Colors.transparent,
             backgroundColor: isStickying ? Theme.of(context).colorScheme.surface : Colors.transparent,
-      // backgroundColor: !isStickying ? ElevationOverlay.applyOverlay(context, Theme.of(context).colorScheme.surface, 4) : null,
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
@@ -298,8 +298,8 @@ class SyntonicSliverAppBar extends StatelessWidget
       pinned: (this.isFullscreenDialog || this.hasTabBar || isFadedTitle) ? true : false,
       title: isFadedTitle
           ? SyntonicFade.on(
-          zeroOpacityOffset: 0,
-          fullOpacityOffset: expandedHeight!,
+          zeroOpacityOffset: (expandedHeight ?? kToolbarHeight) - kToolbarHeight - 100,
+          fullOpacityOffset: (expandedHeight ?? kToolbarHeight) - kToolbarHeight - 50,
           // fullOpacityOffset: expandedHeight! - (kToolbarHeight*2.5),
               // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
               // fullOpacityOffset: expandedHeight!,
@@ -314,7 +314,11 @@ class SyntonicSliverAppBar extends StatelessWidget
           :  manualUrl != null ?  [ _getManualIcon(manualUrl: manualUrl, context: context),
 
       ] : actions,
-      elevation: elevation ?? (this.isStickying ? 0 : 4),
+      elevation: 0,
+      // elevation: elevation ?? (this.isStickying ? 0 : 3),
+      // scrolledUnderElevation: 3,
+      // stretchTriggerOffset: 300,
+    // forceMaterialTransparency: true,
       // expandedHeight: this.expandedHeight,
       // flexibleSpace: flexibleSpace,
       bottom: bottom,
@@ -371,15 +375,35 @@ class SyntonicSliverAppBar extends StatelessWidget
 
 class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   const StickyTabBarDelegate(
-      {required this.tabBar, required this.setStickyState,});
+      {required this.tabBar, required this.tabBarHeader, required this.setStickyState, required this.height});
   final TabBar tabBar;
+  final Widget? tabBarHeader;
   final Function(bool) setStickyState;
+  final double height;
 
   @override
-  double get minExtent => tabBar.preferredSize.height;
+  double get minExtent {
+    double _height;
+    _height = tabBar.preferredSize.height;
+
+    if (tabBarHeader != null) {
+      _height += height;
+    }
+
+    return _height;
+  }
 
   @override
-  double get maxExtent => tabBar.preferredSize.height;
+  double get maxExtent {
+    double _height;
+    _height = tabBar.preferredSize.height;
+
+    if (tabBarHeader != null) {
+      _height += height;
+    }
+
+    return _height;
+  }
 
   @override
   Widget build(
@@ -392,10 +416,12 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
 
     Color _color = Theme.of(context).colorScheme.surface;
     return Material(
+      type: MaterialType.button,
+      animationDuration: overlapsContent? Duration(milliseconds: 100) : Duration(milliseconds: 150),
         surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
         elevation: overlapsContent ? 3.0 : 0,
         color: _color,
-        child: tabBar);
+        child: Column(children: [tabBarHeader ?? const SizedBox(), tabBar],));
   }
 
   @override

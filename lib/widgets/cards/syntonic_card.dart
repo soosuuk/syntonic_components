@@ -17,7 +17,7 @@ class SyntonicCard extends StatelessWidget {
 
   const SyntonicCard(
       {
-        this.borderRadius = 12,
+        this.borderRadius = 30,
         this.onTap,
       this.isSelected = false,
         this.image,

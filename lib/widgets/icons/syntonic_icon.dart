@@ -15,7 +15,10 @@ class SyntonicIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(padding: EdgeInsets.all(padding), child: Theme(data: darkTheme(primaryColor: color), child: RepaintBoundary(child: IconButton(
-        icon: Icon(icon),
+        icon: Icon(icon, size: 16,),
+        iconSize: 18,
+        padding: EdgeInsets.all(4),
+        constraints: const BoxConstraints(),
         onPressed: onPressed,
         style: IconButton.styleFrom(
           foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,

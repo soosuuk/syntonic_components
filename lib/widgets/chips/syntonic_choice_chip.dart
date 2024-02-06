@@ -7,6 +7,7 @@ class SyntonicChoiceChip extends StatelessWidget {
   final String label;
   final bool isSelected;
   final Function(bool isSelected) onSelected;
+  final Color? color;
   
   @Deprecated("You should use [trailingIcon] instead of this.")
   final IconData? icon;
@@ -18,6 +19,7 @@ class SyntonicChoiceChip extends StatelessWidget {
       required this.label,
       required this.isSelected,
       required this.onSelected,
+        this.color,
       this.icon,
       this.trailingIcon});
 
@@ -56,7 +58,7 @@ class SyntonicChoiceChip extends StatelessWidget {
         avatar: trailingIcon != null ? trailingIcon :  icon != null
             ? Icon(icon,
                 color:
-                    isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary)
+                    color ?? (isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary))
             : null,
         showCheckmark: icon != null || trailingIcon != null ? false : true,
         checkmarkColor: Theme.of(context).colorScheme.primary);

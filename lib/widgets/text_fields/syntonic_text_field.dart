@@ -1,3 +1,4 @@
+import 'package:path/path.dart';
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:flutter/material.dart';
@@ -110,18 +111,19 @@ class SyntonicTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TextEditingController _controller = TextEditingController();
     // set value of the text fields.
-    // _controller.text = value ?? '';
-
+    _controller.text = value ?? '';
+    //
     // set cursor position at the end of the value.
-    // _controller.selection = TextSelection.fromPosition(
-    //     TextPosition(offset: _controller.text.length));
+    _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length));
 
     return RepaintBoundary(child: Padding(padding: hasPadding ? const EdgeInsets.symmetric(vertical: 8, horizontal: 16) : EdgeInsets.zero, child: TextFormField(
       key: PageStorageKey(itemKey),
       initialValue: value,
       enabled: isEnabled,
-      // controller: controller ?? _controller,
+      // controller: _controller,
       maxLines: maxLines,
       minLines: minLines,
       validator: validator,
@@ -134,6 +136,8 @@ class SyntonicTextField extends StatelessWidget {
         suffixIcon: errorMessage != null
             ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
             : null,
+        contentPadding: theme == TextFieldTheme.underline ? const EdgeInsets.all(0) : null,
+        isDense: theme == TextFieldTheme.underline,
       ),
       textInputAction: _textInputAction,
       keyboardType: maxLines != null ? TextInputType.multiline : keyboardType,
@@ -141,99 +145,97 @@ class SyntonicTextField extends StatelessWidget {
       onFieldSubmitted: (text) {
         onTextChanged(text);
       },
-      onChanged: (text) {
-        onTextChanged(text);
-      },
+      onSaved: (text) => onTextChanged(_controller.text),
       style: textStyle,
     ),),);
 
-    return ListenableProvider(
-        create: (context) => OutlinedTextFieldManager(),
-        child: Consumer<OutlinedTextFieldManager>(
-            builder: (context, model, child) {
-              return Padding(padding: hasPadding ? const EdgeInsets.only(left: 16, right: 16) : EdgeInsets.zero, child: getTextFormField(context, model),);
-        }));
+    // return ListenableProvider(
+    //     create: (context) => OutlinedTextFieldManager(),
+    //     child: Consumer<OutlinedTextFieldManager>(
+    //         builder: (context, model, child) {
+    //           return Padding(padding: hasPadding ? const EdgeInsets.only(left: 16, right: 16) : EdgeInsets.zero, child: getTextFormField(context, model),);
+    //     }));
   }
 
-  /// Get text form field depends on [outlinedTextFieldType].
-  Widget getTextFormField(
-      BuildContext context, OutlinedTextFieldManager outlinedTextFieldManager) {
-
-    // set value of the text fields.
-    _controller.text = value ?? '';
-
-    // set cursor position at the end of the value.
-    _controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: _controller.text.length));
-
-    switch (outlinedTextFieldType) {
-      case OutlinedTextFieldType.Normal:
-        return TextFormField(
-          key: PageStorageKey(itemKey),
-          enabled: isEnabled,
-          controller: controller ?? _controller,
-          maxLines: maxLines,
-          minLines: minLines,
-          validator: validator,
-          decoration: InputDecoration(
-            hintText: hintText,
-            labelText: label,
-            errorText: errorMessage,
-            helperText: helperText,
-            border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
-            suffixIcon: errorMessage != null
-                ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
-                : null,
-          ),
-          textInputAction: _textInputAction,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-          onFieldSubmitted: (text) {
-            onTextChanged(text);
-          },
-          onChanged: (text) {
-            onTextChanged(text);
-          },
-          style: textStyle,
-        );
-      case OutlinedTextFieldType.Obscure:
-        return Stack(alignment: Alignment.centerRight, children: [
-          TextFormField(
-            key: PageStorageKey(itemKey),
-            controller: controller,
-            validator: validator,
-            obscureText: !outlinedTextFieldManager.isVisible,
-            decoration: InputDecoration(
-              hintText: hintText,
-              labelText: label,
-              errorText: errorMessage,
-              border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
-            ),
-            textInputAction: TextInputAction.done,
-            onFieldSubmitted: (text) {
-              onTextChanged(text);
-            },
-            onChanged: (text) {
-              onTextChanged(text);
-            },
-            style: textStyle,
-          ),
-          Positioned(
-            top: 6,
-            right: 0,
-            child: IconButton(
-              icon: Icon(!outlinedTextFieldManager.isVisible
-                  ? Icons.visibility_off
-                  : Icons.visibility),
-              onPressed: () {
-                // value = controller.text;
-                outlinedTextFieldManager.changeTextVisibilityState();
-              },
-            ),
-          ),
-        ]);
-    }
-  }
+  // /// Get text form field depends on [outlinedTextFieldType].
+  // Widget getTextFormField(
+  //     BuildContext context, OutlinedTextFieldManager outlinedTextFieldManager) {
+  //
+  //   // set value of the text fields.
+  //   _controller.text = value ?? '';
+  //
+  //   // set cursor position at the end of the value.
+  //   _controller.selection = TextSelection.fromPosition(
+  //       TextPosition(offset: _controller.text.length));
+  //
+  //   switch (outlinedTextFieldType) {
+  //     case OutlinedTextFieldType.Normal:
+  //       return TextFormField(
+  //         key: PageStorageKey(itemKey),
+  //         enabled: isEnabled,
+  //         controller: controller ?? _controller,
+  //         maxLines: maxLines,
+  //         minLines: minLines,
+  //         validator: validator,
+  //         decoration: InputDecoration(
+  //           hintText: hintText,
+  //           labelText: label,
+  //           errorText: errorMessage,
+  //           helperText: helperText,
+  //           border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
+  //           suffixIcon: errorMessage != null
+  //               ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
+  //               : null,
+  //         ),
+  //         textInputAction: _textInputAction,
+  //         keyboardType: keyboardType,
+  //         inputFormatters: inputFormatters,
+  //         onFieldSubmitted: (text) {
+  //           onTextChanged(text);
+  //         },
+  //         onChanged: (text) {
+  //           onTextChanged(text);
+  //         },
+  //         style: textStyle,
+  //       );
+  //     case OutlinedTextFieldType.Obscure:
+  //       return Stack(alignment: Alignment.centerRight, children: [
+  //         TextFormField(
+  //           key: PageStorageKey(itemKey),
+  //           controller: controller,
+  //           validator: validator,
+  //           obscureText: !outlinedTextFieldManager.isVisible,
+  //           decoration: InputDecoration(
+  //             hintText: hintText,
+  //             labelText: label,
+  //             errorText: errorMessage,
+  //             border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
+  //           ),
+  //           textInputAction: TextInputAction.done,
+  //           onFieldSubmitted: (text) {
+  //             onTextChanged(text);
+  //           },
+  //           onChanged: (text) {
+  //             onTextChanged(text);
+  //           },
+  //           style: textStyle,
+  //         ),
+  //         Positioned(
+  //           top: 6,
+  //           right: 0,
+  //           child: IconButton(
+  //             icon: Icon(!outlinedTextFieldManager.isVisible
+  //                 ? Icons.visibility_off
+  //                 : Icons.visibility),
+  //             onPressed: () {
+  //               // value = controller.text;
+  //               outlinedTextFieldManager.changeTextVisibilityState();
+  //             },
+  //           ),
+  //         ),
+  //       ]);
+  //   }
+  // }
 }
 
 class OutlinedTextFieldManager extends ChangeNotifier {

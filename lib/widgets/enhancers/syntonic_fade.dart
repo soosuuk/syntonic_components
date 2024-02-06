@@ -70,53 +70,103 @@ class _FadeState extends State<SyntonicFade> {
 
 
     if (widget.fullOpacityOffset == widget.zeroOpacityOffset) {
-      return 1;
+      print('メイン0');
+      return 0;
     } else if (widget.fullOpacityOffset > widget.zeroOpacityOffset) {
 
       switch (widget.fadeMode) {
         case _FadeMode.on:
           if (_offset <= widget.zeroOpacityOffset) {
-            // print("fade onnn if");
+            print("fade onnn if 0");
             return 0;
           } else if (_offset >= widget.fullOpacityOffset) {
-            // print("fade onnn else if");
+            print("fade onnn else if 1");
             return 1;
           } else {
             // print((_offset - widget.zeroOpacityOffset) /
             //     (widget.fullOpacityOffset - widget.zeroOpacityOffset));
-            // print("fade onnn else");
+            print("fade onnn else ${(_offset - widget.zeroOpacityOffset) /
+                (widget.fullOpacityOffset - widget.zeroOpacityOffset)}");
             return (_offset - widget.zeroOpacityOffset) /
                 (widget.fullOpacityOffset - widget.zeroOpacityOffset);
           }
         case _FadeMode.off:
           if (_offset == widget.fullOpacityOffset) {
-            // print("fade off if");
+            print("fade off if 0");
 
             return 0;
           } else if (_offset == widget.zeroOpacityOffset) {
-            // print("fade off else if");
+            print("fade off else if 1");
 
             return 1;
           } else {
             // if (_offset <= widget.zeroOpacityOffset) {
             //   return 1;
             // }
-            // print("fade off else");
 
             // print((widget.fullOpacityOffset - (widget.fullOpacityOffset - _offset)) /
             //     widget.fullOpacityOffset);
             double _value = (widget.fullOpacityOffset - _offset) /
                 widget.fullOpacityOffset;
+            print("fade off else ${_value < 0 ? 0 : _value}");
             return _value < 0 ? 0 : _value;
           }
       }
     } else {
+      switch (widget.fadeMode) {
+        case _FadeMode.off:
+          if (_offset <= widget.zeroOpacityOffset) {
+            print("BBB fade onnn if 0");
+            return 0;
+          } else if (_offset >= widget.fullOpacityOffset) {
+            print("BBB fade onnn else if 1");
+            // return 1;
+            print(_offset);
+            print(widget.zeroOpacityOffset);
+            print(widget.fullOpacityOffset);
+            return (_offset - widget.zeroOpacityOffset) /
+                (widget.fullOpacityOffset - widget.zeroOpacityOffset);
+          } else {
+            // print((_offset - widget.zeroOpacityOffset) /
+            //     (widget.fullOpacityOffset - widget.zeroOpacityOffset));
+            print("BBB fade onnn else ${(_offset - widget.zeroOpacityOffset) /
+                (widget.fullOpacityOffset - widget.zeroOpacityOffset)}");
+            return (_offset - widget.zeroOpacityOffset) /
+                (widget.fullOpacityOffset - widget.zeroOpacityOffset);
+          }
+        case _FadeMode.on:
+          if (_offset == widget.fullOpacityOffset) {
+            print("BBB fade off if 0");
+
+            return 0;
+          } else if (_offset == widget.zeroOpacityOffset) {
+            print("BBB fade off else if 1");
+
+            return 1;
+          } else {
+            // if (_offset <= widget.zeroOpacityOffset) {
+            //   return 1;
+            // }
+
+            // print((widget.fullOpacityOffset - (widget.fullOpacityOffset - _offset)) /
+            //     widget.fullOpacityOffset);
+            double _value = (widget.fullOpacityOffset - _offset) /
+                widget.fullOpacityOffset;
+            print("BBB fade off else ${_value < 0 ? 0 : _value}");
+            return _value < 0 ? 0 : _value;
+          }
+      }
+
       // fading in
       if (_offset <= widget.zeroOpacityOffset) {
+        print('other 0');
         return 0;
       } else if (_offset >= widget.fullOpacityOffset) {
+        print('other 1');
         return 1;
       } else {
+        print('other ${(_offset - widget.zeroOpacityOffset) /
+            (widget.fullOpacityOffset - widget.zeroOpacityOffset)}');
         return (_offset - widget.zeroOpacityOffset) /
             (widget.fullOpacityOffset - widget.zeroOpacityOffset);
       }

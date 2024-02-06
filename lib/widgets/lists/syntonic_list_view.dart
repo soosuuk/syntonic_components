@@ -1,4 +1,6 @@
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
+import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
+import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -330,32 +332,38 @@ class SyntonicListView extends ExtendedStatelessWidget {
                     final isLast = index == numberOfItems! - 1;
 
                     final timelineTile = <Widget>[
-                      const SizedBox(width: 8),
-                      CustomPaint(
-                        foregroundPainter: _TimelinePainter(
-                          hideDefaultIndicator: true,
-                          lineColor: Theme.of(context).colorScheme.tertiary,
-                          indicatorColor: Colors.blue,
-                          indicatorSize: 40.0,
-                          indicatorStyle: PaintingStyle.fill,
-                          isFirst: isFirst,
-                          isLast: isLast,
-                          lineGap: 4.0,
-                          strokeCap: StrokeCap.butt,
-                          strokeWidth: 1.5,
-                          style: PaintingStyle.stroke,
-                          itemGap: 12.0,
-                        ),
-                        child: SizedBox(
-                          height: double.infinity,
-                          width: 40,
-                          child: stepIcon!(index),
-                          // child: Icon(Icons.access_alarm),
-                        ),
-                      ),
+                      // const SizedBox(width: 8),
+                      // CustomPaint(
+                      //   painter: _TimelinePainter(
+                      //     hideDefaultIndicator: true,
+                      //     lineColor: Theme.of(context).colorScheme.onSurface,
+                      //     indicatorColor: Colors.blue,
+                      //     indicatorSize: 60.0,
+                      //     indicatorStyle: PaintingStyle.fill,
+                      //     isFirst: isFirst,
+                      //     isLast: isLast,
+                      //     lineGap: 0,
+                      //     strokeCap: StrokeCap.butt,
+                      //     strokeWidth: 1.5,
+                      //     style: PaintingStyle.stroke,
+                      //     itemGap: 0,
+                      //   ),
+                      //   child: SizedBox(
+                      //     height: double.infinity,
+                      //     width: 60,
+                      //     child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [stepIcon!(index)!, stepIcon!(index)!],),
+                      //     // child: Icon(Icons.access_alarm),
+                      //   ),
+                      // ),
+                      SizedBox(height: double.infinity / 2, child: Stack(alignment: AlignmentDirectional.center, children: [SizedBox(
+                        height: double.infinity,
+                        width: 60,
+                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Padding(padding: EdgeInsets.only(top: isFirst ? 16 : 0), child: stepIcon!(index)!,), Padding(padding: EdgeInsets.only(bottom: isLast ? 16 : 0), child: SyntonicIcon(icon: Icons.add, padding: 0,),)],),
+                        // child: Icon(Icons.access_alarm),
+                      ), SyntonicDivider.vertical(),],),),
                       // SizedBox(width: 4),
                       Expanded(child:
-                      Padding(padding: EdgeInsets.only(left: 8, top: isFirst ? 16 : 4, bottom: isLast ? 16 : 4, right: 16), child: listItem!(index),),
+                      Padding(padding: EdgeInsets.only(left: 8, top: isFirst ? 16 : 4, bottom: (isLast ? 16 : 4) + 40, right: 16), child: listItem!(index),),
                       ),
                     ];
 
@@ -363,9 +371,10 @@ class SyntonicListView extends ExtendedStatelessWidget {
                       key: ValueKey(index),
                       child: IntrinsicHeight(
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:
-                          timelineTile
+                          timelineTile,
                         // isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
                       ),
                     ),);
