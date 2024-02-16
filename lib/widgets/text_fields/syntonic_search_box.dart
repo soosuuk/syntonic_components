@@ -9,7 +9,8 @@ class SyntonicSearchBox extends StatelessWidget {
   final String? value;
   final VoidCallback? onTap;
   final Function(String searchWord) onSearchButtonTap;
-  SyntonicSearchBox({this.value, this.onTap, required this.onSearchButtonTap});
+  final String? hintText;
+  const SyntonicSearchBox({Key? key, this.value, this.onTap, required this.onSearchButtonTap, this.hintText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class SyntonicSearchBox extends StatelessWidget {
                           onPressed: () => _textEditingController.clear())
                       : null,
               border: InputBorder.none,
-              hintText: "Search event"
+              hintText: hintText ?? "Search event"
           ),
           textInputAction: TextInputAction.search),
     );

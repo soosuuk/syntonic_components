@@ -10,10 +10,8 @@ import 'package:provider/single_child_widget.dart';
 abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewModel<VS>, VS extends SyntonicModalBottomSheetViewState> {
   const SyntonicModalBottomSheet({Key? key, required this.vm,}) : super();
   final VM vm;
-  // late List<Widget> contents;
   static const double minExtent = 0.5;
   static const double maxExtent = 1.0;
-  // PageController? pageController;
 
   VM viewModel(WidgetRef ref) => ref.read(provider.notifier);
   StateNotifierProvider<VM, VS> get provider => StateNotifierProvider<VM, VS>((ref) => vm);
@@ -22,7 +20,7 @@ abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewM
   Function? onPop({required BuildContext context, required WidgetRef ref});
 
   /// Open modal bottom sheet.
-  openModalBottomSheet({required BuildContext context, PageController? pageController}) {
+  openModalBottomSheet({required BuildContext context,}) {
     // this.pageController = pageController;
     // contents = children;
     // provider = ChangeNotifierProvider<SyntonicModalBottomSheetViewModel>((ref) => SyntonicModalBottomSheetViewModel());
@@ -43,13 +41,13 @@ abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewM
                   onPop(context: context, ref: ref);
                 }
                 return true;
-              }, child: _contents(context: context, ref: ref),);
+              }, child: _contents(context: context, ref: ref,),);
           });
         }
     );
   }
 
-  Widget _contents({required BuildContext context, required WidgetRef ref, PageController? pageController}) {
+  Widget _contents({required BuildContext context, required WidgetRef ref,}) {
     return DraggableScrollableActuator(
       child: DraggableScrollableSheet(
         key: GlobalKey(),
@@ -63,7 +61,7 @@ abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewM
         builder: (BuildContext context, ScrollController scrollController) {
           return  PageView(
               physics: NeverScrollableScrollPhysics(),
-              controller: pageController ?? PageController(),
+              controller: vm.pageController,
               children: _pageViews(context: context, ref: ref, scrollController: scrollController));
         },
       ),

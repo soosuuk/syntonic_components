@@ -29,16 +29,18 @@ class SyntonicTextField extends StatelessWidget {
   final int? maxLines;
   final int minLines;
   final bool hasPadding;
-  final Function(String text) onTextChanged;
+  final Function(String text)? onTextChanged;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final List<TextInputFormatter>? inputFormatters;
-  final TextEditingController? controller;
+  final TextEditingController controller;
   final bool isEnabled;
+  final bool isFocusRequired;
   final bool needsMasking;
   final int? itemKey;
   final TextFieldTheme? theme;
+  final TextAlign? textAlign;
   final TextStyle? textStyle;
   final String? hintText;
 
@@ -48,8 +50,8 @@ class SyntonicTextField extends StatelessWidget {
   /// Normal.
   const SyntonicTextField._(
       {required this.label,
-      required this.onTextChanged,
-      required this.value,
+        this.onTextChanged,
+        this.value,
       this.errorMessage,
       this.maxLines,
       this.minLines = 1,
@@ -59,17 +61,19 @@ class SyntonicTextField extends StatelessWidget {
       this.textInputAction = TextInputAction.done,
       this.keyboardType,
       this.inputFormatters,
-      this.controller,
+      required this.controller,
       this.isEnabled = true,
+        this.isFocusRequired = false,
         this.needsMasking = false,
       this.itemKey,
         this.theme = TextFieldTheme.outlined,
+        this.textAlign,
         this.textStyle,
         this.hintText,
       });
 
   const SyntonicTextField.outlined({String? label,
-    required Function(String text) onTextChanged,
+    Function(String text)? onTextChanged,
     required String? value,
     String? errorMessage,
     int? maxLines,
@@ -80,11 +84,13 @@ class SyntonicTextField extends StatelessWidget {
     TextInputAction? textInputAction = TextInputAction.done,
     TextInputType? keyboardType,
     List<TextInputFormatter>? inputFormatters,
-    TextEditingController? controller,
+    required TextEditingController controller,
     bool isEnabled = true,
+    bool isFocusRequired = false,
     bool needsMasking = false,
     int? itemKey,
     TextFieldTheme? theme,
+    TextAlign? textAlign,
     TextStyle? textStyle,
     String? hintText,
   }) : this._(label: label,
@@ -101,29 +107,32 @@ class SyntonicTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       controller: controller,
       isEnabled: isEnabled,
+      isFocusRequired: isFocusRequired,
       needsMasking: needsMasking,
       itemKey: itemKey,
       theme: theme,
+      textAlign: textAlign,
       textStyle: textStyle,
       hintText: hintText);
 
-  static final TextEditingController _controller = TextEditingController();
+  // static final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     // TextEditingController _controller = TextEditingController();
     // set value of the text fields.
-    _controller.text = value ?? '';
+    controller.text = value ?? controller.text;
     //
     // set cursor position at the end of the value.
-    _controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: _controller.text.length));
+    controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length));
 
     return RepaintBoundary(child: Padding(padding: hasPadding ? const EdgeInsets.symmetric(vertical: 8, horizontal: 16) : EdgeInsets.zero, child: TextFormField(
       key: PageStorageKey(itemKey),
-      initialValue: value,
+      // initialValue: value,
+      autofocus: isFocusRequired,
       enabled: isEnabled,
-      // controller: _controller,
+      controller: controller,
       maxLines: maxLines,
       minLines: minLines,
       validator: validator,
@@ -140,12 +149,15 @@ class SyntonicTextField extends StatelessWidget {
         isDense: theme == TextFieldTheme.underline,
       ),
       textInputAction: _textInputAction,
+      textAlign: textAlign ?? TextAlign.start,
       keyboardType: maxLines != null ? TextInputType.multiline : keyboardType,
       inputFormatters: inputFormatters,
-      onFieldSubmitted: (text) {
-        onTextChanged(text);
+      onChanged: (text) {
+        if (onTextChanged != null) {
+          onTextChanged!(text);
+        }
       },
-      onSaved: (text) => onTextChanged(_controller.text),
+      // onSaved: (text) => onTextChanged(controller.text),
       style: textStyle,
     ),),);
 

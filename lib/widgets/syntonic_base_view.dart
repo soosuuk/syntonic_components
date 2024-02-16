@@ -52,7 +52,7 @@ abstract class ExtendedModel {
 // ignore: must_be_immutable
 abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseViewState> extends StatelessWidget {
 
-  const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false, this.hasFAB = false, this.hasFABSecondary = false}) : super(key: key);
+  const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false, this.hasFAB = false, this.hasFABSecondary = false, this.isPage = false}) : super(key: key);
 
   final VM vm;
   final GlobalKey? globalKey;
@@ -62,6 +62,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   final bool isChild;
   final bool hasFAB;
   final bool hasFABSecondary;
+  final bool isPage;
 
   Future<AdSize?> _getAdSize(BuildContext context) async {
 
@@ -104,67 +105,68 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     //   this.platformType = PlatformType.Android;
     // }
 
-    return Column(children: [Expanded(child: GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus!.unfocus();
-      },
-      child: _screen(vm, context),
-    )), isChild || !vm.hasAds ? const SizedBox() : Builder(builder: (context) {
-      return Container(
-        alignment: Alignment.center,
-        height: 88,
-        width: 88,
-        // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
-        // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
-        child: FutureBuilder(
-            future: _getAdSize(context),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState ==
-                  ConnectionState.done) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text(snapshot.error.toString(),
-                        textAlign: TextAlign.center,
-                        textScaleFactor: 1.3),
-                  );
-                }
-
-                // if (!vm.isAdLoaded) {
-                //   vm.ad = BannerAd(
-                //     adUnitId: AdHelper.bannerAdUnitId,
-                //     size: vm.adSize!,
-                //     request: AdRequest(),
-                //     listener: BannerAdListener(
-                //       onAdLoaded: (_) {
-                //         vm.isAdLoaded = true;
-                //       },
-                //       onAdFailedToLoad: (ad, error) {
-                //         //Load失敗時の処理
-                //         ad.dispose();
-                //         print(
-                //             'Ad load failed (code=${error.code} message=${error.message})');
-                //       },
-                //     ),
-                //   );
-                //   vm.ad.load();
-                //   return Container();
-                // }
-                return AdWidget(ad: vm.ad);
-              }
-              else {
-                return Container();
-              }
-            }),
-      );
-    })],);
-
-    return GestureDetector(
+    if (isChild || !vm.hasAds) {
+      return GestureDetector(
         onTap: () {
           FocusManager.instance.primaryFocus!.unfocus();
         },
-      child: _screen(vm, context),
-    );
-    // return _screen(vm);
+        child: _screen(vm, context),
+      );
+    } else {
+      return Column(children: [Expanded(child: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus!.unfocus();
+        },
+        child: _screen(vm, context),
+      )), Builder(builder: (context) {
+        return Container(
+          alignment: Alignment.center,
+          height: 88,
+          width: 88,
+          // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
+          // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
+          child: FutureBuilder(
+              future: _getAdSize(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState ==
+                    ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString(),
+                          textAlign: TextAlign.center,
+                          textScaleFactor: 1.3),
+                    );
+                  }
+
+                  // if (!vm.isAdLoaded) {
+                  //   vm.ad = BannerAd(
+                  //     adUnitId: AdHelper.bannerAdUnitId,
+                  //     size: vm.adSize!,
+                  //     request: AdRequest(),
+                  //     listener: BannerAdListener(
+                  //       onAdLoaded: (_) {
+                  //         vm.isAdLoaded = true;
+                  //       },
+                  //       onAdFailedToLoad: (ad, error) {
+                  //         //Load失敗時の処理
+                  //         ad.dispose();
+                  //         print(
+                  //             'Ad load failed (code=${error.code} message=${error.message})');
+                  //       },
+                  //     ),
+                  //   );
+                  //   vm.ad.load();
+                  //   return Container();
+                  // }
+                  return AdWidget(ad: vm.ad);
+                }
+                else {
+                  return Container();
+                }
+              }),
+        );
+      })],);
+    }
   }
 
   /// Get a screen.
@@ -252,55 +254,59 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
               // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
                 child:
                 riverpod.Consumer(builder: (context, ref, child) {
-                return NestedScrollView(
-                  controller: viewModel(ref)
-                      .scrollController,
-                  headerSliverBuilder:
-                      (_, __) {
-                    return <Widget>[
-                      hasHeader ?
-                      SliverStack(
-                        children: [
-                          SliverList(
-                            delegate: SliverChildListDelegate(
-                              [Material(
-                                  type: MaterialType.button,
-                                  animationDuration: viewModel(ref).state.isStickyingAppBar ? Duration(milliseconds: 100) : Duration(milliseconds: 150),
-                                  surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
-                                  shadowColor: Colors.transparent,
-                                  elevation: ref.watch(provider.select((viewState) => viewState.isStickyingAppBar)) ? 3 : 0,
-                                  color: Theme.of(context).colorScheme.surface,
-                                  child: _headerContents(context: context, ref: ref))],
+                if (isPage) {
+                  return mainContents(context: context, ref: ref);
+                } else {
+                  return NestedScrollView(
+                    controller: viewModel(ref)
+                        .scrollController,
+                    headerSliverBuilder:
+                        (_, __) {
+                      return <Widget>[
+                        hasHeader ?
+                        SliverStack(
+                          children: [
+                            SliverList(
+                              delegate: SliverChildListDelegate(
+                                [Material(
+                                    type: MaterialType.button,
+                                    animationDuration: viewModel(ref).state.isStickyingAppBar ? Duration(milliseconds: 100) : Duration(milliseconds: 150),
+                                    surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
+                                    shadowColor: Colors.transparent,
+                                    elevation: ref.watch(provider.select((viewState) => viewState.isStickyingAppBar)) ? 3 : 0,
+                                    color: Theme.of(context).colorScheme.surface,
+                                    child: _headerContents(context: context, ref: ref))],
+                              ),
                             ),
-                          ),
-                          _appBar(context: context),
-                        ],
-                      ) : _appBar(context: context),
-                      hasTabBar
-                          ? SliverPersistentHeader(
-                          pinned: true,
-                          delegate: StickyTabBarDelegate(
-                              tabBar: _tabBar(context: context, ref: ref)!,
-                              tabBarHeader: _tabBarHeader(context: context, ref: ref),
-                              setStickyState: (isSticking) {
-                                if (viewModel(ref)
-                                    .state.isStickyingAppBar != isSticking) {
-                                  print('スティッキー');
-                                  viewModel(ref)
-                                      .state = viewModel(ref)
-                                      .state.copyWith(isStickyingAppBar: isSticking) as VS;
-                                }
-                                print(viewModel(ref)
-                                    .state.isStickyingAppBar);
-                              },
-                            height: viewModel(ref)
-                                .state.tabBarHeight ?? 0
-                              ))
-                          : _blank,
-                    ];
-                  },
-                  body: _notificationListener(context: context, ref: ref),
-                );
+                            _appBar(context: context),
+                          ],
+                        ) : _appBar(context: context),
+                        hasTabBar
+                            ? SliverPersistentHeader(
+                            pinned: true,
+                            delegate: StickyTabBarDelegate(
+                                tabBar: _tabBar(context: context, ref: ref)!,
+                                tabBarHeader: _tabBarHeader(context: context, ref: ref),
+                                setStickyState: (isSticking) {
+                                  if (viewModel(ref)
+                                      .state.isStickyingAppBar != isSticking) {
+                                    print('スティッキー');
+                                    viewModel(ref)
+                                        .state = viewModel(ref)
+                                        .state.copyWith(isStickyingAppBar: isSticking) as VS;
+                                  }
+                                  print(viewModel(ref)
+                                      .state.isStickyingAppBar);
+                                },
+                                height: viewModel(ref)
+                                    .state.tabBarHeight ?? 0
+                            ))
+                            : _blank,
+                      ];
+                    },
+                    body: _notificationListener(context: context, ref: ref),
+                  );
+                }
                 }),
             ),
             bottomSheet: bottomSheet,

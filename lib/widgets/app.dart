@@ -11,7 +11,7 @@ import '../services/rating_service.dart';
 
 /// The widget is an initial widget for the app.
 class App extends StatelessWidget {
-  App({required this.home, required this.primaryColor});
+  App({required this.home, required this.primaryColor, required this.localizationDelegates});
 
   /// An initial screen when the app is built.
   final Widget home;
@@ -19,6 +19,8 @@ class App extends StatelessWidget {
   /// A primary color for the app.
   /// Apply the color as primary color in the app.
   final Color primaryColor;
+
+  List<LocalizationsDelegate<dynamic>> localizationDelegates;
 
   @override
   Widget build(BuildContext context) {
@@ -37,25 +39,11 @@ class App extends StatelessWidget {
       darkTheme: darkTheme(primaryColor: primaryColor),
       home: home,
       debugShowCheckedModeBanner: false,
-      // supportedLocales: [
-      //   Locale('ja', ''),
-      // // Locale('en', '')
-      // ],
-      // localizationsDelegates: localizationDelegates,
+      supportedLocales: [
+        Locale('my', ''),
+      // Locale('en', '')
+      ],
       localizationsDelegates: localizationDelegates,
     );
-  }
-
-  /// TODO: このFunctionは、jsonからarbへの移行が終わったら削除します。
-  List<LocalizationsDelegate<dynamic>> get localizationDelegates {
-    // List<LocalizationsDelegate<dynamic>> localizationDelegateOld = [
-    //   TranslatorDelegate(),
-    //   GlobalMaterialLocalizations.delegate,
-    //   GlobalCupertinoLocalizations.delegate,
-    //   GlobalWidgetsLocalizations.delegate,
-    // ];
-    List<LocalizationsDelegate<dynamic>> localizationDelegateNew =
-        AppLocalizations.localizationsDelegates;
-    return  localizationDelegateNew;
   }
 }

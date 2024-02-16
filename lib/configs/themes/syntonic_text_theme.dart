@@ -24,7 +24,7 @@ class SyntonicTextTheme {
   static TextStyle headline1({required BuildContext context, Color? textColor}) {
     // return GoogleFonts.elsie(
     return GoogleFonts.raleway(
-    textStyle: Theme.of(context).textTheme.displayMedium,
+    textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 43),
       fontWeight: FontWeight.w500,
         // letterSpacing: 1,
       // color: textColor,

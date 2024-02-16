@@ -15,7 +15,7 @@ ThemeData darkTheme({Color? primaryColor}) {
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
-    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor ?? SyntonicColor.primary_color, brightness: Brightness.dark, onSurface: (primaryColor ?? SyntonicColor.primary_color).tone(95)),
+    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor ?? Theme.of(NavigationService().navigatorKey.currentContext!).colorScheme.onPrimary, brightness: Brightness.dark, onSurface: (primaryColor ?? Theme.of(NavigationService().navigatorKey.currentContext!).colorScheme.primary).tone(85)),
         // .dark(
         // onSurface: primaryColor!.tone(50),
         // surface: SyntonicColor.raisinBlack,
