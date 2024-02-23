@@ -98,6 +98,8 @@ class SyntonicListView extends ExtendedStatelessWidget {
   /// Number of column in [listItem] of [BasicListView.gallery].
   final int numberOfColumn;
 
+  final Function(int index, bool isBefore)? onAdded;
+
   // ScrollController? scrollController;
 
   /// A [BasicListView] is a redirect constructor (private) from other named
@@ -123,6 +125,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
     this.state = _BasicListViewState.normal,
     this.numberOfRow = 3,
     this.numberOfColumn = 3,
+    this.onAdded,
   });
 
   /// Create a [BasicListView] without any events.
@@ -202,6 +205,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
     required Widget Function(int index) listItem,
     required int numberOfItems,
     required Function(int newIndex, int oldIndex)? onReordered,
+    required Function(int index, bool isBefore)? onAdded,
     required bool isReorderMode,
     Widget? Function(int index)? stepIcon,
     bool isNested = false,
@@ -213,6 +217,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
             listItem: listItem,
             numberOfItems: numberOfItems,
             onReordered: onReordered,
+            onAdded: onAdded,
             isReorderMode: isReorderMode,
             stepIcon: stepIcon,
             isNested: isNested,
@@ -318,6 +323,10 @@ class SyntonicListView extends ExtendedStatelessWidget {
                   });
             case _BasicListViewState.reorderable:
               return ReorderableListView.builder(
+                  // scrollController: ScrollController(),
+                  shrinkWrap: true,
+                  // physics:
+                  // const NeverScrollableScrollPhysics(),
                   itemCount: numberOfItems!,
                   itemBuilder: (_, int index) {
                     // final child = children[index];
@@ -358,7 +367,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                       SizedBox(height: double.infinity / 2, child: Stack(alignment: AlignmentDirectional.center, children: [SizedBox(
                         height: double.infinity,
                         width: 60,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Padding(padding: EdgeInsets.only(top: isFirst ? 16 : 0), child: stepIcon!(index)!,), Padding(padding: EdgeInsets.only(bottom: isLast ? 16 : 0), child: SyntonicIcon(icon: Icons.add, padding: 0,),)],),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Column(children: [isFirst ? SyntonicIcon(icon: Icons.add, padding: 0, onPressed: () => onAdded!(index, true),) : const SizedBox(), Padding(padding: EdgeInsets.only(top: isFirst ? 16 : 0), child: stepIcon!(index)!,)],), Padding(padding: EdgeInsets.only(bottom: isLast ? 16 : 0), child: SyntonicIcon(icon: Icons.add, padding: 0, onPressed: () => onAdded!(index, false),),)],),
                         // child: Icon(Icons.access_alarm),
                       ), SyntonicDivider.vertical(),],),),
                       // SizedBox(width: 4),
@@ -381,7 +390,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                   },
                   scrollDirection: scrollDirection ?? Axis.vertical,
                   // shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                  // physics: const NeverScrollableScrollPhysics(),
                   buildDefaultDragHandles: isReorderMode,
                   onReorder: (oldIndex, newIndex) {
                     // Removing the item at oldIndex will shorten the list by 1.

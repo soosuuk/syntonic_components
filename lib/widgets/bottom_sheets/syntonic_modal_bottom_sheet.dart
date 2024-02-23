@@ -8,10 +8,9 @@ import 'package:provider/single_child_widget.dart';
 
 
 abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewModel<VS>, VS extends SyntonicModalBottomSheetViewState> {
-  const SyntonicModalBottomSheet({Key? key, required this.vm,}) : super();
+  const SyntonicModalBottomSheet({Key? key, required this.vm, this.initialSize}) : super();
   final VM vm;
-  static const double minExtent = 0.5;
-  static const double maxExtent = 1.0;
+  final double? initialSize;
 
   VM viewModel(WidgetRef ref) => ref.read(provider.notifier);
   StateNotifierProvider<VM, VS> get provider => StateNotifierProvider<VM, VS>((ref) => vm);
@@ -29,7 +28,7 @@ abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewM
         enableDrag: true,
         useSafeArea: true,
         isScrollControlled: true,
-      showDragHandle: true,
+      showDragHandle: vm.state.currentPageIndex == 0,
         context: context,
         builder: (_) {
           return Consumer(
@@ -48,15 +47,16 @@ abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewM
   }
 
   Widget _contents({required BuildContext context, required WidgetRef ref,}) {
+    vm.pageController = PageController(initialPage: vm.state.currentPageIndex.toInt());
     return DraggableScrollableActuator(
       child: DraggableScrollableSheet(
         key: GlobalKey(),
-        initialChildSize: 0.5,
-        maxChildSize: 1,
+        initialChildSize: initialSize ?? vm.minExtent,
+        maxChildSize: vm.maxExtent,
         minChildSize: 0,
         expand: false,
         snap: true,
-        snapSizes: const [0.5],
+        snapSizes: [vm.minExtent],
         // controller: viewModel(ref).controller,
         builder: (BuildContext context, ScrollController scrollController) {
           return  PageView(
@@ -94,16 +94,39 @@ abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewM
 
 }
 
-class SyntonicModalBottomSheetViewModel<VS extends SyntonicModalBottomSheetViewState> extends StateNotifier<VS> {
-  SyntonicModalBottomSheetViewModel({required VS viewState}) : super(viewState);
+abstract class SyntonicModalBottomSheetViewModel<VS extends SyntonicModalBottomSheetViewState> extends StateNotifier<VS> {
+  SyntonicModalBottomSheetViewModel({required VS viewState}) : super(viewState) {
+    pageController.addListener(() {
+      if (pageController.positions.isNotEmpty) {
+        state = state.copyWith(currentPageIndex: pageController.page!) as VS;
+        print(state.currentPageIndex);
+        print('ページ　');
+      }
+    });
+  }
 
-  static const double minExtent = 0.5;
-  static const double maxExtent = 1.0;
+  final double minExtent = 0.5;
+  final double maxExtent = 1.0;
   final DraggableScrollableController controller = DraggableScrollableController();
-  PageController? pageController;
+  PageController pageController = PageController();
+
+  @override
+  set state(VS value) {
+    super.state = value;
+  }
+
+  @override
+  VS get state => super.state;
 }
 
 // @freezed
 class SyntonicModalBottomSheetViewState {
-  SyntonicModalBottomSheetViewState({Key? key});
+  SyntonicModalBottomSheetViewState({this.currentPageIndex = 0});
+  final double currentPageIndex;
+
+  SyntonicModalBottomSheetViewState copyWith(
+  {double? currentPageIndex,
+  }) {
+    return SyntonicModalBottomSheetViewState(currentPageIndex: currentPageIndex?? this.currentPageIndex);
+  }
   }

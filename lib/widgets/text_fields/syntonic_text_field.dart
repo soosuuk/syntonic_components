@@ -29,7 +29,7 @@ class SyntonicTextField extends StatelessWidget {
   final int? maxLines;
   final int minLines;
   final bool hasPadding;
-  final Function(String text)? onTextChanged;
+  final Function(String? text)? onTextChanged;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
@@ -73,7 +73,7 @@ class SyntonicTextField extends StatelessWidget {
       });
 
   const SyntonicTextField.outlined({String? label,
-    Function(String text)? onTextChanged,
+    Function(String? text)? onTextChanged,
     required String? value,
     String? errorMessage,
     int? maxLines,
@@ -121,11 +121,13 @@ class SyntonicTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     // TextEditingController _controller = TextEditingController();
     // set value of the text fields.
-    controller.text = value ?? controller.text;
+    if (controller.text.isEmpty && value != null) {
+      controller.text = value!;
+    }
     //
     // set cursor position at the end of the value.
-    controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: controller.text.length));
+    // controller.selection = TextSelection.fromPosition(
+    //     TextPosition(offset: controller.text.length));
 
     return RepaintBoundary(child: Padding(padding: hasPadding ? const EdgeInsets.symmetric(vertical: 8, horizontal: 16) : EdgeInsets.zero, child: TextFormField(
       key: PageStorageKey(itemKey),
@@ -154,7 +156,7 @@ class SyntonicTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       onChanged: (text) {
         if (onTextChanged != null) {
-          onTextChanged!(text);
+          onTextChanged!(text.isEmpty ? null : text);
         }
       },
       // onSaved: (text) => onTextChanged(controller.text),

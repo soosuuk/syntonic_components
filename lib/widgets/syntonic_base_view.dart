@@ -428,18 +428,22 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   NotificationListener _notificationListener({required BuildContext context, required riverpod.WidgetRef ref}) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
-        if (floatingActionButton(context: context, ref: ref) != null &&
-            scrollNotification is UserScrollNotification) {
-          if (scrollNotification.direction == ScrollDirection.reverse) {
-            if (viewModel(ref).state.isFloatingActionButtonExtended == true) {
-              viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: false) as VS;
-            }
-          } else if (scrollNotification.direction == ScrollDirection.forward) {
-            if (viewModel(ref).state.isFloatingActionButtonExtended == false) {
-              viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: true) as VS;
-            }
-          }
-        }
+        print(this.runtimeType);
+        print('スクロール');
+        // if (floatingActionButton(context: context, ref: ref) != null &&
+        //     scrollNotification is UserScrollNotification) {
+        //   if (scrollNotification.direction == ScrollDirection.reverse) {
+        //     if (viewModel(ref).state.isFloatingActionButtonExtended == true) {
+        //       print('リバース');
+        //       viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: false) as VS;
+        //     }
+        //   } else if (scrollNotification.direction == ScrollDirection.forward) {
+        //     print('リバース');
+        //     if (viewModel(ref).state.isFloatingActionButtonExtended == false) {
+        //       viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: true) as VS;
+        //     }
+        //   }
+        // }
 
 
         if (scrollNotification is ScrollEndNotification) {
@@ -708,9 +712,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     }
 
     return _SizeListenableContainer(key: _globalKey, onSizeChanged: (Size size) {
-      if (viewModel(ref).state.height == null) {
+      if (viewModel(ref).state.height == null || viewModel(ref).state.height != size.height) {
         print('高さ');
-        print(viewModel(ref).state.height);
+        print(size.height);
         viewModel(ref).state = viewModel(ref).state.copyWith(height: size.height) as VS;
       }
         },
@@ -725,7 +729,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   /// For listen focus event by tap, and focus out from some widgets.
   Widget _tabBarHeader({required BuildContext context, required riverpod.WidgetRef ref}) {
     return _SizeListenableContainer(key: _globalKey, onSizeChanged: (Size size) {
-      if (viewModel(ref).state.tabBarHeight == null) {
+      if (viewModel(ref).state.tabBarHeight == null || viewModel(ref).state.tabBarHeight != size.height) {
         viewModel(ref).state = viewModel(ref).state.copyWith(tabBarHeight: size.height) as VS;
       }
     },
@@ -790,7 +794,23 @@ abstract class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNot
 
   bool isInitialized = false;
   final GlobalKey<FormState>? formKey = GlobalKey<FormState>();
-  late ScrollController? scrollController = ScrollController();
+  late ScrollController scrollController = ScrollController()..addListener(() {
+    // if (floatingActionButton(context: context, ref: ref) != null &&
+    //     scrollNotification is UserScrollNotification) {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (state.isFloatingActionButtonExtended == true) {
+          print('リバース');
+          state = state.copyWith(isFloatingActionButtonExtended: false) as VS;
+        }
+      } else if (scrollController.position.userScrollDirection == ScrollDirection.forward) {
+        print('リバース');
+        if (state.isFloatingActionButtonExtended == false) {
+          state = state.copyWith(isFloatingActionButtonExtended: true) as VS;
+        }
+      }
+    // }
+  });
   // ..addListener(scrollListener);
   late BannerAd ad;
   late AdSize? adSize;

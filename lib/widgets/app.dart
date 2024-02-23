@@ -40,7 +40,7 @@ class App extends StatelessWidget {
       home: home,
       debugShowCheckedModeBanner: false,
       supportedLocales: [
-        Locale('my', ''),
+        Locale('en', ''),
       // Locale('en', '')
       ],
       localizationsDelegates: localizationDelegates,
