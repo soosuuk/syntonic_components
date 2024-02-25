@@ -5,7 +5,7 @@ import 'package:flutter/scheduler.dart';
 
 class SyntonicLabel extends StatelessWidget {
   @required
-  final String text;
+  final String? text;
   late Color? color;
   late Color? constColor;
   late Color? _colorAlpha12;
@@ -14,16 +14,18 @@ class SyntonicLabel extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onDeleted;
   final Widget? icon;
+  final Widget? child;
 
   SyntonicLabel(
-      {required this.text,
+      {this.text,
       this.color,
       this.constColor,
       this.isFilled = true,
       this.hasPadding = true,
       this.onTap,
       this.onDeleted,
-      this.icon
+      this.icon,
+        this.child,
       });
 
   @override
@@ -62,12 +64,13 @@ class SyntonicLabel extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 4),
                   child: icon!,
                 ) : const SizedBox(),
-                Flexible(child: CaptionText(
-                  text: text,
+                text != null ? Flexible(child: CaptionText(
+                  text: text!,
                   // textColor: isFilled ? color : (constColor != null) ? constColor! : null,
                   textColor: Colors.white,
                   overflow: TextOverflow.ellipsis,
-                )),
+                )) : const SizedBox(),
+                child ?? const SizedBox(),
                 onTap != null ? Icon(Icons.keyboard_arrow_right, size: 16, color: color,) : const SizedBox(),
 
                 onDeleted != null ? Row(

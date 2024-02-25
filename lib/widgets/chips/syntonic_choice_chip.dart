@@ -29,16 +29,16 @@ class SyntonicChoiceChip extends StatelessWidget {
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return FilterChip(
-        label: Text(
+        label: SizedBox(width: double.infinity, child: Text(
           this.label,
           style: TextStyle(
             color: isSelected
                 ? Theme.of(context).colorScheme.primary
                 : isDarkTheme
-                    ? Colors.white70
-                    : SyntonicColor.black88,
+                ? Colors.white70
+                : SyntonicColor.black88,
           ),
-        ),
+        ),),
         backgroundColor: isSelected
             ? Theme.of(context).colorScheme.primary.toAlpha
             : Colors.transparent,

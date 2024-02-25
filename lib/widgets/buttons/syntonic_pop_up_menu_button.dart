@@ -85,7 +85,7 @@ class SyntonicPopupMenuButton extends StatelessWidget {
                 buttonTxt: 'Cancel',
                 buttonAction: () {}));
             _buttonList.add(SyntonicDialogButtonInfoModel(
-                buttonTxt: LocalizationService().localize.ok,
+                buttonTxt: 'OK',
                 buttonAction: onDeleteTap!));
             showDialog(
                 context: context,

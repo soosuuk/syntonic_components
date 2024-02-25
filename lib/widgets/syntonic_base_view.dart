@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:syntonic_components/configs/constants/syntonic_date_and_time.dart';
 import 'package:syntonic_components/configs/constants/syntonic_language.dart';
+import 'package:syntonic_components/configs/themes/syntonic_dark_theme.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_fade.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
@@ -105,68 +106,73 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     //   this.platformType = PlatformType.Android;
     // }
 
-    if (isChild || !vm.hasAds) {
-      return GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus!.unfocus();
-        },
-        child: _screen(vm, context),
-      );
-    } else {
-      return Column(children: [Expanded(child: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus!.unfocus();
-        },
-        child: _screen(vm, context),
-      )), Builder(builder: (context) {
-        return Container(
-          alignment: Alignment.center,
-          height: 88,
-          width: 88,
-          // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
-          // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
-          child: FutureBuilder(
-              future: _getAdSize(context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                    ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(snapshot.error.toString(),
-                          textAlign: TextAlign.center,
-                          textScaleFactor: 1.3),
-                    );
-                  }
-
-                  // if (!vm.isAdLoaded) {
-                  //   vm.ad = BannerAd(
-                  //     adUnitId: AdHelper.bannerAdUnitId,
-                  //     size: vm.adSize!,
-                  //     request: AdRequest(),
-                  //     listener: BannerAdListener(
-                  //       onAdLoaded: (_) {
-                  //         vm.isAdLoaded = true;
-                  //       },
-                  //       onAdFailedToLoad: (ad, error) {
-                  //         //Load失敗時の処理
-                  //         ad.dispose();
-                  //         print(
-                  //             'Ad load failed (code=${error.code} message=${error.message})');
-                  //       },
-                  //     ),
-                  //   );
-                  //   vm.ad.load();
-                  //   return Container();
-                  // }
-                  return AdWidget(ad: vm.ad);
-                }
-                else {
-                  return Container();
-                }
-              }),
+    Widget child() {
+      if (isChild || !vm.hasAds) {
+        return GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus!.unfocus();
+          },
+          child: _screen(vm, context),
         );
-      })],);
+      } else {
+        return Column(children: [Expanded(child: GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus!.unfocus();
+          },
+          child: _screen(vm, context),
+        )), Builder(builder: (context) {
+          return Container(
+            alignment: Alignment.center,
+            height: 88,
+            width: 88,
+            // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
+            // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
+            child: FutureBuilder(
+                future: _getAdSize(context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState ==
+                      ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(snapshot.error.toString(),
+                            textAlign: TextAlign.center,
+                            textScaleFactor: 1.3),
+                      );
+                    }
+
+                    // if (!vm.isAdLoaded) {
+                    //   vm.ad = BannerAd(
+                    //     adUnitId: AdHelper.bannerAdUnitId,
+                    //     size: vm.adSize!,
+                    //     request: AdRequest(),
+                    //     listener: BannerAdListener(
+                    //       onAdLoaded: (_) {
+                    //         vm.isAdLoaded = true;
+                    //       },
+                    //       onAdFailedToLoad: (ad, error) {
+                    //         //Load失敗時の処理
+                    //         ad.dispose();
+                    //         print(
+                    //             'Ad load failed (code=${error.code} message=${error.message})');
+                    //       },
+                    //     ),
+                    //   );
+                    //   vm.ad.load();
+                    //   return Container();
+                    // }
+                    return AdWidget(ad: vm.ad);
+                  }
+                  else {
+                    return Container();
+                  }
+                }),
+          );
+        })],);
+      }
     }
+
+    return Theme(data: darkTheme(primaryColor: Colors.deepPurple), child: child(),
+    );
   }
 
   /// Get a screen.
