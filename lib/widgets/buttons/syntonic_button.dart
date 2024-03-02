@@ -1,5 +1,6 @@
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/widgets/texts/body_1_text.dart';
+import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,8 +51,9 @@ class SyntonicButton extends StatelessWidget {
       children: <Widget>[
         if (leadingWidget != null) leadingWidget!,
         if (leadingWidget != null) const SizedBox(width: 16,),
-        // Subtitle2Text(text: text, textColor: isEnabled ? Colors.white : (_isDarkTheme ? Colors.white : SyntonicColor.black40),),
-        Body1Text(text: text,
+        style == _SyntonicButtonStyle.text ? Body1Text(text: text,
+          textColor: isEnabled ? _textColor : null,
+        ) : Subtitle1Text(text: text,
           textColor: isEnabled ? _textColor : null,
         ),
         // Subtitle2Text(text: text),
@@ -67,7 +69,7 @@ class SyntonicButton extends StatelessWidget {
       case _SyntonicButtonStyle.tonal:
         return Container(padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),child: FilledButton.tonal(
             onPressed: isEnabled ? onTap : null,
-            child: _button
+            child: _button,
         ),);
       case _SyntonicButtonStyle.outlined:
         return Container(padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),child: OutlinedButton(

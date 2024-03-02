@@ -52,6 +52,7 @@ dependencies:
   json_annotation: ^4.8.1
   linked_scroll_controller: ^0.2.0
   material_color_utilities: ^0.5.0
+  palette_generator: ^0.3.3+3
   path: ^1.8.0
   path_provider: ^2.0.11
   package_info_plus: ^4.0.2
@@ -69,6 +70,7 @@ dependencies:
   tuple: ^2.0.0
   url_launcher: ^6.0.10
   uuid: ^3.0.7
+  version: ^3.0.2
   visibility_detector: ^0.3.3
   web_browser_detect: ^2.0.2
 dev_dependencies:
@@ -103,6 +105,13 @@ flutter:
   # To add assets to your plugin package, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/fonts/
+
+  fonts:
+    - family: Ailerons
+      fonts:
+        - asset: assets/fonts/ailerons/Ailerons-TrialVersion.otf
+          weight: 400
 
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

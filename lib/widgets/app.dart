@@ -11,7 +11,7 @@ import '../services/rating_service.dart';
 
 /// The widget is an initial widget for the app.
 class App extends StatelessWidget {
-  App({required this.home, required this.primaryColor, required this.localizationDelegates});
+  App({required this.home, required this.primaryColor, required this.localizationDelegates, this.onCheckSupportedVersion});
 
   /// An initial screen when the app is built.
   final Widget home;
@@ -20,10 +20,19 @@ class App extends StatelessWidget {
   /// Apply the color as primary color in the app.
   final Color primaryColor;
 
+  final Function(BuildContext context)? onCheckSupportedVersion;
+
   List<LocalizationsDelegate<dynamic>> localizationDelegates;
 
   @override
   Widget build(BuildContext context) {
+    NavigationService();
+
+    if (onCheckSupportedVersion != null) {
+      print('チェックバージョン');
+      onCheckSupportedVersion!(context);
+    }
+
     RatingService();
     return MaterialApp(
       scrollBehavior: const MaterialScrollBehavior().copyWith(

@@ -12,10 +12,11 @@ const primaryColor = Colors.black87;
 const backgroundColor = Colors.white70;
 
 ThemeData darkTheme({Color? primaryColor}) {
+  ColorScheme _colorScheme = ColorScheme.fromSeed(seedColor: primaryColor ?? Theme.of(NavigationService().navigatorKey.currentContext!).colorScheme.primary, brightness: Brightness.dark, onPrimaryContainer: Colors.white, onSurface: (primaryColor ?? Theme.of(NavigationService().navigatorKey.currentContext!).colorScheme.primary).tone(95));
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
-    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor ?? Theme.of(NavigationService().navigatorKey.currentContext!).colorScheme.onPrimary, brightness: Brightness.dark, onSurface: (primaryColor ?? Theme.of(NavigationService().navigatorKey.currentContext!).colorScheme.primary).tone(85)),
+    colorScheme: _colorScheme,
         // .dark(
         // onSurface: primaryColor!.tone(50),
         // surface: SyntonicColor.raisinBlack,
@@ -30,7 +31,7 @@ ThemeData darkTheme({Color? primaryColor}) {
     // outlinedButtonTheme: SyntonicOutlinedButtonTheme.get(true),
     // textButtonTheme: SyntonicTextButtonTheme.get(true),
     // appBarTheme: SyntonicAppBarTheme.get(true),
-    tabBarTheme: SyntonicTabBarTheme.get(isDarkTheme: true, primaryColor: primaryColor),
+    tabBarTheme: SyntonicTabBarTheme.get(isDarkTheme: true, primaryColor: primaryColor, colorScheme: _colorScheme),
     // bottomNavigationBarTheme: SyntonicBottomNavigationBarTheme.get(true),
     // dialogTheme: SyntonicDialogTheme.get(true),
     // chipTheme: SyntonicChipTheme.get(true),

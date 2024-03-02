@@ -173,9 +173,28 @@ class SyntonicPersonIcon extends StatelessWidget {
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return !_needsInitial || person.id == null
-        ? const Stack(
+        ? Stack(
             children: [
-              Icon(Icons.account_circle, size: 26,),
+              Icon(Icons.account_circle, size: type.size,),
+              Container(
+                width: type.size! + 4,
+                height: type.size! + 4,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        type.size! + 2),
+                    border: Border.all(
+                        width: 2,
+                        color: Theme.of(context).colorScheme.surface)),
+                // child: ClipRRect(
+                //   borderRadius: BorderRadius.circular(type.size!),
+                //   child: Image.network(
+                //     person.photoUrl!,
+                //     width: (needsMainStaffBorder) ? type.size! - 6 : type.size!,
+                //     height: (needsMainStaffBorder) ? type.size! - 6 : type.size!,
+                //     fit: BoxFit.cover,
+                //   ),
+                // ),
+              )
               // SvgPicture.asset(
               //   "assets/images/account_circle.svg",
               //   color: isDarkTheme ? Colors.white54 : SyntonicColor.black56,

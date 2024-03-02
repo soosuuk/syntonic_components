@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
 
 import '../../services/localization_service.dart';
 import '../dialogs/syntonic_dialog.dart';
@@ -46,6 +47,35 @@ class SyntonicPopupMenuButton extends StatelessWidget {
       return const SizedBox();
     }
 
+    return Container(
+      width: IconSize.normal.size,
+      height: IconSize.normal.size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.48),
+      ),
+      child: PopupMenuButton<String>(
+        padding: EdgeInsets.zero,
+        enabled: isEnabled,
+        offset: const Offset(-26, -20),
+        child: Icon(
+          icon,
+          color: color,
+          size: 18,
+        ),
+        onSelected: (value) {
+          _menus(context, onDeleteTap: onDeleteTap, onEditTap: onEditTap,)
+              .firstWhere((menuItem) => menuItem.title == value)
+              .onTap();
+        },
+        itemBuilder: (context) => _menus(context, onDeleteTap: _onDeleteTap, onEditTap: _onEditTap,)
+            .map((item) => PopupMenuItem<String>(
+          value: item.title,
+          child: Text(item.title),
+        ))
+            .toList(),
+      ),
+    );
     return PopupMenuButton<String>(
       enabled: isEnabled,
       offset: const Offset(-26, -20),

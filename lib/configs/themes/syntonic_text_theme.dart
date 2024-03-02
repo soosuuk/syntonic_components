@@ -22,18 +22,41 @@ extension Material3Palette on Color {
 /// If set a value to "letterSpacing", need to convert ems(character spacing / 1000) to pt.
 class SyntonicTextTheme {
   static TextStyle headline1({required BuildContext context, Color? textColor}) {
-    // return GoogleFonts.elsie(
-    return GoogleFonts.raleway(
-    textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 43),
-      fontWeight: FontWeight.w500,
-        // letterSpacing: 1,
-      // color: textColor,
-      // color: textColor ?? Theme.of(context).colorScheme.onSurface,
-      // height: 1.4,
-    );
+    Locale currentLocale = window.locale;
+    print('ロケール');
+    print(currentLocale.countryCode);
+    print(currentLocale.scriptCode);
+    print(currentLocale.languageCode);
+
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.notoSansJavanese(
+      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 43),
+        fontWeight: FontWeight.w500,
+          // letterSpacing: 1,
+        // color: textColor,
+        // color: textColor ?? Theme.of(context).colorScheme.onSurface,
+        // height: 1.4,
+      );
+    }
+    return const TextStyle(fontFamily: 'Ailerons', fontSize: 48, height: 1);
+    // return GoogleFonts.raleway(
+    // textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 43),
+    //   fontWeight: FontWeight.w500,
+    //     // letterSpacing: 1,
+    //   // color: textColor,
+    //   // color: textColor ?? Theme.of(context).colorScheme.onSurface,
+    //   // height: 1.4,
+    // );
   }
 
   static TextStyle headline4({required BuildContext context, Color? textColor}) {
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.titleMedium,
+      );
+    }
+
     return GoogleFonts.raleway(
       textStyle: Theme.of(context).textTheme.headlineMedium,
       fontWeight: FontWeight.w500,
@@ -45,6 +68,13 @@ class SyntonicTextTheme {
   }
 
   static TextStyle headline5({required BuildContext context, Color? textColor}) {
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.headlineSmall,
+      );
+    }
+
     return GoogleFonts.montserrat(
       textStyle: Theme.of(context).textTheme.headlineSmall,
       // fontWeight: FontWeight.w300,
@@ -54,6 +84,13 @@ class SyntonicTextTheme {
   }
 
   static TextStyle headline6({required BuildContext context, Color? textColor}) {
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.headlineSmall,
+      );
+    }
+
     return GoogleFonts.roboto(
         textStyle: Theme.of(context).textTheme.headlineSmall,
         // fontWeight: FontWeight.w500,
@@ -62,26 +99,44 @@ class SyntonicTextTheme {
   }
 
   static TextStyle subtitle1({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.roboto(
-        textStyle: Theme.of(context).textTheme.titleLarge,
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.titleMedium,
+      );
+    }
+    return GoogleFonts.josefinSans(
+        textStyle: Theme.of(context).textTheme.titleMedium,
         // fontWeight: FontWeight.w400,
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
         height: 1.4);
   }
 
   static TextStyle subtitle2({required BuildContext context, Color? textColor}) {
-    return GoogleFonts.poppins(
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.titleMedium,
+      );
+    }
+    return GoogleFonts.roboto(
         textStyle: Theme.of(context).textTheme.titleMedium,
         fontWeight: FontWeight.w500,
-        color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
+        color: textColor ?? Theme.of(context).colorScheme.onSurface,
         height: 1.4);
   }
 
   static TextStyle body1({required BuildContext context, Color? textColor, bool? isLineThrough}) {
-    return GoogleFonts.poppins(
-      color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
-      textStyle: Theme.of(context).textTheme.bodyText1,
-      fontWeight: FontWeight.w400,
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.titleMedium,
+      );
+    }
+    return GoogleFonts.roboto(
+      color: textColor ?? Theme.of(context).colorScheme.onSurface,
+      textStyle: Theme.of(context).textTheme.titleMedium,
+      fontWeight: FontWeight.w300,
       // letterSpacing: 1,
       // height: 1.4,
       decoration: isLineThrough == true ? TextDecoration.lineThrough : null,
@@ -89,9 +144,17 @@ class SyntonicTextTheme {
   }
 
   static TextStyle body2({required BuildContext context, Color? textColor}) {
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.titleSmall,
+      );
+    }
+
     var brightness = MediaQuery.of(context).platformBrightness;
     return GoogleFonts.roboto(
-        textStyle: Theme.of(context).textTheme.bodyText2,
+        textStyle: Theme.of(context).textTheme.titleSmall,
+        fontWeight: FontWeight.w400,
         // color: textColor ?? (brightness == Brightness.dark
         //     ? Colors.white.withAlpha(textLabelMedium)
         //     : Colors.black.withAlpha(textLabelMedium)),
@@ -100,9 +163,17 @@ class SyntonicTextTheme {
   }
 
   static TextStyle caption({required BuildContext context, Color? textColor}) {
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.caption,
+      );
+    }
+
     var brightness = MediaQuery.of(context).platformBrightness;
-    return GoogleFonts.openSans(
+    return GoogleFonts.roboto(
       textStyle: Theme.of(context).textTheme.caption,
+      fontWeight: FontWeight.w400,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),
@@ -113,10 +184,17 @@ class SyntonicTextTheme {
   }
 
   static TextStyle overline({required BuildContext context, Color? textColor}) {
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.kosugiMaru(
+        textStyle: Theme.of(context).textTheme.labelSmall,
+      );
+    }
+
     var brightness = MediaQuery.of(context).platformBrightness;
-    return GoogleFonts.lato(
-      textStyle: Theme.of(context).textTheme.labelLarge,
-      // fontWeight: FontWeight.w500,
+    return GoogleFonts.roboto(
+      textStyle: Theme.of(context).textTheme.labelSmall,
+      fontWeight: FontWeight.w400,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),

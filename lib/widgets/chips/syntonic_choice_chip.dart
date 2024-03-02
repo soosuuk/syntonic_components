@@ -29,6 +29,12 @@ class SyntonicChoiceChip extends StatelessWidget {
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return FilterChip(
+        // shape: StadiumBorder(
+        //     side: BorderSide(
+        //       width: 1,
+        //       color: Colors.redAccent,
+        //     )),
+
         label: SizedBox(width: double.infinity, child: Text(
           this.label,
           style: TextStyle(

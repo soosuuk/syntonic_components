@@ -1,5 +1,6 @@
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
+import 'package:syntonic_components/widgets/enhancers/syntonic_animation_enhancer.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,7 +85,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
   /// parent [List] or [ScrollView].
   final bool isNested;
 
-  final bool hasStep;
+  final bool hasStepper;
 
   /// A [scrollDirection] of [List].
   final Axis? scrollDirection;
@@ -120,7 +121,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
     this.padding,
     this.isReverse = false,
     this.isReorderMode = false,
-    this.hasStep = false,
+    this.hasStepper = false,
     this.scrollDirection = Axis.vertical,
     this.state = _BasicListViewState.normal,
     this.numberOfRow = 3,
@@ -210,9 +211,9 @@ class SyntonicListView extends ExtendedStatelessWidget {
     Widget? Function(int index)? stepIcon,
     bool isNested = false,
     bool isReverse = false,
-    bool hasStep = false,
     ItemScrollController? itemScrollController,
     Axis? scrollDirection,
+    bool hasStepper = false,
   }) : this._(
             listItem: listItem,
             numberOfItems: numberOfItems,
@@ -222,7 +223,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
             stepIcon: stepIcon,
             isNested: isNested,
             isReverse: isReverse,
-            hasStep: hasStep,
+            hasStepper: hasStepper,
             itemScrollController: itemScrollController,
             scrollDirection: scrollDirection,
             state: _BasicListViewState.reorderable);
@@ -265,7 +266,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
             case _BasicListViewState.infinite:
               return ListView.builder(
                 controller: isNested ? ScrollController() : null,
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.only(bottom: 200),
                   reverse: isReverse,
                   scrollDirection: scrollDirection ?? Axis.vertical,
                   // shrinkWrap: isNested ? true : false,
@@ -287,12 +288,14 @@ class SyntonicListView extends ExtendedStatelessWidget {
                       );
                     }
                     if (index < numberOfItems! + numberOfAdditionalItems!) {
-                      return listItem!(index);
+                      // return listItem!(index);
+                      return Padding(padding: EdgeInsets.only(top: index == 0 ? 16 : 8, left: 16, right: 16, bottom: index == (numberOfItems! - 1) ? 16 : 8), child: listItem!(index),);
                     }
                     return SizedBox();
                   });
             case _BasicListViewState.specifiable:
               return ScrollablePositionedList.builder(
+                  padding: const EdgeInsets.only(bottom: 200),
                   initialScrollIndex: initialScrollIndex ?? 0,
                   reverse: isReverse,
                   scrollDirection: scrollDirection ?? Axis.vertical,
@@ -323,69 +326,98 @@ class SyntonicListView extends ExtendedStatelessWidget {
                   });
             case _BasicListViewState.reorderable:
               return ReorderableListView.builder(
+                  padding: const EdgeInsets.only(bottom: 200),
                   // scrollController: ScrollController(),
                   shrinkWrap: true,
                   // physics:
                   // const NeverScrollableScrollPhysics(),
                   itemCount: numberOfItems!,
                   itemBuilder: (_, int index) {
-                    // final child = children[index];
-                    // final _indicators = indicators;
-
-                    // Widget? indicator;
-                    // if (_indicators != null) {
-                    //   indicator = _indicators[index];
-                    // }
-
                     final isFirst = index == 0;
                     final isLast = index == numberOfItems! - 1;
-
                     final timelineTile = <Widget>[
-                      // const SizedBox(width: 8),
-                      // CustomPaint(
-                      //   painter: _TimelinePainter(
-                      //     hideDefaultIndicator: true,
-                      //     lineColor: Theme.of(context).colorScheme.onSurface,
-                      //     indicatorColor: Colors.blue,
-                      //     indicatorSize: 60.0,
-                      //     indicatorStyle: PaintingStyle.fill,
-                      //     isFirst: isFirst,
-                      //     isLast: isLast,
-                      //     lineGap: 0,
-                      //     strokeCap: StrokeCap.butt,
-                      //     strokeWidth: 1.5,
-                      //     style: PaintingStyle.stroke,
-                      //     itemGap: 0,
-                      //   ),
-                      //   child: SizedBox(
-                      //     height: double.infinity,
-                      //     width: 60,
-                      //     child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [stepIcon!(index)!, stepIcon!(index)!],),
-                      //     // child: Icon(Icons.access_alarm),
-                      //   ),
-                      // ),
-                      SizedBox(height: double.infinity / 2, child: Stack(alignment: AlignmentDirectional.center, children: [SizedBox(
+                      SizedBox(height: double.infinity / 2, child: Stack(alignment: AlignmentDirectional.center, children: [
+                        Column(mainAxisSize: MainAxisSize.max, children: [SizedBox(height: 56,), CustomPaint(painter: DottedLinePainter(color: Theme.of(context).colorScheme.tertiary,)),],),
+                        SizedBox(
                         height: double.infinity,
-                        width: 60,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Column(children: [isFirst ? SyntonicIcon(icon: Icons.add, padding: 0, onPressed: () => onAdded!(index, true),) : const SizedBox(), Padding(padding: EdgeInsets.only(top: isFirst ? 16 : 0), child: stepIcon!(index)!,)],), Padding(padding: EdgeInsets.only(bottom: isLast ? 16 : 0), child: SyntonicIcon(icon: Icons.add, padding: 0, onPressed: () => onAdded!(index, false),),)],),
-                        // child: Icon(Icons.access_alarm),
-                      ), SyntonicDivider.vertical(),],),),
+                        // width: 60,
+                          child: Padding(padding: EdgeInsets.symmetric(horizontal: 8,), child: Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  isFirst ? SizedBox(
+                                    height: isFirst ? 16 : 0,
+                                  ) : const SizedBox(),
+                                  isFirst
+                                      ? SyntonicIcon(
+                                    icon: Icons.add,
+                                    padding: 0,
+                                    onPressed: () =>
+                                        onAdded!(index, true),
+                                  )
+                                      : const SizedBox(),
+                                  isFirst ? Container(height:16, child: CustomPaint(painter: DottedLinePainter(
+                                    height: 16,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiary,
+                                  )),) : const SizedBox(),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: isFirst ? 0 : 0),
+                                    child: stepIcon!(index)!,
+                                  ),
+                                ],
+                              ),
+                              // Expanded(child: DottedLinePainter(
+                              //   color: Theme.of(context)
+                              //       .colorScheme
+                              //       .tertiary,
+                              // )),
+                              Expanded(child: CustomPaint(
+                                painter: DottedLinePainter(color: Theme.of(context).colorScheme.tertiary),
+                              )),
+                              Padding(
+                                padding:
+                                EdgeInsets.only(bottom: isLast ? 0 : 0),
+                                child: SyntonicIcon(
+                                  icon: Icons.add,
+                                  padding: 0,
+                                  onPressed: () => onAdded!(index, false),
+                                ),
+                              ),
+                              !isLast ? Container(height:16, child: CustomPaint(painter: DottedLinePainter(
+                                height: 16,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiary,
+                              )),) : const SizedBox(),
+                              isLast ? SizedBox(
+                                height: isLast ? 16 : 0,
+                              ) : const SizedBox(),
+                            ],
+                          ),),
+                            ),
+                          ],
+                        ),),
                       // SizedBox(width: 4),
                       Expanded(child:
-                      Padding(padding: EdgeInsets.only(left: 8, top: isFirst ? 16 : 4, bottom: (isLast ? 16 : 4) + 40, right: 16), child: listItem!(index),),
+                      Padding(padding: EdgeInsets.zero, child: Column(children: [isFirst ? Container(alignment: Alignment.centerLeft, height: 56, child: Body2Text(text: 'Add step', textColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.38),),) : const SizedBox(), Padding(padding: EdgeInsets.only(right: 16), child: SyntonicAnimationEnhancer(child: listItem!(index),),), Container(alignment: Alignment.centerLeft, height: 56, child: Body2Text(text: 'Add step', textColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.38)),)],),),
                       ),
                     ];
 
                     return RepaintBoundary(
                       key: ValueKey(index),
                       child: IntrinsicHeight(
-                      child: Row(
+                      child: hasStepper ? Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:
                           timelineTile,
                         // isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
-                      ),
+                      ) : SyntonicAnimationEnhancer(child: listItem!(index),),
                     ),);
                   },
                   scrollDirection: scrollDirection ?? Axis.vertical,
@@ -520,4 +552,63 @@ class _TimelinePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
   }
+}
+
+class DottedLinePainter extends CustomPainter {
+  DottedLinePainter({this.color, this.height});
+  final Color? color;
+  final double? height;
+  
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = color ?? Colors.black
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+
+    final double dashWidth = 2;
+    final double dashSpace = 2;
+    double startY = 0;
+
+    while (startY < (height ?? size.height)) {
+      canvas.drawLine(
+        Offset(0, startY),
+        Offset(0, startY + dashWidth),
+        paint,
+      );
+      startY += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+class RoundedRectDiamondPainter extends CustomPainter {
+  final Color? color;
+  final double? borderRadius;
+
+  RoundedRectDiamondPainter({this.color, this.borderRadius});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()..color = color ?? Colors.black;
+    Path path = Path();
+
+    path.moveTo(size.width / 2, 0); // 上部の頂点
+    path.lineTo(size.width, size.height / 2); // 右側の点
+    path.lineTo(size.width / 2, size.height); // 下部の点
+    path.lineTo(0, size.height / 2); // 左側の点
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(RoundedRectDiamondPainter oldDelegate) => false;
+
+  @override
+  bool shouldRebuildSemantics(RoundedRectDiamondPainter oldDelegate) => false;
 }

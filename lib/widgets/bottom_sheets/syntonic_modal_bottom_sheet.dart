@@ -6,6 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../buttons/syntonic_button.dart';
+
 
 abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewModel<VS>, VS extends SyntonicModalBottomSheetViewState> {
   const SyntonicModalBottomSheet({Key? key, required this.vm, this.initialSize}) : super();
@@ -36,11 +38,10 @@ abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewM
             return WillPopScope(
               onWillPop: () async {
                 if (onPop != null) {
-                  print('閉じる');
                   onPop(context: context, ref: ref);
                 }
                 return true;
-              }, child: _contents(context: context, ref: ref,),);
+              }, child: _contents(context: context, ref: ref),);
           });
         }
     );
@@ -59,10 +60,10 @@ abstract class SyntonicModalBottomSheet<VM extends SyntonicModalBottomSheetViewM
         snapSizes: [vm.minExtent],
         // controller: viewModel(ref).controller,
         builder: (BuildContext context, ScrollController scrollController) {
-          return  PageView(
+          return  Column(children: [SyntonicButton.transparent(onTap: () {onPop(context: context, ref: ref); Navigator.of(context).pop();}, text: 'Done',), Expanded(child: PageView(
               physics: NeverScrollableScrollPhysics(),
               controller: vm.pageController,
-              children: _pageViews(context: context, ref: ref, scrollController: scrollController));
+              children: _pageViews(context: context, ref: ref, scrollController: scrollController)))],);
         },
       ),
     );

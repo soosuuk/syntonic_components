@@ -1,6 +1,7 @@
 import 'package:syntonic_components/configs/themes/syntonic_elevated_button_theme.dart';
 import 'package:syntonic_components/widgets/buttons/syntonic_button.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_animation_enhancer.dart';
+import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
 import 'package:syntonic_components/widgets/text_fields/syntonic_search_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -286,7 +287,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
-          ? SyntonicAnimationEnhancer(child: SyntonicIcon(icon: Icons.close, padding: 0, onPressed: () => onBackButtonPressed ?? Navigator.pop(context)))
+          ? SyntonicAnimationEnhancer(child: SyntonicIcon(padding: 0, icon: Icons.close, onPressed: () => onBackButtonPressed ?? Navigator.pop(context), size: IconSize.normal,))
           : BackButton(
           onPressed: this.onBackButtonPressed, color: this.accentColor),
       iconTheme: IconThemeData(

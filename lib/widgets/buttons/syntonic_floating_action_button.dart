@@ -1,6 +1,7 @@
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/configs/constants/syntonic_constraint.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
+import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class SyntonicFloatingActionButton extends StatelessWidget {
     // bool isDarkTheme = brightness == Brightness.dark;
 
     if (isSecondary) {
-      return FloatingActionButton.small(backgroundColor: Theme.of(context).colorScheme.secondaryContainer, onPressed: floatingActionButtonModel.onTap, child: Icon(this.floatingActionButtonModel.icon ?? Icons.add),);
+      return FloatingActionButton.small(backgroundColor: Theme.of(context).colorScheme.surfaceVariant, onPressed: floatingActionButtonModel.onTap, child: Icon(this.floatingActionButtonModel.icon ?? Icons.add, color: Theme.of(context).colorScheme.primary, size: 18,),);
     } else {
       return SizedBox(
         width: width,
@@ -64,8 +65,8 @@ class SyntonicFloatingActionButton extends StatelessWidget {
               child: !this.isExtended
                   ? Icon(this.floatingActionButtonModel.icon ?? Icons.add,
                   color: this.isSecondary
-                      ? Theme.of(context).colorScheme.onSurface
-                      : null)
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.onPrimaryContainer, size: 18,)
                   : Row(
                 key: UniqueKey(),
                 children: [
@@ -74,15 +75,16 @@ class SyntonicFloatingActionButton extends StatelessWidget {
                     child: Icon(
                       this.floatingActionButtonModel.icon ?? Icons.add,
                       color: this.isSecondary
-                          ? Theme.of(context).colorScheme.onSurface
-                          : null,
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onPrimaryContainer,
+                      size: 18,
                     ),
                   ),
-                  Subtitle2Text(
+                  Subtitle1Text(
                     text: this.floatingActionButtonModel.text,
                     textColor: this.isSecondary
                         ? Theme.of(context).colorScheme.onSurface
-                        : null,
+                        : Theme.of(context).colorScheme.onPrimaryContainer,
                     needsLinkify: false,
                   )
                 ],

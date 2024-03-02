@@ -28,7 +28,7 @@ ThemeData lightTheme({Color? primaryColor}) {
     // outlinedButtonTheme: SyntonicOutlinedButtonTheme.get(false),
     // textButtonTheme: SyntonicTextButtonTheme.get(false),
     appBarTheme: SyntonicAppBarTheme.get(false),
-    tabBarTheme: SyntonicTabBarTheme.get(isDarkTheme: false, primaryColor: primaryColor),
+    // tabBarTheme: SyntonicTabBarTheme.get(isDarkTheme: false, primaryColor: primaryColor),
     // bottomNavigationBarTheme: SyntonicBottomNavigationBarTheme.get(false),
     // dialogTheme: SyntonicDialogTheme.get(false),
     // chipTheme: SyntonicChipTheme.get(false),

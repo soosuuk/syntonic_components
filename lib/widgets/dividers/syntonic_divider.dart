@@ -15,24 +15,62 @@ class SyntonicDivider extends StatelessWidget {
 
   final DividerType type;
 
-  SyntonicDivider({this.isBold = false, this.type = DividerType.horizontal}) {
+  final bool hasDotted;
+
+  final Color? color;
+
+  final double? height;
+
+  SyntonicDivider({this.isBold = false, this.type = DividerType.horizontal, this.hasDotted = false, this.color, this.height}) {
     _thickness = isBold ? 8 : 0.5;
   }
 
   SyntonicDivider.bold() : this(isBold: true);
 
-  SyntonicDivider.vertical() : this(type: DividerType.vertical);
+  SyntonicDivider.vertical({Color? color, bool hasDotted = false, double? height}) : this(type: DividerType.vertical, color: color, hasDotted: hasDotted, height: height);
 
   @override
   Widget build(BuildContext context) {
+
+    if (hasDotted) {
+      return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final double lineWidth = constraints.maxWidth;  // Dividerの横幅
+          final double dashWidth = 4.0; // 点線の幅
+          final double dashSpace = 2.0; // 線と線の間隔
+
+          // 点線の個数を計算
+          int dashCount = (lineWidth / (dashWidth + dashSpace)).floor();
+
+          return Container(
+            width: lineWidth,
+            height: 1.0, // Dividerの高さ
+            child: ListView.builder(
+              itemCount: dashCount,
+              scrollDirection: type == DividerType.horizontal ? Axis.horizontal : Axis.horizontal,
+              itemBuilder: (BuildContext context, int index) {
+                // 各点線の描画
+                return Container(
+                  width: dashWidth,
+                  height: 1.0, // 点線の高さ
+                  color: color ?? Theme.of(context).colorScheme.onSurface.withOpacity(0.38), // 点線の色
+                  margin: EdgeInsets.symmetric(horizontal: dashSpace),
+                );
+              },
+            ),
+          );
+        },
+      );
+    }
+
     switch (type) {
       case DividerType.vertical:
-        return VerticalDivider(color: SyntonicColor().divider,);
+        return height != null ? Container(height: height,  width: 1, color: color ?? SyntonicColor().divider,) : Container(width: 1, color: color ?? SyntonicColor().divider,);
       case DividerType.horizontal:
         return Divider(
           thickness: _thickness,
-          color: isBold ? SyntonicColor().backgroundFilled : SyntonicColor()
-              .divider,
+          color: color ?? (isBold ? SyntonicColor().backgroundFilled : SyntonicColor()
+              .divider),
         );
     }
   }

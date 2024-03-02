@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 import '../../configs/themes/syntonic_dark_theme.dart';
 import '../../configs/themes/syntonic_light_theme.dart';
 
+enum ImagePosition {
+  left,
+  top,
+  right,
+  bottom,
+}
+
 class SyntonicCard extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isSelected;
@@ -14,10 +21,11 @@ class SyntonicCard extends StatelessWidget {
   final bool needsBorder;
   final bool hasPadding;
   final double borderRadius;
+  final ImagePosition imagePosition;
 
   const SyntonicCard(
       {
-        this.borderRadius = 30,
+        this.borderRadius = 24,
         this.onTap,
       this.isSelected = false,
         this.image,
@@ -25,7 +33,8 @@ class SyntonicCard extends StatelessWidget {
       this.elevation,
       this.color,
         this.needsBorder = false,
-      this.hasPadding = true});
+      this.hasPadding = true,
+      this.imagePosition = ImagePosition.top});
 
   const SyntonicCard.transparent(
       {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true, Widget? image})
@@ -54,7 +63,8 @@ class SyntonicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    return Theme(data: color != null ? isDarkTheme ? darkTheme(primaryColor: color) : lightTheme(primaryColor: color) : Theme.of(context), child: Card(
+    Widget _card = Card(
+      margin: EdgeInsets.zero,
       // color: null,
       // surfaceTintColor: colorScheme != null ? colorScheme!.surfaceTint : null,
       // shadowColor: colorScheme != null ? colorScheme!.shadow : null,
@@ -71,15 +81,53 @@ class SyntonicCard extends StatelessWidget {
             onTap!();
           }
         },
-        child: Column(children: [image ?? const SizedBox(), Container(
-          decoration: needsBorder ? BoxDecoration(
-              borderRadius: BorderRadius.circular(borderRadius),
-              border: Border.all(width: 1, color: Theme.of(context).colorScheme.outlineVariant)
-          ) : null,
-          padding: const EdgeInsets.all(16),
-          child: child,
-        )],),
+        child: _childWithImage(context: context),
       ),
-    ));
+    );
+
+    if (color != null) {
+      return Theme(data: color != null ? isDarkTheme ? darkTheme(primaryColor: color) : lightTheme(primaryColor: color) : Theme.of(context), child: _card);
+    } else {
+      return _card;
+    }
   }
+
+  Widget _childWithImage({required BuildContext context}) {
+    Widget _child = Container(
+      decoration: needsBorder
+          ? BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(
+              width: 1,
+              color: Theme.of(context).colorScheme.outlineVariant))
+          : null,
+      padding: const EdgeInsets.all(16),
+      child: child,
+    );
+
+    if (image == null) {
+      return _child;
+    }
+
+    switch (imagePosition) {
+      case ImagePosition.left:
+      case ImagePosition.right:
+      return Row(
+        children: [
+          imagePosition == ImagePosition.left ? image! : const SizedBox(),
+          Flexible(child: _child),
+          imagePosition == ImagePosition.right ? image! : const SizedBox(),
+        ],
+      );
+      case ImagePosition.top:
+      case ImagePosition.bottom:
+      return Column(
+        children: [
+          imagePosition == ImagePosition.top ? image! : const SizedBox(),
+          _child,
+          imagePosition == ImagePosition.bottom ? image! : const SizedBox(),
+        ],
+      );
+    }
+}
 }

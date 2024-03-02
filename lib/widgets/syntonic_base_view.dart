@@ -8,6 +8,7 @@ import 'package:syntonic_components/configs/constants/syntonic_date_and_time.dar
 import 'package:syntonic_components/configs/constants/syntonic_language.dart';
 import 'package:syntonic_components/configs/themes/syntonic_dark_theme.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_fade.dart';
+import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +54,7 @@ abstract class ExtendedModel {
 // ignore: must_be_immutable
 abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseViewState> extends StatelessWidget {
 
-  const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false, this.hasFAB = false, this.hasFABSecondary = false, this.isPage = false}) : super(key: key);
+  const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false, this.hasFAB = false, this.hasFABSecondary = false, this.isPage = false, this.color}) : super(key: key);
 
   final VM vm;
   final GlobalKey? globalKey;
@@ -64,6 +65,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   final bool hasFAB;
   final bool hasFABSecondary;
   final bool isPage;
+  final Color? color;
 
   Future<AdSize?> _getAdSize(BuildContext context) async {
 
@@ -171,8 +173,16 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
       }
     }
 
-    return Theme(data: darkTheme(primaryColor: Colors.deepPurple), child: child(),
-    );
+    if (color != null) {
+      return riverpod.Consumer(builder: (context, ref, _) {
+        return Theme(data: darkTheme(primaryColor: color ?? Colors.deepPurple), child: child(),
+        );
+      });
+    } else {
+      return child();
+    }
+    // return Theme(data: darkTheme(primaryColor: color ?? Colors.deepPurple), child: child(),
+    // );
   }
 
   /// Get a screen.
@@ -501,9 +511,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     return Container(
       padding: const EdgeInsets.only(top: 16),
       alignment: Alignment.topCenter,
-      child: Body2Text(
+      child: Column(children: [SyntonicListItem(title: 'title', titleTextStyle: TitleTextStyle.Headline4,),Body2Text(
           text: [title, 'がありません。']
-              .combineWithSpace()),
+              .combineWithSpace())],),
     );
   }
 
@@ -661,7 +671,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               _floatingActionButton(isSecondary: true),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               _floatingActionButton()
             ]);
       } else {
@@ -724,7 +734,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
         viewModel(ref).state = viewModel(ref).state.copyWith(height: size.height) as VS;
       }
         },
-      child: SyntonicFade.off(
+      child: viewModel(ref).state.height == null ? headerContents(context: context, ref: ref)! : SyntonicFade.off(
         zeroOpacityOffset: 0,
         //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
           fullOpacityOffset: (viewModel(ref).state.height ?? 0) - (viewModel(ref).state.tabBarHeight ?? 0) - (kToolbarHeight * 1.5), scrollController: viewModel(ref).scrollController!, child: headerContents(context: context, ref: ref)!)
@@ -752,7 +762,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     int _currentIndex = 0;
     if (hasTabBar) {
       return TabBar(
-        dividerColor: ref.watch(provider.select((viewState) => viewState.isStickyingAppBar)) ? Colors.transparent : null,
+        dividerColor: ref.watch(provider.select((viewState) => viewState.isStickyingAppBar)) ? Colors.transparent : Theme.of(context).colorScheme.primary.withOpacity(0.12),
         controller: tabController,
         isScrollable: tabs(context: context, ref: ref)!.length > 2 ? true : false,
         onTap: (_index) {

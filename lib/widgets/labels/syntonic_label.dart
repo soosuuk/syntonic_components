@@ -55,7 +55,7 @@ class SyntonicLabel extends StatelessWidget {
                     color: (constColor != null) ? constColor! : _isDarkTheme ? Colors.white38 : Colors.black38),
                 borderRadius: BorderRadius.circular(4),
                 // color: isFilled ? _colorAlpha12 : null
-              color: Colors.black54
+              color: color ?? Colors.black54
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
