@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syntonic_components/services/localization_service.dart';
 
 class SyntonicSeeMore extends StatelessWidget {
   final List<Widget> widgets;
@@ -11,7 +9,7 @@ class SyntonicSeeMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool needsSeeMoreButton = this.widgets.length > this.initialListItemCount;
+    bool needsSeeMoreButton = widgets.length > initialListItemCount;
 
     return ListenableProvider(
       create: (context) => SeeMoreState(),
@@ -20,17 +18,19 @@ class SyntonicSeeMore extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: !needsSeeMoreButton || model.isExpanded ? widgets : widgets.sublist(0, initialListItemCount)),
-          needsSeeMoreButton
-              ? TextButton(
-                child: Text(model.isExpanded ? 'Close' : 'See more'),
-                onPressed: () {
-                  model.changeExpandCollapseState();
-                },
-              )
-              : const SizedBox(height: 0),
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: !needsSeeMoreButton || model.isExpanded
+                      ? widgets
+                      : widgets.sublist(0, initialListItemCount)),
+              needsSeeMoreButton
+                  ? TextButton(
+                      child: Text(model.isExpanded ? 'Close' : 'See more'),
+                      onPressed: () {
+                        model.changeExpandCollapseState();
+                      },
+                    )
+                  : const SizedBox(height: 0),
             ],
           );
         }, // a

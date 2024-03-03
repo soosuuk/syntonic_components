@@ -33,5 +33,6 @@ class AuthenticationService {
       case LoginStatus.failed:
         break;
     }
+    return null;
   }
 }

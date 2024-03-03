@@ -1,17 +1,18 @@
 import 'package:syntonic_components/configs/themes/syntonic_dark_theme.dart';
 import 'package:syntonic_components/configs/themes/syntonic_light_theme.dart';
-import 'package:syntonic_components/gen/l10n/app_localizations.dart';
 import 'package:syntonic_components/services/navigation_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../services/rating_service.dart';
 
 /// The widget is an initial widget for the app.
 class App extends StatelessWidget {
-  App({required this.home, required this.primaryColor, required this.localizationDelegates, this.onCheckSupportedVersion});
+  App(
+      {required this.home,
+      required this.primaryColor,
+      required this.localizationDelegates,
+      this.onCheckSupportedVersion});
 
   /// An initial screen when the app is built.
   final Widget home;
@@ -48,9 +49,9 @@ class App extends StatelessWidget {
       darkTheme: darkTheme(primaryColor: primaryColor),
       home: home,
       debugShowCheckedModeBanner: false,
-      supportedLocales: [
+      supportedLocales: const [
         Locale('en', ''),
-      // Locale('en', '')
+        // Locale('en', '')
       ],
       localizationsDelegates: localizationDelegates,
     );

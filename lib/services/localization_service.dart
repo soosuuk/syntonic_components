@@ -3,6 +3,7 @@ import 'package:syntonic_components/services/navigation_service.dart';
 
 class LocalizationService {
   AppLocalizations get localize {
-    return AppLocalizations.of(NavigationService().navigatorKey.currentContext!)!;
+    return AppLocalizations.of(
+        NavigationService().navigatorKey.currentContext!)!;
   }
 }

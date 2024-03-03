@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/services/localization_service.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
-import 'package:syntonic_components/widgets/buttons/syntonic_pop_up_menu_button.dart';
 import 'package:syntonic_components/widgets/texts/body_1_text.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:path/path.dart' as p;
 
 import '../syntonic_base_view.dart';
 
@@ -76,10 +72,8 @@ class SyntonicImage extends StatelessWidget {
     bool isDarkTheme = brightness == Brightness.dark;
 
     return SizedBox(
-      width: width ?? ((this.isMini)
-          ? IconSize.large.size
-          : null),
-      height: height ?? ((this.isMini) ? IconSize.large.size : null),
+      width: width ?? ((isMini) ? IconSize.large.size : null),
+      height: height ?? ((isMini) ? IconSize.large.size : null),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -88,8 +82,7 @@ class SyntonicImage extends StatelessWidget {
               width: width,
               height: height,
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(32),
-                  child: image),
+                  borderRadius: BorderRadius.circular(32), child: image),
             ),
             // child: Stack(alignment: AlignmentDirectional.topEnd, children: [
             //   Container(
@@ -165,9 +158,7 @@ class SyntonicImage extends StatelessWidget {
         return WillPopScope(
             onWillPop: () => Future.value(false),
             child: AlertDialog(
-              content: Body1Text(
-                  text:
-                  "5MB以下の画像を選択してください。"),
+              content: const Body1Text(text: "5MB以下の画像を選択してください。"),
               actions: <Widget>[
                 TextButton(
                   child: Body1Text(text: LocalizationService().localize.ok),
@@ -207,11 +198,9 @@ class SyntonicImage extends StatelessWidget {
 
         if (dataBytes != null && imageSize <= 5) {
           String? _extension;
-          if (result != null) {
-            PlatformFile file = result.files.first;
-            _extension = file.extension;
-          }
-
+          PlatformFile file = result.files.first;
+          _extension = file.extension;
+        
           String _imageBase64 = base64Encode(dataBytes);
           onUpload!(
               image: _imageBase64.toImage(),
@@ -239,7 +228,7 @@ class _HolePainter extends CustomPainter {
         PathOperation.difference,
         Path()
           ..addRRect(
-              RRect.fromLTRBR(0, 0, size.width, height, Radius.circular(0))),
+              RRect.fromLTRBR(0, 0, size.width, height, const Radius.circular(0))),
         Path()
           ..addOval(Rect.fromCircle(
               center: Offset(size.width / 2, height / 2), radius: height / 2))

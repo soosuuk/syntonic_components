@@ -1,5 +1,4 @@
 import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../configs/constants/syntonic_color.dart';
@@ -36,7 +35,7 @@ class SyntonicCheckIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(hasPadding ? 16 : 0),
-      child: Container(
+      child: SizedBox(
         height: height ?? type!.size!,
         width: width ?? type!.size!,
         child: Material(
@@ -48,7 +47,7 @@ class SyntonicCheckIcon extends StatelessWidget {
             side: BorderSide(width: 2, color: SyntonicColor().divider),
           ),
           child: Padding(
-            padding: EdgeInsets.all(1),
+            padding: const EdgeInsets.all(1),
             child: FittedBox(
               child: Icon(
                 Icons.check,

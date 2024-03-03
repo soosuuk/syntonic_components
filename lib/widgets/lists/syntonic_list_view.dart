@@ -1,9 +1,5 @@
-import 'package:syntonic_components/configs/constants/syntonic_color.dart';
-import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_animation_enhancer.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
-import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -156,15 +152,15 @@ class SyntonicListView extends ExtendedStatelessWidget {
     ItemScrollController? itemScrollController,
     Axis? scrollDirection,
   }) : this._(
-      gridItem: listItem,
-      numberOfItems: numberOfItems,
-    numberOfRow: numberOfRow,
-      numberOfColumn: numberOfColumn,
-      isNested: isNested,
-      itemScrollController: itemScrollController,
-      scrollDirection: scrollDirection,
-      state: _BasicListViewState.gallery,
-  );
+          gridItem: listItem,
+          numberOfItems: numberOfItems,
+          numberOfRow: numberOfRow,
+          numberOfColumn: numberOfColumn,
+          isNested: isNested,
+          itemScrollController: itemScrollController,
+          scrollDirection: scrollDirection,
+          state: _BasicListViewState.gallery,
+        );
 
   /// Create a [BasicListView] whose it's load more items, when scroll to
   /// bottom (when showed progress indicator).
@@ -247,7 +243,8 @@ class SyntonicListView extends ExtendedStatelessWidget {
             state: _BasicListViewState.specifiable);
 
   final _circularProgressIndicatorCount = 1;
-  int get _itemCount => numberOfItems! +
+  int get _itemCount =>
+      numberOfItems! +
       numberOfAdditionalItems! +
       _circularProgressIndicatorCount;
 
@@ -265,7 +262,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
             case _BasicListViewState.normal:
             case _BasicListViewState.infinite:
               return ListView.builder(
-                controller: isNested ? ScrollController() : null,
+                  controller: isNested ? ScrollController() : null,
                   padding: const EdgeInsets.only(bottom: 200),
                   reverse: isReverse,
                   scrollDirection: scrollDirection ?? Axis.vertical,
@@ -283,15 +280,22 @@ class SyntonicListView extends ExtendedStatelessWidget {
                             onReachBottom!();
                           }
                         },
-                        child:
-                        const SyntonicProgressIndicator(iShowProgress: true),
+                        child: const SyntonicProgressIndicator(
+                            iShowProgress: true),
                       );
                     }
                     if (index < numberOfItems! + numberOfAdditionalItems!) {
                       // return listItem!(index);
-                      return Padding(padding: EdgeInsets.only(top: index == 0 ? 16 : 8, left: 16, right: 16, bottom: index == (numberOfItems! - 1) ? 16 : 8), child: listItem!(index),);
+                      return Padding(
+                        padding: EdgeInsets.only(
+                            top: index == 0 ? 16 : 8,
+                            left: 16,
+                            right: 16,
+                            bottom: index == (numberOfItems! - 1) ? 16 : 8),
+                        child: listItem!(index),
+                      );
                     }
-                    return SizedBox();
+                    return const SizedBox();
                   });
             case _BasicListViewState.specifiable:
               return ScrollablePositionedList.builder(
@@ -315,8 +319,8 @@ class SyntonicListView extends ExtendedStatelessWidget {
                             onReachBottom!();
                           }
                         },
-                        child:
-                            const SyntonicProgressIndicator(iShowProgress: true),
+                        child: const SyntonicProgressIndicator(
+                            iShowProgress: true),
                       );
                     }
                     if (index < numberOfItems! + numberOfAdditionalItems!) {
@@ -336,89 +340,169 @@ class SyntonicListView extends ExtendedStatelessWidget {
                     final isFirst = index == 0;
                     final isLast = index == numberOfItems! - 1;
                     final timelineTile = <Widget>[
-                      SizedBox(height: double.infinity / 2, child: Stack(alignment: AlignmentDirectional.center, children: [
-                        Column(mainAxisSize: MainAxisSize.max, children: [SizedBox(height: 56,), CustomPaint(painter: DottedLinePainter(color: Theme.of(context).colorScheme.tertiary,)),],),
-                        SizedBox(
-                        height: double.infinity,
-                        // width: 60,
-                          child: Padding(padding: EdgeInsets.symmetric(horizontal: 8,), child: Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  isFirst ? SizedBox(
-                                    height: isFirst ? 16 : 0,
-                                  ) : const SizedBox(),
-                                  isFirst
-                                      ? SyntonicIcon(
-                                    icon: Icons.add,
-                                    padding: 0,
-                                    onPressed: () =>
-                                        onAdded!(index, true),
-                                  )
-                                      : const SizedBox(),
-                                  isFirst ? Container(height:16, child: CustomPaint(painter: DottedLinePainter(
-                                    height: 16,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .tertiary,
-                                  )),) : const SizedBox(),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        top: isFirst ? 0 : 0),
-                                    child: stepIcon!(index)!,
-                                  ),
-                                ],
-                              ),
-                              // Expanded(child: DottedLinePainter(
-                              //   color: Theme.of(context)
-                              //       .colorScheme
-                              //       .tertiary,
-                              // )),
-                              Expanded(child: CustomPaint(
-                                painter: DottedLinePainter(color: Theme.of(context).colorScheme.tertiary),
-                              )),
-                              Padding(
-                                padding:
-                                EdgeInsets.only(bottom: isLast ? 0 : 0),
-                                child: SyntonicIcon(
-                                  icon: Icons.add,
-                                  padding: 0,
-                                  onPressed: () => onAdded!(index, false),
+                      SizedBox(
+                        height: double.infinity / 2,
+                        child: Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const SizedBox(
+                                  height: 56,
+                                ),
+                                CustomPaint(
+                                    painter: DottedLinePainter(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: double.infinity,
+                              // width: 60,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        isFirst
+                                            ? SizedBox(
+                                                height: isFirst ? 16 : 0,
+                                              )
+                                            : const SizedBox(),
+                                        isFirst
+                                            ? SyntonicIcon(
+                                                icon: Icons.add,
+                                                padding: 0,
+                                                onPressed: () =>
+                                                    onAdded!(index, true),
+                                              )
+                                            : const SizedBox(),
+                                        isFirst
+                                            ? SizedBox(
+                                                height: 16,
+                                                child: CustomPaint(
+                                                    painter: DottedLinePainter(
+                                                  height: 16,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
+                                                )),
+                                              )
+                                            : const SizedBox(),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: isFirst ? 0 : 0),
+                                          child: stepIcon!(index)!,
+                                        ),
+                                      ],
+                                    ),
+                                    // Expanded(child: DottedLinePainter(
+                                    //   color: Theme.of(context)
+                                    //       .colorScheme
+                                    //       .tertiary,
+                                    // )),
+                                    Expanded(
+                                        child: CustomPaint(
+                                      painter: DottedLinePainter(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary),
+                                    )),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: isLast ? 0 : 0),
+                                      child: SyntonicIcon(
+                                        icon: Icons.add,
+                                        padding: 0,
+                                        onPressed: () => onAdded!(index, false),
+                                      ),
+                                    ),
+                                    !isLast
+                                        ? SizedBox(
+                                            height: 16,
+                                            child: CustomPaint(
+                                                painter: DottedLinePainter(
+                                              height: 16,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            )),
+                                          )
+                                        : const SizedBox(),
+                                    isLast
+                                        ? SizedBox(
+                                            height: isLast ? 16 : 0,
+                                          )
+                                        : const SizedBox(),
+                                  ],
                                 ),
                               ),
-                              !isLast ? Container(height:16, child: CustomPaint(painter: DottedLinePainter(
-                                height: 16,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .tertiary,
-                              )),) : const SizedBox(),
-                              isLast ? SizedBox(
-                                height: isLast ? 16 : 0,
-                              ) : const SizedBox(),
-                            ],
-                          ),),
                             ),
                           ],
-                        ),),
+                        ),
+                      ),
                       // SizedBox(width: 4),
-                      Expanded(child:
-                      Padding(padding: EdgeInsets.zero, child: Column(children: [isFirst ? Container(alignment: Alignment.centerLeft, height: 56, child: Body2Text(text: 'Add step', textColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.38),),) : const SizedBox(), Padding(padding: EdgeInsets.only(right: 16), child: SyntonicAnimationEnhancer(child: listItem!(index),),), Container(alignment: Alignment.centerLeft, height: 56, child: Body2Text(text: 'Add step', textColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.38)),)],),),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.zero,
+                          child: Column(
+                            children: [
+                              isFirst
+                                  ? Container(
+                                      alignment: Alignment.centerLeft,
+                                      height: 56,
+                                      child: Body2Text(
+                                        text: 'Add step',
+                                        textColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface
+                                            .withOpacity(0.38),
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 16),
+                                child: SyntonicAnimationEnhancer(
+                                  child: listItem!(index),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                height: 56,
+                                child: Body2Text(
+                                    text: 'Add step',
+                                    textColor: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withOpacity(0.38)),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ];
 
                     return RepaintBoundary(
                       key: ValueKey(index),
                       child: IntrinsicHeight(
-                      child: hasStepper ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children:
-                          timelineTile,
-                        // isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
-                      ) : SyntonicAnimationEnhancer(child: listItem!(index),),
-                    ),);
+                        child: hasStepper
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: timelineTile,
+                                // isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
+                              )
+                            : SyntonicAnimationEnhancer(
+                                child: listItem!(index),
+                              ),
+                      ),
+                    );
                   },
                   scrollDirection: scrollDirection ?? Axis.vertical,
                   // shrinkWrap: true,
@@ -435,24 +519,65 @@ class SyntonicListView extends ExtendedStatelessWidget {
               // Container(height: 200, width: 200, child:    gridItem!(0, 200),)
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    for (var i = 0; i < (numberOfItems! / numberOfRow).ceil(); i++)
+                    for (var i = 0;
+                        i < (numberOfItems! / numberOfRow).ceil();
+                        i++)
                       Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Container(width: 700, height:50, color: i == 0 ? Colors.red : Colors.blue)
-                            for (var j = 0; j < (numberOfItems! - _index(i, j, numberOfRow) < 0 ? _index(i, j, numberOfRow) * - 1 : numberOfRow); j++)
-                              Container(alignment: Alignment.topLeft, width: MediaQuery.of(context).size.width * (1 / numberOfColumn) + (MediaQuery.of(context).size.width * (1 / numberOfColumn) / numberOfColumn), child: Padding(padding: EdgeInsets.only(left: (numberOfItems! - (numberOfItems! - i * numberOfRow)) + j == 0 ? 16 : 4, right: (numberOfItems! - (numberOfItems! - i * numberOfRow)) + j == numberOfItems ? 16 : 4), child: gridItem!((numberOfItems! - (numberOfItems! - i * numberOfRow)) + j, MediaQuery.of(context).size.width * (1 / numberOfColumn) + (MediaQuery.of(context).size.width * (1 / numberOfColumn) / numberOfColumn)),)),
+                            for (var j = 0;
+                                j <
+                                    (numberOfItems! -
+                                                _index(i, j, numberOfRow) <
+                                            0
+                                        ? _index(i, j, numberOfRow) * -1
+                                        : numberOfRow);
+                                j++)
+                              Container(
+                                  alignment: Alignment.topLeft,
+                                  width: MediaQuery.of(context).size.width *
+                                          (1 / numberOfColumn) +
+                                      (MediaQuery.of(context).size.width *
+                                          (1 / numberOfColumn) /
+                                          numberOfColumn),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: (numberOfItems! -
+                                                        (numberOfItems! -
+                                                            i * numberOfRow)) +
+                                                    j ==
+                                                0
+                                            ? 16
+                                            : 4,
+                                        right: (numberOfItems! -
+                                                        (numberOfItems! -
+                                                            i * numberOfRow)) +
+                                                    j ==
+                                                numberOfItems
+                                            ? 16
+                                            : 4),
+                                    child: gridItem!(
+                                        (numberOfItems! -
+                                                (numberOfItems! -
+                                                    i * numberOfRow)) +
+                                            j,
+                                        MediaQuery.of(context).size.width *
+                                                (1 / numberOfColumn) +
+                                            (MediaQuery.of(context).size.width *
+                                                (1 / numberOfColumn) /
+                                                numberOfColumn)),
+                                  )),
 
                             //   Container(width: MediaQuery.of(context).size.width - 56, child: Expanded(child: listItem(((numberOfItems! - (numberOfItems! - i * _numberOfItemsInColumn)) + j)),)),
-                          ]
-                      )
-                  ],),
+                          ])
+                  ],
+                ),
               );
           }
         }));
@@ -460,7 +585,9 @@ class SyntonicListView extends ExtendedStatelessWidget {
 
   /// Index.
   int _index(int i, int j, int _numberOfItemsInColumn) {
-    return (((numberOfItems! - (numberOfItems! - i * _numberOfItemsInColumn)) + j + 1));
+    return (((numberOfItems! - (numberOfItems! - i * _numberOfItemsInColumn)) +
+        j +
+        1));
   }
 }
 
@@ -470,16 +597,17 @@ class InfiniteLoadingListViewModel extends ChangeNotifier {
   int currentMax = 20; // 一回に表示されるリストカウント
   bool hasMoreData = true;
 
-  void getMoreDataCount(int currentMax){
+  void getMoreDataCount(int currentMax) {
     print("get more data");
     // notifyListeners();
   }
 
-  InfiniteLoadingListViewModel({required this.context, required this.currentMax}) {
+  InfiniteLoadingListViewModel(
+      {required this.context, required this.currentMax}) {
     // createSyntonicerModel();
   }
 
-  void changeMoreDataStatus(bool hasMoreData){
+  void changeMoreDataStatus(bool hasMoreData) {
     // notifyListeners();
   }
 }
@@ -499,10 +627,10 @@ class _TimelinePainter extends CustomPainter {
     required this.isLast,
     required this.itemGap,
   })  : linePaint = Paint()
-    ..color = lineColor
-    ..strokeCap = strokeCap
-    ..strokeWidth = strokeWidth
-    ..style = style,
+          ..color = lineColor
+          ..strokeCap = strokeCap
+          ..strokeWidth = strokeWidth
+          ..style = style,
         circlePaint = Paint()
           ..color = indicatorColor
           ..style = indicatorStyle;
@@ -558,7 +686,7 @@ class DottedLinePainter extends CustomPainter {
   DottedLinePainter({this.color, this.height});
   final Color? color;
   final double? height;
-  
+
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
@@ -566,8 +694,8 @@ class DottedLinePainter extends CustomPainter {
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke;
 
-    final double dashWidth = 2;
-    final double dashSpace = 2;
+    const double dashWidth = 2;
+    const double dashSpace = 2;
     double startY = 0;
 
     while (startY < (height ?? size.height)) {

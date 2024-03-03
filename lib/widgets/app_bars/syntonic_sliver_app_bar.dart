@@ -1,11 +1,8 @@
-import 'package:syntonic_components/configs/themes/syntonic_elevated_button_theme.dart';
 import 'package:syntonic_components/widgets/buttons/syntonic_button.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_animation_enhancer.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
 import 'package:syntonic_components/widgets/text_fields/syntonic_search_box.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:syntonic_components/widgets/texts/body_1_text.dart';
 
 import '../../configs/constants/syntonic_color.dart';
 import '../../services/navigation_service.dart';
@@ -87,7 +84,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       VoidCallback? onTap,
       bool needsNavigationDrawer = false,
       SyntonicSearchBox? searchBox,
-        Widget? searchBox2,
+      Widget? searchBox2,
       String? subtitle,
       ScrollController? scrollController,
       bool hasTabBar = false,
@@ -134,7 +131,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       VoidCallback? onBackButtonPressed,
       VoidCallback? onTap,
       bool needsNavigationDrawer = false,
-        SyntonicSearchBox? searchBox,
+      SyntonicSearchBox? searchBox,
       String? subtitle,
       ScrollController? scrollController,
       bool hasTabBar = false,
@@ -267,59 +264,77 @@ class SyntonicSliverAppBar extends StatelessWidget
     //     onSearchButtonTap: (searchWord) {});
     Widget _title = searchBox ??
         SyntonicListItem(
-          title: this.title ?? '',
-          subtitle: this.subtitle,
+          title: title ?? '',
+          subtitle: subtitle,
           titleTextStyle: TitleTextStyle.Headline6,
           hasPadding: false,
           titleColor: accentColor,
-          trailingWidget: this.trailing,
+          trailingWidget: trailing,
           needsTitleOverFlowStateVisible: false,
           needsSubtitleOverFlowStateVisible: false,
-          optionalWidgetTitle: onTap != null ? const Icon(Icons.arrow_drop_down_outlined) : null,
+          optionalWidgetTitle:
+              onTap != null ? const Icon(Icons.arrow_drop_down_outlined) : null,
         );
 
     print('Appbar スティッキー');
 
-        return SliverAppBar(
-          surfaceTintColor: isStickying ? Theme.of(context).colorScheme.surfaceTint : Colors.transparent,
-            // backgroundColor: Colors.transparent,
-            backgroundColor: isStickying ? Theme.of(context).colorScheme.surface : Colors.transparent,
+    return SliverAppBar(
+      surfaceTintColor: isStickying
+          ? Theme.of(context).colorScheme.surfaceTint
+          : Colors.transparent,
+      // backgroundColor: Colors.transparent,
+      backgroundColor: isStickying
+          ? Theme.of(context).colorScheme.surface
+          : Colors.transparent,
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
-          ? SyntonicAnimationEnhancer(child: SyntonicIcon(padding: 0, icon: Icons.close, onPressed: () => onBackButtonPressed ?? Navigator.pop(context), size: IconSize.normal,))
-          : BackButton(
-          onPressed: this.onBackButtonPressed, color: this.accentColor),
+              ? SyntonicAnimationEnhancer(
+                  child: SyntonicIcon(
+                  padding: 0,
+                  icon: Icons.close,
+                  onPressed: () =>
+                      onBackButtonPressed ?? Navigator.pop(context),
+                  size: IconSize.normal,
+                ))
+              : BackButton(
+                  onPressed: onBackButtonPressed, color: accentColor),
       iconTheme: IconThemeData(
-        color: this.accentColor, //change your color here
+        color: accentColor, //change your color here
       ),
       stretch: true,
       snap: isFadedTitle ? false : true,
       floating: true,
-      pinned: (this.isFullscreenDialog || this.hasTabBar || isFadedTitle) ? true : false,
+      pinned: (isFullscreenDialog || hasTabBar || isFadedTitle)
+          ? true
+          : false,
       title: isFadedTitle
           ? SyntonicFade.on(
-          zeroOpacityOffset: (expandedHeight ?? kToolbarHeight) - kToolbarHeight - 100,
-          fullOpacityOffset: (expandedHeight ?? kToolbarHeight) - kToolbarHeight - 50,
-          // fullOpacityOffset: expandedHeight! - (kToolbarHeight*2.5),
+              zeroOpacityOffset:
+                  (expandedHeight ?? kToolbarHeight) - kToolbarHeight - 100,
+              fullOpacityOffset:
+                  (expandedHeight ?? kToolbarHeight) - kToolbarHeight - 50,
+              scrollController: scrollController!,
+              // fullOpacityOffset: expandedHeight! - (kToolbarHeight*2.5),
               // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
               // fullOpacityOffset: expandedHeight!,
-              child: _title,
-              scrollController: scrollController!)
+              child: _title)
           : _title,
       actions: manualUrl != null && actions != null
-          ?
-      [ _getManualIcon(manualUrl: manualUrl, context: context),
-
-      ]  + actions!
-          :  manualUrl != null ?  [ _getManualIcon(manualUrl: manualUrl, context: context),
-
-      ] : actions,
+          ? [
+                _getManualIcon(manualUrl: manualUrl, context: context),
+              ] +
+              actions!
+          : manualUrl != null
+              ? [
+                  _getManualIcon(manualUrl: manualUrl, context: context),
+                ]
+              : actions,
       elevation: 0,
       // elevation: elevation ?? (this.isStickying ? 0 : 3),
       // scrolledUnderElevation: 3,
       // stretchTriggerOffset: 300,
-    // forceMaterialTransparency: true,
+      // forceMaterialTransparency: true,
       // expandedHeight: this.expandedHeight,
       // flexibleSpace: flexibleSpace,
       bottom: bottom,
@@ -330,7 +345,6 @@ class SyntonicSliverAppBar extends StatelessWidget
       //       height: 0,
       //       color: !isStickying ? null : isDarkTheme ? Colors.white54 : Colors.black12,
       //     ), Container(width: double.infinity, child: bottom,) as Widget],))) : null,
-
     );
   }
 
@@ -376,7 +390,10 @@ class SyntonicSliverAppBar extends StatelessWidget
 
 class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   const StickyTabBarDelegate(
-      {required this.tabBar, required this.tabBarHeader, required this.setStickyState, required this.height});
+      {required this.tabBar,
+      required this.tabBarHeader,
+      required this.setStickyState,
+      required this.height});
   final TabBar tabBar;
   final Widget? tabBarHeader;
   final Function(bool) setStickyState;
@@ -417,17 +434,21 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
 
     Color _color = Theme.of(context).colorScheme.surface;
     return Material(
-      type: MaterialType.button,
-      animationDuration: overlapsContent? Duration(milliseconds: 100) : Duration(milliseconds: 150),
+        type: MaterialType.button,
+        animationDuration: overlapsContent
+            ? const Duration(milliseconds: 100)
+            : const Duration(milliseconds: 150),
         surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
         elevation: overlapsContent ? 3.0 : 0,
         color: _color,
-        child: Column(children: [tabBarHeader ?? const SizedBox(), tabBar],));
+        child: Column(
+          children: [tabBarHeader ?? const SizedBox(), tabBar],
+        ));
   }
 
   @override
   bool shouldRebuild(StickyTabBarDelegate oldDelegate) {
-    return this.tabBar != oldDelegate.tabBar;
+    return tabBar != oldDelegate.tabBar;
   }
 }
 

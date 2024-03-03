@@ -1,10 +1,7 @@
-
 // ignore: must_be_immutable
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 
-import '../../services/localization_service.dart';
 
 enum TextPickerStyle {
   transparent,
@@ -40,13 +37,12 @@ class SyntonicTextPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textEditingController = new TextEditingController();
-    textEditingController.text = this.selectedIndex != null
-        ? this.items[this.selectedIndex!]
-        : '';
-    EdgeInsetsGeometry padding = this.needsPadding
-        ? EdgeInsets.only(left: 16, right: 16)
-        : EdgeInsets.only(left: 0, right: 0);
+    final textEditingController = TextEditingController();
+    textEditingController.text =
+        selectedIndex != null ? items[selectedIndex!] : '';
+    EdgeInsetsGeometry padding = needsPadding
+        ? const EdgeInsets.only(left: 16, right: 16)
+        : const EdgeInsets.only(left: 0, right: 0);
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Container(
@@ -56,61 +52,75 @@ class SyntonicTextPicker extends StatelessWidget {
             return Stack(alignment: AlignmentDirectional.centerEnd, children: [
               TextFormField(
                 key: PageStorageKey(itemKey),
-                enabled: this.isEnabled,
+                enabled: isEnabled,
                 controller: textEditingController,
                 readOnly: true,
                 validator: validator,
                 cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
-                decoration: style == TextPickerStyle.transparent ? InputDecoration(border: InputBorder.none) : InputDecoration(
-                  border: needsColor ? InputBorder.none : null,
-                  fillColor: isEnabled == false && needsColor && isDarkTheme
-                      ? SyntonicColor.white4
-                      : isEnabled == false && needsColor && isDarkTheme == false
-                      ? SyntonicColor.black4
-                  : isDarkTheme && needsColor ? Colors.black12 :  needsColor
-                  ? Colors.white : null,
-                  errorText: errorText,
-                  filled: true,
-                  labelText: label,
-                  helperText: null,
-                ),
+                decoration: style == TextPickerStyle.transparent
+                    ? const InputDecoration(border: InputBorder.none)
+                    : InputDecoration(
+                        border: needsColor ? InputBorder.none : null,
+                        fillColor:
+                            isEnabled == false && needsColor && isDarkTheme
+                                ? SyntonicColor.white4
+                                : isEnabled == false &&
+                                        needsColor &&
+                                        isDarkTheme == false
+                                    ? SyntonicColor.black4
+                                    : isDarkTheme && needsColor
+                                        ? Colors.black12
+                                        : needsColor
+                                            ? Colors.white
+                                            : null,
+                        errorText: errorText,
+                        filled: true,
+                        labelText: label,
+                        helperText: null,
+                      ),
                 onTap: () {
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                  FocusScope.of(context).requestFocus(FocusNode());
                 },
               ),
-              this.isEnabled ? Container(
-                  child: DropdownButtonHideUnderline(
-                child: ButtonTheme(
-                  alignedDropdown: true,
-                  child: DropdownButton(
-                    icon: Container(
-                        padding: EdgeInsets.only(right: 8),
-                        child: Icon(Icons.arrow_drop_down)),
-                    isExpanded: true,
-                    onChanged: (DropdownItemModel? selectedIndex) {
-                      onTap((selectedIndex?.index == 0)
-                          ? null
-                          : selectedIndex?.index);
-                    },
-                    items:getDropdownButtonItems(context: context),
-                  ),
-                ),
-              )) : SizedBox()
+              isEnabled
+                  ? Container(
+                      child: DropdownButtonHideUnderline(
+                      child: ButtonTheme(
+                        alignedDropdown: true,
+                        child: DropdownButton(
+                          icon: Container(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: const Icon(Icons.arrow_drop_down)),
+                          isExpanded: true,
+                          onChanged: (DropdownItemModel? selectedIndex) {
+                            onTap((selectedIndex?.index == 0)
+                                ? null
+                                : selectedIndex?.index);
+                          },
+                          items: getDropdownButtonItems(context: context),
+                        ),
+                      ),
+                    ))
+                  : const SizedBox()
             ]);
           },
         ));
   }
 
-  List<DropdownMenuItem<DropdownItemModel>> getDropdownButtonItems({required BuildContext context}) {
+  List<DropdownMenuItem<DropdownItemModel>> getDropdownButtonItems(
+      {required BuildContext context}) {
     List<DropdownMenuItem<DropdownItemModel>> list = [];
-    for (int i = 0; i < this.items.length; i++) {
-      list.add(getDropDownMenuItem(context: context, index: i, value: this.items[i]));
+    for (int i = 0; i < items.length; i++) {
+      list.add(getDropDownMenuItem(
+          context: context, index: i, value: items[i]));
     }
     return list;
   }
 
   DropdownMenuItem<DropdownItemModel> getDropDownMenuItem(
-      {required BuildContext context, required int index, required String value}) {
+      {required BuildContext context,
+      required int index,
+      required String value}) {
     return DropdownMenuItem<DropdownItemModel>(
       value: DropdownItemModel(index: index, value: value),
       child: Text(value,

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'base_text.dart';
 
 class Body1Text extends BaseText {
+  @override
   @required
   final String text;
   final TextOverflow overflow;
@@ -11,6 +12,7 @@ class Body1Text extends BaseText {
   final Color? textColor;
   final int? maxLines;
   final bool? isLineThrough;
+  @override
   final bool needsSeeMore;
 
   const Body1Text(
@@ -28,20 +30,18 @@ class Body1Text extends BaseText {
   @override
   Widget textWidget({required BuildContext context}) {
     return Text(
-      this.text,
+      text,
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
-      overflow: needsSeeMore
-          ? TextOverflow.visible
-          : overflow,
-      maxLines: needsSeeMore
-          ? null
-          : maxLines,
+      overflow: needsSeeMore ? TextOverflow.visible : overflow,
+      maxLines: needsSeeMore ? null : maxLines,
     );
   }
 
   @override
-  TextStyle textStyle({required BuildContext context}) => SyntonicTextTheme.body1(context: context, textColor: textColor, isLineThrough: isLineThrough);
+  TextStyle textStyle({required BuildContext context}) =>
+      SyntonicTextTheme.body1(
+          context: context, textColor: textColor, isLineThrough: isLineThrough);
 }

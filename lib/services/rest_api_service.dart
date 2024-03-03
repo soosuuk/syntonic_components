@@ -1,31 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:syntonic_components/widgets/snack_bars/syntonic_snack_bar.dart';
 import 'package:syntonic_components/widgets/dialogs/syntonic_dialog.dart';
 import 'package:syntonic_components/widgets/indicators/syntonic_progress_indicator.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:web_browser_detect/web_browser_detect.dart';
 import 'package:syntonic_components/services/localization_service.dart';
-import 'package:http_parser/http_parser.dart';
 
-import '../../configs/constants/base_api_paths.dart';
 import '../../models/http_response_message_model.dart';
 import 'api_exception_service.dart';
-import 'local_storage_service.dart';
 import 'navigation_service.dart';
 import 'dart:developer' as developer;
 
 class RestApiService {
   final String host;
-  
+
   RestApiService({required this.host});
 
   late bool isSynchronous = false;
@@ -35,10 +28,10 @@ class RestApiService {
 
   Future<dynamic> get(
       {required String path,
-        Map<String, String>? parameters,
-        bool isSynchronous = false,
-        Function()? onSucceeded,
-        Function()? onFailed}) async {
+      Map<String, String>? parameters,
+      bool isSynchronous = false,
+      Function()? onSucceeded,
+      Function()? onFailed}) async {
     Response response;
     this.isSynchronous = isSynchronous;
 
@@ -77,9 +70,8 @@ class RestApiService {
       // _showProgressDialogOnCurrentContext();
 
       developer.log(json.encode(parameters));
-      response = await http.post(uri,
-          headers: headers,
-          body: json.encode(parameters));
+      response =
+          await http.post(uri, headers: headers, body: json.encode(parameters));
       // _dismissProgressDialogOnCurrentContext();
 
       developer.log(response.body);
@@ -97,7 +89,7 @@ class RestApiService {
     }
 
     if (currentContext != null) {
-      SyntonicProgressIndicator(
+      const SyntonicProgressIndicator(
         iShowProgress: true,
       ).showProgressDialogFullScreen(currentContext!);
     }
@@ -121,7 +113,6 @@ class RestApiService {
   /// その他の場合、unknown exceptionとして返却する
   dynamic _parseResponse(
       Response response, Function()? onSucceeded, Function()? onFailed) async {
-
     final int _statusCode = response.statusCode;
     Map<String, dynamic> _body = {};
 
@@ -144,7 +135,7 @@ class RestApiService {
         context: currentContext!,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: _message != null ? Text(_message!.title!) : null,
+            title: _message != null ? Text(_message.title!) : null,
           );
         },
       );
@@ -184,7 +175,6 @@ class RestApiService {
     } else {
       if (currentContext != null) {
         // return Future.error("Error Info", StackTrace.fromString("StackTrace Error message"));
-
       }
     }
   }

@@ -1,6 +1,6 @@
 class HttpResponseMessageModel {
   HttpResponseMessageModel(this.code, this.title, this.content);
-  
+
   int? code;
   String? title;
   String? content;

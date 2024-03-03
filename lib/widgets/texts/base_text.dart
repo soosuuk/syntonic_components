@@ -1,6 +1,4 @@
 import 'package:syntonic_components/services/navigation_service.dart';
-import 'package:syntonic_components/widgets/snack_bars/syntonic_snack_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -19,8 +17,11 @@ abstract class BaseText extends StatelessWidget {
   RegExp get _urlRegExp => RegExp(
       r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
 
-  const BaseText({this.linkColor, this.needsLinkify = true,});
-  
+  const BaseText({
+    this.linkColor,
+    this.needsLinkify = true,
+  });
+
   @override
   Widget build(BuildContext context) {
     // this.context = context;
@@ -35,7 +36,9 @@ abstract class BaseText extends StatelessWidget {
         if (needsLinkify &&
             (textWidget as Text).overflow == TextOverflow.visible) {
           return SelectableText.rich(
-            TextSpan(children: _toLinkify(text: text, context: context), style: textStyle(context: context)),
+            TextSpan(
+                children: _toLinkify(text: text, context: context),
+                style: textStyle(context: context)),
           );
         } else {
           return textWidget(context: context);
@@ -56,7 +59,8 @@ abstract class BaseText extends StatelessWidget {
 
   /// Linkify take a piece of text and a regular expression and turns all of the regex matches in the text into clickable links.
   /// Matching things like web URLs.
-  List<TextSpan> _toLinkify({required String text, required BuildContext context}) {
+  List<TextSpan> _toLinkify(
+      {required String text, required BuildContext context}) {
     List<TextSpan> textSpan = [];
 
     /// Get linkable text with a matched text.
@@ -64,7 +68,8 @@ abstract class BaseText extends StatelessWidget {
       textSpan.add(
         TextSpan(
           text: text,
-          style: TextStyle(color: linkColor ?? Theme.of(context).colorScheme.primary),
+          style: TextStyle(
+              color: linkColor ?? Theme.of(context).colorScheme.primary),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               NavigationService.launchUrlInApp(url: text);
@@ -87,7 +92,7 @@ abstract class BaseText extends StatelessWidget {
     text.splitMapJoin(
       _urlRegExp,
       onMatch: (m) => _getLinkableText(text: "${m.group(0)}"),
-      onNonMatch: (n) => _getNormalText(text: "${n.substring(0)}"),
+      onNonMatch: (n) => _getNormalText(text: n.substring(0)),
     );
 
     return textSpan;

@@ -14,7 +14,8 @@ class SyntonicDateRangePicker {
         context: context,
         firstDate: DateTime(1920),
         initialDateRange: selectedDateTimeRange,
-        lastDate: DateTime.now().withSomeDateTime(year: DateTime.now().year + 100),
+        lastDate:
+            DateTime.now().withSomeDateTime(year: DateTime.now().year + 100),
         builder: (BuildContext context, Widget? child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -25,7 +26,7 @@ class SyntonicDateRangePicker {
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: SyntonicColor.primary_color, // button text color
+                  foregroundColor: SyntonicColor.primary_color, // button text color
                 ),
               ),
             ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
@@ -63,36 +62,38 @@ import 'backdropPanels.dart';
 //   }
 // }
 
-
 class BackdropPage extends HookWidget {
   final Widget backdropWidget;
   final Widget frontLayerContents;
   final Widget backLayerContents;
   late AnimationController controller;
 
-  BackdropPage({required this.backdropWidget, required this.frontLayerContents, required this.backLayerContents});
+  BackdropPage(
+      {required this.backdropWidget,
+      required this.frontLayerContents,
+      required this.backLayerContents});
 
   @override
   Widget build(BuildContext context) {
-    this.controller = useAnimationController(
-        duration: Duration(milliseconds: 100), initialValue: 1.0);
+    controller = useAnimationController(
+        duration: const Duration(milliseconds: 100), initialValue: 1.0);
 
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => BackdropState()),
         ],
         child: Consumer<BackdropState>(builder: (context, state, child) {
-          state.controller = this.controller;
+          state.controller = controller;
 
-          return new Scaffold(
+          return Scaffold(
             // drawer: NavigationDrawer(),
-            body: new BackdropPanels(
+            body: BackdropPanels(
                 controller: state.controller,
                 isPanelVisible: state.isPanelVisible,
                 onBackdropStateChanged: () => state.notify(),
-                backdropWidget: this.backdropWidget,
-                frontLayerContents: this.frontLayerContents,
-                backLayerContents: this.backLayerContents),
+                backdropWidget: backdropWidget,
+                frontLayerContents: frontLayerContents,
+                backLayerContents: backLayerContents),
           );
         }));
   }

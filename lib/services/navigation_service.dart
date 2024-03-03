@@ -1,7 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:syntonic_components/services/localization_service.dart';
 import 'package:syntonic_components/widgets/snack_bars/syntonic_snack_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
@@ -34,7 +32,8 @@ class NavigationService {
   }
 
   /// Display the [screen] as modal screen over a current screen.
-  static Future<dynamic> pushFullscreenDialog({required SyntonicBaseView screen, BuildContext? context}) {
+  static Future<dynamic> pushFullscreenDialog(
+      {required SyntonicBaseView screen, BuildContext? context}) {
     return Navigator.push(
       context ?? NavigationService().navigatorKey.currentContext!,
       // MaterialPageRoute(
@@ -49,13 +48,16 @@ class NavigationService {
           //     isInitializedProvider.(StateProvider<bool>((ref) => false)),
           //   ],
           // );
-          return ProviderScope(child: screen,);
+          return ProviderScope(
+            child: screen,
+          );
           return screen;
         },
-          transitionDuration: Duration(milliseconds: 500),
+        transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const curve = Curves.easeInOutCubicEmphasized; // ここでカスタムのCurveを指定
-          var curvedAnimation = CurvedAnimation(parent: animation, curve: curve);
+          var curvedAnimation =
+              CurvedAnimation(parent: animation, curve: curve);
           return FadeTransition(opacity: curvedAnimation, child: child);
         },
       ),

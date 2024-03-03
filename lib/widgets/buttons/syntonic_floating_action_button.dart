@@ -1,11 +1,6 @@
-import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/configs/constants/syntonic_constraint.dart';
-import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
-import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 class SyntonicFloatingActionButton extends StatelessWidget {
   /// The state of FAB is extend or not.
@@ -26,11 +21,13 @@ class SyntonicFloatingActionButton extends StatelessWidget {
   final double? width;
 
   const SyntonicFloatingActionButton(
-      {Key? key, required this.isExtended,
+      {Key? key,
+      required this.isExtended,
       required this.floatingActionButtonModel,
       this.isSecondary = false,
       this.heroTag = '',
-      this.width}) : super(key: key);
+      this.width})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,57 +35,72 @@ class SyntonicFloatingActionButton extends StatelessWidget {
     // bool isDarkTheme = brightness == Brightness.dark;
 
     if (isSecondary) {
-      return FloatingActionButton.small(backgroundColor: Theme.of(context).colorScheme.surfaceVariant, onPressed: floatingActionButtonModel.onTap, child: Icon(this.floatingActionButtonModel.icon ?? Icons.add, color: Theme.of(context).colorScheme.primary, size: 18,),);
+      return FloatingActionButton.small(
+        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+        onPressed: floatingActionButtonModel.onTap,
+        child: Icon(
+          floatingActionButtonModel.icon ?? Icons.add,
+          color: Theme.of(context).colorScheme.primary,
+          size: 18,
+        ),
+      );
     } else {
       return SizedBox(
         width: width,
         height: 56,
         child: FloatingActionButton.extended(
             backgroundColor:
-            this.isSecondary ? Theme.of(context).colorScheme.surface : null,
+                isSecondary ? Theme.of(context).colorScheme.surface : null,
             isExtended: true,
             extendedPadding:
-            !this.isExtended ? SyntonicConstraint.horizontal16 : null,
+                !isExtended ? SyntonicConstraint.horizontal16 : null,
             onPressed: floatingActionButtonModel.onTap,
             heroTag: floatingActionButtonModel.heroTag,
             label: AnimatedSwitcher(
               duration: const Duration(milliseconds: 120),
               transitionBuilder: (Widget child, Animation<double> animation) =>
                   FadeTransition(
-                    opacity: animation,
-                    child: SizeTransition(
-                      sizeFactor: animation,
-                      axis: Axis.horizontal,
-                      child: child,
-                    ),
-                  ),
-              child: !this.isExtended
-                  ? Icon(this.floatingActionButtonModel.icon ?? Icons.add,
-                  color: this.isSecondary
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.onPrimaryContainer, size: 18,)
-                  : Row(
-                key: UniqueKey(),
-                children: [
-                  Padding(
-                    padding: SyntonicConstraint.trailing8,
-                    child: Icon(
-                      this.floatingActionButtonModel.icon ?? Icons.add,
-                      color: this.isSecondary
+                opacity: animation,
+                child: SizeTransition(
+                  sizeFactor: animation,
+                  axis: Axis.horizontal,
+                  child: child,
+                ),
+              ),
+              child: !isExtended
+                  ? Icon(
+                      floatingActionButtonModel.icon ?? Icons.add,
+                      color: isSecondary
                           ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.onPrimaryContainer,
                       size: 18,
+                    )
+                  : Row(
+                      key: UniqueKey(),
+                      children: [
+                        Padding(
+                          padding: SyntonicConstraint.trailing8,
+                          child: Icon(
+                            floatingActionButtonModel.icon ?? Icons.add,
+                            color: isSecondary
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                            size: 18,
+                          ),
+                        ),
+                        Subtitle1Text(
+                          text: floatingActionButtonModel.text,
+                          textColor: isSecondary
+                              ? Theme.of(context).colorScheme.onSurface
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
+                          needsLinkify: false,
+                        )
+                      ],
                     ),
-                  ),
-                  Subtitle1Text(
-                    text: this.floatingActionButtonModel.text,
-                    textColor: this.isSecondary
-                        ? Theme.of(context).colorScheme.onSurface
-                        : Theme.of(context).colorScheme.onPrimaryContainer,
-                    needsLinkify: false,
-                  )
-                ],
-              ),
             )),
       );
     }

@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-import '../../configs/constants/syntonic_color.dart';
 
 class SyntonicHighlightedContainer extends StatefulWidget {
   /// Child.
@@ -14,7 +12,8 @@ class SyntonicHighlightedContainer extends StatefulWidget {
 
   final bool isEnabled;
 
-  const SyntonicHighlightedContainer({this.child, this.color, this.isEnabled = true});
+  const SyntonicHighlightedContainer(
+      {this.child, this.color, this.isEnabled = true});
 
   @override
   _HighlightedContainerState createState() => _HighlightedContainerState();
@@ -28,12 +27,15 @@ class _HighlightedContainerState extends State<SyntonicHighlightedContainer> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(_animationDuration, (timer) => widget.isEnabled ? _changeColor() : null);
+    _timer = Timer.periodic(_animationDuration,
+        (timer) => widget.isEnabled ? _changeColor() : null);
     _color = Colors.transparent;
   }
 
   void _changeColor() {
-    final newColor = _color == widget.color || _color == Colors.transparent ? Colors.white70 : widget.color ?? Colors.transparent;
+    final newColor = _color == widget.color || _color == Colors.transparent
+        ? Colors.white70
+        : widget.color ?? Colors.transparent;
     setState(() {
       _color = newColor;
     });
@@ -48,9 +50,11 @@ class _HighlightedContainerState extends State<SyntonicHighlightedContainer> {
         child: widget.child,
       );
     } else {
-      return Container(color: _color, child: widget.child,);
+      return Container(
+        color: _color,
+        child: widget.child,
+      );
     }
-
   }
 
   @override

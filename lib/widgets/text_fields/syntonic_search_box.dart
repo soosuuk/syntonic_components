@@ -1,24 +1,27 @@
-import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/localization_service.dart';
 
 class SyntonicSearchBox extends StatelessWidget {
   final String? value;
   final VoidCallback? onTap;
   final Function(String searchWord) onSearchButtonTap;
   final String? hintText;
-  const SyntonicSearchBox({Key? key, this.value, this.onTap, required this.onSearchButtonTap, this.hintText}) : super(key: key);
+  const SyntonicSearchBox(
+      {Key? key,
+      this.value,
+      this.onTap,
+      required this.onSearchButtonTap,
+      this.hintText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController _textEditingController =
         TextEditingController();
-    _textEditingController.text = this.value ?? '';
+    _textEditingController.text = value ?? '';
 
-    if (this.onTap == null) {
+    if (onTap == null) {
       _textEditingController.selection = TextSelection(
           baseOffset: 0, extentOffset: _textEditingController.text.length);
     }
@@ -30,12 +33,12 @@ class SyntonicSearchBox extends StatelessWidget {
         // color: (MediaQuery.of(context).platformBrightness == Brightness.light)
         //     ? Colors.black12
         //     : Colors.white12,
-        borderRadius: BorderRadius.all(Radius.circular(30)),
+        borderRadius: const BorderRadius.all(Radius.circular(30)),
       ),
       child: TextField(
-          autofocus: this.onTap != null ? false : true,
-          onTap: this.onTap,
-          readOnly: this.onTap != null ? true : false,
+          autofocus: onTap != null ? false : true,
+          onTap: onTap,
+          readOnly: onTap != null ? true : false,
           controller: _textEditingController,
           onChanged: (text) {
             // model.viewModel(text);
@@ -52,14 +55,16 @@ class SyntonicSearchBox extends StatelessWidget {
                 size: 24,
               ),
               suffixIcon:
-                  this.onTap == null && _textEditingController.text.length > 0
+                  onTap == null && _textEditingController.text.isNotEmpty
                       ? IconButton(
-                          icon: Icon(Icons.cancel, color: Theme.of(context).colorScheme.primary,),
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                           onPressed: () => _textEditingController.clear())
                       : null,
               border: InputBorder.none,
-              hintText: hintText ?? "Search event"
-          ),
+              hintText: hintText ?? "Search event"),
           textInputAction: TextInputAction.search),
     );
   }

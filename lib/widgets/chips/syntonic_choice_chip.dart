@@ -8,18 +8,18 @@ class SyntonicChoiceChip extends StatelessWidget {
   final bool isSelected;
   final Function(bool isSelected) onSelected;
   final Color? color;
-  
+
   @Deprecated("You should use [trailingIcon] instead of this.")
   final IconData? icon;
-  
+
   final Widget? trailingIcon;
 
-  SyntonicChoiceChip(
+  const SyntonicChoiceChip(
       {required this.index,
       required this.label,
       required this.isSelected,
       required this.onSelected,
-        this.color,
+      this.color,
       this.icon,
       this.trailingIcon});
 
@@ -35,16 +35,19 @@ class SyntonicChoiceChip extends StatelessWidget {
         //       color: Colors.redAccent,
         //     )),
 
-        label: SizedBox(width: double.infinity, child: Text(
-          this.label,
-          style: TextStyle(
-            color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : isDarkTheme
-                ? Colors.white70
-                : SyntonicColor.black88,
+        label: SizedBox(
+          width: double.infinity,
+          child: Text(
+            label,
+            style: TextStyle(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : isDarkTheme
+                      ? Colors.white70
+                      : SyntonicColor.black88,
+            ),
           ),
-        ),),
+        ),
         backgroundColor: isSelected
             ? Theme.of(context).colorScheme.primary.toAlpha
             : Colors.transparent,
@@ -61,11 +64,13 @@ class SyntonicChoiceChip extends StatelessWidget {
         onSelected: (bool isSelected) {
           onSelected(isSelected);
         },
-        avatar: trailingIcon != null ? trailingIcon :  icon != null
-            ? Icon(icon,
-                color:
-                    color ?? (isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary))
-            : null,
+        avatar: trailingIcon ?? (icon != null
+                ? Icon(icon,
+                    color: color ??
+                        (isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.primary))
+                : null),
         showCheckmark: icon != null || trailingIcon != null ? false : true,
         checkmarkColor: Theme.of(context).colorScheme.primary);
   }

@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
@@ -21,7 +20,8 @@ extension Material3Palette on Color {
 /// Manage all text Themes.
 /// If set a value to "letterSpacing", need to convert ems(character spacing / 1000) to pt.
 class SyntonicTextTheme {
-  static TextStyle headline1({required BuildContext context, Color? textColor}) {
+  static TextStyle headline1(
+      {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
     print('ロケール');
     print(currentLocale.countryCode);
@@ -30,9 +30,10 @@ class SyntonicTextTheme {
 
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.notoSansJavanese(
-      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 43),
+        textStyle:
+            Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 43),
         fontWeight: FontWeight.w500,
-          // letterSpacing: 1,
+        // letterSpacing: 1,
         // color: textColor,
         // color: textColor ?? Theme.of(context).colorScheme.onSurface,
         // height: 1.4,
@@ -49,7 +50,8 @@ class SyntonicTextTheme {
     // );
   }
 
-  static TextStyle headline4({required BuildContext context, Color? textColor}) {
+  static TextStyle headline4(
+      {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.kosugiMaru(
@@ -67,7 +69,8 @@ class SyntonicTextTheme {
     );
   }
 
-  static TextStyle headline5({required BuildContext context, Color? textColor}) {
+  static TextStyle headline5(
+      {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.kosugiMaru(
@@ -83,7 +86,8 @@ class SyntonicTextTheme {
     );
   }
 
-  static TextStyle headline6({required BuildContext context, Color? textColor}) {
+  static TextStyle headline6(
+      {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.kosugiMaru(
@@ -98,7 +102,8 @@ class SyntonicTextTheme {
         height: 1.4);
   }
 
-  static TextStyle subtitle1({required BuildContext context, Color? textColor}) {
+  static TextStyle subtitle1(
+      {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.kosugiMaru(
@@ -112,7 +117,8 @@ class SyntonicTextTheme {
         height: 1.4);
   }
 
-  static TextStyle subtitle2({required BuildContext context, Color? textColor}) {
+  static TextStyle subtitle2(
+      {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.kosugiMaru(
@@ -126,7 +132,8 @@ class SyntonicTextTheme {
         height: 1.4);
   }
 
-  static TextStyle body1({required BuildContext context, Color? textColor, bool? isLineThrough}) {
+  static TextStyle body1(
+      {required BuildContext context, Color? textColor, bool? isLineThrough}) {
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.kosugiMaru(
@@ -166,13 +173,13 @@ class SyntonicTextTheme {
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.kosugiMaru(
-        textStyle: Theme.of(context).textTheme.caption,
+        textStyle: Theme.of(context).textTheme.bodySmall,
       );
     }
 
     var brightness = MediaQuery.of(context).platformBrightness;
     return GoogleFonts.roboto(
-      textStyle: Theme.of(context).textTheme.caption,
+      textStyle: Theme.of(context).textTheme.bodySmall,
       fontWeight: FontWeight.w400,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)

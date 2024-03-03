@@ -1,7 +1,5 @@
-import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/configs/constants/syntonic_constraint.dart';
 import 'package:syntonic_components/widgets/buttons/syntonic_button.dart';
-import 'package:syntonic_components/widgets/chips/syntonic_display_chip.dart';
 import 'package:syntonic_components/widgets/selectors/syntonic_checkbox.dart';
 import 'package:syntonic_components/widgets/selectors/syntonic_radio_button.dart';
 import 'package:syntonic_components/widgets/selectors/syntonic_switch.dart';
@@ -14,11 +12,7 @@ import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 import 'package:syntonic_components/widgets/texts/overline_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_device_type/flutter_device_type.dart';
 
 import '../dividers/syntonic_divider.dart';
 import '../buttons/syntonic_pop_up_menu_button.dart';
@@ -220,8 +214,8 @@ class SyntonicListItem extends ListItem {
       TitleTextStyle? titleTextStyle})
       : super(key: key) {
     this.titleTextStyle =
-        titleTextStyle != null ? titleTextStyle : TitleTextStyle.Subtitle2;
-    this.hasDivider = !hasDivider ||
+        titleTextStyle ?? TitleTextStyle.Subtitle2;
+    hasDivider = !hasDivider ||
             titleTextStyle == TitleTextStyle.Headline4 ||
             titleTextStyle == TitleTextStyle.Headline5 ||
             titleTextStyle == TitleTextStyle.Headline6 ||
@@ -232,28 +226,28 @@ class SyntonicListItem extends ListItem {
         : true;
 
     needsSubtitleOverFlowStateVisible = needsSubtitleOverFlowStateVisible ??
-        titleTextStyle == TitleTextStyle.Headline4 ||
+            titleTextStyle == TitleTextStyle.Headline4 ||
                 titleTextStyle == TitleTextStyle.Headline5 ||
                 titleTextStyle == TitleTextStyle.Headline6 ||
                 titleTextStyle == TitleTextStyle.Overline
-            ? true
-            : false;
+        ? true
+        : false;
 
     switch (this.titleTextStyle) {
       case TitleTextStyle.Headline4:
         titleWidget = Headline4Text(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = Subtitle2Text(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
-              overflow: this.needsSubtitleOverFlowStateVisible!
+              text: subtitle!,
+              textColor: subTitleColor,
+              overflow: needsSubtitleOverFlowStateVisible!
                   ? TextOverflow.visible
                   : TextOverflow.ellipsis,
               textAlign: textAlign,
@@ -263,18 +257,18 @@ class SyntonicListItem extends ListItem {
         break;
       case TitleTextStyle.Headline5:
         titleWidget = Headline5Text(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = Body2Text(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
-              overflow: this.needsSubtitleOverFlowStateVisible!
+              text: subtitle!,
+              textColor: subTitleColor,
+              overflow: needsSubtitleOverFlowStateVisible!
                   ? TextOverflow.visible
                   : TextOverflow.ellipsis,
               textAlign: textAlign,
@@ -284,18 +278,18 @@ class SyntonicListItem extends ListItem {
         break;
       case TitleTextStyle.Headline6:
         titleWidget = Headline6Text(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = Body2Text(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
-              overflow: this.needsSubtitleOverFlowStateVisible!
+              text: subtitle!,
+              textColor: subTitleColor,
+              overflow: needsSubtitleOverFlowStateVisible!
                   ? TextOverflow.visible
                   : TextOverflow.ellipsis,
               textAlign: textAlign,
@@ -305,18 +299,18 @@ class SyntonicListItem extends ListItem {
         break;
       case TitleTextStyle.Subtitle1:
         titleWidget = Subtitle1Text(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = Body2Text(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
-              overflow: this.needsSubtitleOverFlowStateVisible!
+              text: subtitle!,
+              textColor: subTitleColor,
+              overflow: needsSubtitleOverFlowStateVisible!
                   ? TextOverflow.visible
                   : TextOverflow.ellipsis,
               textAlign: textAlign,
@@ -326,18 +320,18 @@ class SyntonicListItem extends ListItem {
         break;
       case TitleTextStyle.Subtitle2:
         titleWidget = Subtitle2Text(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = Body2Text(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
-              overflow: this.needsSubtitleOverFlowStateVisible!
+              text: subtitle!,
+              textColor: subTitleColor,
+              overflow: needsSubtitleOverFlowStateVisible!
                   ? TextOverflow.visible
                   : TextOverflow.ellipsis,
               textAlign: textAlign,
@@ -347,18 +341,18 @@ class SyntonicListItem extends ListItem {
         break;
       case TitleTextStyle.Body1:
         titleWidget = Body1Text(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = CaptionText(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
-              overflow: this.needsSubtitleOverFlowStateVisible!
+              text: subtitle!,
+              textColor: subTitleColor,
+              overflow: needsSubtitleOverFlowStateVisible!
                   ? TextOverflow.visible
                   : TextOverflow.ellipsis,
               textAlign: textAlign,
@@ -368,18 +362,18 @@ class SyntonicListItem extends ListItem {
         break;
       case TitleTextStyle.Body2:
         titleWidget = Body2Text(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = Subtitle2Text(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
-              overflow: this.needsSubtitleOverFlowStateVisible!
+              text: subtitle!,
+              textColor: subTitleColor,
+              overflow: needsSubtitleOverFlowStateVisible!
                   ? TextOverflow.visible
                   : TextOverflow.ellipsis,
               textAlign: textAlign,
@@ -389,17 +383,17 @@ class SyntonicListItem extends ListItem {
         break;
       case TitleTextStyle.Caption:
         titleWidget = CaptionText(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = Subtitle2Text(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
+              text: subtitle!,
+              textColor: subTitleColor,
               overflow: TextOverflow.visible,
               textAlign: textAlign,
               maxLines: titleMaxLines,
@@ -408,17 +402,17 @@ class SyntonicListItem extends ListItem {
         break;
       case TitleTextStyle.Overline:
         titleWidget = OverlineText(
-            text: this.title,
-            textColor: this.titleColor,
-            overflow: this.needsTitleOverFlowStateVisible
+            text: title,
+            textColor: titleColor,
+            overflow: needsTitleOverFlowStateVisible
                 ? TextOverflow.visible
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (this.subtitle != null) {
+        if (subtitle != null) {
           subtitleWidget = Headline5Text(
-              text: this.subtitle!,
-              textColor: this.subTitleColor,
+              text: subtitle!,
+              textColor: subTitleColor,
               overflow: TextOverflow.visible,
               textAlign: textAlign,
               maxLines: titleMaxLines,
@@ -460,7 +454,10 @@ class SyntonicListItem extends ListItem {
       : this(
             title: title,
             needsTitleOverFlowStateVisible: needsTitleOverFlowStateVisible,
-            trailingWidget: Padding(padding: const EdgeInsets.only(left: 16, right: 16), child: Subtitle2Text(text: trailingText),),
+            trailingWidget: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: Subtitle2Text(text: trailingText),
+            ),
             titleTextStyle: TitleTextStyle.Body2);
 
   /// Radio Button.
@@ -604,7 +601,7 @@ class SyntonicListItem extends ListItem {
       required String title,
       required bool isReorderMode,
       @Deprecated('Should use [SyntonicPopupMenuButton]instead of this')
-          List<PopUpMenuItem>? popupMenuItems,
+      List<PopUpMenuItem>? popupMenuItems,
       SyntonicPopupMenuButton? popupMenuButton,
       VoidCallback? onTap,
       GestureLongPressCallback? onLongPress,
@@ -649,46 +646,48 @@ class SyntonicListItem extends ListItem {
                   crossAxisAlignment: textCrossAxisAlignment,
                   children: [
                     leadingWidget != null
-                        ?
-                    Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
-                    // ConstrainedBox(
-                    //     constraints: const BoxConstraints(
-                    //         minWidth: 48, minHeight: 32
-                    //       // minHeight: 48
-                    //     ),
-                    //     child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
-                    // )
+                        ? Padding(
+                            padding: SyntonicConstraint.horizontal16,
+                            child: Center(child: leadingWidget),
+                          )
+                        // ConstrainedBox(
+                        //     constraints: const BoxConstraints(
+                        //         minWidth: 48, minHeight: 32
+                        //       // minHeight: 48
+                        //     ),
+                        //     child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
+                        // )
                         : SizedBox(width: hasPadding ? 16 : 0),
                     Expanded(
                       child: Column(
-                          crossAxisAlignment:
-                          crossAxisAlignment,
+                          crossAxisAlignment: crossAxisAlignment,
                           children: [
-                            if (bottomWidget != null)
-                              const SizedBox(height: 6),
+                            if (bottomWidget != null) const SizedBox(height: 6),
                             topWidget != null
                                 ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 4),
-                                child: topWidget)
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
+                                    child: topWidget)
                                 : const SizedBox(),
                             _texts,
                             bottomWidget ?? const SizedBox()
                           ]),
                     ),
                     trailingWidget != null
-                        ?
-                    Padding(padding: SyntonicConstraint.horizontal16, child: Center(
-                        child: isReorderMode
-                            ? const Icon(Icons.drag_handle)
-                            : trailingWidget),)
-                    // ConstrainedBox(
-                    //     constraints: const BoxConstraints(
-                    //         minWidth: 48, minHeight: 48),
-                    //     child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(
-                    //         child: isReorderMode
-                    //             ? const Icon(Icons.drag_handle)
-                    //             : trailingWidget),))
+                        ? Padding(
+                            padding: SyntonicConstraint.horizontal16,
+                            child: Center(
+                                child: isReorderMode
+                                    ? const Icon(Icons.drag_handle)
+                                    : trailingWidget),
+                          )
+                        // ConstrainedBox(
+                        //     constraints: const BoxConstraints(
+                        //         minWidth: 48, minHeight: 48),
+                        //     child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(
+                        //         child: isReorderMode
+                        //             ? const Icon(Icons.drag_handle)
+                        //             : trailingWidget),))
                         : SizedBox(width: hasPadding ? 16 : 0),
                   ],
                 )),
@@ -714,28 +713,29 @@ class SyntonicListItem extends ListItem {
                   children: [
                     leadingWidget != null
                         ? ConstrainedBox(
-                        constraints: const BoxConstraints(
-                            minWidth: 48, minHeight: 32
-                          // minHeight: 48
-                        ),
-                        child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
-                      // Positioned(
-                      // top: -10,
-                      // child: this.leadingWidget!)
-                    )
+                            constraints:
+                                const BoxConstraints(minWidth: 48, minHeight: 32
+                                    // minHeight: 48
+                                    ),
+                            child: Padding(
+                              padding: SyntonicConstraint.horizontal16,
+                              child: Center(child: leadingWidget),
+                            )
+                            // Positioned(
+                            // top: -10,
+                            // child: this.leadingWidget!)
+                            )
                         : SizedBox(width: hasPadding ? 16 : 0),
                     Expanded(
                       child: Column(
-                          crossAxisAlignment:
-                          crossAxisAlignment,
+                          crossAxisAlignment: crossAxisAlignment,
                           children: [
-                            if (bottomWidget != null)
-                              const SizedBox(height: 6),
+                            if (bottomWidget != null) const SizedBox(height: 6),
                             topWidget != null
                                 ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 4),
-                                child: topWidget)
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
+                                    child: topWidget)
                                 : const SizedBox(),
                             _texts,
                             bottomWidget ?? const SizedBox()
@@ -743,12 +743,15 @@ class SyntonicListItem extends ListItem {
                     ),
                     trailingWidget != null
                         ? ConstrainedBox(
-                        constraints: const BoxConstraints(
-                            minWidth: 48, minHeight: 48),
-                        child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(
-                            child: isReorderMode
-                                ? const Icon(Icons.drag_handle)
-                                : trailingWidget),))
+                            constraints: const BoxConstraints(
+                                minWidth: 48, minHeight: 48),
+                            child: Padding(
+                              padding: SyntonicConstraint.horizontal16,
+                              child: Center(
+                                  child: isReorderMode
+                                      ? const Icon(Icons.drag_handle)
+                                      : trailingWidget),
+                            ))
                         : SizedBox(width: hasPadding ? 16 : 0),
                   ],
                 )),
@@ -797,8 +800,9 @@ class SyntonicListItem extends ListItem {
           mainAxisAlignment: mainAxisAlignmentTitle ?? mainAxisAlignment,
           children: [
             Flexible(child: titleWidget),
-            this.optionalWidgetTitle != null
-                ? Row(children: [const SizedBox(width: 4), optionalWidgetTitle!])
+            optionalWidgetTitle != null
+                ? Row(
+                    children: [const SizedBox(width: 4), optionalWidgetTitle!])
                 : const SizedBox(width: 0)
           ]);
     }

@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 class SyntonicColor {
-  static const MaterialColor materialColor = const MaterialColor(
+  static const MaterialColor materialColor = MaterialColor(
     0xFF08CBDB,
-    const <int, Color>{
-      50: const Color(0xFF08CBDB),
-      100: const Color(0xFF08CBDB),
-      200: const Color(0xFF08CBDB),
-      300: const Color(0xFF08CBDB),
-      400: const Color(0xFF08CBDB),
-      500: const Color(0xFF08CBDB),
-      600: const Color(0xFF08CBDB),
-      700: const Color(0xFF08CBDB),
-      800: const Color(0xFF08CBDB),
-      900: const Color(0xFF08CBDB),
+    <int, Color>{
+      50: Color(0xFF08CBDB),
+      100: Color(0xFF08CBDB),
+      200: Color(0xFF08CBDB),
+      300: Color(0xFF08CBDB),
+      400: Color(0xFF08CBDB),
+      500: Color(0xFF08CBDB),
+      600: Color(0xFF08CBDB),
+      700: Color(0xFF08CBDB),
+      800: Color(0xFF08CBDB),
+      900: Color(0xFF08CBDB),
     },
   );
 
@@ -109,7 +109,6 @@ class SyntonicColor {
   ///    are variants on this color but with different opacities.
   static const Color black88 = Color(0xE0000000);
 
-
   /// Black with 72% opacity.
   ///
   /// Used for banner background color in dark themes and medal black.
@@ -148,7 +147,6 @@ class SyntonicColor {
   ///    are variants on this color but with different opacities.
   static const Color black40 = Color(0x66000000);
 
-
   /// Black with 4% opacity.
   ///
   /// Used for banner background color in light themes.
@@ -157,14 +155,14 @@ class SyntonicColor {
   ///
   ///  * [black88], [black72], [black56], [black52], [black40] which
   ///    are variants on this color but with different opacities.
-  static const Color black4 = Color(0xA000000);
+  static const Color black4 = Color(0x0a000000);
 
   static const Color black12 = Color(0x1F000000);
 
   /// White with 4% opacity.
   ///
   /// Used for banner background color in light themes.
-  static const Color white4 = Color(0xAFFFFFF);
+  static const Color white4 = Color(0x0affffff);
 
   static const Color whiteTransparent = Color(0x00FFFFFF);
 
@@ -229,5 +227,4 @@ class SyntonicColor {
       techniqueCategoryColor10 = pink;
     }
   }
-
 }

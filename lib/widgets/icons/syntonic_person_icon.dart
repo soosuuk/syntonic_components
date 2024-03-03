@@ -1,15 +1,11 @@
-import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/models/person_model.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 import 'package:syntonic_components/widgets/texts/caption_text.dart';
 import 'package:syntonic_components/widgets/texts/headline_4_text.dart';
 import 'package:syntonic_components/widgets/texts/headline_5_text.dart';
 import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
-import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 enum IconSize { normal, large, extraLarge, medium, small, mini }
 
@@ -45,12 +41,14 @@ class SyntonicPersonIcon extends StatelessWidget {
   // final double borderRadius;
 
   const SyntonicPersonIcon(
-      {Key? key, required this.person,
+      {Key? key,
+      required this.person,
       required this.type,
       this.shape = IconShape.circle,
       this.hasPadding = true,
       this.needsBorder = false,
-      this.needsMainStaffBorder = false}) : super(key: key);
+      this.needsMainStaffBorder = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -175,13 +173,15 @@ class SyntonicPersonIcon extends StatelessWidget {
     return !_needsInitial || person.id == null
         ? Stack(
             children: [
-              Icon(Icons.account_circle, size: type.size,),
+              Icon(
+                Icons.account_circle,
+                size: type.size,
+              ),
               Container(
                 width: type.size! + 4,
                 height: type.size! + 4,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        type.size! + 2),
+                    borderRadius: BorderRadius.circular(type.size! + 2),
                     border: Border.all(
                         width: 2,
                         color: Theme.of(context).colorScheme.surface)),

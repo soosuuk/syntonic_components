@@ -1,12 +1,10 @@
 import 'dart:math';
 
-import 'package:path/path.dart';
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 enum OutlinedTextFieldType {
   Normal,
@@ -47,35 +45,40 @@ class SyntonicTextField extends StatelessWidget {
   final TextStyle? textStyle;
   final String? hintText;
 
-  TextInputAction? get _textInputAction => textInputAction ?? ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
-  OutlinedTextFieldType get outlinedTextFieldType => needsMasking ? OutlinedTextFieldType.Obscure : OutlinedTextFieldType.Normal;
+  TextInputAction? get _textInputAction =>
+      textInputAction ??
+      ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
+  OutlinedTextFieldType get outlinedTextFieldType => needsMasking
+      ? OutlinedTextFieldType.Obscure
+      : OutlinedTextFieldType.Normal;
 
   /// Normal.
-  const SyntonicTextField._(
-      {required this.label,
-        this.onTextChanged,
-        this.value,
-      this.errorMessage,
-      this.maxLines,
-      this.minLines = 1,
-      this.hasPadding = true,
-      this.helperText,
-      this.validator,
-      this.textInputAction = TextInputAction.done,
-      this.keyboardType,
-      this.inputFormatters,
-      required this.controller,
-      this.isEnabled = true,
-        this.isFocusRequired = false,
-        this.needsMasking = false,
-      this.itemKey,
-        this.theme = TextFieldTheme.outlined,
-        this.textAlign,
-        this.textStyle,
-        this.hintText,
-      });
+  const SyntonicTextField._({
+    required this.label,
+    this.onTextChanged,
+    this.value,
+    this.errorMessage,
+    this.maxLines,
+    this.minLines = 1,
+    this.hasPadding = true,
+    this.helperText,
+    this.validator,
+    this.textInputAction = TextInputAction.done,
+    this.keyboardType,
+    this.inputFormatters,
+    required this.controller,
+    this.isEnabled = true,
+    this.isFocusRequired = false,
+    this.needsMasking = false,
+    this.itemKey,
+    this.theme = TextFieldTheme.outlined,
+    this.textAlign,
+    this.textStyle,
+    this.hintText,
+  });
 
-  const SyntonicTextField.outlined({String? label,
+  const SyntonicTextField.outlined({
+    String? label,
     Function(String? text)? onTextChanged,
     required String? value,
     String? errorMessage,
@@ -96,27 +99,28 @@ class SyntonicTextField extends StatelessWidget {
     TextAlign? textAlign,
     TextStyle? textStyle,
     String? hintText,
-  }) : this._(label: label,
-      onTextChanged: onTextChanged,
-      value: value,
-      errorMessage: errorMessage,
-      maxLines: maxLines,
-      minLines: minLines,
-      hasPadding: hasPadding,
-      helperText: helperText,
-      validator: validator,
-      textInputAction: textInputAction,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      controller: controller,
-      isEnabled: isEnabled,
-      isFocusRequired: isFocusRequired,
-      needsMasking: needsMasking,
-      itemKey: itemKey,
-      theme: theme,
-      textAlign: textAlign,
-      textStyle: textStyle,
-      hintText: hintText);
+  }) : this._(
+            label: label,
+            onTextChanged: onTextChanged,
+            value: value,
+            errorMessage: errorMessage,
+            maxLines: maxLines,
+            minLines: minLines,
+            hasPadding: hasPadding,
+            helperText: helperText,
+            validator: validator,
+            textInputAction: textInputAction,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
+            controller: controller,
+            isEnabled: isEnabled,
+            isFocusRequired: isFocusRequired,
+            needsMasking: needsMasking,
+            itemKey: itemKey,
+            theme: theme,
+            textAlign: textAlign,
+            textStyle: textStyle,
+            hintText: hintText);
 
   // static final TextEditingController _controller = TextEditingController();
 
@@ -132,39 +136,63 @@ class SyntonicTextField extends StatelessWidget {
     // controller.selection = TextSelection.fromPosition(
     //     TextPosition(offset: controller.text.length));
 
-    return RepaintBoundary(child: Padding(padding: hasPadding ? const EdgeInsets.symmetric(vertical: 8, horizontal: 16) : EdgeInsets.zero, child: Column(mainAxisSize: MainAxisSize.min, children: [TextFormField(
-      key: PageStorageKey(itemKey),
-      // initialValue: value,
-      autofocus: isFocusRequired,
-      enabled: isEnabled,
-      controller: controller,
-      maxLines: maxLines,
-      minLines: minLines,
-      validator: validator,
-      decoration: InputDecoration(
-        hintText: hintText,
-        labelText: label,
-        errorText: errorMessage,
-        helperText: helperText,
-        border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
-        suffixIcon: errorMessage != null
-            ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
-            : null,
-        contentPadding: theme == TextFieldTheme.underline ? const EdgeInsets.all(0) : null,
-        isDense: theme == TextFieldTheme.underline,
+    return RepaintBoundary(
+      child: Padding(
+        padding: hasPadding
+            ? const EdgeInsets.symmetric(vertical: 8, horizontal: 16)
+            : EdgeInsets.zero,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              key: PageStorageKey(itemKey),
+              // initialValue: value,
+              autofocus: isFocusRequired,
+              enabled: isEnabled,
+              controller: controller,
+              maxLines: maxLines,
+              minLines: minLines,
+              validator: validator,
+              decoration: InputDecoration(
+                hintText: hintText,
+                labelText: label,
+                errorText: errorMessage,
+                helperText: helperText,
+                border: theme == TextFieldTheme.outlined
+                    ? const OutlineInputBorder()
+                    : InputBorder.none,
+                suffixIcon: errorMessage != null
+                    ? const SyntonicIcon(
+                        icon: Icons.error, color: SyntonicColor.torch_red)
+                    : null,
+                contentPadding: theme == TextFieldTheme.underline
+                    ? const EdgeInsets.all(0)
+                    : null,
+                isDense: theme == TextFieldTheme.underline,
+              ),
+              textInputAction: _textInputAction,
+              textAlign: textAlign ?? TextAlign.start,
+              keyboardType:
+                  maxLines != null ? TextInputType.multiline : keyboardType,
+              inputFormatters: inputFormatters,
+              onChanged: (text) {
+                if (onTextChanged != null) {
+                  onTextChanged!(text.isEmpty ? null : text);
+                }
+              },
+              // onSaved: (text) => onTextChanged(controller.text),
+              style: textStyle,
+            ),
+            const SizedBox(
+              height: 2,
+            ),
+            SyntonicDivider(
+              hasDotted: true,
+            )
+          ],
+        ),
       ),
-      textInputAction: _textInputAction,
-      textAlign: textAlign ?? TextAlign.start,
-      keyboardType: maxLines != null ? TextInputType.multiline : keyboardType,
-      inputFormatters: inputFormatters,
-      onChanged: (text) {
-        if (onTextChanged != null) {
-          onTextChanged!(text.isEmpty ? null : text);
-        }
-      },
-      // onSaved: (text) => onTextChanged(controller.text),
-      style: textStyle,
-    ), const SizedBox(height: 2,), SyntonicDivider(hasDotted: true,)],),),);
+    );
 
     // return ListenableProvider(
     //     create: (context) => OutlinedTextFieldManager(),
@@ -291,36 +319,39 @@ class FitTextField extends StatefulWidget {
   final TextStyle? textStyle;
   final String? hintText;
 
-  TextInputAction? get _textInputAction => textInputAction ?? ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
-  OutlinedTextFieldType get outlinedTextFieldType => needsMasking ? OutlinedTextFieldType.Obscure : OutlinedTextFieldType.Normal;
+  TextInputAction? get _textInputAction =>
+      textInputAction ??
+      ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
+  OutlinedTextFieldType get outlinedTextFieldType => needsMasking
+      ? OutlinedTextFieldType.Obscure
+      : OutlinedTextFieldType.Normal;
 
-
-  const FitTextField(
-      {Key? key,
-        this.initialValue,
-        this.minWidth: 30,
-        this.label,
-        this.onTextChanged,
-        this.value,
-        this.errorMessage,
-        this.maxLines,
-        this.minLines = 1,
-        this.hasPadding = true,
-        this.helperText,
-        this.validator,
-        this.textInputAction = TextInputAction.done,
-        this.keyboardType,
-        this.inputFormatters,
-        required this.controller,
-        this.isEnabled = true,
-        this.isFocusRequired = false,
-        this.needsMasking = false,
-        this.itemKey,
-        this.theme = TextFieldTheme.outlined,
-        this.textAlign,
-        this.textStyle,
-        this.hintText,
-      }) : super(key: key);
+  const FitTextField({
+    Key? key,
+    this.initialValue,
+    this.minWidth = 30,
+    this.label,
+    this.onTextChanged,
+    this.value,
+    this.errorMessage,
+    this.maxLines,
+    this.minLines = 1,
+    this.hasPadding = true,
+    this.helperText,
+    this.validator,
+    this.textInputAction = TextInputAction.done,
+    this.keyboardType,
+    this.inputFormatters,
+    required this.controller,
+    this.isEnabled = true,
+    this.isFocusRequired = false,
+    this.needsMasking = false,
+    this.itemKey,
+    this.theme = TextFieldTheme.outlined,
+    this.textAlign,
+    this.textStyle,
+    this.hintText,
+  }) : super(key: key);
 
   // const FitTextField({
   //   Key? key,
@@ -329,7 +360,7 @@ class FitTextField extends StatefulWidget {
   // }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => new FitTextFieldState();
+  State<StatefulWidget> createState() => FitTextFieldState();
 }
 
 class FitTextFieldState extends State<FitTextField> {
@@ -346,6 +377,7 @@ class FitTextFieldState extends State<FitTextField> {
   //   fontSize: 16,
   // );
 
+  @override
   initState() {
     super.initState();
     // Set the text in the TextField to our initialValue
@@ -366,67 +398,82 @@ class FitTextFieldState extends State<FitTextField> {
     }
 
     // Use TextPainter to calculate the width of our text
-    TextSpan ts = new TextSpan(style: style, text: widget.controller.text);
-    TextPainter tp = new TextPainter(
+    TextSpan ts = TextSpan(style: style, text: widget.controller.text);
+    TextPainter tp = TextPainter(
       text: ts,
       textDirection: TextDirection.ltr,
     );
     tp.layout();
 
-    TextSpan tss = new TextSpan(style: style, text: widget.hintText);
-    TextPainter tpp = new TextPainter(
+    TextSpan tss = TextSpan(style: style, text: widget.hintText);
+    TextPainter tpp = TextPainter(
       text: tss,
       textDirection: TextDirection.ltr,
     );
     tpp.layout();
 
     // Enforce a minimum width
-    final textWidth = max(tpp.width + 10, tp.width + _CURSOR_WIDTH+10);
+    final textWidth = max(tpp.width + 10, tp.width + _CURSOR_WIDTH + 10);
 
-    return Container(
+    return SizedBox(
       width: textWidth,
-      child: Column(mainAxisSize: MainAxisSize.min, children: [TextFormField(
-        cursorWidth: _CURSOR_WIDTH,
-        style: style,
-        controller: widget.controller,
-        onChanged: (text) {
-          // Redraw the widget
-          setState(() {});
-        },
-        key: PageStorageKey(widget.itemKey),
-        // initialValue: value,
-        autofocus: widget.isFocusRequired,
-        enabled: widget.isEnabled,
-        // controller: controller,
-        maxLines: widget.maxLines,
-        minLines: widget.minLines,
-        validator: widget.validator,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          labelText: widget.label,
-          errorText: widget.errorMessage,
-          helperText: widget.helperText,
-          border:  InputBorder.none,
-          // border: widget.theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
-          suffixIcon: widget.errorMessage != null
-              ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
-              : null,
-          contentPadding: widget.theme == TextFieldTheme.underline ? const EdgeInsets.all(0) : null,
-          isDense: widget.theme == TextFieldTheme.underline,
-        ),
-        textInputAction: widget._textInputAction,
-        textAlign: widget.textAlign ?? TextAlign.start,
-        keyboardType: widget.maxLines != null ? TextInputType.multiline : widget.keyboardType,
-        inputFormatters: widget.inputFormatters,
-        // onChanged: (text) {
-        //   if (onTextChanged != null) {
-        //     onTextChanged!(text.isEmpty ? null : text);
-        //   }
-        // },
-        // onSaved: (text) => onTextChanged(controller.text),
-        // style: textStyle,
-      ), const SizedBox(height: 2,), SyntonicDivider(hasDotted: true,)
-      ],),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            cursorWidth: _CURSOR_WIDTH,
+            style: style,
+            controller: widget.controller,
+            onChanged: (text) {
+              // Redraw the widget
+              setState(() {});
+            },
+            key: PageStorageKey(widget.itemKey),
+            // initialValue: value,
+            autofocus: widget.isFocusRequired,
+            enabled: widget.isEnabled,
+            // controller: controller,
+            maxLines: widget.maxLines,
+            minLines: widget.minLines,
+            validator: widget.validator,
+            decoration: InputDecoration(
+              hintText: widget.hintText,
+              labelText: widget.label,
+              errorText: widget.errorMessage,
+              helperText: widget.helperText,
+              border: InputBorder.none,
+              // border: widget.theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
+              suffixIcon: widget.errorMessage != null
+                  ? const SyntonicIcon(
+                      icon: Icons.error, color: SyntonicColor.torch_red)
+                  : null,
+              contentPadding: widget.theme == TextFieldTheme.underline
+                  ? const EdgeInsets.all(0)
+                  : null,
+              isDense: widget.theme == TextFieldTheme.underline,
+            ),
+            textInputAction: widget._textInputAction,
+            textAlign: widget.textAlign ?? TextAlign.start,
+            keyboardType: widget.maxLines != null
+                ? TextInputType.multiline
+                : widget.keyboardType,
+            inputFormatters: widget.inputFormatters,
+            // onChanged: (text) {
+            //   if (onTextChanged != null) {
+            //     onTextChanged!(text.isEmpty ? null : text);
+            //   }
+            // },
+            // onSaved: (text) => onTextChanged(controller.text),
+            // style: textStyle,
+          ),
+          const SizedBox(
+            height: 2,
+          ),
+          SyntonicDivider(
+            hasDotted: true,
+          )
+        ],
+      ),
     );
   }
 }

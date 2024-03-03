@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SyntonicDialogWithTwoButton extends StatelessWidget {
@@ -6,7 +5,10 @@ class SyntonicDialogWithTwoButton extends StatelessWidget {
   final String button1Name;
   final String button2Name;
 
-  SyntonicDialogWithTwoButton({required this.content, required this.button1Name, required this.button2Name});
+  const SyntonicDialogWithTwoButton(
+      {required this.content,
+      required this.button1Name,
+      required this.button2Name});
 
   @override
   Widget build(BuildContext context) {

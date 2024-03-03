@@ -17,7 +17,6 @@ class _FrontLayer extends AnimatedWidget {
   final Widget subHeader;
   final Animation<double> _listenable;
 
-
   @override
   Widget build(BuildContext context) {
     final Animation<double> animation = _listenable;
@@ -31,7 +30,9 @@ class _FrontLayer extends AnimatedWidget {
       clipBehavior: Clip.antiAlias,
       elevation: isVisible ? 0 : 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(radius), topRight: Radius.circular(radius)),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(radius),
+            topRight: Radius.circular(radius)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -72,7 +73,7 @@ class _BackdropTitle extends AnimatedWidget {
     final Animation<double> animation = _listenable;
 
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.headline6!,
+      style: Theme.of(context).textTheme.titleLarge!,
       softWrap: false,
       overflow: TextOverflow.ellipsis,
       child: Row(children: <Widget>[
@@ -113,7 +114,7 @@ class _BackdropTitle extends AnimatedWidget {
                 ).evaluate(animation),
                 child: Semantics(
                     label: 'hide categories menu',
-                    child: ExcludeSemantics(child: Text("aaa"))),
+                    child: const ExcludeSemantics(child: Text("aaa"))),
               ),
             ),
             Opacity(
@@ -128,7 +129,7 @@ class _BackdropTitle extends AnimatedWidget {
                 ).evaluate(animation),
                 child: Semantics(
                     label: 'show categories menu',
-                    child: ExcludeSemantics(child: Text("bbb"))),
+                    child: const ExcludeSemantics(child: Text("bbb"))),
               ),
             ),
           ],
@@ -223,16 +224,16 @@ abstract class BackdropStatee extends State<Backdrop>
       key: _backdropKey,
       children: <Widget>[
         ExcludeSemantics(
-          child: widget.backLayer,
           excluding: frontLayerVisible,
+          child: widget.backLayer,
         ),
         PositionedTransition(
           rect: layerAnimation,
           child: _FrontLayer(
             onTap: _toggleBackdropLayerVisibility,
-            child: widget.frontLayer,
             subHeader: subHeader(onTap: _toggleBackdropLayerVisibility),
             listenable: _controller.view,
+            child: widget.frontLayer,
           ),
         ),
       ],

@@ -1,13 +1,9 @@
 // import 'package:badges/badges.dart';
 // import 'package:syntonic_components/models/fcm_data_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:syntonic_components/services/localization_service.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 import 'package:syntonic_components/widgets/bottom_navigations/syntonic_bottom_navigation_item.dart';
 import 'package:flutter/material.dart';
-import 'package:nested/nested.dart';
-import 'package:provider/provider.dart';
 
 import '../app_bars/syntonic_sliver_app_bar.dart';
 import '../base_view_state.dart';
@@ -18,7 +14,9 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
   final List<SyntonicBottomNavigationItem> bottomNavigationItems;
   final Function()? onTapBottomNavigationBar;
 
-  SyntonicBottomNavigationContainer({required this.bottomNavigationItems, this.onTapBottomNavigationBar}) : super(vm: BottomNavigationContainerManager());
+  SyntonicBottomNavigationContainer(
+      {required this.bottomNavigationItems, this.onTapBottomNavigationBar})
+      : super(vm: BottomNavigationContainerManager());
 
   // @override
   // List<SingleChildWidget>? get providers => [
@@ -26,56 +24,63 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
   // ];
 
   @override
-  SyntonicSliverAppBar? appBar({required BuildContext context, required WidgetRef ref}) => null;
+  SyntonicSliverAppBar? appBar(
+          {required BuildContext context, required WidgetRef ref}) =>
+      null;
 
   @override
   Widget mainContents({required BuildContext context, required WidgetRef ref}) {
-      return Scaffold(
-        body: bottomNavigationItems[(viewModel(ref) as BottomNavigationContainerManager).currentIndex],
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (int index) {
-                  if (onTapBottomNavigationBar != null) {
-                    onTapBottomNavigationBar!();
-                  }
-                  if ((viewModel(ref) as BottomNavigationContainerManager).currentIndex == index) {
-                    // bottomNavigationItems[index]
-                    //     .navigatorKey
-                    //     .currentState!
-                    //     .popUntil((route) => route.isFirst);
-                    // bottomNavigationItems[index]
-                    //     .screen
-                    //     .provider
-                    //     .scrollController
-                    //     .animateTo(
-                    //   0.0,
-                    //   curve: Curves.easeOut,
-                    //   duration: const Duration(milliseconds: 300),
-                    // );
-                    //
-                    // for (SyntonicBaseView _childView
-                    // in bottomNavigationItems[index].screen.childViews!) {
-                    //   for (SyntonicBaseView _childView in _childView.childViews!) {
-                    //     _childView.provider.scrollController.animateTo(
-                    //       0.0,
-                    //       curve: Curves.easeOut,
-                    //       duration: const Duration(milliseconds: 300),
-                    //     );
-                    //   }
-                    // }
-                  } else {
-                    (viewModel(ref) as BottomNavigationContainerManager).setCurrentIndex(index);
-                  }
-          },
-          selectedIndex: (viewModel(ref) as BottomNavigationContainerManager).currentIndex,
-          destinations: [
-            for (final item in bottomNavigationItems)
-              NavigationDestination(
-                icon: item.icon,
-                label: item.label,
-              )
-          ],
-        ),
-      );
+    return Scaffold(
+      body: bottomNavigationItems[
+          (viewModel(ref) as BottomNavigationContainerManager).currentIndex],
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          if (onTapBottomNavigationBar != null) {
+            onTapBottomNavigationBar!();
+          }
+          if ((viewModel(ref) as BottomNavigationContainerManager)
+                  .currentIndex ==
+              index) {
+            // bottomNavigationItems[index]
+            //     .navigatorKey
+            //     .currentState!
+            //     .popUntil((route) => route.isFirst);
+            // bottomNavigationItems[index]
+            //     .screen
+            //     .provider
+            //     .scrollController
+            //     .animateTo(
+            //   0.0,
+            //   curve: Curves.easeOut,
+            //   duration: const Duration(milliseconds: 300),
+            // );
+            //
+            // for (SyntonicBaseView _childView
+            // in bottomNavigationItems[index].screen.childViews!) {
+            //   for (SyntonicBaseView _childView in _childView.childViews!) {
+            //     _childView.provider.scrollController.animateTo(
+            //       0.0,
+            //       curve: Curves.easeOut,
+            //       duration: const Duration(milliseconds: 300),
+            //     );
+            //   }
+            // }
+          } else {
+            (viewModel(ref) as BottomNavigationContainerManager)
+                .setCurrentIndex(index);
+          }
+        },
+        selectedIndex:
+            (viewModel(ref) as BottomNavigationContainerManager).currentIndex,
+        destinations: [
+          for (final item in bottomNavigationItems)
+            NavigationDestination(
+              icon: item.icon,
+              label: item.label,
+            )
+        ],
+      ),
+    );
   }
 
   // @override
@@ -117,15 +122,21 @@ class SyntonicBottomNavigationContainer extends SyntonicBaseView {
 }
 
 class BottomNavigationContainerState extends BaseViewState {
-  BottomNavigationContainerState({required bool needsInitialize, required bool isSkeletonLoadingApplied}) : super(needsInitialize: needsInitialize, isSkeletonLoadingApplied: isSkeletonLoadingApplied);
-  
+  BottomNavigationContainerState(
+      {required bool needsInitialize, required bool isSkeletonLoadingApplied})
+      : super(
+            needsInitialize: needsInitialize,
+            isSkeletonLoadingApplied: isSkeletonLoadingApplied);
 }
 
 class BottomNavigationContainerManager extends BaseViewModel {
   int currentIndex = 0;
-  BottomNavigationContainerManager() : super(viewState: BottomNavigationContainerState(needsInitialize: false, isSkeletonLoadingApplied: false));
+  BottomNavigationContainerManager()
+      : super(
+            viewState: BottomNavigationContainerState(
+                needsInitialize: false, isSkeletonLoadingApplied: false));
   void setCurrentIndex(int index) {
-    this.currentIndex = index;
+    currentIndex = index;
     // notifyListeners();
   }
 }

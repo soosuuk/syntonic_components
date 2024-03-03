@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-import '../syntonic_base_view.dart';
 
 class SyntonicAnimationEnhancer extends StatefulWidget {
   final Widget child;
@@ -11,7 +8,7 @@ class SyntonicAnimationEnhancer extends StatefulWidget {
 
   // var provider = ChangeNotifierProvider<SyntonicAnimationEnhancerProvider>((ref) => SyntonicAnimationEnhancerProvider());
 
-  SyntonicAnimationEnhancer(
+  const SyntonicAnimationEnhancer(
       {required this.child, this.isEnabled = false, this.duration = 300});
 
   // @override
@@ -33,7 +30,8 @@ class SyntonicAnimationEnhancer extends StatefulWidget {
   State<StatefulWidget> createState() => _SyntonicAnimationEnhancerState();
 }
 
-class _SyntonicAnimationEnhancerState extends State<SyntonicAnimationEnhancer> with TickerProviderStateMixin {
+class _SyntonicAnimationEnhancerState extends State<SyntonicAnimationEnhancer>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -67,10 +65,15 @@ class _SyntonicAnimationEnhancerState extends State<SyntonicAnimationEnhancer> w
       return widget.child;
     }
 
-    return FadeTransition(opacity: _animation, child: RepaintBoundary(child: ScaleTransition(
-      scale: _animation,
-      child: widget.child,
-    ),),);
+    return FadeTransition(
+      opacity: _animation,
+      child: RepaintBoundary(
+        child: ScaleTransition(
+          scale: _animation,
+          child: widget.child,
+        ),
+      ),
+    );
   }
 
   @override
@@ -81,8 +84,8 @@ class _SyntonicAnimationEnhancerState extends State<SyntonicAnimationEnhancer> w
 }
 
 class SyntonicAnimationEnhancerProvider with ChangeNotifier {
-
-  SyntonicAnimationEnhancerProvider({this.duration = 300, this.widthFactor = 1, this.heightFactor = 1}) {
+  SyntonicAnimationEnhancerProvider(
+      {this.duration = 300, this.widthFactor = 1, this.heightFactor = 1}) {
     onInit();
   }
 
@@ -91,7 +94,6 @@ class SyntonicAnimationEnhancerProvider with ChangeNotifier {
   final double heightFactor;
   late AnimationController _controller;
   late Animation<double> _animation;
-
 
   // @override
   // void dispose() {

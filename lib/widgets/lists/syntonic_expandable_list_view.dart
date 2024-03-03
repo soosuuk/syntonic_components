@@ -5,7 +5,8 @@ class SyntonicExpandableListView extends StatelessWidget {
   final Widget headline;
   final List<Widget>? listItems;
 
-  SyntonicExpandableListView({required this.index, required this.headline, this.listItems});
+  const SyntonicExpandableListView(
+      {required this.index, required this.headline, this.listItems});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +16,12 @@ class SyntonicExpandableListView extends StatelessWidget {
         //         ? SyntonicColor.concrete
         //         : SyntonicColor.black56,
         child: ExpansionTile(
-          // childrenにTextFormFieldがある場合、スクロールエラーを無くすため、入力状態を保つためにこの属性が必要
-          maintainState: true,
-          expandedCrossAxisAlignment: CrossAxisAlignment.start,
-          key: PageStorageKey(index),
-          title: this.headline,
-          children: listItems ?? []));
+            // childrenにTextFormFieldがある場合、スクロールエラーを無くすため、入力状態を保つためにこの属性が必要
+            maintainState: true,
+            expandedCrossAxisAlignment: CrossAxisAlignment.start,
+            key: PageStorageKey(index),
+            title: headline,
+            children: listItems ?? []));
   }
 }
 

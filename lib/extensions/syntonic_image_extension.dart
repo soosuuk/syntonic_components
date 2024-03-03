@@ -1,16 +1,11 @@
 // import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as material;
 // import 'package:image/image.dart';
-import 'package:material_color_utilities/material_color_utilities.dart';
-import 'package:material_color_utilities/utils/color_utils.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 extension SyntonicImageExtension on material.Image {
-
-  Future<PaletteGenerator> updatePaletteGenerator() async
-  {
+  Future<PaletteGenerator> updatePaletteGenerator() async {
     var paletteGenerator = await PaletteGenerator.fromImageProvider(
       image,
     );

@@ -3,7 +3,6 @@ import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
 
 import 'syntonic_app_bar_theme.dart';
 import '../constants/syntonic_color.dart';
-import 'syntonic_tab_bar_theme.dart';
 
 const brightness = Brightness.light;
 const primaryColor = SyntonicColor.primary_color;
@@ -13,7 +12,12 @@ ThemeData lightTheme({Color? primaryColor}) {
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
-    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor!, brightness: Brightness.light, onSurface: primaryColor.tone(30), surface: primaryColor.tone(95), background: primaryColor.tone(95)),
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: primaryColor!,
+        brightness: Brightness.light,
+        onSurface: primaryColor.tone(30),
+        surface: primaryColor.tone(95),
+        background: primaryColor.tone(95)),
     // colorScheme: ColorScheme.light(
     //   primary: primaryColor ?? SyntonicColor.primary_color,
     //   secondary: primaryColor ?? SyntonicColor.primary_color,
@@ -27,18 +31,30 @@ ThemeData lightTheme({Color? primaryColor}) {
     // elevatedButtonTheme: SyntonicElevatedButtonTheme.get(false),
     // outlinedButtonTheme: SyntonicOutlinedButtonTheme.get(false),
     // textButtonTheme: SyntonicTextButtonTheme.get(false),
-    appBarTheme: SyntonicAppBarTheme.get(false),
-    // tabBarTheme: SyntonicTabBarTheme.get(isDarkTheme: false, primaryColor: primaryColor),
-    // bottomNavigationBarTheme: SyntonicBottomNavigationBarTheme.get(false),
-    // dialogTheme: SyntonicDialogTheme.get(false),
-    // chipTheme: SyntonicChipTheme.get(false),
-    // bannerTheme: SyntonicBannerTheme.get(false),
-    // floatingActionButtonTheme: FloatingActionButtonThemeData(
-    //   backgroundColor: primaryColor,
-    //   foregroundColor: Colors.white,
-    // ),
-    // dividerColor: Colors.transparent,
-    toggleableActiveColor: primaryColor ?? SyntonicColor.primary_color,
+    appBarTheme: SyntonicAppBarTheme.get(false), checkboxTheme: CheckboxThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor ?? SyntonicColor.primary_color; }
+ return null;
+ }),
+ ), radioTheme: RadioThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor ?? SyntonicColor.primary_color; }
+ return null;
+ }),
+ ), switchTheme: SwitchThemeData(
+ thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor ?? SyntonicColor.primary_color; }
+ return null;
+ }),
+ trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor ?? SyntonicColor.primary_color; }
+ return null;
+ }),
+ ),
     // iconTheme:
     // inputDecorationTheme:
     // pageTransitionsTheme:
@@ -47,4 +63,3 @@ ThemeData lightTheme({Color? primaryColor}) {
     // sliderTheme:
   );
 }
-

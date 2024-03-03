@@ -1,16 +1,15 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../configs/constants/syntonic_color.dart';
 
 class SyntonicResizableContainer extends StatefulWidget {
   /// Child.
   final Widget? child;
   final Widget Function(double scale)? onInteractionUpdate;
   late double scale;
-  late TransformationController _cellTransformationController = TransformationController();
+  late final TransformationController _cellTransformationController =
+      TransformationController();
 
   /// The maximum allowed scale.
   ///
@@ -41,7 +40,12 @@ class SyntonicResizableContainer extends StatefulWidget {
   late double minSize;
   final double defaultSize;
 
-  SyntonicResizableContainer({required this.defaultSize, this.child, this.onInteractionUpdate, this.maxScale = 2.5, this.minScale = 0.8}) {
+  SyntonicResizableContainer(
+      {required this.defaultSize,
+      this.child,
+      this.onInteractionUpdate,
+      this.maxScale = 2.5,
+      this.minScale = 0.8}) {
     currentSize = defaultSize;
     maxSize = defaultSize * maxScale;
     minSize = defaultSize * minScale;
@@ -53,11 +57,9 @@ class SyntonicResizableContainer extends StatefulWidget {
 }
 
 class _ResizableContainerState extends State<SyntonicResizableContainer> {
-
   ///initial position
   // double leftPos = 33;
   // double rightPos = 33;
-
 
   @override
   void initState() {
@@ -69,13 +71,15 @@ class _ResizableContainerState extends State<SyntonicResizableContainer> {
     return Center(
       child: LayoutBuilder(
         builder: (context, constraints) => GestureDetector(
-            behavior: HitTestBehavior.deferToChild,
+          behavior: HitTestBehavior.deferToChild,
           onTap: () {},
           onScaleUpdate: (details) {
             double _scale = details.scale;
             // print(widget.currentSize);
             // print(widget.minSize);
-            if (widget.currentSize * _scale > widget.defaultSize ? widget.currentSize * _scale <= widget.maxSize : widget.currentSize * _scale >= widget.minSize ) {
+            if (widget.currentSize * _scale > widget.defaultSize
+                ? widget.currentSize * _scale <= widget.maxSize
+                : widget.currentSize * _scale >= widget.minSize) {
               // widget.scale = _scale;
               widget.currentSize *= _scale;
               setState(() {});
@@ -88,12 +92,13 @@ class _ResizableContainerState extends State<SyntonicResizableContainer> {
           //   setState(() {});
           //   debugPrint(midPos.toString());
           // },
-          child: Container(
+          child: SizedBox(
               height: widget.currentSize,
               // width: 60,
               // color: Colors.red,
-              child: widget.onInteractionUpdate != null ? widget.onInteractionUpdate!(widget.currentSize) : const SizedBox()
-          ),
+              child: widget.onInteractionUpdate != null
+                  ? widget.onInteractionUpdate!(widget.currentSize)
+                  : const SizedBox()),
         ),
       ),
     );

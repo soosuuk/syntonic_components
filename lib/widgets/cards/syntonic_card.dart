@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../configs/themes/syntonic_dark_theme.dart';
@@ -24,20 +23,23 @@ class SyntonicCard extends StatelessWidget {
   final ImagePosition imagePosition;
 
   const SyntonicCard(
-      {
-        this.borderRadius = 24,
-        this.onTap,
+      {this.borderRadius = 24,
+      this.onTap,
       this.isSelected = false,
-        this.image,
+      this.image,
       this.child,
       this.elevation,
       this.color,
-        this.needsBorder = false,
+      this.needsBorder = false,
       this.hasPadding = true,
       this.imagePosition = ImagePosition.top});
 
   const SyntonicCard.transparent(
-      {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true, Widget? image})
+      {VoidCallback? onTap,
+      bool isSelected = false,
+      Widget? child,
+      bool hasPadding = true,
+      Widget? image})
       : this(
             onTap: onTap,
             image: image,
@@ -49,20 +51,25 @@ class SyntonicCard extends StatelessWidget {
             color: Colors.transparent);
 
   const SyntonicCard.outlined(
-      {VoidCallback? onTap, bool isSelected = false, Widget? child, bool hasPadding = true, Widget? image})
+      {VoidCallback? onTap,
+      bool isSelected = false,
+      Widget? child,
+      bool hasPadding = true,
+      Widget? image})
       : this(
-      onTap: onTap,
-      isSelected: isSelected,
-      image: image,
-      child: child,
-      elevation: 0,
-      needsBorder: true,
-      hasPadding: hasPadding,
-      color: Colors.transparent);
+            onTap: onTap,
+            isSelected: isSelected,
+            image: image,
+            child: child,
+            elevation: 0,
+            needsBorder: true,
+            hasPadding: hasPadding,
+            color: Colors.transparent);
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    bool isDarkTheme =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     Widget _card = Card(
       margin: EdgeInsets.zero,
       // color: null,
@@ -86,7 +93,13 @@ class SyntonicCard extends StatelessWidget {
     );
 
     if (color != null) {
-      return Theme(data: color != null ? isDarkTheme ? darkTheme(primaryColor: color) : lightTheme(primaryColor: color) : Theme.of(context), child: _card);
+      return Theme(
+          data: color != null
+              ? isDarkTheme
+                  ? darkTheme(primaryColor: color)
+                  : lightTheme(primaryColor: color)
+              : Theme.of(context),
+          child: _card);
     } else {
       return _card;
     }
@@ -96,10 +109,10 @@ class SyntonicCard extends StatelessWidget {
     Widget _child = Container(
       decoration: needsBorder
           ? BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(
-              width: 1,
-              color: Theme.of(context).colorScheme.outlineVariant))
+              borderRadius: BorderRadius.circular(borderRadius),
+              border: Border.all(
+                  width: 1,
+                  color: Theme.of(context).colorScheme.outlineVariant))
           : null,
       padding: const EdgeInsets.all(16),
       child: child,
@@ -112,22 +125,22 @@ class SyntonicCard extends StatelessWidget {
     switch (imagePosition) {
       case ImagePosition.left:
       case ImagePosition.right:
-      return Row(
-        children: [
-          imagePosition == ImagePosition.left ? image! : const SizedBox(),
-          Flexible(child: _child),
-          imagePosition == ImagePosition.right ? image! : const SizedBox(),
-        ],
-      );
+        return Row(
+          children: [
+            imagePosition == ImagePosition.left ? image! : const SizedBox(),
+            Flexible(child: _child),
+            imagePosition == ImagePosition.right ? image! : const SizedBox(),
+          ],
+        );
       case ImagePosition.top:
       case ImagePosition.bottom:
-      return Column(
-        children: [
-          imagePosition == ImagePosition.top ? image! : const SizedBox(),
-          _child,
-          imagePosition == ImagePosition.bottom ? image! : const SizedBox(),
-        ],
-      );
+        return Column(
+          children: [
+            imagePosition == ImagePosition.top ? image! : const SizedBox(),
+            _child,
+            imagePosition == ImagePosition.bottom ? image! : const SizedBox(),
+          ],
+        );
     }
-}
+  }
 }

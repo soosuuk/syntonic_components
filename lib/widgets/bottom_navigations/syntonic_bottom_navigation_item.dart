@@ -35,5 +35,4 @@ class SyntonicBottomNavigationItem extends StatelessWidget {
     //   },
     // );
   }
-
 }

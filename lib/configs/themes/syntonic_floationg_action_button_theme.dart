@@ -4,7 +4,7 @@ import '../constants/syntonic_color.dart';
 
 class SyntonicFloatingActionButtonTheme {
   static FloatingActionButtonThemeData get(bool isDarkTheme) {
-    return FloatingActionButtonThemeData(
+    return const FloatingActionButtonThemeData(
       backgroundColor: SyntonicColor.primary_color,
       foregroundColor: SyntonicColor.black88,
     );

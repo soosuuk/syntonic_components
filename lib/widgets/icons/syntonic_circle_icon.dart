@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SyntonicCircleIcon extends StatelessWidget {
   final Icon icon;
   final Color color;
 
-  SyntonicCircleIcon({required this.icon, required this.color});
+  const SyntonicCircleIcon({required this.icon, required this.color});
 
   @override
   Widget build(BuildContext context) {

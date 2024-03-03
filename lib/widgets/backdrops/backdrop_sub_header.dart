@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SyntonicBackdropSubHeader extends StatelessWidget {
@@ -20,47 +19,49 @@ class SyntonicBackdropSubHeader extends StatelessWidget {
     required this.controller,
     required this.isPanelVisible,
     required this.widget,
-  required this.onBackdropStateChanged,
+    required this.onBackdropStateChanged,
     this.padding = const EdgeInsets.all(0),
     this.automaticallyImplyLeading = false,
     this.automaticallyImplyTrailing = true,
     this.leading,
     this.trailing,
     this.divider,
-  })  : super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget _buildAutomaticLeadingOrTrailing(BuildContext context) =>
         FadeTransition(
-          opacity: Tween(begin: 1.0, end: 0.0)
-              .animate(controller),
-          child: Icon(Icons.keyboard_arrow_up),
+          opacity: Tween(begin: 1.0, end: 0.0).animate(controller),
+          child: const Icon(Icons.keyboard_arrow_up),
         );
 
-    return  InkWell(onTap: onBackdropStateChanged, child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: padding,
-          child: Row(
-            children: <Widget>[
-              // leading ??
-              //     (automaticallyImplyLeading
-              //         ? _buildAutomaticLeadingOrTrailing(context)
-              //         : Container()),
-              Expanded(
-                child: this.widget,
+    return InkWell(
+        onTap: onBackdropStateChanged,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: padding,
+              child: Row(
+                children: <Widget>[
+                  // leading ??
+                  //     (automaticallyImplyLeading
+                  //         ? _buildAutomaticLeadingOrTrailing(context)
+                  //         : Container()),
+                  Expanded(
+                    child: widget,
+                  ),
+                  // trailing ??
+                  //     (automaticallyImplyTrailing
+                  //         ? _buildAutomaticLeadingOrTrailing(context)
+                  //         : Container()),
+                ],
               ),
-              // trailing ??
-              //     (automaticallyImplyTrailing
-              //         ? _buildAutomaticLeadingOrTrailing(context)
-              //         : Container()),
-            ],
-          ),
-        ),
-        divider ?? const Divider(height: 4.0, indent: 16.0, endIndent: 16.0),
-      ],
-    ));
+            ),
+            divider ??
+                const Divider(height: 4.0, indent: 16.0, endIndent: 16.0),
+          ],
+        ));
   }
 }

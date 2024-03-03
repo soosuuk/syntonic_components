@@ -6,7 +6,6 @@ import 'syntonic_bottom_navigation_item.dart';
 
 // ignore: must_be_immutable
 class SyntonicBottomNavigation extends StatelessWidget {
-
   final List<SyntonicBottomNavigationItem> items;
   Function(int idx)? onTap;
 
@@ -21,12 +20,14 @@ class SyntonicBottomNavigation extends StatelessWidget {
     return Stack(
       children: <Widget>[
         icon,
-        new Positioned(
+        Positioned(
             right: -0,
             top: 0,
             child: Container(
               alignment: Alignment.center,
-              padding: (badgeVal > 99) ? EdgeInsets.fromLTRB(3, 0, 3, 0) : EdgeInsets.fromLTRB(0, 0, 0, 0),
+              padding: (badgeVal > 99)
+                  ? const EdgeInsets.fromLTRB(3, 0, 3, 0)
+                  : const EdgeInsets.fromLTRB(0, 0, 0, 0),
               decoration: BoxDecoration(
                 color: Colors.red,
                 borderRadius: BorderRadius.circular(15),
@@ -36,14 +37,15 @@ class SyntonicBottomNavigation extends StatelessWidget {
                 minHeight: (badgeVal == 0) ? 14 : 18,
               ),
               child: Text(
-                (badgeVal > 99) ? '99+' : ((badgeVal == 0) ? '' : badgeVal.toString()),
-                style: TextStyle(
+                (badgeVal > 99)
+                    ? '99+'
+                    : ((badgeVal == 0) ? '' : badgeVal.toString()),
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 10,
                 ),
               ),
-            )
-        )
+            ))
       ],
     );
   }
@@ -58,24 +60,28 @@ class SyntonicBottomNavigation extends StatelessWidget {
             body: IndexedStack(
               index: model.getCurrentIdx,
               children: [
-                for (final item in this.items) item.screen,
+                for (final item in items) item.screen,
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed, // この属性を指定しないとitem 4 個以上の場合正常に表示されない！
+              type: BottomNavigationBarType
+                  .fixed, // この属性を指定しないとitem 4 個以上の場合正常に表示されない！
               currentIndex: model.getCurrentIdx,
               selectedItemColor: SyntonicColor.primary_color64,
               iconSize: 30,
               onTap: (int idx) {
                 model.setCurrentIdx(idx);
-                if (this.onTap != null) {
-                  this.onTap!(idx);
+                if (onTap != null) {
+                  onTap!(idx);
                 }
               },
               items: [
-                for (final item in this.items)
+                for (final item in items)
                   BottomNavigationBarItem(
-                    icon: (item.hasBadge) ? _bottomNavigationItemIconWithBadge(item.icon, item.badgeVal) : item.icon,
+                    icon: (item.hasBadge)
+                        ? _bottomNavigationItemIconWithBadge(
+                            item.icon, item.badgeVal)
+                        : item.icon,
                     label: item.label,
                   )
               ],
@@ -85,7 +91,6 @@ class SyntonicBottomNavigation extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class SyntonicBottomNavigationViewModel with ChangeNotifier {
@@ -94,13 +99,12 @@ class SyntonicBottomNavigationViewModel with ChangeNotifier {
   int get getCurrentIdx => _currentIdx;
 
   SyntonicBottomNavigationViewModel(int idx) {
-    this._currentIdx = idx;
+    _currentIdx = idx;
     notifyListeners();
   }
 
   void setCurrentIdx(int idx) {
-    this._currentIdx = idx;
+    _currentIdx = idx;
     notifyListeners();
   }
-
 }

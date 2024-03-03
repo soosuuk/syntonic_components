@@ -1,7 +1,6 @@
 part of '../../widgets/syntonic_base_view.dart';
 
 extension SyntonicDoubleExtension on double {
-
   // /// Format a [this] to format of amount.
   // String toAmount() {
   //   String formattedText = LocalizationService().localize.monetary_unit + _toThousandsSeparator(value: this);

@@ -29,6 +29,6 @@ class ImagePickerService {
       return null;
     }
 
-    return  File(pickedFile.path);
+    return File(pickedFile.path);
   }
 }

@@ -41,7 +41,7 @@ class ImageHelper {
 
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     var pngBytes = byteData?.buffer.asUint8List();
-    result = "data:image/png;base64," + base64Encode(pngBytes!);
+    result = "data:image/png;base64,${base64Encode(pngBytes!)}";
 
     return result;
   }
@@ -51,10 +51,7 @@ class ImageHelper {
   // }
 
   String combineWithDataScheme(String base64String, String? extension) {
-    return "data:image/" +
-        (extension ?? "png") +
-        ";base64," +
-        base64String.split(',').last;
+    return "data:image/${extension ?? "png"};base64,${base64String.split(',').last}";
   }
 
   SvgPicture convertBase64ToSVGPictureWithColor(

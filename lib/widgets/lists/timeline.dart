@@ -103,7 +103,7 @@ class Timeline extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children:
-            isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
+                isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
           ),
         );
       },
@@ -126,10 +126,10 @@ class _TimelinePainter extends CustomPainter {
     required this.isLast,
     required this.itemGap,
   })  : linePaint = Paint()
-    ..color = lineColor
-    ..strokeCap = strokeCap
-    ..strokeWidth = strokeWidth
-    ..style = style,
+          ..color = lineColor
+          ..strokeCap = strokeCap
+          ..strokeWidth = strokeWidth
+          ..style = style,
         circlePaint = Paint()
           ..color = indicatorColor
           ..style = indicatorStyle;

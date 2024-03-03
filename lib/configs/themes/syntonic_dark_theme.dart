@@ -1,4 +1,3 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
@@ -12,15 +11,26 @@ const primaryColor = Colors.black87;
 const backgroundColor = Colors.white70;
 
 ThemeData darkTheme({Color? primaryColor}) {
-  ColorScheme _colorScheme = ColorScheme.fromSeed(seedColor: primaryColor ?? Theme.of(NavigationService().navigatorKey.currentContext!).colorScheme.primary, brightness: Brightness.dark, onPrimaryContainer: Colors.white, onSurface: (primaryColor ?? Theme.of(NavigationService().navigatorKey.currentContext!).colorScheme.primary).tone(95));
+  ColorScheme _colorScheme = ColorScheme.fromSeed(
+      seedColor: primaryColor ??
+          Theme.of(NavigationService().navigatorKey.currentContext!)
+              .colorScheme
+              .primary,
+      brightness: Brightness.dark,
+      onPrimaryContainer: Colors.white,
+      onSurface: (primaryColor ??
+              Theme.of(NavigationService().navigatorKey.currentContext!)
+                  .colorScheme
+                  .primary)
+          .tone(95));
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
     colorScheme: _colorScheme,
-        // .dark(
-        // onSurface: primaryColor!.tone(50),
-        // surface: SyntonicColor.raisinBlack,
-        // background: SyntonicColor.raisinBlack,
+    // .dark(
+    // onSurface: primaryColor!.tone(50),
+    // surface: SyntonicColor.raisinBlack,
+    // background: SyntonicColor.raisinBlack,
 
     // ),
     applyElevationOverlayColor: true,
@@ -31,7 +41,10 @@ ThemeData darkTheme({Color? primaryColor}) {
     // outlinedButtonTheme: SyntonicOutlinedButtonTheme.get(true),
     // textButtonTheme: SyntonicTextButtonTheme.get(true),
     // appBarTheme: SyntonicAppBarTheme.get(true),
-    tabBarTheme: SyntonicTabBarTheme.get(isDarkTheme: true, primaryColor: primaryColor, colorScheme: _colorScheme),
+    tabBarTheme: SyntonicTabBarTheme.get(
+        isDarkTheme: true,
+        primaryColor: primaryColor,
+        colorScheme: _colorScheme),
     // bottomNavigationBarTheme: SyntonicBottomNavigationBarTheme.get(true),
     // dialogTheme: SyntonicDialogTheme.get(true),
     // chipTheme: SyntonicChipTheme.get(true),
@@ -42,15 +55,34 @@ ThemeData darkTheme({Color? primaryColor}) {
     //   foregroundColor: SyntonicColor.black88,
     // ),
     dividerColor: Colors.transparent,
-    toggleableActiveColor: primaryColor ?? SyntonicColor.primary_color,
     cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
-      brightness: Brightness.dark,
-      textTheme: CupertinoTextThemeData(
-        dateTimePickerTextStyle:
-        TextStyle(color: Colors.white),
-      )
-    ),
-
+        brightness: Brightness.dark,
+        textTheme: CupertinoTextThemeData(
+          dateTimePickerTextStyle: TextStyle(color: Colors.white),
+        )), checkboxTheme: CheckboxThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor ?? SyntonicColor.primary_color; }
+ return null;
+ }),
+ ), radioTheme: RadioThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor ?? SyntonicColor.primary_color; }
+ return null;
+ }),
+ ), switchTheme: SwitchThemeData(
+ thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor ?? SyntonicColor.primary_color; }
+ return null;
+ }),
+ trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor ?? SyntonicColor.primary_color; }
+ return null;
+ }),
+ ),
 
     // iconTheme:
     // inputDecorationTheme:

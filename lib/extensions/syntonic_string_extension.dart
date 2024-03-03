@@ -27,14 +27,12 @@ extension SyntonicStringExtension on String {
 
   /// Format a [text] with brackets.
   String withBrackets() {
-    return '(' +
-        this +
-        ')';
+    return '($this)';
   }
 
   /// Format a [text] with quotation mark.
   String withQuotationMark() {
-    return '"' + this + '"';
+    return '"$this"';
   }
 
   /// Convert from String"HH:mm" to TimeOfDay(HH:mm).

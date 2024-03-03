@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
 
-import '../../services/localization_service.dart';
 import '../dialogs/syntonic_dialog.dart';
 
 class SyntonicPopupMenuButton extends StatelessWidget {
@@ -28,7 +26,8 @@ class SyntonicPopupMenuButton extends StatelessWidget {
       'Should use [onEdit], [onDelete], [additionalMenus] instead of this')
   final List<PopUpMenuItem>? popUpMenuItem;
 
-  const SyntonicPopupMenuButton({Key? key,
+  const SyntonicPopupMenuButton({
+    Key? key,
     this.icon = Icons.more_vert,
     this.color,
     this.isEnabled = true,
@@ -43,7 +42,10 @@ class SyntonicPopupMenuButton extends StatelessWidget {
     VoidCallback? _onEditTap = onEditTap;
     VoidCallback? _onDeleteTap = onDeleteTap;
 
-    if (_onEditTap == null && _onDeleteTap == null && additionalMenus == null && popUpMenuItem == null) {
+    if (_onEditTap == null &&
+        _onDeleteTap == null &&
+        additionalMenus == null &&
+        popUpMenuItem == null) {
       return const SizedBox();
     }
 
@@ -64,15 +66,21 @@ class SyntonicPopupMenuButton extends StatelessWidget {
           size: 18,
         ),
         onSelected: (value) {
-          _menus(context, onDeleteTap: onDeleteTap, onEditTap: onEditTap,)
-              .firstWhere((menuItem) => menuItem.title == value)
-              .onTap();
+          _menus(
+            context,
+            onDeleteTap: onDeleteTap,
+            onEditTap: onEditTap,
+          ).firstWhere((menuItem) => menuItem.title == value).onTap();
         },
-        itemBuilder: (context) => _menus(context, onDeleteTap: _onDeleteTap, onEditTap: _onEditTap,)
+        itemBuilder: (context) => _menus(
+          context,
+          onDeleteTap: _onDeleteTap,
+          onEditTap: _onEditTap,
+        )
             .map((item) => PopupMenuItem<String>(
-          value: item.title,
-          child: Text(item.title),
-        ))
+                  value: item.title,
+                  child: Text(item.title),
+                ))
             .toList(),
       ),
     );
@@ -84,11 +92,17 @@ class SyntonicPopupMenuButton extends StatelessWidget {
         color: color,
       ),
       onSelected: (value) {
-        _menus(context, onDeleteTap: onDeleteTap, onEditTap: onEditTap,)
-            .firstWhere((menuItem) => menuItem.title == value)
-            .onTap();
+        _menus(
+          context,
+          onDeleteTap: onDeleteTap,
+          onEditTap: onEditTap,
+        ).firstWhere((menuItem) => menuItem.title == value).onTap();
       },
-      itemBuilder: (context) => _menus(context, onDeleteTap: _onDeleteTap, onEditTap: _onEditTap,)
+      itemBuilder: (context) => _menus(
+        context,
+        onDeleteTap: _onDeleteTap,
+        onEditTap: _onEditTap,
+      )
           .map((item) => PopupMenuItem<String>(
                 value: item.title,
                 child: Text(item.title),
@@ -98,12 +112,12 @@ class SyntonicPopupMenuButton extends StatelessWidget {
   }
 
   /// Get menus.
-  List<PopUpMenuItem> _menus(BuildContext context, {required VoidCallback? onDeleteTap, required VoidCallback? onEditTap}) {
+  List<PopUpMenuItem> _menus(BuildContext context,
+      {required VoidCallback? onDeleteTap, required VoidCallback? onEditTap}) {
     List<PopUpMenuItem> _menus = [];
 
     if (onEditTap != null) {
-      _menus.add(PopUpMenuItem(
-          title: 'Edit', onTap: onEditTap!));
+      _menus.add(PopUpMenuItem(title: 'Edit', onTap: onEditTap));
     }
 
     if (onDeleteTap != null) {
@@ -112,11 +126,9 @@ class SyntonicPopupMenuButton extends StatelessWidget {
           onTap: () {
             List<SyntonicDialogButtonInfoModel> _buttonList = [];
             _buttonList.add(SyntonicDialogButtonInfoModel(
-                buttonTxt: 'Cancel',
-                buttonAction: () {}));
+                buttonTxt: 'Cancel', buttonAction: () {}));
             _buttonList.add(SyntonicDialogButtonInfoModel(
-                buttonTxt: 'OK',
-                buttonAction: onDeleteTap!));
+                buttonTxt: 'OK', buttonAction: onDeleteTap));
             showDialog(
                 context: context,
                 builder: (context) => SyntonicDialog(
@@ -137,7 +149,6 @@ class SyntonicPopupMenuButton extends StatelessWidget {
     return _menus;
   }
 }
-
 
 /// An item of [SyntonicPopupMenuButton].
 class PopUpMenuItem {
