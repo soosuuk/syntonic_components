@@ -37,10 +37,10 @@ class SyntonicButton extends StatelessWidget {
     //     Brightness.dark;
     switch (style) {
       case _SyntonicButtonStyle.elevated:
-      case _SyntonicButtonStyle.outlined:
       case _SyntonicButtonStyle.tonal:
       _textColor = Theme.of(context).colorScheme.onPrimary;
       break;
+      case _SyntonicButtonStyle.outlined:
       case _SyntonicButtonStyle.text:
        _textColor = Theme.of(context).colorScheme.primary;
        break;

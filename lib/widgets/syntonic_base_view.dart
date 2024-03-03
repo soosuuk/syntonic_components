@@ -54,7 +54,7 @@ abstract class ExtendedModel {
 // ignore: must_be_immutable
 abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseViewState> extends StatelessWidget {
 
-  const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false, this.hasFAB = false, this.hasFABSecondary = false, this.isPage = false, this.color}) : super(key: key);
+  const SyntonicBaseView({Key? key, required this.vm, this.childViews, this.globalKey, this.hasAppBar = true, this.hasHeader = false, this.hasTabBar = false, this.isChild = false, this.hasFAB = false, this.hasFABSecondary = false, this.isPage = false, this.color, this.hasAds = true}) : super(key: key);
 
   final VM vm;
   final GlobalKey? globalKey;
@@ -66,6 +66,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
   final bool hasFABSecondary;
   final bool isPage;
   final Color? color;
+  final bool hasAds;
 
   Future<AdSize?> _getAdSize(BuildContext context) async {
 
@@ -109,7 +110,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     // }
 
     Widget child() {
-      if (isChild || !vm.hasAds) {
+      if (isChild || !hasAds) {
         return GestureDetector(
           onTap: () {
             FocusManager.instance.primaryFocus!.unfocus();
@@ -126,7 +127,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
           return Container(
             alignment: Alignment.center,
             height: 88,
-            width: 88,
+            // width: 88,
             // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
             // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
             child: FutureBuilder(
@@ -511,9 +512,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>, VS extends BaseVie
     return Container(
       padding: const EdgeInsets.only(top: 16),
       alignment: Alignment.topCenter,
-      child: Column(children: [SyntonicListItem(title: 'title', titleTextStyle: TitleTextStyle.Headline4,),Body2Text(
-          text: [title, 'がありません。']
-              .combineWithSpace())],),
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [SyntonicListItem(title: [title, 'がありません。']
+          .combineWithSpace(), titleTextStyle: TitleTextStyle.Headline4, subtitle: 'Let`s plan your travel',),], ),
     );
   }
 
@@ -831,7 +831,6 @@ abstract class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNot
   late BannerAd ad;
   late AdSize? adSize;
   late bool isAdLoaded = false;
-  late bool hasAds = true;
 
   @override
   set state(VS value) {
