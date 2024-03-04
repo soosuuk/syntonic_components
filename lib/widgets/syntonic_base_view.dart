@@ -7,6 +7,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 import 'package:syntonic_components/configs/constants/syntonic_date_and_time.dart';
 import 'package:syntonic_components/configs/constants/syntonic_language.dart';
 import 'package:syntonic_components/configs/themes/syntonic_dark_theme.dart';
+import 'package:syntonic_components/configs/themes/syntonic_light_theme.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_fade.dart';
 import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
@@ -24,7 +25,7 @@ import 'package:flutter/scheduler.dart';
 part '../extensions/syntonic_color_extension.dart';
 part '../extensions/syntonic_date_time_extension.dart';
 // part '../extensions/syntonic_date_time_range_extension.dart';
-// part '../extensions/syntonic_int_extension.dart';
+part '../extensions/syntonic_int_extension.dart';
 part '../extensions/syntonic_double_extension.dart';
 part '../extensions/syntonic_string_extension.dart';
 part '../extensions/syntonic_string_list_extension.dart';
@@ -139,6 +140,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             )),
             Builder(builder: (context) {
               return Container(
+                color: Theme.of(context).colorScheme.surface,
                 alignment: Alignment.center,
                 height: 88,
                 // width: 88,
@@ -188,10 +190,15 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       }
     }
 
+    bool _isDarkTheme =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    ThemeData _data = _isDarkTheme
+        ? darkTheme(primaryColor: color ?? Colors.deepPurple)
+        : lightTheme(primaryColor: color ?? Colors.deepPurple);
     if (color != null) {
       return riverpod.Consumer(builder: (context, ref, _) {
         return Theme(
-          data: darkTheme(primaryColor: color ?? Colors.deepPurple),
+          data: _data,
           child: child(),
         );
       });
@@ -245,7 +252,11 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             } else {
               return Stack(children: [
                 Scaffold(
-                  drawer: hasAppBar ? navigationDrawer : null,
+                  drawer: hasAppBar
+                      ? navigationDrawer(
+                          context: context,
+                        )
+                      : null,
                   // appBar: hasAppBar
                   //     ? SyntonicSliverAppBar.fixed(
                   //     title: appBar(context: context, ref: ref)!.title ?? '',
@@ -277,7 +288,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     if (hasAppBar) {
       if (needsSliverAppBar) {
         return Scaffold(
-          drawer: navigationDrawer,
+          drawer: navigationDrawer(context: context),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.endContained,
           floatingActionButton: _floatingActionButtons(context: context),
@@ -303,8 +314,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                                           animationDuration: viewModel(ref)
                                                   .state
                                                   .isStickyingAppBar
-                                              ? const Duration(milliseconds: 100)
-                                              : const Duration(milliseconds: 150),
+                                              ? const Duration(
+                                                  milliseconds: 100)
+                                              : const Duration(
+                                                  milliseconds: 150),
                                           surfaceTintColor: Theme.of(context)
                                               .colorScheme
                                               .surfaceTint,
@@ -365,7 +378,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             length: hasTabBar ? 2 : 0,
             // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
             child: Scaffold(
-              drawer: navigationDrawer,
+              drawer: navigationDrawer(context: context),
               // appBar: AppBar(title: const Body2Text(text: 'title',), flexibleSpace: headerContents(context: context, ref: ref), toolbarHeight: MediaQuery.of(context).size.height * 0.7,),
               // appBar: _appBar as PreferredSizeWidget,
               body: riverpod.Consumer(
@@ -484,7 +497,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       {required BuildContext context, required riverpod.WidgetRef ref});
 
   /// Get navigation drawer.
-  Widget? get navigationDrawer => null;
+  Widget? navigationDrawer({
+    required BuildContext context,
+  }) =>
+      null;
 
   NotificationListener _notificationListener(
       {required BuildContext context, required riverpod.WidgetRef ref}) {
@@ -509,12 +525,12 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
         if (scrollNotification is ScrollEndNotification) {
           if (scrollNotification.metrics.pixels ==
-                  scrollNotification.metrics.maxScrollExtent) {
+              scrollNotification.metrics.maxScrollExtent) {
             onReachBottom();
           } else {}
 
           if (scrollNotification.metrics.pixels ==
-                  scrollNotification.metrics.minScrollExtent) {
+              scrollNotification.metrics.minScrollExtent) {
             onReachTop();
           }
         }
@@ -854,7 +870,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         dividerColor: ref.watch(
                 provider.select((viewState) => viewState.isStickyingAppBar))
             ? Colors.transparent
-            : Theme.of(context).colorScheme.primary.withOpacity(0.12),
+            : Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
         controller: tabController,
         isScrollable:
             tabs(context: context, ref: ref)!.length > 2 ? true : false,

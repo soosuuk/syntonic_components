@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
@@ -30,6 +31,7 @@ class SyntonicTextField extends StatelessWidget {
   final int? maxLines;
   final int minLines;
   final bool hasPadding;
+  final Function? onFocused;
   final Function(String? text)? onTextChanged;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
@@ -44,6 +46,7 @@ class SyntonicTextField extends StatelessWidget {
   final TextAlign? textAlign;
   final TextStyle? textStyle;
   final String? hintText;
+  final bool hasBorder;
 
   TextInputAction? get _textInputAction =>
       textInputAction ??
@@ -55,6 +58,7 @@ class SyntonicTextField extends StatelessWidget {
   /// Normal.
   const SyntonicTextField._({
     required this.label,
+    this.onFocused,
     this.onTextChanged,
     this.value,
     this.errorMessage,
@@ -74,11 +78,12 @@ class SyntonicTextField extends StatelessWidget {
     this.theme = TextFieldTheme.outlined,
     this.textAlign,
     this.textStyle,
-    this.hintText,
+    this.hintText,this.hasBorder = true,
   });
 
   const SyntonicTextField.outlined({
     String? label,
+    Function? onFocused,
     Function(String? text)? onTextChanged,
     required String? value,
     String? errorMessage,
@@ -99,8 +104,10 @@ class SyntonicTextField extends StatelessWidget {
     TextAlign? textAlign,
     TextStyle? textStyle,
     String? hintText,
+    bool hasBorder = true,
   }) : this._(
             label: label,
+            onFocused: onFocused,
             onTextChanged: onTextChanged,
             value: value,
             errorMessage: errorMessage,
@@ -120,7 +127,7 @@ class SyntonicTextField extends StatelessWidget {
             theme: theme,
             textAlign: textAlign,
             textStyle: textStyle,
-            hintText: hintText);
+            hintText: hintText, hasBorder: hasBorder);
 
   // static final TextEditingController _controller = TextEditingController();
 
@@ -180,15 +187,16 @@ class SyntonicTextField extends StatelessWidget {
                   onTextChanged!(text.isEmpty ? null : text);
                 }
               },
+              onTap: onFocused?.call(),
               // onSaved: (text) => onTextChanged(controller.text),
               style: textStyle,
             ),
             const SizedBox(
               height: 2,
             ),
-            SyntonicDivider(
+            hasBorder ? SyntonicDivider(
               hasDotted: true,
-            )
+            ) : SizedBox()
           ],
         ),
       ),
@@ -304,6 +312,7 @@ class FitTextField extends StatefulWidget {
   final int? maxLines;
   final int minLines;
   final bool hasPadding;
+  final Function? onFocused;
   final Function(String? text)? onTextChanged;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
@@ -331,6 +340,7 @@ class FitTextField extends StatefulWidget {
     this.initialValue,
     this.minWidth = 30,
     this.label,
+    this.onFocused,
     this.onTextChanged,
     this.value,
     this.errorMessage,
@@ -405,7 +415,7 @@ class FitTextFieldState extends State<FitTextField> {
     );
     tp.layout();
 
-    TextSpan tss = TextSpan(style: style, text: widget.hintText);
+    TextSpan tss = TextSpan(style: style, text: widget.controller.text.length > 0 ? widget.controller.text : widget.hintText);
     TextPainter tpp = TextPainter(
       text: tss,
       textDirection: TextDirection.ltr,
@@ -428,6 +438,7 @@ class FitTextFieldState extends State<FitTextField> {
               // Redraw the widget
               setState(() {});
             },
+            onTap: widget.onFocused?.call(),
             key: PageStorageKey(widget.itemKey),
             // initialValue: value,
             autofocus: widget.isFocusRequired,

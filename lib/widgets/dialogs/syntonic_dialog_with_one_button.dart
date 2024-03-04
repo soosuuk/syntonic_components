@@ -4,9 +4,13 @@ class SyntonicDialogWithOneButton extends StatelessWidget {
   final String title;
   final String content;
   final String buttonName;
+  final Function onTap;
 
   const SyntonicDialogWithOneButton(
-      {required this.title, required this.content, required this.buttonName});
+      {required this.title,
+      required this.content,
+      required this.buttonName,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class SyntonicDialogWithOneButton extends StatelessWidget {
             child: Text(buttonName),
             onPressed: () {
               Navigator.of(context).pop();
+              onTap();
             },
           ),
         ],
@@ -43,6 +48,7 @@ class SyntonicDialogWithOneButton extends StatelessWidget {
             child: Text(buttonName),
             onPressed: () {
               Navigator.of(context).pop();
+              onTap();
             },
           ),
         ],

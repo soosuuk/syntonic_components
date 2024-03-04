@@ -200,7 +200,7 @@ class SyntonicImage extends StatelessWidget {
           String? _extension;
           PlatformFile file = result.files.first;
           _extension = file.extension;
-        
+
           String _imageBase64 = base64Encode(dataBytes);
           onUpload!(
               image: _imageBase64.toImage(),
@@ -227,8 +227,8 @@ class _HolePainter extends CustomPainter {
       Path.combine(
         PathOperation.difference,
         Path()
-          ..addRRect(
-              RRect.fromLTRBR(0, 0, size.width, height, const Radius.circular(0))),
+          ..addRRect(RRect.fromLTRBR(
+              0, 0, size.width, height, const Radius.circular(0))),
         Path()
           ..addOval(Rect.fromCircle(
               center: Offset(size.width / 2, height / 2), radius: height / 2))

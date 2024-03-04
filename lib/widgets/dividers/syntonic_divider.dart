@@ -85,11 +85,11 @@ class SyntonicDivider extends StatelessWidget {
             ? Container(
                 height: height,
                 width: 1,
-                color: color ?? SyntonicColor().divider,
+                color: color ?? Theme.of(context).colorScheme.outline,
               )
             : Container(
                 width: 1,
-                color: color ?? SyntonicColor().divider,
+                color: color ?? Theme.of(context).colorScheme.outline,
               );
       case DividerType.horizontal:
         return Divider(
@@ -97,7 +97,7 @@ class SyntonicDivider extends StatelessWidget {
           color: color ??
               (isBold
                   ? SyntonicColor().backgroundFilled
-                  : SyntonicColor().divider),
+                  : Theme.of(context).colorScheme.outline),
         );
     }
   }

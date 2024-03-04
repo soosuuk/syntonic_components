@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-
 class SyntonicHighlightedContainer extends StatefulWidget {
   /// Child.
   final Widget? child;

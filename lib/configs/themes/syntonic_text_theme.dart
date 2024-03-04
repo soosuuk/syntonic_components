@@ -59,9 +59,9 @@ class SyntonicTextTheme {
       );
     }
 
-    return GoogleFonts.raleway(
+    return GoogleFonts.roboto(
       textStyle: Theme.of(context).textTheme.headlineMedium,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w300,
       letterSpacing: 1,
       // color: textColor,
       color: textColor ?? Theme.of(context).colorScheme.onSurface,
@@ -78,7 +78,7 @@ class SyntonicTextTheme {
       );
     }
 
-    return GoogleFonts.montserrat(
+    return GoogleFonts.roboto(
       textStyle: Theme.of(context).textTheme.headlineSmall,
       // fontWeight: FontWeight.w300,
       color: textColor,

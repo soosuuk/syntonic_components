@@ -2,7 +2,6 @@ import 'package:syntonic_components/widgets/texts/body_1_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:flutter/material.dart';
 
-
 /// A state of [BasicListView].
 enum _SyntonicButtonStyle {
   elevated,
@@ -18,6 +17,7 @@ class SyntonicButton extends StatelessWidget {
   final Widget? leadingWidget;
   final double? maxWidth;
   final _SyntonicButtonStyle style;
+  final EdgeInsetsGeometry? padding;
   Color? _textColor;
 
   SyntonicButton._(
@@ -26,7 +26,8 @@ class SyntonicButton extends StatelessWidget {
       required this.style,
       this.isEnabled = true,
       this.leadingWidget,
-      this.maxWidth});
+      this.maxWidth,
+      this.padding});
   SyntonicButton.filled(
       {required VoidCallback onTap,
       required String text,
@@ -71,14 +72,15 @@ class SyntonicButton extends StatelessWidget {
       required String text,
       bool isEnabled = true,
       Widget? leadingWidget,
-      double? maxWidth})
+      double? maxWidth,
+      EdgeInsetsGeometry? padding})
       : this._(
             onTap: onTap,
             text: text,
             isEnabled: isEnabled,
             leadingWidget: leadingWidget,
             maxWidth: maxWidth,
-            style: _SyntonicButtonStyle.text);
+            style: _SyntonicButtonStyle.text, padding: padding);
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +98,7 @@ class SyntonicButton extends StatelessWidget {
     }
 
     final Widget _button = Row(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         if (leadingWidget != null) leadingWidget!,
@@ -141,7 +144,7 @@ class SyntonicButton extends StatelessWidget {
         return TextButton(
           onPressed: onTap,
           style: ButtonStyle(
-            padding: MaterialStateProperty.all(const EdgeInsets.all(0)),
+            padding: padding != null ? MaterialStateProperty.all(padding) : null,
             minimumSize: MaterialStateProperty.all(Size.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../texts/body_1_text.dart';
 
 class SyntonicSlider extends StatefulWidget {
   final String label;
@@ -36,7 +35,7 @@ class _SyntonicSliderState extends State<SyntonicSlider> {
       padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          Body1Text(text: (_value / 60).toString()),
+          // Body1Text(text: (_value / 60).toString()),
           Expanded(
               child: Slider(
             label: (_value / 60).toString(),

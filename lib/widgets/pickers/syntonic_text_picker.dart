@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 
-
 enum TextPickerStyle {
   transparent,
   filled,
@@ -111,8 +110,8 @@ class SyntonicTextPicker extends StatelessWidget {
       {required BuildContext context}) {
     List<DropdownMenuItem<DropdownItemModel>> list = [];
     for (int i = 0; i < items.length; i++) {
-      list.add(getDropDownMenuItem(
-          context: context, index: i, value: items[i]));
+      list.add(
+          getDropDownMenuItem(context: context, index: i, value: items[i]));
     }
     return list;
   }

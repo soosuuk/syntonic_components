@@ -135,8 +135,7 @@ class BackdropPanels extends StatelessWidget {
                               title: 'search',
                               controller: controller,
                               isPanelVisible: isPanelVisible,
-                              onBackdropStateChanged:
-                                  onBackdropStateChanged,
+                              onBackdropStateChanged: onBackdropStateChanged,
                               widget: backdropWidget),
                         )),
                         Expanded(
@@ -170,7 +169,6 @@ class BackdropPanelsState extends ChangeNotifier {
             begin: RelativeRect.fromLTRB(
                 0.0, backPanelHeight, 0.0, frontPanelHeight),
             end: const RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0))
-        .animate(
-            CurvedAnimation(parent: controller, curve: Curves.linear));
+        .animate(CurvedAnimation(parent: controller, curve: Curves.linear));
   }
 }

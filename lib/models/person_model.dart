@@ -1,7 +1,6 @@
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:flutter/widgets.dart';
 
-
 class PersonModel {
   final String? id;
   final String? email;
@@ -65,7 +64,7 @@ class PersonModel {
 
   static Image? imageFromJson(String? value) {
     return null;
-  
+
     // /// FIXME: There are contained two cases (URL/Base 64). This is bad solution.
     // if (value != null) {
     //   if (value.contains(RegExp(r'https?:\/\/'))) {

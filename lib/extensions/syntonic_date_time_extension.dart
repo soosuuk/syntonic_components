@@ -47,8 +47,8 @@ extension SyntonicDateTimeExtension on DateTime {
 
   /// Format a [dayOfWeek] to string (EEE).
   String toDayOfWeek() {
-    var formatter = DateFormat(
-        SyntonicDateAndTime.day_of_week, SyntonicLanguage.japanese);
+    var formatter =
+        DateFormat(SyntonicDateAndTime.day_of_week, SyntonicLanguage.japanese);
     var formatted = formatter.format(this);
     return formatted;
   }

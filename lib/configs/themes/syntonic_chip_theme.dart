@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../constants/syntonic_color.dart';
@@ -13,7 +12,8 @@ class SyntonicChipTheme {
         disabledColor: Colors.black12,
         selectedColor: SyntonicColor.primary_color12,
         secondarySelectedColor: SyntonicColor.primary_color12,
-        labelPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
+        labelPadding:
+            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
         padding: const EdgeInsets.all(0.0),
         shape: StadiumBorder(
             side: BorderSide(

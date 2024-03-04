@@ -1,4 +1,3 @@
-
 class HttpResponseModel {
   HttpResponseModel({required this.body, required this.isSucceeded});
 

@@ -32,14 +32,14 @@ abstract class SyntonicModalBottomSheet<
         enableDrag: true,
         useSafeArea: true,
         isScrollControlled: true,
-        showDragHandle: vm.state.currentPageIndex == 0,
+        // showDragHandle: vm.state.currentPageIndex == 0,
         context: context,
         builder: (_) {
           return Consumer(builder: (context, ref, child) {
             return WillPopScope(
               onWillPop: () async {
                 onPop(context: context, ref: ref);
-                              return true;
+                return true;
               },
               child: _contents(context: context, ref: ref),
             );
@@ -65,14 +65,36 @@ abstract class SyntonicModalBottomSheet<
         // controller: viewModel(ref).controller,
         builder: (BuildContext context, ScrollController scrollController) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              SyntonicButton.transparent(
-                onTap: () {
-                  onPop(context: context, ref: ref);
-                  Navigator.of(context).pop();
-                },
-                text: 'Done',
-              ),
+              vm.state.currentPageIndex == 0 ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: Stack(
+                  alignment: AlignmentDirectional.topEnd,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outline,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        )
+                      ],
+                    ),
+                    SyntonicButton.transparent(
+                      onTap: () {
+                        onPop(context: context, ref: ref);
+                        Navigator.of(context).pop();
+                      },
+                      text: 'Done',
+                    )
+                  ],
+                ),
+              ) : SizedBox(),
               Expanded(
                   child: PageView(
                       physics: const NeverScrollableScrollPhysics(),

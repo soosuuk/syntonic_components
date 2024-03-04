@@ -1,7 +1,6 @@
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 import 'package:flutter/material.dart';
 
-
 class SyntonicSearchBox extends StatelessWidget {
   final String? value;
   final VoidCallback? onTap;

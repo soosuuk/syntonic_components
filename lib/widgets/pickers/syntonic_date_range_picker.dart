@@ -26,7 +26,8 @@ class SyntonicDateRangePicker {
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  foregroundColor: SyntonicColor.primary_color, // button text color
+                  foregroundColor:
+                      SyntonicColor.primary_color, // button text color
                 ),
               ),
             ),

@@ -213,8 +213,7 @@ class SyntonicListItem extends ListItem {
       this.topWidget,
       TitleTextStyle? titleTextStyle})
       : super(key: key) {
-    this.titleTextStyle =
-        titleTextStyle ?? TitleTextStyle.Subtitle2;
+    this.titleTextStyle = titleTextStyle ?? TitleTextStyle.Subtitle2;
     hasDivider = !hasDivider ||
             titleTextStyle == TitleTextStyle.Headline4 ||
             titleTextStyle == TitleTextStyle.Headline5 ||

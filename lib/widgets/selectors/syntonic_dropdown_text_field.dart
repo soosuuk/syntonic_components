@@ -30,9 +30,8 @@ class SyntonicDropdownTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textEditingController = TextEditingController();
-    textEditingController.text = selectedItem != null
-        ? dropdown.items[selectedItem!]
-        : '';
+    textEditingController.text =
+        selectedItem != null ? dropdown.items[selectedItem!] : '';
     EdgeInsetsGeometry padding = hasPadding
         ? const EdgeInsets.only(left: 16, right: 16)
         : const EdgeInsets.only(left: 0, right: 0);

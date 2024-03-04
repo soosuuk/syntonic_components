@@ -81,13 +81,10 @@ class SyntonicDialog extends StatelessWidget {
     ) builder,
   }) async {
     await showDialog(
-      barrierDismissible: false,
+      // barrierDismissible: false,
       context: context,
       builder: (_context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: builder(_context),
-        );
+        return builder(_context);
       },
     );
   }

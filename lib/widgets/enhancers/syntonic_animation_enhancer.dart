@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class SyntonicAnimationEnhancer extends StatefulWidget {
   final Widget child;
   final bool isEnabled;

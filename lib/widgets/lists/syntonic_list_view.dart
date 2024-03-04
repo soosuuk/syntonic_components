@@ -377,6 +377,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                             : const SizedBox(),
                                         isFirst
                                             ? SyntonicIcon(
+                                          hasBorder: true,
                                                 icon: Icons.add,
                                                 padding: 0,
                                                 onPressed: () =>
@@ -418,6 +419,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                       padding: EdgeInsets.only(
                                           bottom: isLast ? 0 : 0),
                                       child: SyntonicIcon(
+                                        hasBorder: true,
                                         icon: Icons.add,
                                         padding: 0,
                                         onPressed: () => onAdded!(index, false),
@@ -461,8 +463,8 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                         text: 'Add step',
                                         textColor: Theme.of(context)
                                             .colorScheme
-                                            .onSurface
-                                            .withOpacity(0.38),
+                                            .primary
+                                            .withOpacity(0.48),
                                       ),
                                     )
                                   : const SizedBox(),
@@ -479,8 +481,8 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                     text: 'Add step',
                                     textColor: Theme.of(context)
                                         .colorScheme
-                                        .onSurface
-                                        .withOpacity(0.38)),
+                                        .primary
+                                        .withOpacity(0.48)),
                               )
                             ],
                           ),

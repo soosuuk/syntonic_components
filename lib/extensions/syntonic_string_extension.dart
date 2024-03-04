@@ -40,4 +40,17 @@ extension SyntonicStringExtension on String {
     return TimeOfDay(
         hour: int.parse(split(":")[0]), minute: int.parse(split(":")[1]));
   }
+
+  String? get url {
+    RegExp _regExp = RegExp(
+        r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
+    Iterable<RegExpMatch> _matches = _regExp.allMatches(this);
+
+    String? url;
+    for (RegExpMatch regExpMatch in _matches) {
+      // return description!.substring(regExpMatch.start, regExpMatch.end);
+      url = this.substring(regExpMatch.start, regExpMatch.end);
+    }
+    return url;
+  }
 }

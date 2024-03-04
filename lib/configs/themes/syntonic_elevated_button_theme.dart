@@ -6,7 +6,8 @@ class SyntonicElevatedButtonTheme {
   static ElevatedButtonThemeData get(bool isDarkTheme) {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-          foregroundColor: isDarkTheme ? SyntonicColor.black88 : Colors.white, backgroundColor: SyntonicColor.primary_color),
+          foregroundColor: isDarkTheme ? SyntonicColor.black88 : Colors.white,
+          backgroundColor: SyntonicColor.primary_color),
     );
   }
 

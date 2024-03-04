@@ -1,6 +1,6 @@
-// part of '../../widgets/syntonic_base_view.dart';
-//
-// extension SyntonicIntExtension on int {
+part of '../../widgets/syntonic_base_view.dart';
+
+extension SyntonicIntExtension on int {
 //
 //   /// Format a [this] to format of amount.
 //   String toAmount() {
@@ -19,10 +19,11 @@
 //     return this.toString() + AppLocalizations.of(NavigationService().navigatorKey.currentContext!)!.minute;
 //   }
 //
-//   /// Format a [this] for number.
-//   String toThousanFormat() {
-//     return _toThousandsSeparator(value: this);
-//   }
+  /// Format a [this] for number.
+  String toAmount() {
+    return _toThousandsSeparator(value: this);
+  }
+
 //
 //   /// Format a [this] for day.
 //   String toDay() {
@@ -158,11 +159,11 @@
 //     return '+' + toString();
 //   }
 //
-//   /// Format a [this] with thousands separator.
-//   String _toThousandsSeparator({required int value}) {
-//     final formatter = NumberFormat("#,###");
-//     return formatter.format(value >= 0 ? value : value * -1);
-//   }
+  /// Format a [this] with thousands separator.
+  String _toThousandsSeparator({required int value}) {
+    final formatter = NumberFormat("#,###");
+    return formatter.format(value >= 0 ? value : value * -1);
+  }
 //
 //   int toRatio({required int targetValue}) {
 //     return (this / targetValue * 100).round();
@@ -171,4 +172,4 @@
 //   int fromRatio({required int targetValue}) {
 //     return (targetValue * this / 100).round();
 //   }
-// }
+}

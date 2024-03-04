@@ -94,7 +94,8 @@ class SyntonicChart extends StatelessWidget {
                                     const SizedBox(
                                       width: 8,
                                     ),
-                                    const Flexible(child: Body2Text(text: '1・120k'))
+                                    const Flexible(
+                                        child: Body2Text(text: '1・120k'))
                                   ],
                                 )
                               : const SizedBox(),

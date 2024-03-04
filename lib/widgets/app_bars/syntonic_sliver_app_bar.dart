@@ -291,23 +291,21 @@ class SyntonicSliverAppBar extends StatelessWidget
           : useCloseButton
               ? SyntonicAnimationEnhancer(
                   child: SyntonicIcon(
+                    color: Theme.of(context).colorScheme.onSurface,
                   padding: 0,
                   icon: Icons.close,
                   onPressed: () =>
                       onBackButtonPressed ?? Navigator.pop(context),
                   size: IconSize.normal,
                 ))
-              : BackButton(
-                  onPressed: onBackButtonPressed, color: accentColor),
+              : BackButton(onPressed: onBackButtonPressed, color: accentColor),
       iconTheme: IconThemeData(
         color: accentColor, //change your color here
       ),
       stretch: true,
       snap: isFadedTitle ? false : true,
       floating: true,
-      pinned: (isFullscreenDialog || hasTabBar || isFadedTitle)
-          ? true
-          : false,
+      pinned: (isFullscreenDialog || hasTabBar || isFadedTitle) ? true : false,
       title: isFadedTitle
           ? SyntonicFade.on(
               zeroOpacityOffset:

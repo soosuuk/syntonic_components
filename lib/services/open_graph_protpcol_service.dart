@@ -6,7 +6,6 @@ import 'package:html/parser.dart' show parse;
 
 import 'package:http/http.dart';
 
-
 class OpenGraphProtocolService {
   static final _instance = OpenGraphProtocolService._internal();
 

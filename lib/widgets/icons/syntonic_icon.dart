@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
-import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 
 import '../../configs/themes/syntonic_dark_theme.dart';
 
@@ -9,58 +8,48 @@ class SyntonicIcon extends StatelessWidget {
   final Color? color;
   final double padding;
   final VoidCallback? onPressed;
-  final IconSize? size;
+  final IconSize size;
+  final BoxShape shape;
+  final bool hasBorder;
 
-  const SyntonicIcon(
-      {Key? key,
-      required this.icon,
-      this.color,
-      this.padding = 16,
-      this.onPressed,
-      this.size})
-      : super(key: key);
+  const SyntonicIcon({
+    Key? key,
+    required this.icon,
+    this.color,
+    this.padding = 16,
+    this.onPressed,
+    this.size = IconSize.small,
+    this.shape = BoxShape.circle,
+    this.hasBorder = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget _iconButton = Container(
-      width: size != null ? size!.size : IconSize.small.size,
-      height: size != null ? size!.size : IconSize.small.size,
+      width: size.size,
+      height: size.size,
       decoration: BoxDecoration(
-        border:
-            Border.all(color: Theme.of(context).colorScheme.primary, width: 1),
+        color: hasBorder ? null : color != null ? color!.withOpacity(0.12) : Theme.of(context).colorScheme.primary.withOpacity(0.12),
+        border: hasBorder
+            ? Border.all(color: color ?? Theme.of(context).colorScheme.primary, width: 1)
+            : null,
         // color: Colors.yellow,
-        shape: BoxShape.circle,
+        borderRadius:
+            shape == BoxShape.circle ? null : BorderRadius.circular(21),
+        shape: shape,
       ),
-      child: IconButton(
-          icon: Icon(
-            icon,
-            size: 16,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          // padding: EdgeInsets.all(4),
-          // constraints: const BoxConstraints(),
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
-          onPressed: onPressed,
-          style: IconButton.styleFrom(
-            foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.onSurface.toAlpha,
-            disabledBackgroundColor:
-                Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-            hoverColor:
-                Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
-            focusColor:
-                Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
-            highlightColor:
-                Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
-          )),
+      child: Icon(
+        icon,
+        size: size.size! <= 24 ? size.size! * 0.6 : 24,
+        color: color ?? Theme.of(context).colorScheme.primary,
+      ),
     );
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Theme(
           data: darkTheme(primaryColor: color),
           child: RepaintBoundary(
-            child: _iconButton,
+            child: InkWell(onTap: onPressed, child: _iconButton,),
           )),
     );
   }

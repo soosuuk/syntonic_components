@@ -36,7 +36,7 @@ class SyntonicChoiceChip extends StatelessWidget {
         //     )),
 
         label: SizedBox(
-          width: double.infinity,
+          // width: double.infinity,
           child: Text(
             label,
             style: TextStyle(
@@ -64,7 +64,8 @@ class SyntonicChoiceChip extends StatelessWidget {
         onSelected: (bool isSelected) {
           onSelected(isSelected);
         },
-        avatar: trailingIcon ?? (icon != null
+        avatar: trailingIcon ??
+            (icon != null
                 ? Icon(icon,
                     color: color ??
                         (isSelected

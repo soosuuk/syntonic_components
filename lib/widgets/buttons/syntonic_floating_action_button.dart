@@ -41,7 +41,7 @@ class SyntonicFloatingActionButton extends StatelessWidget {
         child: Icon(
           floatingActionButtonModel.icon ?? Icons.add,
           color: Theme.of(context).colorScheme.primary,
-          size: 18,
+          // size: 18,
         ),
       );
     } else {
