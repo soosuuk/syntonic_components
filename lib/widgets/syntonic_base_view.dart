@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:syntonic_components/configs/constants/syntonic_date_and_time.dart';
 import 'package:syntonic_components/configs/constants/syntonic_language.dart';
@@ -225,58 +226,68 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     // Because, A screen is Rebuilt if you focus to any text-field.
     // return riverpod.Consumer(builder: (context, ref, _) {
     print('ビルド');
-    if (viewModel.state.needsInitialize && !viewModel.isInitialized) {
-      return FutureBuilder(
-        future: viewModel.onInit(context: context),
-        builder: (context, projectSnap) {
-          if (projectSnap.hasError) {
-            return NestedScrollView(
-              headerSliverBuilder: (_, __) {
-                return <Widget>[
-                  // SyntonicSliverAppBar(
-                  //     isFullscreenDialog:
-                  //     hasAppBar ? appBar(context: context, ref: ref)!.isFullscreenDialog : false,
-                  //     title: hasAppBar ? appBar(context: context, ref: ref)!.title : null),
-                ];
-              },
-              body: _errorScreen,
-            );
-          } else if (projectSnap.connectionState == ConnectionState.done) {
-            print('初期化');
-            viewModel.isInitialized = true;
-            // (viewModel as VM).state = (viewModel as VM).state.copyWith(isInitialized: true) as VS;
-            return _body(context: context);
-          } else {
-            if (viewModel.state.isSkeletonLoadingApplied) {
+    return riverpod.Consumer(builder: (context, ref, child) {
+      bool _isInitialized = ref.watch(provider.select((viewState) => viewState.isInitialized));
+      if (viewModel.state.needsInitialize && !viewModel.state.isInitialized) {
+        return FutureBuilder(
+          future: viewModel.onInit(context: context),
+          builder: (context, projectSnap) {
+            if (projectSnap.hasError) {
+              return NestedScrollView(
+                headerSliverBuilder: (_, __) {
+                  return <Widget>[
+                    // SyntonicSliverAppBar(
+                    //     isFullscreenDialog:
+                    //     hasAppBar ? appBar(context: context, ref: ref)!.isFullscreenDialog : false,
+                    //     title: hasAppBar ? appBar(context: context, ref: ref)!.title : null),
+                  ];
+                },
+                body: _errorScreen,
+              );
+            } else if (projectSnap.connectionState == ConnectionState.done) {
+              print('初期化');
+              // viewModel.state = viewModel.state.copyWith(isInitialized: true);
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                // ref.read(aProvider.notifier).state = 1;
+                this.viewModel(ref).initialize = true;
+              });
+              print('初期化' + viewModel.state.isInitialized.toString());
+              // this.viewModel(ref).state =
+              // this.viewModel(ref).state.copyWith(isInitialized: true) as VS;
+              // (viewModel as VM).state = (viewModel as VM).state.copyWith(isInitialized: true) as VS;
               return _body(context: context);
             } else {
-              return Stack(children: [
-                Scaffold(
-                  drawer: hasAppBar
-                      ? navigationDrawer(
-                          context: context,
-                        )
-                      : null,
-                  // appBar: hasAppBar
-                  //     ? SyntonicSliverAppBar.fixed(
-                  //     title: appBar(context: context, ref: ref)!.title ?? '',
-                  //     context: context,
-                  //     needsNavigationDrawer:
-                  //     appBar(context: context, ref: ref)!.needsNavigationDrawer,
-                  //     trailing: appBar(context: context, ref: ref)!.trailing)
-                  //     : null,
-                  bottomSheet: bottomSheet,
-                ),
-                const Center(child: CircularProgressIndicator())
-              ]);
+              if (viewModel.state.isSkeletonLoadingApplied) {
+                return _body(context: context);
+              } else {
+                return Stack(children: [
+                  Scaffold(
+                    drawer: hasAppBar
+                        ? navigationDrawer(
+                      context: context,
+                    )
+                        : null,
+                    // appBar: hasAppBar
+                    //     ? SyntonicSliverAppBar.fixed(
+                    //     title: appBar(context: context, ref: ref)!.title ?? '',
+                    //     context: context,
+                    //     needsNavigationDrawer:
+                    //     appBar(context: context, ref: ref)!.needsNavigationDrawer,
+                    //     trailing: appBar(context: context, ref: ref)!.trailing)
+                    //     : null,
+                    bottomSheet: bottomSheet,
+                  ),
+                  const Center(child: CircularProgressIndicator())
+                ]);
+              }
             }
-          }
-        },
-      );
-    } else {
-      return _body(context: context);
-    }
-    // );
+          },
+        );
+      } else {
+        return _body(context: context);
+      }
+      // );
+    });
   }
 
   /// Get body.
@@ -568,15 +579,16 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   Widget notFoundContents({required String title}) {
     return Container(
       padding: const EdgeInsets.only(top: 16),
-      alignment: Alignment.topCenter,
+      // alignment: Alignment.topCenter,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SyntonicListItem(
             title: [title, 'がありません。'].combineWithSpace(),
-            titleTextStyle: TitleTextStyle.Headline4,
+            titleTextStyle: TitleTextStyle.Subtitle2,
             subtitle: 'Let`s plan your travel',
+            hasDivider: false,
           ),
         ],
       ),
@@ -678,12 +690,12 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             accentColor: _appBar.accentColor,
             isBackButtonEnabled: _appBar.isBackButtonEnabled,
             elevation: _appBar.elevation,
-            expandedHeight: ref.watch(provider).height,
+            expandedHeight: ref.read(provider).height,
             // expandedHeight: _appBar.expandedHeight,
             flexibleSpace: _appBar.flexibleSpace,
             isFadedTitle: _appBar.isFadedTitle,
             isFullscreenDialog: _appBar.isFullscreenDialog,
-            isStickying: ref.watch(provider).isStickyingAppBar,
+            isStickying: ref.read(provider).isStickyingAppBar,
             onBackButtonPressed: _appBar.onBackButtonPressed,
             onTap: _appBar.onTap,
             needsNavigationDrawer: _appBar.needsNavigationDrawer,
@@ -814,6 +826,27 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       return const SizedBox();
     }
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final RenderBox? renderBox = viewModel(ref)._b.currentContext?.findRenderObject() as RenderBox?;
+      if (viewModel(ref).state.height == null) {
+        viewModel(ref).state =
+        viewModel(ref).state.copyWith(height: renderBox!.size.height) as VS;
+        print('ヘッダの高さ');
+        print(viewModel(ref).state.height);
+      }
+    });
+
+    double? _ofset = ref.watch(provider.select((viewState) => viewState.height)) != null  ? (viewModel(ref).state.height ?? 0) -
+        (viewModel(ref).state.tabBarHeight ?? 0) -
+        (kToolbarHeight * 1.5) : 0;
+    return SyntonicFade.off(
+      key: viewModel(ref)._b,
+        zeroOpacityOffset: 0,
+        //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
+        fullOpacityOffset: _ofset,
+        scrollController: viewModel(ref).scrollController,
+        child: headerContents(context: context, ref: ref)!);
+
     return _SizeListenableContainer(
       key: _globalKey,
       onSizeChanged: (Size size) {
@@ -918,7 +951,7 @@ abstract class BaseViewModel<VS extends BaseViewState>
     extends riverpod.StateNotifier<VS> {
   BaseViewModel({required VS viewState}) : super(viewState);
 
-  bool isInitialized = false;
+  // bool isInitialized = false;
   final GlobalKey<FormState>? formKey = GlobalKey<FormState>();
   late ScrollController scrollController = ScrollController()
     ..addListener(() {
@@ -943,6 +976,7 @@ abstract class BaseViewModel<VS extends BaseViewState>
   late BannerAd ad;
   late AdSize? adSize;
   late bool isAdLoaded = false;
+  GlobalKey _b = GlobalKey();
 
   @override
   set state(VS value) {
@@ -952,6 +986,14 @@ abstract class BaseViewModel<VS extends BaseViewState>
   @override
   VS get state => super.state;
 
+  set initialize(bool isInitialized) {
+    print('イニシャライズ');
+    print(state.runtimeType);
+    // print((state.copyWith(isInitialized: isInitialized) as VS).runtimeType);
+    VS  b = state.copyWith(isInitialized: isInitialized) as VS;
+    state = b;
+    print('初期化セット' + isInitialized.toString() + 'を' + b.isInitialized.toString());
+  }
   @override
   void dispose() {
     onDispose();

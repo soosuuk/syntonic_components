@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
 
-class BaseViewState {
+abstract class BaseViewState {
   final bool isChangedAppBar;
   final bool isFloatingActionButtonExtended;
   final double? height;
@@ -66,17 +66,5 @@ class BaseViewState {
     bool isInitialized = false,
     bool needsInitialize = false,
     bool isSkeletonLoadingApplied = false,
-  }) {
-    return BaseViewState._(
-        isChangedAppBar: isChangedAppBar,
-        isFloatingActionButtonExtended: isFloatingActionButtonExtended,
-        height: height,
-        tabBarHeight: tabBarHeight,
-        isFloatingActionButtonVisible: isFloatingActionButtonVisible,
-        isStickyingAppBar: isStickyingAppBar,
-        currentTabIndex: currentTabIndex,
-        isInitialized: isInitialized,
-        needsInitialize: needsInitialize,
-        isSkeletonLoadingApplied: isSkeletonLoadingApplied);
-  }
+  });
 }

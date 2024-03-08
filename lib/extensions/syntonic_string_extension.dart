@@ -49,7 +49,7 @@ extension SyntonicStringExtension on String {
     String? url;
     for (RegExpMatch regExpMatch in _matches) {
       // return description!.substring(regExpMatch.start, regExpMatch.end);
-      url = this.substring(regExpMatch.start, regExpMatch.end);
+      url = substring(regExpMatch.start, regExpMatch.end);
     }
     return url;
   }

@@ -264,9 +264,10 @@ class SyntonicSliverAppBar extends StatelessWidget
     //     onSearchButtonTap: (searchWord) {});
     Widget _title = searchBox ??
         SyntonicListItem(
-          title: title ?? '',
+          title: (title == null || title == '') ? 'No title' : title!,
           subtitle: subtitle,
-          titleTextStyle: TitleTextStyle.Headline6,
+          titleTextStyle: TitleTextStyle.Subtitle2,
+          hasDivider: false,
           hasPadding: false,
           titleColor: accentColor,
           trailingWidget: trailing,
@@ -277,6 +278,8 @@ class SyntonicSliverAppBar extends StatelessWidget
         );
 
     print('Appbar スティッキー');
+
+    // return SliverAppBar(title: TextField(),);
 
     return SliverAppBar(
       surfaceTintColor: isStickying

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
@@ -78,7 +77,8 @@ class SyntonicTextField extends StatelessWidget {
     this.theme = TextFieldTheme.outlined,
     this.textAlign,
     this.textStyle,
-    this.hintText,this.hasBorder = true,
+    this.hintText,
+    this.hasBorder = true,
   });
 
   const SyntonicTextField.outlined({
@@ -127,7 +127,8 @@ class SyntonicTextField extends StatelessWidget {
             theme: theme,
             textAlign: textAlign,
             textStyle: textStyle,
-            hintText: hintText, hasBorder: hasBorder);
+            hintText: hintText,
+            hasBorder: hasBorder);
 
   // static final TextEditingController _controller = TextEditingController();
 
@@ -194,9 +195,11 @@ class SyntonicTextField extends StatelessWidget {
             const SizedBox(
               height: 2,
             ),
-            hasBorder ? SyntonicDivider(
-              hasDotted: true,
-            ) : SizedBox()
+            // hasBorder
+            //     ? SyntonicDivider(
+            //         hasDotted: true,
+            //       )
+            //     : const SizedBox()
           ],
         ),
       ),
@@ -415,7 +418,11 @@ class FitTextFieldState extends State<FitTextField> {
     );
     tp.layout();
 
-    TextSpan tss = TextSpan(style: style, text: widget.controller.text.length > 0 ? widget.controller.text : widget.hintText);
+    TextSpan tss = TextSpan(
+        style: style,
+        text: widget.controller.text.isNotEmpty
+            ? widget.controller.text
+            : widget.hintText);
     TextPainter tpp = TextPainter(
       text: tss,
       textDirection: TextDirection.ltr,
@@ -477,12 +484,12 @@ class FitTextFieldState extends State<FitTextField> {
             // onSaved: (text) => onTextChanged(controller.text),
             // style: textStyle,
           ),
-          const SizedBox(
-            height: 2,
-          ),
-          SyntonicDivider(
-            hasDotted: true,
-          )
+          // const SizedBox(
+          //   height: 2,
+          // ),
+          // SyntonicDivider(
+          //   hasDotted: true,
+          // )
         ],
       ),
     );

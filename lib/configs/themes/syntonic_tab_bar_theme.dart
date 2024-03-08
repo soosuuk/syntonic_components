@@ -19,14 +19,16 @@ class SyntonicTabBarTheme {
         //       )
         //   ),
         // ),
-        unselectedLabelStyle: GoogleFonts.josefinSans(
-            textStyle: const TextStyle(fontSize: 18),
-            // fontWeight: FontWeight.w500,
+        unselectedLabelStyle: GoogleFonts.openSans(
+            textStyle: const TextStyle(fontSize: 20),
+            fontWeight: FontWeight.w400,
+            fontStyle: FontStyle.italic,
             color: primaryColor ?? SyntonicColor.primary_color.toAlpha,
             height: 1.4),
-        labelStyle: GoogleFonts.josefinSans(
-            textStyle: const TextStyle(fontSize: 18),
-            // fontWeight: FontWeight.w500,
+        labelStyle: GoogleFonts.openSans(
+            textStyle: const TextStyle(fontSize: 20),
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w400,
             height: 1.4),
         labelColor: colorScheme.primary,
         unselectedLabelColor: colorScheme.primary.withOpacity(0.72));

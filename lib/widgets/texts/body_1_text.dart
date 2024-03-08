@@ -36,7 +36,7 @@ class Body1Text extends BaseText {
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
       overflow: needsSeeMore ? TextOverflow.visible : overflow,
-      maxLines: needsSeeMore ? null : maxLines,
+      maxLines: maxLines ?? (needsSeeMore ? null : maxLines),
     );
   }
 

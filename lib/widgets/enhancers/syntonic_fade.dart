@@ -13,14 +13,17 @@ class SyntonicFade extends StatefulWidget {
   final _FadeMode fadeMode;
 
   const SyntonicFade._(
-      {required this.scrollController,
+      {
+        Key? key,
+        required this.scrollController,
       required this.child,
       this.zeroOpacityOffset = 0,
       this.fullOpacityOffset = kToolbarHeight,
-      required this.fadeMode});
+      required this.fadeMode}) : super(key: key);
 
   const SyntonicFade.on(
-      {required ScrollController scrollController,
+      {
+        required ScrollController scrollController,
       required Widget child,
       double zeroOpacityOffset = 0,
       double fullOpacityOffset = kToolbarHeight})
@@ -32,11 +35,13 @@ class SyntonicFade extends StatefulWidget {
             fadeMode: _FadeMode.on);
 
   const SyntonicFade.off(
-      {required ScrollController scrollController,
+      {
+        Key? key, required ScrollController scrollController,
       required Widget child,
       double zeroOpacityOffset = 0,
       double fullOpacityOffset = kToolbarHeight})
       : this._(
+    key: key,
             scrollController: scrollController,
             child: child,
             zeroOpacityOffset: zeroOpacityOffset,
@@ -53,10 +58,20 @@ class _FadeState extends State<SyntonicFade> {
   @override
   initState() {
     super.initState();
-    _offset = widget.scrollController.offset;
+    print('オフセット');
+    print(widget.zeroOpacityOffset);
+    print(widget.fullOpacityOffset);
+    // _offset = widget.scrollController.offset;
     widget.scrollController.addListener(_setOffset);
   }
 
+  @override
+  void didUpdateWidget(covariant SyntonicFade oldWidget) {
+    print('フェード');
+    print(widget.fullOpacityOffset);
+    super.didUpdateWidget(oldWidget);
+  }
+  //
   @override
   dispose() {
     widget.scrollController.removeListener(_setOffset);
@@ -196,6 +211,7 @@ class _FadeState extends State<SyntonicFade> {
 
   @override
   Widget build(BuildContext context) {
+    // return widget.child;
     return Opacity(
       opacity: _calculateOpacity(),
       child: RepaintBoundary(

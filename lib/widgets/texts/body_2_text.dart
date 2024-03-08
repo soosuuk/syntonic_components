@@ -35,7 +35,7 @@ class Body2Text extends BaseText {
       textAlign: textAlign,
       overflow: needsSeeMore ? TextOverflow.ellipsis : overflow,
       maxLines:
-          needsSeeMore || overflow == TextOverflow.ellipsis ? 1 : maxLines,
+          maxLines ?? (needsSeeMore || overflow == TextOverflow.ellipsis ? 1 : maxLines),
     );
   }
 

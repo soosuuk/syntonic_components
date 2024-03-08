@@ -29,9 +29,14 @@ class SyntonicIcon extends StatelessWidget {
       width: size.size,
       height: size.size,
       decoration: BoxDecoration(
-        color: hasBorder ? null : color != null ? color!.withOpacity(0.12) : Theme.of(context).colorScheme.primary.withOpacity(0.12),
+        color: hasBorder
+            ? null
+            : color != null
+                ? color!.withOpacity(0.12)
+                : Theme.of(context).colorScheme.primary.withOpacity(0.12),
         border: hasBorder
-            ? Border.all(color: color ?? Theme.of(context).colorScheme.primary, width: 1)
+            ? Border.all(
+                color: color ?? Theme.of(context).colorScheme.primary, width: 1)
             : null,
         // color: Colors.yellow,
         borderRadius:
@@ -49,7 +54,10 @@ class SyntonicIcon extends StatelessWidget {
       child: Theme(
           data: darkTheme(primaryColor: color),
           child: RepaintBoundary(
-            child: InkWell(onTap: onPressed, child: _iconButton,),
+            child: InkWell(
+              onTap: onPressed,
+              child: _iconButton,
+            ),
           )),
     );
   }

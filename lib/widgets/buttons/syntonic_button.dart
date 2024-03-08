@@ -1,6 +1,9 @@
 import 'package:syntonic_components/widgets/texts/body_1_text.dart';
+import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:flutter/material.dart';
+
+import '../texts/body_2_text.dart';
 
 /// A state of [BasicListView].
 enum _SyntonicButtonStyle {
@@ -80,7 +83,8 @@ class SyntonicButton extends StatelessWidget {
             isEnabled: isEnabled,
             leadingWidget: leadingWidget,
             maxWidth: maxWidth,
-            style: _SyntonicButtonStyle.text, padding: padding);
+            style: _SyntonicButtonStyle.text,
+            padding: padding);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +111,7 @@ class SyntonicButton extends StatelessWidget {
             width: 16,
           ),
         style == _SyntonicButtonStyle.text
-            ? Body1Text(
+            ? Headline6Text(
                 text: text,
                 textColor: isEnabled ? _textColor : null,
               )
@@ -144,7 +148,8 @@ class SyntonicButton extends StatelessWidget {
         return TextButton(
           onPressed: onTap,
           style: ButtonStyle(
-            padding: padding != null ? MaterialStateProperty.all(padding) : null,
+            padding:
+                padding != null ? MaterialStateProperty.all(padding) : null,
             minimumSize: MaterialStateProperty.all(Size.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),

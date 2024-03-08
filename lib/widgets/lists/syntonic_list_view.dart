@@ -3,6 +3,7 @@ import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -97,6 +98,9 @@ class SyntonicListView extends ExtendedStatelessWidget {
 
   final Function(int index, bool isBefore)? onAdded;
 
+  final Function()? onTimeButtonTapped;
+
+
   // ScrollController? scrollController;
 
   /// A [BasicListView] is a redirect constructor (private) from other named
@@ -123,6 +127,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
     this.numberOfRow = 3,
     this.numberOfColumn = 3,
     this.onAdded,
+    this.onTimeButtonTapped,
   });
 
   /// Create a [BasicListView] without any events.
@@ -203,6 +208,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
     required int numberOfItems,
     required Function(int newIndex, int oldIndex)? onReordered,
     required Function(int index, bool isBefore)? onAdded,
+    required Function()? onTimeButtonTapped,
     required bool isReorderMode,
     Widget? Function(int index)? stepIcon,
     bool isNested = false,
@@ -210,11 +216,13 @@ class SyntonicListView extends ExtendedStatelessWidget {
     ItemScrollController? itemScrollController,
     Axis? scrollDirection,
     bool hasStepper = false,
+
   }) : this._(
             listItem: listItem,
             numberOfItems: numberOfItems,
             onReordered: onReordered,
             onAdded: onAdded,
+      onTimeButtonTapped: onTimeButtonTapped,
             isReorderMode: isReorderMode,
             stepIcon: stepIcon,
             isNested: isNested,
@@ -376,31 +384,38 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                               )
                                             : const SizedBox(),
                                         isFirst
+                                            ? Padding(
+                    padding: EdgeInsets.only(
+                    top: isFirst ? 0 : 0),
+                    child: stepIcon!(index)!,
+                    )
+                                            : const SizedBox(),
+                                        isFirst
+                                            ? SizedBox(
+                                          height: 16,
+                                          child: CustomPaint(
+                                              painter: DottedLinePainter(
+                                                height: 16,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary,
+                                              )),
+                                        )
+                                            : const SizedBox(),
+                                        isFirst
                                             ? SyntonicIcon(
-                                          hasBorder: true,
+                                                hasBorder: true,
                                                 icon: Icons.add,
                                                 padding: 0,
                                                 onPressed: () =>
                                                     onAdded!(index, true),
                                               )
                                             : const SizedBox(),
-                                        isFirst
-                                            ? SizedBox(
-                                                height: 16,
-                                                child: CustomPaint(
-                                                    painter: DottedLinePainter(
-                                                  height: 16,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiary,
-                                                )),
-                                              )
-                                            : const SizedBox(),
-                                        Padding(
+                                        !isFirst ? Padding(
                                           padding: EdgeInsets.only(
                                               top: isFirst ? 0 : 0),
                                           child: stepIcon!(index)!,
-                                        ),
+                                        ) : const SizedBox(),
                                       ],
                                     ),
                                     // Expanded(child: DottedLinePainter(
@@ -455,19 +470,33 @@ class SyntonicListView extends ExtendedStatelessWidget {
                           padding: EdgeInsets.zero,
                           child: Column(
                             children: [
-                              isFirst
-                                  ? Container(
-                                      alignment: Alignment.centerLeft,
-                                      height: 56,
-                                      child: Body2Text(
-                                        text: 'Add step',
-                                        textColor: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(0.48),
-                                      ),
-                                    )
-                                  : const SizedBox(),
+                              // isFirst
+                              //     ? Container(
+                              //   alignment: Alignment.centerLeft,
+                              //   padding: EdgeInsets.only(top: 24),
+                              //   height: 56,
+                              //   child: Body2Text(
+                              //     text: 'Add start time',
+                              //     textColor: Theme.of(context)
+                              //         .colorScheme
+                              //         .primary
+                              //         .withOpacity(0.72),
+                              //   ),
+                              // )
+                              //     : const SizedBox(),
+                              // isFirst
+                              //     ? Container(
+                              //         alignment: Alignment.centerLeft,
+                              //         height: 70,
+                              //         child: Body2Text(
+                              //           text: 'Add step',
+                              //           textColor: Theme.of(context)
+                              //               .colorScheme
+                              //               .primary
+                              //               .withOpacity(0.72),
+                              //         ),
+                              //       )
+                              //     : const SizedBox(),
                               Padding(
                                 padding: const EdgeInsets.only(right: 16),
                                 child: SyntonicAnimationEnhancer(
@@ -482,7 +511,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                     textColor: Theme.of(context)
                                         .colorScheme
                                         .primary
-                                        .withOpacity(0.48)),
+                                        .withOpacity(0.72)),
                               )
                             ],
                           ),

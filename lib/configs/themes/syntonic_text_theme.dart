@@ -39,15 +39,21 @@ class SyntonicTextTheme {
         // height: 1.4,
       );
     }
-    return const TextStyle(fontFamily: 'Ailerons', fontSize: 48, height: 1);
-    // return GoogleFonts.raleway(
-    // textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 43),
-    //   fontWeight: FontWeight.w500,
-    //     // letterSpacing: 1,
-    //   // color: textColor,
-    //   // color: textColor ?? Theme.of(context).colorScheme.onSurface,
-    //   // height: 1.4,
-    // );
+    // saira manrope interTight prommpt rubik hind msmadi leagueSpartan libreBaskerville greatVibes
+    // return const TextStyle(fontFamily: 'Ailerons', fontSize: 69, height: 1, letterSpacing: -2);
+    return GoogleFonts.msMadi(
+      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 62),
+      fontWeight: FontWeight.w400,
+      // fontStyle: FontStyle.italic,
+      height: 1,
+      letterSpacing: -2,
+    );
+    return GoogleFonts.prompt(
+      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 52),
+      fontWeight: FontWeight.w900,
+      fontStyle: FontStyle.italic,
+      letterSpacing: 1.2,
+    );
   }
 
   static TextStyle headline4(
@@ -59,7 +65,7 @@ class SyntonicTextTheme {
       );
     }
 
-    return GoogleFonts.roboto(
+    return GoogleFonts.openSans(
       textStyle: Theme.of(context).textTheme.headlineMedium,
       fontWeight: FontWeight.w300,
       letterSpacing: 1,
@@ -78,7 +84,7 @@ class SyntonicTextTheme {
       );
     }
 
-    return GoogleFonts.roboto(
+    return GoogleFonts.openSans(
       textStyle: Theme.of(context).textTheme.headlineSmall,
       // fontWeight: FontWeight.w300,
       color: textColor,
@@ -95,10 +101,11 @@ class SyntonicTextTheme {
       );
     }
 
-    return GoogleFonts.roboto(
-        textStyle: Theme.of(context).textTheme.headlineSmall,
-        // fontWeight: FontWeight.w500,
+    return GoogleFonts.poppins(
+        textStyle: Theme.of(context).textTheme.titleLarge,
+        fontWeight: FontWeight.w300,
         color: textColor,
+        // letterSpacing: 1,
         height: 1.4);
   }
 
@@ -110,11 +117,13 @@ class SyntonicTextTheme {
         textStyle: Theme.of(context).textTheme.titleMedium,
       );
     }
-    return GoogleFonts.josefinSans(
-        textStyle: Theme.of(context).textTheme.titleMedium,
-        // fontWeight: FontWeight.w400,
+    return GoogleFonts.poppins(
+        textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20),
+        fontWeight: FontWeight.w300,
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
-        height: 1.4);
+        letterSpacing: 1
+        // height: 1.4
+    );
   }
 
   static TextStyle subtitle2(
@@ -125,9 +134,12 @@ class SyntonicTextTheme {
         textStyle: Theme.of(context).textTheme.titleMedium,
       );
     }
-    return GoogleFonts.roboto(
-        textStyle: Theme.of(context).textTheme.titleMedium,
-        fontWeight: FontWeight.w500,
+    // robotoselif
+    return GoogleFonts.openSans(
+        textStyle: Theme.of(context).textTheme.titleLarge,
+        fontWeight: FontWeight.w300,
+            // fontStyle: FontStyle.italic,
+            // .copyWith(fontSize: 23)
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
         height: 1.4);
   }
@@ -140,12 +152,13 @@ class SyntonicTextTheme {
         textStyle: Theme.of(context).textTheme.titleMedium,
       );
     }
-    return GoogleFonts.roboto(
+    return GoogleFonts.libreBaskerville(
       color: textColor ?? Theme.of(context).colorScheme.onSurface,
-      textStyle: Theme.of(context).textTheme.titleMedium,
-      fontWeight: FontWeight.w300,
-      // letterSpacing: 1,
-      // height: 1.4,
+      textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14),
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.italic,
+      letterSpacing: 1.2,
+      height: 1.2,
       decoration: isLineThrough == true ? TextDecoration.lineThrough : null,
     );
   }
@@ -154,17 +167,19 @@ class SyntonicTextTheme {
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.kosugiMaru(
+        fontSize: 15,
         textStyle: Theme.of(context).textTheme.titleSmall,
       );
     }
 
     var brightness = MediaQuery.of(context).platformBrightness;
-    return GoogleFonts.roboto(
-        textStyle: Theme.of(context).textTheme.titleSmall,
+    return GoogleFonts.openSans(
+        textStyle: Theme.of(context).textTheme.titleMedium,
         fontWeight: FontWeight.w400,
         // color: textColor ?? (brightness == Brightness.dark
         //     ? Colors.white.withAlpha(textLabelMedium)
         //     : Colors.black.withAlpha(textLabelMedium)),
+        height: 1.1,
         color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
         letterSpacing: 0.21519288844542);
   }
@@ -178,15 +193,16 @@ class SyntonicTextTheme {
     }
 
     var brightness = MediaQuery.of(context).platformBrightness;
-    return GoogleFonts.roboto(
+    return GoogleFonts.poppins(
       textStyle: Theme.of(context).textTheme.bodySmall,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w500,
+      fontSize: 13,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),
       color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
       height: 1.2,
-      letterSpacing: 0.39452029548328,
+      letterSpacing: 2,
     );
   }
 
@@ -199,8 +215,8 @@ class SyntonicTextTheme {
     }
 
     var brightness = MediaQuery.of(context).platformBrightness;
-    return GoogleFonts.roboto(
-      textStyle: Theme.of(context).textTheme.labelSmall,
+    return GoogleFonts.oswald(
+      textStyle: Theme.of(context).textTheme.labelLarge,
       fontWeight: FontWeight.w400,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)

@@ -53,59 +53,68 @@ abstract class SyntonicModalBottomSheet<
   }) {
     vm.pageController =
         PageController(initialPage: vm.state.currentPageIndex.toInt());
-    return DraggableScrollableActuator(
-      child: DraggableScrollableSheet(
-        key: GlobalKey(),
-        initialChildSize: initialSize ?? vm.minExtent,
-        maxChildSize: vm.maxExtent,
-        minChildSize: 0,
-        expand: false,
-        snap: true,
-        snapSizes: [vm.minExtent],
-        // controller: viewModel(ref).controller,
-        builder: (BuildContext context, ScrollController scrollController) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              vm.state.currentPageIndex == 0 ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Stack(
-                  alignment: AlignmentDirectional.topEnd,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.outline,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        )
-                      ],
-                    ),
-                    SyntonicButton.transparent(
-                      onTap: () {
-                        onPop(context: context, ref: ref);
-                        Navigator.of(context).pop();
-                      },
-                      text: 'Done',
-                    )
-                  ],
-                ),
-              ) : SizedBox(),
-              Expanded(
-                  child: PageView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      controller: vm.pageController,
-                      children: _pageViews(
-                          context: context,
-                          ref: ref,
-                          scrollController: scrollController)))
-            ],
-          );
-        },
+
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus!.unfocus();
+      },
+      child: DraggableScrollableActuator(
+        child: DraggableScrollableSheet(
+          key: GlobalKey(),
+          initialChildSize: initialSize ?? vm.minExtent,
+          maxChildSize: vm.maxExtent,
+          minChildSize: 0,
+          expand: false,
+          snap: true,
+          snapSizes: [vm.minExtent],
+          // controller: viewModel(ref).controller,
+          builder: (BuildContext context, ScrollController scrollController) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                vm.state.currentPageIndex == 0
+                    ? Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 16),
+                  child: Stack(
+                    alignment: AlignmentDirectional.topEnd,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.outline,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          )
+                        ],
+                      ),
+                      SyntonicButton.transparent(
+                        onTap: () {
+                          onPop(context: context, ref: ref);
+                          Navigator.of(context).pop();
+                        },
+                        text: 'Done',
+                      )
+                    ],
+                  ),
+                )
+                    : const SizedBox(),
+                Expanded(
+                    child: PageView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        controller: vm.pageController,
+                        children: _pageViews(
+                            context: context,
+                            ref: ref,
+                            scrollController: scrollController)))
+              ],
+            );
+          },
+        ),
       ),
     );
   }

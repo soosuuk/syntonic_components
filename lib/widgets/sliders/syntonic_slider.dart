@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class SyntonicSlider extends StatefulWidget {
   final String label;
   final double value;
