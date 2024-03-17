@@ -18,7 +18,7 @@ class SyntonicComponentsPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "syntonic_components")
-    channel.setMethodCalÏlHandler(this)
+    channel.setMethodCallHandler(this)
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
