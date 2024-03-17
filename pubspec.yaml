@@ -8,8 +8,8 @@ environment:
   flutter: ">=2.5.0"
 
 dependencies:
-  arb_merger:
-    path: ../arb_merger
+#  arb_merger:
+#    path: ../arb_merger
   async: ^2.8.2
   build_runner: ^2.3.2
   copy_with_extension_gen: ^5.0.4
