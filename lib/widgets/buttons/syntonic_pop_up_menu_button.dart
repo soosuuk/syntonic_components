@@ -63,7 +63,7 @@ class SyntonicPopupMenuButton extends StatelessWidget {
         child: Icon(
           icon,
           color: color,
-          size: 18,
+          // size: 18,
         ),
         onSelected: (value) {
           _menus(

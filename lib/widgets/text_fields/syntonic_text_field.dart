@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:google_fonts/google_fonts.dart';
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
@@ -46,6 +47,7 @@ class SyntonicTextField extends StatelessWidget {
   final TextStyle? textStyle;
   final String? hintText;
   final bool hasBorder;
+  final FocusNode? focusNode;
 
   TextInputAction? get _textInputAction =>
       textInputAction ??
@@ -79,6 +81,7 @@ class SyntonicTextField extends StatelessWidget {
     this.textStyle,
     this.hintText,
     this.hasBorder = true,
+    this.focusNode,
   });
 
   const SyntonicTextField.outlined({
@@ -105,6 +108,7 @@ class SyntonicTextField extends StatelessWidget {
     TextStyle? textStyle,
     String? hintText,
     bool hasBorder = true,
+    FocusNode? focusNode,
   }) : this._(
             label: label,
             onFocused: onFocused,
@@ -128,7 +132,7 @@ class SyntonicTextField extends StatelessWidget {
             textAlign: textAlign,
             textStyle: textStyle,
             hintText: hintText,
-            hasBorder: hasBorder);
+            hasBorder: hasBorder, focusNode: focusNode);
 
   // static final TextEditingController _controller = TextEditingController();
 
@@ -163,6 +167,13 @@ class SyntonicTextField extends StatelessWidget {
               validator: validator,
               decoration: InputDecoration(
                 hintText: hintText,
+                // hintStyle: GoogleFonts.roboto(
+                //   textStyle: textStyle != null ? textStyle!.copyWith(color: Colors.white) : null,
+                //   fontWeight: FontWeight.w400,
+                //   // fontStyle: FontStyle.italic,
+                //   // height: 1,
+                //   // letterSpacing: -2,
+                // ),
                 labelText: label,
                 errorText: errorMessage,
                 helperText: helperText,
@@ -170,8 +181,8 @@ class SyntonicTextField extends StatelessWidget {
                     ? const OutlineInputBorder()
                     : InputBorder.none,
                 suffixIcon: errorMessage != null
-                    ? const SyntonicIcon(
-                        icon: Icons.error, color: SyntonicColor.torch_red)
+                    ? SyntonicIcon(
+                        icon: Icons.error, colorScheme: ColorScheme.fromSeed(seedColor: SyntonicColor.torch_red))
                     : null,
                 contentPadding: theme == TextFieldTheme.underline
                     ? const EdgeInsets.all(0)
@@ -183,12 +194,13 @@ class SyntonicTextField extends StatelessWidget {
               keyboardType:
                   maxLines != null ? TextInputType.multiline : keyboardType,
               inputFormatters: inputFormatters,
+              focusNode: focusNode,
               onChanged: (text) {
                 if (onTextChanged != null) {
                   onTextChanged!(text.isEmpty ? null : text);
                 }
               },
-              onTap: onFocused?.call(),
+              onTap: () => onFocused!(),
               // onSaved: (text) => onTextChanged(controller.text),
               style: textStyle,
             ),
@@ -462,8 +474,8 @@ class FitTextFieldState extends State<FitTextField> {
               border: InputBorder.none,
               // border: widget.theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
               suffixIcon: widget.errorMessage != null
-                  ? const SyntonicIcon(
-                      icon: Icons.error, color: SyntonicColor.torch_red)
+                  ? SyntonicIcon(
+                      icon: Icons.error, colorScheme: ColorScheme.fromSeed(seedColor: SyntonicColor.torch_red))
                   : null,
               contentPadding: widget.theme == TextFieldTheme.underline
                   ? const EdgeInsets.all(0)

@@ -7,7 +7,7 @@ import '../../configs/themes/syntonic_dark_theme.dart';
 import '../../configs/themes/syntonic_light_theme.dart';
 
 class SyntonicChart extends StatelessWidget {
-  final Color? color;
+  final ColorScheme? colorScheme;
   final int? basedValue;
   final int value;
   final IconData? icon;
@@ -17,7 +17,7 @@ class SyntonicChart extends StatelessWidget {
   const SyntonicChart(
       {Key? key,
       required this.value,
-      this.color,
+      this.colorScheme,
       this.basedValue,
       this.onTap,
       this.icon,
@@ -33,10 +33,10 @@ class SyntonicChart extends StatelessWidget {
     final double _valueHeight = _height * percentage / 100;
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
-    ThemeData _theme = color != null
+    ThemeData _theme = colorScheme != null
         ? isDarkTheme
-            ? darkTheme(primaryColor: color)
-            : lightTheme(primaryColor: color)
+            ? darkTheme(colorScheme: colorScheme)
+            : lightTheme(colorScheme: colorScheme)
         : Theme.of(context);
     Color? inkColor = onTap != null ? null : Colors.transparent;
 
@@ -89,7 +89,7 @@ class SyntonicChart extends StatelessWidget {
                                     Icon(
                                       icon,
                                       size: 18,
-                                      color: color,
+                                      color: colorScheme != null ? colorScheme!.primary : null,
                                     ),
                                     const SizedBox(
                                       width: 8,

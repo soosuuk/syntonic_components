@@ -5,7 +5,7 @@ import '../../configs/themes/syntonic_dark_theme.dart';
 
 class SyntonicIcon extends StatelessWidget {
   final IconData icon;
-  final Color? color;
+  final ColorScheme? colorScheme;
   final double padding;
   final VoidCallback? onPressed;
   final IconSize size;
@@ -15,7 +15,7 @@ class SyntonicIcon extends StatelessWidget {
   const SyntonicIcon({
     Key? key,
     required this.icon,
-    this.color,
+    this.colorScheme,
     this.padding = 16,
     this.onPressed,
     this.size = IconSize.small,
@@ -31,12 +31,12 @@ class SyntonicIcon extends StatelessWidget {
       decoration: BoxDecoration(
         color: hasBorder
             ? null
-            : color != null
-                ? color!.withOpacity(0.12)
+            : colorScheme != null
+                ? colorScheme!.primary.withOpacity(0.12)
                 : Theme.of(context).colorScheme.primary.withOpacity(0.12),
         border: hasBorder
             ? Border.all(
-                color: color ?? Theme.of(context).colorScheme.primary, width: 1)
+                color: colorScheme?.primary ?? Theme.of(context).colorScheme.primary, width: 1)
             : null,
         // color: Colors.yellow,
         borderRadius:
@@ -46,13 +46,13 @@ class SyntonicIcon extends StatelessWidget {
       child: Icon(
         icon,
         size: size.size! <= 24 ? size.size! * 0.6 : 24,
-        color: color ?? Theme.of(context).colorScheme.primary,
+        color: colorScheme?.primary ?? Theme.of(context).colorScheme.primary,
       ),
     );
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Theme(
-          data: darkTheme(primaryColor: color),
+          data: darkTheme(colorScheme: colorScheme),
           child: RepaintBoundary(
             child: InkWell(
               onTap: onPressed,

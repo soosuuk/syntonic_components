@@ -10,7 +10,7 @@ import '../services/rating_service.dart';
 class App extends StatelessWidget {
   App(
       {required this.home,
-      required this.primaryColor,
+      required this.colorScheme,
       required this.localizationDelegates,
       this.onCheckSupportedVersion});
 
@@ -19,7 +19,7 @@ class App extends StatelessWidget {
 
   /// A primary color for the app.
   /// Apply the color as primary color in the app.
-  final Color primaryColor;
+  final ColorScheme colorScheme;
 
   final Function(BuildContext context)? onCheckSupportedVersion;
 
@@ -45,8 +45,8 @@ class App extends StatelessWidget {
         },
       ),
       navigatorKey: NavigationService().navigatorKey,
-      theme: lightTheme(primaryColor: primaryColor),
-      darkTheme: darkTheme(primaryColor: primaryColor),
+      theme: lightTheme(colorScheme: colorScheme),
+      darkTheme: darkTheme(colorScheme: colorScheme),
       home: home,
       debugShowCheckedModeBanner: false,
       supportedLocales: const [

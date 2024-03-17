@@ -294,7 +294,7 @@ class SyntonicSliverAppBar extends StatelessWidget
           : useCloseButton
               ? SyntonicAnimationEnhancer(
                   child: SyntonicIcon(
-                    color: Theme.of(context).colorScheme.onSurface,
+                    colorScheme: Theme.of(context).colorScheme,
                   padding: 0,
                   icon: Icons.close,
                   onPressed: () =>
@@ -403,7 +403,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get minExtent {
     double _height;
-    _height = tabBar.preferredSize.height;
+    _height = tabBar.preferredSize.height + 16;
 
     if (tabBarHeader != null) {
       _height += height;
@@ -415,7 +415,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get maxExtent {
     double _height;
-    _height = tabBar.preferredSize.height;
+    _height = tabBar.preferredSize.height + 16;
 
     if (tabBarHeader != null) {
       _height += height;

@@ -10,18 +10,12 @@ const brightness = Brightness.dark;
 const primaryColor = Colors.black87;
 const backgroundColor = Colors.white70;
 
-ThemeData darkTheme({Color? primaryColor}) {
+ThemeData darkTheme({ColorScheme? colorScheme}) {
   ColorScheme _colorScheme = ColorScheme.fromSeed(
-      seedColor: primaryColor ??
-          Theme.of(NavigationService().navigatorKey.currentContext!)
-              .colorScheme
-              .primary,
+      seedColor: colorScheme != null ? colorScheme.primary : SyntonicColor.primary_color,
       brightness: Brightness.dark,
       onPrimaryContainer: Colors.white,
-      onSurface: (primaryColor ??
-              Theme.of(NavigationService().navigatorKey.currentContext!)
-                  .colorScheme
-                  .primary)
+      onSurface: colorScheme != null ? colorScheme.primary.tone(96) : SyntonicColor.primary_color
           .tone(95));
   return ThemeData(
     useMaterial3: true,
@@ -43,7 +37,6 @@ ThemeData darkTheme({Color? primaryColor}) {
     // appBarTheme: SyntonicAppBarTheme.get(true),
     tabBarTheme: SyntonicTabBarTheme.get(
         isDarkTheme: true,
-        primaryColor: primaryColor,
         colorScheme: _colorScheme),
     // bottomNavigationBarTheme: SyntonicBottomNavigationBarTheme.get(true),
     // dialogTheme: SyntonicDialogTheme.get(true),

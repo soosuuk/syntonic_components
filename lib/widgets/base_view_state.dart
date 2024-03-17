@@ -23,6 +23,8 @@ abstract class BaseViewState {
 
   final bool isSkeletonLoadingApplied;
 
+  final ColorScheme? colorScheme;
+
   BaseViewState({
     this.isChangedAppBar = false,
     this.isFloatingActionButtonExtended = true,
@@ -36,6 +38,7 @@ abstract class BaseViewState {
     this.isInitialized = false,
     required this.needsInitialize,
     required this.isSkeletonLoadingApplied,
+    this.colorScheme,
   });
 
   BaseViewState._({
@@ -51,6 +54,7 @@ abstract class BaseViewState {
     required this.isInitialized,
     required this.needsInitialize,
     required this.isSkeletonLoadingApplied,
+    required this.colorScheme,
   });
 
   BaseViewState copyWith({
@@ -66,5 +70,6 @@ abstract class BaseViewState {
     bool isInitialized = false,
     bool needsInitialize = false,
     bool isSkeletonLoadingApplied = false,
+    ColorScheme? colorScheme,
   });
 }

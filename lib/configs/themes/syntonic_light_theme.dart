@@ -6,21 +6,21 @@ import 'syntonic_app_bar_theme.dart';
 import '../constants/syntonic_color.dart';
 
 const brightness = Brightness.light;
-const primaryColor = SyntonicColor.primary_color;
+const _primaryColor = SyntonicColor.primary_color;
 const backgroundColor = Colors.white70;
 
-ThemeData lightTheme({Color? primaryColor}) {
+ThemeData lightTheme({ColorScheme? colorScheme}) {
   ColorScheme _colorScheme = ColorScheme.fromSeed(
-      seedColor: primaryColor!,
+      seedColor: colorScheme != null ? colorScheme.primary : _primaryColor,
       brightness: Brightness.light,
-      onSurface: primaryColor.tone(30),
-      surface: primaryColor.tone(98),
-      background: primaryColor.tone(98));
+      onSurface: colorScheme != null ? colorScheme.onSurface : _primaryColor.tone(30),
+      surface: colorScheme != null ? colorScheme.surface : _primaryColor.tone(98),
+      background: colorScheme != null ? colorScheme.background : _primaryColor.tone(98));
 
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
-    colorScheme: _colorScheme,
+    colorScheme: colorScheme,
     // colorScheme: ColorScheme.light(
     //   primary: primaryColor ?? SyntonicColor.primary_color,
     //   secondary: primaryColor ?? SyntonicColor.primary_color,
@@ -32,7 +32,6 @@ ThemeData lightTheme({Color? primaryColor}) {
     brightness: brightness,
     tabBarTheme: SyntonicTabBarTheme.get(
         isDarkTheme: true,
-        primaryColor: primaryColor,
         colorScheme: _colorScheme),
     // primarySwatch: SyntonicColor.materialColor,
     // elevatedButtonTheme: SyntonicElevatedButtonTheme.get(false),
@@ -46,7 +45,7 @@ ThemeData lightTheme({Color? primaryColor}) {
           return null;
         }
         if (states.contains(MaterialState.selected)) {
-          return primaryColor ?? SyntonicColor.primary_color;
+          return colorScheme != null ? colorScheme.primary : _primaryColor;
         }
         return null;
       }),
@@ -58,7 +57,7 @@ ThemeData lightTheme({Color? primaryColor}) {
           return null;
         }
         if (states.contains(MaterialState.selected)) {
-          return primaryColor ?? SyntonicColor.primary_color;
+          return colorScheme != null ? colorScheme.primary : _primaryColor;
         }
         return null;
       }),
@@ -70,7 +69,7 @@ ThemeData lightTheme({Color? primaryColor}) {
           return null;
         }
         if (states.contains(MaterialState.selected)) {
-          return primaryColor ?? SyntonicColor.primary_color;
+          return colorScheme != null ? colorScheme.primary : _primaryColor;
         }
         return null;
       }),
@@ -80,7 +79,7 @@ ThemeData lightTheme({Color? primaryColor}) {
           return null;
         }
         if (states.contains(MaterialState.selected)) {
-          return primaryColor ?? SyntonicColor.primary_color;
+          return colorScheme != null ? colorScheme.primary : _primaryColor;
         }
         return null;
       }),

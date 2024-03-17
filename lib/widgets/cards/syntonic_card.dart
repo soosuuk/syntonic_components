@@ -16,7 +16,7 @@ class SyntonicCard extends StatelessWidget {
   final Widget? image;
   final Widget? child;
   final double? elevation;
-  final Color? color;
+  final ColorScheme? colorScheme;
   final bool needsBorder;
   final bool hasPadding;
   final double borderRadius;
@@ -29,7 +29,7 @@ class SyntonicCard extends StatelessWidget {
       this.image,
       this.child,
       this.elevation,
-      this.color,
+      this.colorScheme,
       this.needsBorder = false,
       this.hasPadding = true,
       this.imagePosition = ImagePosition.top});
@@ -48,7 +48,7 @@ class SyntonicCard extends StatelessWidget {
             elevation: 0,
             needsBorder: false,
             hasPadding: hasPadding,
-            color: Colors.transparent);
+      );
 
   const SyntonicCard.outlined(
       {VoidCallback? onTap,
@@ -64,7 +64,7 @@ class SyntonicCard extends StatelessWidget {
             elevation: 0,
             needsBorder: true,
             hasPadding: hasPadding,
-            color: Colors.transparent);
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -92,12 +92,12 @@ class SyntonicCard extends StatelessWidget {
       ),
     );
 
-    if (color != null) {
+    if (colorScheme != null) {
       return Theme(
-          data: color != null
+          data: colorScheme != null
               ? isDarkTheme
-                  ? darkTheme(primaryColor: color)
-                  : lightTheme(primaryColor: color)
+                  ? darkTheme(colorScheme: colorScheme)
+                  : lightTheme(colorScheme: colorScheme)
               : Theme.of(context),
           child: _card);
     } else {

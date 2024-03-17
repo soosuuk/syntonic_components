@@ -65,7 +65,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       this.hasFAB = false,
       this.hasFABSecondary = false,
       this.isPage = false,
-      this.color,
+      this.colorScheme,
       this.hasAds = true})
       : super(key: key);
 
@@ -78,7 +78,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   final bool hasFAB;
   final bool hasFABSecondary;
   final bool isPage;
-  final Color? color;
+  final ColorScheme? colorScheme;
   final bool hasAds;
 
   Future<AdSize?> _getAdSize(BuildContext context) async {
@@ -193,19 +193,33 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
     bool _isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
-    ThemeData _data = _isDarkTheme
-        ? darkTheme(primaryColor: color ?? Colors.deepPurple)
-        : lightTheme(primaryColor: color ?? Colors.deepPurple);
-    if (color != null) {
+    // ThemeData _data = _isDarkTheme
+    //     ? ThemeData.dark().copyWith(colorScheme: ref.watch(provider.select((viewState) => viewState.colorScheme)))
+    //     : ThemeData.light().copyWith(colorScheme: ref.watch(provider.select((viewState) => viewState.colorScheme)));
+    // if (color != null) {
       return riverpod.Consumer(builder: (context, ref, _) {
+        if (false) {
+          // if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+        late ColorScheme _colorScheme;
+        if (colorScheme != null) {
+          _colorScheme = colorScheme!;
+        }
+
+        if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+          _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
+        }
         return Theme(
-          data: _data,
+          data: _isDarkTheme
+              ? darkTheme(colorScheme: _colorScheme)
+              : lightTheme(colorScheme: _colorScheme),
           child: child(),
         );
-      });
-    } else {
-      return child();
-    }
+      } else {
+        return child();
+      }});
+    // } else {
+    //   return child();
+    // }
     // return Theme(data: darkTheme(primaryColor: color ?? Colors.deepPurple), child: child(),
     // );
   }
@@ -581,9 +595,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       padding: const EdgeInsets.only(top: 16),
       // alignment: Alignment.topCenter,
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+
           SyntonicListItem(
             title: [title, 'がありません。'].combineWithSpace(),
             titleTextStyle: TitleTextStyle.Subtitle2,

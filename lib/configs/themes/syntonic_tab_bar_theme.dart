@@ -7,7 +7,6 @@ import '../constants/syntonic_color.dart';
 class SyntonicTabBarTheme {
   static TabBarTheme get(
       {required bool isDarkTheme,
-      Color? primaryColor,
       required ColorScheme colorScheme}) {
     return TabBarTheme(
         // indicator: ShapeDecoration(
@@ -19,18 +18,21 @@ class SyntonicTabBarTheme {
         //       )
         //   ),
         // ),
-        unselectedLabelStyle: GoogleFonts.openSans(
-            textStyle: const TextStyle(fontSize: 20),
+      labelPadding: EdgeInsets.only(top: 16, bottom: 0),
+        unselectedLabelStyle: GoogleFonts.josefinSans(
+            textStyle: const TextStyle(fontSize: 18),
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.italic,
-            color: primaryColor ?? SyntonicColor.primary_color.toAlpha,
+            // letterSpacing: 0.6,
+            color: colorScheme.primary ?? SyntonicColor.primary_color.toAlpha,
             height: 1.4),
-        labelStyle: GoogleFonts.openSans(
-            textStyle: const TextStyle(fontSize: 20),
+        labelStyle: GoogleFonts.josefinSans(
+            textStyle: const TextStyle(fontSize: 18),
             fontStyle: FontStyle.italic,
+            // letterSpacing: 0.6,
             fontWeight: FontWeight.w400,
             height: 1.4),
         labelColor: colorScheme.primary,
-        unselectedLabelColor: colorScheme.primary.withOpacity(0.72));
+        unselectedLabelColor: colorScheme.primary.withOpacity(0.56));
   }
 }

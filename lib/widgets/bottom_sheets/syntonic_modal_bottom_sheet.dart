@@ -61,7 +61,8 @@ abstract class SyntonicModalBottomSheet<
       child: DraggableScrollableActuator(
         child: DraggableScrollableSheet(
           key: GlobalKey(),
-          initialChildSize: initialSize ?? vm.minExtent,
+          initialChildSize: ref.watch(provider
+              .select((viewState) => (viewState).currentExtent)),
           maxChildSize: vm.maxExtent,
           minChildSize: 0,
           expand: false,
@@ -74,8 +75,8 @@ abstract class SyntonicModalBottomSheet<
               children: [
                 vm.state.currentPageIndex == 0
                     ? Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.only(
+                      left: 16, top: 8, right: 16),
                   child: Stack(
                     alignment: AlignmentDirectional.topEnd,
                     children: [
@@ -84,7 +85,7 @@ abstract class SyntonicModalBottomSheet<
                         children: [
                           Container(
                             width: 40,
-                            height: 4,
+                            height: 3,
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.outline,
                               borderRadius: BorderRadius.circular(10),
@@ -163,8 +164,6 @@ abstract class SyntonicModalBottomSheetViewModel<
     pageController.addListener(() {
       if (pageController.positions.isNotEmpty) {
         state = state.copyWith(currentPageIndex: pageController.page!) as VS;
-        print(state.currentPageIndex);
-        print('ページ　');
       }
     });
   }
@@ -186,13 +185,15 @@ abstract class SyntonicModalBottomSheetViewModel<
 
 // @freezed
 class SyntonicModalBottomSheetViewState {
-  SyntonicModalBottomSheetViewState({this.currentPageIndex = 0});
+  SyntonicModalBottomSheetViewState({this.currentPageIndex = 0, required this.currentExtent});
   final double currentPageIndex;
+  final double currentExtent;
 
   SyntonicModalBottomSheetViewState copyWith({
     double? currentPageIndex,
+    double? currentExtent,
   }) {
     return SyntonicModalBottomSheetViewState(
-        currentPageIndex: currentPageIndex ?? this.currentPageIndex);
+        currentPageIndex: currentPageIndex ?? this.currentPageIndex, currentExtent: currentExtent ?? this.currentExtent);
   }
 }

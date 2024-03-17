@@ -2,6 +2,7 @@ import 'package:syntonic_components/widgets/texts/body_1_text.dart';
 import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 
 import '../texts/body_2_text.dart';
 
@@ -20,6 +21,7 @@ class SyntonicButton extends StatelessWidget {
   final Widget? leadingWidget;
   final double? maxWidth;
   final _SyntonicButtonStyle style;
+  final TextStyle? textStyle;
   final EdgeInsetsGeometry? padding;
   Color? _textColor;
 
@@ -27,6 +29,7 @@ class SyntonicButton extends StatelessWidget {
       {required this.onTap,
       required this.text,
       required this.style,
+        this.textStyle,
       this.isEnabled = true,
       this.leadingWidget,
       this.maxWidth,
@@ -34,6 +37,7 @@ class SyntonicButton extends StatelessWidget {
   SyntonicButton.filled(
       {required VoidCallback onTap,
       required String text,
+        TextStyle? textStyle,
       bool isEnabled = true,
       Widget? leadingWidget,
       double? maxWidth})
@@ -43,10 +47,12 @@ class SyntonicButton extends StatelessWidget {
             isEnabled: isEnabled,
             leadingWidget: leadingWidget,
             maxWidth: maxWidth,
+            textStyle: textStyle,
             style: _SyntonicButtonStyle.elevated);
   SyntonicButton.tonal(
       {required VoidCallback onTap,
       required String text,
+        TextStyle? textStyle,
       bool isEnabled = true,
       Widget? leadingWidget,
       double? maxWidth})
@@ -56,6 +62,7 @@ class SyntonicButton extends StatelessWidget {
             isEnabled: isEnabled,
             leadingWidget: leadingWidget,
             maxWidth: maxWidth,
+            textStyle: textStyle,
             style: _SyntonicButtonStyle.tonal);
   SyntonicButton.outlined(
       {required VoidCallback onTap,
@@ -73,6 +80,7 @@ class SyntonicButton extends StatelessWidget {
   SyntonicButton.transparent(
       {required VoidCallback onTap,
       required String text,
+        TextStyle? textStyle,
       bool isEnabled = true,
       Widget? leadingWidget,
       double? maxWidth,
@@ -83,6 +91,7 @@ class SyntonicButton extends StatelessWidget {
             isEnabled: isEnabled,
             leadingWidget: leadingWidget,
             maxWidth: maxWidth,
+            textStyle: textStyle,
             style: _SyntonicButtonStyle.text,
             padding: padding);
 
@@ -111,11 +120,12 @@ class SyntonicButton extends StatelessWidget {
             width: 16,
           ),
         style == _SyntonicButtonStyle.text
-            ? Headline6Text(
+            ? textStyle == null ? Body2Text( text: text,
+          textColor: isEnabled ? _textColor : null,) : Subtitle1Text(
                 text: text,
                 textColor: isEnabled ? _textColor : null,
               )
-            : Subtitle1Text(
+            : Body2Text(
                 text: text,
                 textColor: isEnabled ? _textColor : null,
               ),

@@ -2,6 +2,7 @@ import 'package:syntonic_components/configs/constants/syntonic_constraint.dart';
 import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 
 class SyntonicFloatingActionButton extends StatelessWidget {
   /// The state of FAB is extend or not.
@@ -91,7 +92,7 @@ class SyntonicFloatingActionButton extends StatelessWidget {
                             size: 18,
                           ),
                         ),
-                        Headline6Text(
+                        Subtitle2Text(
                           text: floatingActionButtonModel.text,
                           textColor: isSecondary
                               ? Theme.of(context).colorScheme.onSurface
