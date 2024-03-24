@@ -131,19 +131,19 @@ class SyntonicPersonIcon extends StatelessWidget {
                   (needsMainStaffBorder) ? type.size! - 3 : type.size!),
               border: Border.all(
                   width: (needsMainStaffBorder)
-                      ? 3
+                      ? 2
                       : (needsBorder)
                           ? 1
                           : 0,
                   color: (needsMainStaffBorder)
-                      ? Theme.of(context).colorScheme.primary
+                      ? Theme.of(context).colorScheme.surface
                       : Colors.black12)),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(type.size!),
             child: Image.network(
               person.photoUrl!,
-              width: (needsMainStaffBorder) ? type.size! - 6 : type.size!,
-              height: (needsMainStaffBorder) ? type.size! - 6 : type.size!,
+              width: type.size!,
+              height: type.size!,
               fit: BoxFit.cover,
             ),
           ),

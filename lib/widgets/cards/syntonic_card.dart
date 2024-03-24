@@ -125,13 +125,14 @@ class SyntonicCard extends StatelessWidget {
     switch (imagePosition) {
       case ImagePosition.left:
       case ImagePosition.right:
-        return Row(
+        return IntrinsicHeight(child: Row(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             imagePosition == ImagePosition.left ? image! : const SizedBox(),
             Flexible(child: _child),
             imagePosition == ImagePosition.right ? image! : const SizedBox(),
           ],
-        );
+        ),);
       case ImagePosition.top:
       case ImagePosition.bottom:
         return Column(

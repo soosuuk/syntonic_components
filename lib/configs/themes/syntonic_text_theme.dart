@@ -10,7 +10,7 @@ const int textLabelDisable = 0x61; // 38%
 
 // abrilFatface poppins quicksands, cinzel, faunaOne, rufina oxygen, spectral, bungee/openSans, caveat/josefinSans
 const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface1 = GoogleFonts.spectralSc;
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface2 = GoogleFonts.josefinSans;
+const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface2 = GoogleFonts.montserrat;
 const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface3 = GoogleFonts.faunaOne;
 const bool isBold = true;
 
@@ -48,7 +48,7 @@ class SyntonicTextTheme {
     // cormorant fraurence sourceserif4 saira manrope interTight prommpt rubik hind msmadi leagueSpartan libreBaskerville greatVibes
     // return const TextStyle(fontFamily: 'Ailerons', fontSize: 69, height: 1, letterSpacing: -2);
     return typeface1(
-      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 48),
+      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 44),
       fontWeight: isBold ? FontWeight.w800 : FontWeight.w200,
       // fontStyle: FontStyle.italic,
       height: 1,
@@ -111,8 +111,8 @@ class SyntonicTextTheme {
     }
 
     return typeface1(
-        textStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 23),
-        fontWeight: FontWeight.w400,
+        textStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 24),
+        fontWeight: FontWeight.w500,
         color: textColor,
         // fontStyle: FontStyle.italic,
         letterSpacing: 1,
@@ -129,7 +129,7 @@ class SyntonicTextTheme {
       );
     }
     return typeface2(
-        textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 26),
+        textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 22),
         fontWeight: FontWeight.w500,
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
         // letterSpacing: 1
@@ -210,8 +210,8 @@ class SyntonicTextTheme {
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface2(
       textStyle: Theme.of(context).textTheme.bodySmall,
-      fontWeight: FontWeight.w700,
-      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      fontSize: 13,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),
@@ -231,14 +231,14 @@ class SyntonicTextTheme {
 
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(
-      textStyle: Theme.of(context).textTheme.labelLarge,
+      textStyle: Theme.of(context).textTheme.labelMedium,
       fontWeight: FontWeight.w700,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),
       color: textColor ?? Theme.of(context).colorScheme.secondary,
       // height: 1.2,
-      letterSpacing: -0.4,
+      letterSpacing: -0.2,
     );
   }
 }

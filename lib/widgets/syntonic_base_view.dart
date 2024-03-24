@@ -82,14 +82,20 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   final bool hasAds;
 
   Future<AdSize?> _getAdSize(BuildContext context) async {
-    if (vm.adSize != null) {
-      return vm.adSize;
-    }
-    vm.adSize = await AdSize.getAnchoredAdaptiveBannerAdSize(
+    // if (vm.adSize != null) {
+    //   print('こうこくある');
+    //   return vm.adSize;
+    // }
+
+    print('こうこく');
+    await AdSize.getAnchoredAdaptiveBannerAdSize(
         MediaQuery.of(context).orientation == Orientation.portrait
             ? Orientation.portrait
             : Orientation.landscape,
-        MediaQuery.of(context).size.width.toInt()) as AdSize;
+        MediaQuery.of(context).size.width.toInt()).then((value) {
+          print('ADサイズ');
+          vm.adSize = value;
+    });
     return vm.adSize;
   }
 
@@ -143,7 +149,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               return Container(
                 color: Theme.of(context).colorScheme.surface,
                 alignment: Alignment.center,
-                height: 88,
+                height: 56,
                 // width: 88,
                 // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
                 // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
@@ -151,34 +157,36 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                     future: _getAdSize(context),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text(snapshot.error.toString(),
-                                textAlign: TextAlign.center,
-                                textScaleFactor: 1.3),
-                          );
-                        }
-
-                        // if (!vm.isAdLoaded) {
-                        //   vm.ad = BannerAd(
-                        //     adUnitId: AdHelper.bannerAdUnitId,
-                        //     size: vm.adSize!,
-                        //     request: AdRequest(),
-                        //     listener: BannerAdListener(
-                        //       onAdLoaded: (_) {
-                        //         vm.isAdLoaded = true;
-                        //       },
-                        //       onAdFailedToLoad: (ad, error) {
-                        //         //Load失敗時の処理
-                        //         ad.dispose();
-                        //         print(
-                        //             'Ad load failed (code=${error.code} message=${error.message})');
-                        //       },
-                        //     ),
+                        // if (snapshot.hasError) {
+                        //   print(snapshot.error);
+                        //   return Center(
+                        //     child: Text(snapshot.error.toString(),
+                        //         textAlign: TextAlign.center,
+                        //         textScaleFactor: 1.3),
                         //   );
-                        //   vm.ad.load();
-                        //   return Container();
                         // }
+
+                        if (!vm.isAdLoaded) {
+                          vm.ad = BannerAd(
+                            adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+                            size: vm.adSize!,
+                            request: AdRequest(),
+                            listener: BannerAdListener(
+                              onAdLoaded: (_) {
+                                vm.isAdLoaded = true;
+                              },
+                              onAdFailedToLoad: (ad, error) {
+                                //Load失敗時の処理
+                                ad.dispose();
+                                print(
+                                    'Ad load failed (code=${error.code} message=${error.message})');
+                              },
+                            ),
+                          );
+                          vm.ad.load();
+                          return AdWidget(ad: vm.ad);
+                          // return Container();
+                        }
                         return AdWidget(ad: vm.ad);
                       } else {
                         return Container();

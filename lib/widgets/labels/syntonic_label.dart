@@ -78,7 +78,7 @@ class SyntonicLabel extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ))
                       : const SizedBox(),
-                  child ?? const SizedBox(),
+                  child != null ? Flexible(child: child!) : const SizedBox(),
                   onTap != null
                       ? Icon(
                           Icons.keyboard_arrow_right,
