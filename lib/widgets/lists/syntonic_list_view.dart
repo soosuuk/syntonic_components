@@ -378,11 +378,19 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                   children: [
                                     Column(
                                       children: [
-                                        isFirst
-                                            ? SizedBox(
-                                                height: isFirst ? 16 : 0,
+                                        isFirst ? SizedBox(
+                                                height: 16,
                                               )
-                                            : const SizedBox(),
+                                            : SizedBox(
+                                          height: 16,
+                                          child: CustomPaint(
+                                              painter: DottedLinePainter(
+                                                height: 16,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary,
+                                              )),
+                                        ),
                                         isFirst
                                             ? Padding(
                     padding: EdgeInsets.only(
@@ -402,15 +410,23 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                               )),
                                         )
                                             : const SizedBox(),
-                                        isFirst
-                                            ? SyntonicIcon(
-                                                hasBorder: true,
-                                                icon: Icons.add,
-                                                padding: 0,
-                                                onPressed: () =>
-                                                    onAdded!(index, true),
-                                              )
-                                            : const SizedBox(),
+                                        SyntonicIcon(
+                                          hasBorder: true,
+                                          icon: Icons.add,
+                                          padding: 0,
+                                          onPressed: () =>
+                                              onAdded!(index, true),
+                                        ),
+                                        SizedBox(
+                                          height: 16,
+                                          child: CustomPaint(
+                                              painter: DottedLinePainter(
+                                                height: 16,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary,
+                                              )),
+                                        ),
                                         !isFirst ? Padding(
                                           padding: EdgeInsets.only(
                                               top: isFirst ? 0 : 0),
@@ -430,32 +446,36 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                               .colorScheme
                                               .tertiary),
                                     )),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: isLast ? 0 : 0),
-                                      child: SyntonicIcon(
-                                        hasBorder: true,
-                                        icon: Icons.add,
-                                        padding: 0,
-                                        onPressed: () => onAdded!(index, false),
-                                      ),
-                                    ),
-                                    !isLast
-                                        ? SizedBox(
-                                            height: 16,
-                                            child: CustomPaint(
-                                                painter: DottedLinePainter(
-                                              height: 16,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiary,
-                                            )),
-                                          )
-                                        : const SizedBox(),
+                                    // Padding(
+                                    //   padding: EdgeInsets.only(
+                                    //       bottom: isLast ? 0 : 0),
+                                    //   child: SyntonicIcon(
+                                    //     hasBorder: true,
+                                    //     icon: Icons.add,
+                                    //     padding: 0,
+                                    //     onPressed: () => onAdded!(index, false),
+                                    //   ),
+                                    // ),
+                                    // !isLast
+                                    //     ? SizedBox(
+                                    //         height: 16,
+                                    //         child: CustomPaint(
+                                    //             painter: DottedLinePainter(
+                                    //           height: 16,
+                                    //           color: Theme.of(context)
+                                    //               .colorScheme
+                                    //               .tertiary,
+                                    //         )),
+                                    //       )
+                                    //     : const SizedBox(),
                                     isLast
-                                        ? SizedBox(
-                                            height: isLast ? 16 : 0,
-                                          )
+                                        ? SyntonicIcon(
+                                      hasBorder: true,
+                                      icon: Icons.add,
+                                      padding: 0,
+                                      onPressed: () =>
+                                          onAdded!(index, true),
+                                    )
                                         : const SizedBox(),
                                   ],
                                 ),
@@ -503,16 +523,16 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                   child: listItem!(index),
                                 ),
                               ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                height: 56,
-                                child: Body2Text(
-                                    text: 'Add step',
-                                    textColor: Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withOpacity(0.72)),
-                              )
+                              // Container(
+                              //   alignment: Alignment.centerLeft,
+                              //   height: 56,
+                              //   child: Body2Text(
+                              //       text: 'Add step',
+                              //       textColor: Theme.of(context)
+                              //           .colorScheme
+                              //           .primary
+                              //           .withOpacity(0.72)),
+                              // )
                             ],
                           ),
                         ),
