@@ -121,7 +121,7 @@ class SyntonicButton extends StatelessWidget {
           ),
         style == _SyntonicButtonStyle.text
             ? textStyle == null ? Body2Text( text: text,
-          textColor: isEnabled ? _textColor : null,) : Subtitle1Text(
+          textColor: isEnabled ? _textColor : null,) : Headline6Text(
                 text: text,
                 textColor: isEnabled ? _textColor : null,
               )

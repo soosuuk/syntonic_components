@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
+import 'package:syntonic_components/widgets/texts/body_1_text.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
+import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
+import 'package:syntonic_components/widgets/texts/overline_text.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../syntonic_base_view.dart';
@@ -393,17 +396,16 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                         ),
                                         isFirst
                                             ? Padding(
-                    padding: EdgeInsets.only(
-                    top: isFirst ? 0 : 0),
-                    child: stepIcon!(index)!,
-                    )
+                                          padding: EdgeInsets.symmetric(vertical: 8),
+                                          child: Body1Text(text: 'day 1', textColor: Theme.of(context).colorScheme.tertiary,),
+                                        )
                                             : const SizedBox(),
                                         isFirst
                                             ? SizedBox(
-                                          height: 16,
+                                          height: 48,
                                           child: CustomPaint(
                                               painter: DottedLinePainter(
-                                                height: 16,
+                                                height: 48,
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .tertiary,
@@ -427,11 +429,11 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                                     .tertiary,
                                               )),
                                         ),
-                                        !isFirst ? Padding(
+                                        Padding(
                                           padding: EdgeInsets.only(
                                               top: isFirst ? 0 : 0),
                                           child: stepIcon!(index)!,
-                                        ) : const SizedBox(),
+                                        ),
                                       ],
                                     ),
                                     // Expanded(child: DottedLinePainter(

@@ -18,21 +18,22 @@ class SyntonicTabBarTheme {
         //       )
         //   ),
         // ),
-      labelPadding: EdgeInsets.only(top: 16, bottom: 0),
-        unselectedLabelStyle: GoogleFonts.josefinSans(
-            textStyle: const TextStyle(fontSize: 18),
-            fontWeight: FontWeight.w400,
-            fontStyle: FontStyle.italic,
-            // letterSpacing: 0.6,
+      labelPadding: EdgeInsets.only(top: 0, bottom: 0),
+        unselectedLabelStyle: GoogleFonts.mulish(
+            textStyle: const TextStyle(fontSize: 16),
+            fontWeight: FontWeight.w500,
+            // fontStyle: FontStyle.italic,
+            letterSpacing: 0.1,
             color: colorScheme.primary ?? SyntonicColor.primary_color.toAlpha,
             height: 1.4),
-        labelStyle: GoogleFonts.josefinSans(
-            textStyle: const TextStyle(fontSize: 18),
-            fontStyle: FontStyle.italic,
-            // letterSpacing: 0.6,
-            fontWeight: FontWeight.w400,
+        labelStyle: GoogleFonts.mulish(
+            textStyle: const TextStyle(fontSize: 16),
+            // fontStyle: FontStyle.italic,
+            letterSpacing: 0.1,
+            fontWeight: FontWeight.w500,
             height: 1.4),
         labelColor: colorScheme.primary,
-        unselectedLabelColor: colorScheme.primary.withOpacity(0.56));
+        unselectedLabelColor: colorScheme.primary.withOpacity(0.72)
+    );
   }
 }

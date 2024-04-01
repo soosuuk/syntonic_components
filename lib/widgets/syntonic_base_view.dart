@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -128,7 +129,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     // }
 
     Widget child() {
-      if (isChild || !hasAds) {
+      // if (isChild || !hasAds) {
+      if (true) {
         return GestureDetector(
           onTap: () {
             FocusManager.instance.primaryFocus!.unfocus();
@@ -145,55 +147,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               },
               child: _screen(vm, context),
             )),
-            Builder(builder: (context) {
-              return Container(
-                color: Theme.of(context).colorScheme.surface,
-                alignment: Alignment.center,
-                height: 56,
-                // width: 88,
-                // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
-                // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
-                child: FutureBuilder(
-                    future: _getAdSize(context),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        // if (snapshot.hasError) {
-                        //   print(snapshot.error);
-                        //   return Center(
-                        //     child: Text(snapshot.error.toString(),
-                        //         textAlign: TextAlign.center,
-                        //         textScaleFactor: 1.3),
-                        //   );
-                        // }
-
-                        if (!vm.isAdLoaded) {
-                          vm.ad = BannerAd(
-                            adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-                            size: vm.adSize!,
-                            request: AdRequest(),
-                            listener: BannerAdListener(
-                              onAdLoaded: (_) {
-                                vm.isAdLoaded = true;
-                              },
-                              onAdFailedToLoad: (ad, error) {
-                                //Load失敗時の処理
-                                ad.dispose();
-                                print(
-                                    'Ad load failed (code=${error.code} message=${error.message})');
-                              },
-                            ),
-                          );
-                          vm.ad.load();
-                          return AdWidget(ad: vm.ad);
-                          // return Container();
-                        }
-                        return AdWidget(ad: vm.ad);
-                      } else {
-                        return Container();
-                      }
-                    }),
-              );
-            })
+            ads(context: context)
           ],
         );
       }
@@ -232,6 +186,56 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     // );
   }
 
+  Widget ads({required BuildContext context}) {
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      alignment: Alignment.center,
+      height: 56,
+      // width: 88,
+      // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
+      // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
+      child: FutureBuilder(
+          future: _getAdSize(context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              // if (snapshot.hasError) {
+              //   print(snapshot.error);
+              //   return Center(
+              //     child: Text(snapshot.error.toString(),
+              //         textAlign: TextAlign.center,
+              //         textScaleFactor: 1.3),
+              //   );
+              // }
+
+              if (!vm.isAdLoaded) {
+                vm.ad = BannerAd(
+                  adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+                  size: vm.adSize!,
+                  request: AdRequest(),
+                  listener: BannerAdListener(
+                    onAdLoaded: (_) {
+                      vm.isAdLoaded = true;
+                    },
+                    onAdFailedToLoad: (ad, error) {
+                      //Load失敗時の処理
+                      ad.dispose();
+                      print(
+                          'Ad load failed (code=${error.code} message=${error.message})');
+                    },
+                  ),
+                );
+                vm.ad.load();
+                return AdWidget(ad: vm.ad);
+                // return Container();
+              }
+              return AdWidget(ad: vm.ad);
+            } else {
+              return Container();
+            }
+          }),
+    );
+  }
+
   /// Get a screen.
   ///
   /// A screen contains following contents:
@@ -249,6 +253,26 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     // return riverpod.Consumer(builder: (context, ref, _) {
     print('ビルド');
     return riverpod.Consumer(builder: (context, ref, child) {
+      if (!isChild) {
+        viewModel.scrollController = PrimaryScrollController.of(context)..addListener(() {
+          // if (floatingActionButton(context: context, ref: ref) != null &&
+          //     scrollNotification is UserScrollNotification) {
+          if (viewModel.scrollController!.position.userScrollDirection ==
+              ScrollDirection.reverse) {
+            if (viewModel.state.isFloatingActionButtonExtended == true) {
+              print('リバース');
+              viewModel.state = viewModel.state.copyWith(isFloatingActionButtonExtended: false) as VS;
+            }
+          } else if (viewModel.scrollController!.position.userScrollDirection ==
+              ScrollDirection.forward) {
+            print('リバース');
+            if (viewModel.state.isFloatingActionButtonExtended == false) {
+              viewModel.state = viewModel.state.copyWith(isFloatingActionButtonExtended: true) as VS;
+            }
+          }
+          // }
+        });
+      }
       bool _isInitialized = ref.watch(provider.select((viewState) => viewState.isInitialized));
       if (viewModel.state.needsInitialize && !viewModel.state.isInitialized) {
         return FutureBuilder(
@@ -298,6 +322,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                     //     trailing: appBar(context: context, ref: ref)!.trailing)
                     //     : null,
                     bottomSheet: bottomSheet,
+                    bottomNavigationBar: ads(context: context),
                   ),
                   const Center(child: CircularProgressIndicator())
                 ]);
@@ -405,6 +430,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             }),
           ),
           bottomSheet: bottomSheet,
+          bottomNavigationBar: ads(context: context),
         );
       } else {
         return DefaultTabController(
@@ -428,6 +454,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                 },
               ),
               bottomSheet: bottomSheet,
+              bottomNavigationBar: ads(context: context),
             ));
       }
     } else {
@@ -450,6 +477,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             },
           ),
           bottomSheet: bottomSheet,
+          bottomNavigationBar: ads(context: context),
         );
       }
     }
@@ -784,16 +812,16 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   Widget? _floatingActionButtons({required BuildContext context}) {
     if (hasFAB) {
       if (hasFABSecondary) {
-        return Column(
+        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 40 : 0), child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               _floatingActionButton(isSecondary: true),
               const SizedBox(height: 8),
-              _floatingActionButton()
-            ]);
+              _floatingActionButton(),
+            ]),);
       } else {
-        return _floatingActionButton();
+        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 40 : 0), child: _floatingActionButton(),);
       }
     } else {
       return null;
@@ -867,7 +895,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         zeroOpacityOffset: 0,
         //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
         fullOpacityOffset: _ofset,
-        scrollController: viewModel(ref).scrollController,
+        scrollController: viewModel(ref).scrollController ?? ScrollController(),
         child: headerContents(context: context, ref: ref)!);
 
     return _SizeListenableContainer(
@@ -889,7 +917,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               fullOpacityOffset: (viewModel(ref).state.height ?? 0) -
                   (viewModel(ref).state.tabBarHeight ?? 0) -
                   (kToolbarHeight * 1.5),
-              scrollController: viewModel(ref).scrollController,
+              scrollController: viewModel(ref).scrollController ?? ScrollController(),
               child: headerContents(context: context, ref: ref)!),
     );
   }
@@ -972,29 +1000,30 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
 abstract class BaseViewModel<VS extends BaseViewState>
     extends riverpod.StateNotifier<VS> {
-  BaseViewModel({required VS viewState}) : super(viewState);
+  BaseViewModel({required VS viewState}) : super(viewState) {
+    // scrollController.addListener(() {
+    //   // if (floatingActionButton(context: context, ref: ref) != null &&
+    //   //     scrollNotification is UserScrollNotification) {
+    //   if (scrollController.position.userScrollDirection ==
+    //       ScrollDirection.reverse) {
+    //     if (state.isFloatingActionButtonExtended == true) {
+    //       print('リバース');
+    //       state = state.copyWith(isFloatingActionButtonExtended: false) as VS;
+    //     }
+    //   } else if (scrollController.position.userScrollDirection ==
+    //       ScrollDirection.forward) {
+    //     print('リバース');
+    //     if (state.isFloatingActionButtonExtended == false) {
+    //       state = state.copyWith(isFloatingActionButtonExtended: true) as VS;
+    //     }
+    //   }
+    //   // }
+    // });
+  }
 
   // bool isInitialized = false;
   final GlobalKey<FormState>? formKey = GlobalKey<FormState>();
-  late ScrollController scrollController = ScrollController()
-    ..addListener(() {
-      // if (floatingActionButton(context: context, ref: ref) != null &&
-      //     scrollNotification is UserScrollNotification) {
-      if (scrollController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        if (state.isFloatingActionButtonExtended == true) {
-          print('リバース');
-          state = state.copyWith(isFloatingActionButtonExtended: false) as VS;
-        }
-      } else if (scrollController.position.userScrollDirection ==
-          ScrollDirection.forward) {
-        print('リバース');
-        if (state.isFloatingActionButtonExtended == false) {
-          state = state.copyWith(isFloatingActionButtonExtended: true) as VS;
-        }
-      }
-      // }
-    });
+  late ScrollController? scrollController;
   // ..addListener(scrollListener);
   late BannerAd ad;
   late AdSize? adSize;

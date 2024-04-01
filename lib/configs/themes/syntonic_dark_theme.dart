@@ -15,8 +15,8 @@ ThemeData darkTheme({ColorScheme? colorScheme}) {
       seedColor: colorScheme != null ? colorScheme.primary : SyntonicColor.primary_color,
       brightness: Brightness.dark,
       onPrimaryContainer: Colors.white,
-      onSurface: colorScheme != null ? colorScheme.primary.tone(96) : SyntonicColor.primary_color
-          .tone(95));
+      onSurface: colorScheme != null ? colorScheme.primary.tone(98).withOpacity(0.89) : SyntonicColor.primary_color
+          .tone(98).withOpacity(0.89));
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,

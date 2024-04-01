@@ -35,6 +35,19 @@ abstract class SyntonicModalBottomSheet<
         // showDragHandle: vm.state.currentPageIndex == 0,
         context: context,
         builder: (_) {
+          // return Navigator(
+          //   onGenerateRoute: (context) => MaterialPageRoute<_Contents>(
+          //     builder: (context) => Consumer(builder: (context, ref, child) {
+          //       return WillPopScope(
+          //         onWillPop: () async {
+          //           onPop(context: context, ref: ref);
+          //           return true;
+          //         },
+          //         child: _Contents(context: context, ref: ref),
+          //       );
+          //     }),
+          //   ),
+          // );
           return Consumer(builder: (context, ref, child) {
             return WillPopScope(
               onWillPop: () async {
@@ -58,64 +71,64 @@ abstract class SyntonicModalBottomSheet<
       onTap: () {
         FocusManager.instance.primaryFocus!.unfocus();
       },
-      child: DraggableScrollableActuator(
-        child: DraggableScrollableSheet(
-          key: GlobalKey(),
-          initialChildSize: ref.watch(provider
-              .select((viewState) => (viewState).currentExtent)),
-          maxChildSize: vm.maxExtent,
-          minChildSize: 0,
-          expand: false,
-          snap: true,
-          snapSizes: [vm.minExtent],
-          // controller: viewModel(ref).controller,
-          builder: (BuildContext context, ScrollController scrollController) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                vm.state.currentPageIndex == 0
-                    ? Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16, top: 8, right: 16),
-                  child: Stack(
-                    alignment: AlignmentDirectional.topEnd,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 3,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.outline,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          )
-                        ],
-                      ),
-                      SyntonicButton.transparent(
-                        onTap: () {
-                          onPop(context: context, ref: ref);
-                          Navigator.of(context).pop();
-                        },
-                        text: 'Done',
-                      )
-                    ],
-                  ),
-                )
-                    : const SizedBox(),
-                Expanded(
-                    child: PageView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        controller: vm.pageController,
-                        children: _pageViews(
-                            context: context,
-                            ref: ref,
-                            scrollController: scrollController)))
-              ],
-            );
-          },
-        ),
+      child: DraggableScrollableSheet(
+        key: GlobalKey(),
+        initialChildSize: ref.watch(provider
+            .select((viewState) => (viewState).currentExtent)),
+        maxChildSize: vm.maxExtent,
+        minChildSize: 0,
+        expand: false,
+        snap: true,
+        snapSizes: [vm.minExtent],
+        // controller: viewModel(ref).controller,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Padding(padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom), child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              vm.state.currentPageIndex == 0
+                  ? Padding(
+                padding: const EdgeInsets.only(
+                    left: 16, top: 8, right: 16),
+                child: Stack(
+                  alignment: AlignmentDirectional.topEnd,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outline,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        )
+                      ],
+                    ),
+                    SyntonicButton.transparent(
+                      onTap: () {
+                        onPop(context: context, ref: ref);
+                        Navigator.of(context).pop();
+                      },
+                      text: 'Done',
+                    )
+                  ],
+                ),
+              )
+                  : const SizedBox(),
+              Expanded(
+                  child: PageView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: vm.pageController,
+                      children: _pageViews(
+                          context: context,
+                          ref: ref,
+                          scrollController: scrollController))
+              )
+            ],
+          ),);
+        },
       ),
     );
   }
@@ -156,6 +169,124 @@ abstract class SyntonicModalBottomSheet<
     );
   }
 }
+
+// class _Contents extends StatelessWidget {
+//
+//   _Contents({
+//     required this.context,
+//     required this.ref,
+//   });
+//
+//   final BuildContext context;
+//   final WidgetRef ref;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     vm.pageController =
+//         PageController(initialPage: vm.state.currentPageIndex.toInt());
+//
+//     return GestureDetector(
+//       onTap: () {
+//         FocusManager.instance.primaryFocus!.unfocus();
+//       },
+//       child: DraggableScrollableActuator(
+//         child: DraggableScrollableSheet(
+//           key: GlobalKey(),
+//           initialChildSize: ref.watch(provider
+//               .select((viewState) => (viewState).currentExtent)),
+//           maxChildSize: vm.maxExtent,
+//           minChildSize: 0,
+//           expand: false,
+//           snap: true,
+//           snapSizes: [vm.minExtent],
+//           // controller: viewModel(ref).controller,
+//           builder: (BuildContext context, ScrollController scrollController) {
+//             return Column(
+//               crossAxisAlignment: CrossAxisAlignment.end,
+//               children: [
+//                 vm.state.currentPageIndex == 0
+//                     ? Padding(
+//                   padding: const EdgeInsets.only(
+//                       left: 16, top: 8, right: 16),
+//                   child: Stack(
+//                     alignment: AlignmentDirectional.topEnd,
+//                     children: [
+//                       Row(
+//                         mainAxisAlignment: MainAxisAlignment.center,
+//                         children: [
+//                           Container(
+//                             width: 40,
+//                             height: 3,
+//                             decoration: BoxDecoration(
+//                               color: Theme.of(context).colorScheme.outline,
+//                               borderRadius: BorderRadius.circular(10),
+//                             ),
+//                           )
+//                         ],
+//                       ),
+//                       SyntonicButton.transparent(
+//                         onTap: () {
+//                           onPop(context: context, ref: ref);
+//                           Navigator.of(context).pop();
+//                         },
+//                         text: 'Done',
+//                       )
+//                     ],
+//                   ),
+//                 )
+//                     : const SizedBox(),
+//                 Expanded(
+//                     child: PageView(
+//                         physics: const NeverScrollableScrollPhysics(),
+//                         controller: vm.pageController,
+//                         children: _pageViews(
+//                             context: context,
+//                             ref: ref,
+//                             scrollController: scrollController)))
+//               ],
+//             );
+//           },
+//         ),
+//       ),
+//     );
+//   }
+//
+//   List<Widget> _pageViews({
+//     required BuildContext context,
+//     required WidgetRef ref,
+//     required ScrollController scrollController,
+//   }) {
+//     List<Widget> _pageViews = [];
+//
+//     for (int i = 0; i < children(context: context, ref: ref).length; i++) {
+//       _pageViews.add(_pageView(
+//           context: context,
+//           ref: ref,
+//           scrollController: scrollController,
+//           index: i));
+//     }
+//
+//     return _pageViews;
+//   }
+//
+//   Widget _pageView(
+//       {required BuildContext context,
+//         required WidgetRef ref,
+//         required ScrollController scrollController,
+//         required int index}) {
+//     return CustomScrollView(
+//       controller: scrollController,
+//       slivers: [
+//         // SliverToBoxAdapter(
+//         //   child: Column(children: contents,),
+//         // ),
+//         SliverList.list(
+//           children: [children(context: context, ref: ref)[index]],
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 abstract class SyntonicModalBottomSheetViewModel<
     VS extends SyntonicModalBottomSheetViewState> extends StateNotifier<VS> {

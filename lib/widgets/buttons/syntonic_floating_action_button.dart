@@ -54,57 +54,79 @@ class SyntonicFloatingActionButton extends StatelessWidget {
             backgroundColor:
                 isSecondary ? Theme.of(context).colorScheme.surface : null,
             isExtended: true,
-            extendedPadding:
-                !isExtended ? SyntonicConstraint.horizontal16 : null,
+            // extendedPadding:
+            //     !isExtended ? SyntonicConstraint.horizontal16 : null,
+            extendedIconLabelSpacing: isExtended ? 10 : 0,
+            extendedPadding: isExtended ? null : const EdgeInsets.all(16),
             onPressed: floatingActionButtonModel.onTap,
             heroTag: floatingActionButtonModel.heroTag,
-            label: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 120),
-              transitionBuilder: (Widget child, Animation<double> animation) =>
-                  FadeTransition(
-                opacity: animation,
-                child: SizeTransition(
-                  sizeFactor: animation,
-                  axis: Axis.horizontal,
-                  child: child,
-                ),
-              ),
-              child: !isExtended
-                  ? Icon(
-                      floatingActionButtonModel.icon ?? Icons.add,
-                      color: isSecondary
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.onPrimaryContainer,
-                      size: 18,
-                    )
-                  : Row(
-                      key: UniqueKey(),
-                      children: [
-                        Padding(
-                          padding: SyntonicConstraint.trailing8,
-                          child: Icon(
-                            floatingActionButtonModel.icon ?? Icons.add,
-                            color: isSecondary
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
-                            size: 18,
-                          ),
-                        ),
-                        Subtitle2Text(
-                          text: floatingActionButtonModel.text,
-                          textColor: isSecondary
-                              ? Theme.of(context).colorScheme.onSurface
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
-                          needsLinkify: false,
-                        )
-                      ],
-                    ),
-            )),
-      );
+            // label: AnimatedSwitcher(
+            //   duration: const Duration(milliseconds: 120),
+            //   transitionBuilder: (Widget child, Animation<double> animation) =>
+            //       FadeTransition(
+            //     opacity: animation,
+            //     child: SizeTransition(
+            //       sizeFactor: animation,
+            //       axis: Axis.horizontal,
+            //       child: child,
+            //     ),
+            //   ),
+            //   child: !isExtended
+            //       ? Icon(
+            //           floatingActionButtonModel.icon ?? Icons.add,
+            //           color: isSecondary
+            //               ? Theme.of(context).colorScheme.primary
+            //               : Theme.of(context).colorScheme.onPrimaryContainer,
+            //           size: 18,
+            //         )
+            //       : Row(
+            //           key: UniqueKey(),
+            //           children: [
+            //             Padding(
+            //               padding: SyntonicConstraint.trailing8,
+            //               child: Icon(
+            //                 floatingActionButtonModel.icon ?? Icons.add,
+            //                 color: isSecondary
+            //                     ? Theme.of(context).colorScheme.primary
+            //                     : Theme.of(context)
+            //                         .colorScheme
+            //                         .onPrimaryContainer,
+            //                 size: 18,
+            //               ),
+            //             ),
+            //             Subtitle1Text(
+            //               text: floatingActionButtonModel.text,
+            //               textColor: isSecondary
+            //                   ? Theme.of(context).colorScheme.onSurface
+            //                   : Theme.of(context)
+            //                       .colorScheme
+            //                       .onPrimaryContainer,
+            //               needsLinkify: false,
+            //             )
+            //           ],
+            //         ),
+            // )
+            icon: Icon(
+              floatingActionButtonModel.icon ?? Icons.add,
+              color: isSecondary
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context)
+                  .colorScheme
+                  .onPrimaryContainer,
+              size: 18,
+            ),
+            label: AnimatedSize(
+        duration: const Duration(milliseconds: 120),
+        child: isExtended ?  Subtitle1Text(
+          text: floatingActionButtonModel.text,
+          textColor: isSecondary
+              ? Theme.of(context).colorScheme.onSurface
+              : Theme.of(context)
+              .colorScheme
+              .onPrimaryContainer,
+          needsLinkify: false,
+        ) : const SizedBox(),
+      )));
     }
   }
 }

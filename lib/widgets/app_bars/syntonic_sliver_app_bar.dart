@@ -266,7 +266,7 @@ class SyntonicSliverAppBar extends StatelessWidget
         SyntonicListItem(
           title: (title == null || title == '') ? 'No title' : title!,
           subtitle: subtitle,
-          titleTextStyle: TitleTextStyle.Subtitle2,
+          titleTextStyle: TitleTextStyle.Subtitle1,
           hasDivider: false,
           hasPadding: false,
           titleColor: accentColor,
@@ -403,7 +403,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get minExtent {
     double _height;
-    _height = tabBar.preferredSize.height + 16;
+    _height = tabBar.preferredSize.height;
 
     if (tabBarHeader != null) {
       _height += height;
@@ -415,7 +415,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get maxExtent {
     double _height;
-    _height = tabBar.preferredSize.height + 16;
+    _height = tabBar.preferredSize.height;
 
     if (tabBarHeader != null) {
       _height += height;

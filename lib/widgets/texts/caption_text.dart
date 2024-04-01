@@ -28,7 +28,7 @@ class CaptionText extends BaseText {
   @override
   Widget textWidget({required BuildContext context}) {
     return Text(
-      text.toUpperCase(),
+      text,
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),

@@ -46,7 +46,7 @@ class SyntonicGradientContainer extends StatelessWidget {
         break;
     }
 
-    return Container(
+    return Stack(children: [child ?? SizedBox(), Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
@@ -58,7 +58,7 @@ class SyntonicGradientContainer extends StatelessWidget {
                 ElevationOverlay.applyOverlay(
                     context, Theme.of(context).colorScheme.surface, 4),
                 ElevationOverlay.applyOverlay(
-                        context, Theme.of(context).colorScheme.surface, 4)
+                    context, Theme.of(context).colorScheme.surface, 4)
                     .withOpacity(0),
               ],
           stops: stops ??
@@ -68,6 +68,6 @@ class SyntonicGradientContainer extends StatelessWidget {
               ],
         ),
       ),
-    );
+    )],);
   }
 }

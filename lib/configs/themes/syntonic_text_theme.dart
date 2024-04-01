@@ -8,10 +8,10 @@ const int textLabelHigh = 0xde; // 87%
 const int textLabelMedium = 0x99; // 60%
 const int textLabelDisable = 0x61; // 38%
 
-// abrilFatface poppins quicksands, cinzel, faunaOne, rufina oxygen, spectral, bungee/openSans, caveat/josefinSans
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface1 = GoogleFonts.cinzel;
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface2 = GoogleFonts.montserrat;
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface3 = GoogleFonts.faunaOne;
+// abrilFatface poppins quicksands, cinzel, faunaOne, rufina oxygen, spectral, bungee/openSans, caveat/josefinSans, montaguSlab/figtree,  fjallaOne/sourceSans3/yellow, marcellus/dmsans
+const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface1 = GoogleFonts.arima;
+const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface2 = GoogleFonts.arima;
+const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface3 = GoogleFonts.mulish;
 const bool isBold = true;
 
 extension Material3Palette on Color {
@@ -48,11 +48,11 @@ class SyntonicTextTheme {
     // cormorant fraurence sourceserif4 saira manrope interTight prommpt rubik hind msmadi leagueSpartan libreBaskerville greatVibes
     // return const TextStyle(fontFamily: 'Ailerons', fontSize: 69, height: 1, letterSpacing: -2);
     return typeface1(
-      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 44),
-      fontWeight: isBold ? FontWeight.w900 : FontWeight.w200,
+      textStyle: Theme.of(context).textTheme.displayMedium,
+      fontWeight: isBold ? FontWeight.w400 : FontWeight.w200,
       // fontStyle: FontStyle.italic,
       // height: 1,
-      // letterSpacing: 2.2,
+      // letterSpacing: 4.2,
     );
     return GoogleFonts.prompt(
       textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 52),
@@ -74,8 +74,8 @@ class SyntonicTextTheme {
     }
 
     return typeface1(
-      textStyle: Theme.of(context).textTheme.headlineMedium,
-      fontWeight: FontWeight.w300,
+      textStyle: Theme.of(context).textTheme.displaySmall,
+      fontWeight: FontWeight.w400,
       letterSpacing: 1,
       // color: textColor,
       color: textColor ?? Theme.of(context).colorScheme.onSurface,
@@ -110,12 +110,12 @@ class SyntonicTextTheme {
       );
     }
 
-    return typeface1(
-        textStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 24),
+    return typeface2(
+        textStyle: Theme.of(context).textTheme.titleLarge,
         fontWeight: FontWeight.w500,
         color: textColor,
         // fontStyle: FontStyle.italic,
-        letterSpacing: 1,
+        // letterSpacing: 1,
         // height: 1.4
     );
   }
@@ -129,7 +129,7 @@ class SyntonicTextTheme {
       );
     }
     return typeface2(
-        textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 22),
+        textStyle: Theme.of(context).textTheme.headlineSmall,
         fontWeight: FontWeight.w500,
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
         // letterSpacing: 1
@@ -147,13 +147,13 @@ class SyntonicTextTheme {
     }
     // workSansselif
     return typeface3(
-        textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
+        textStyle: Theme.of(context).textTheme.titleMedium,
         fontWeight: isBold ? FontWeight.w400 : FontWeight.w700,
             // fontStyle: FontStyle.italic,
             // .copyWith(fontSize: 23)
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
         // letterSpacing: 0.8,
-        height: 1.4
+        // height: 1.4
     );
   }
 
@@ -167,13 +167,13 @@ class SyntonicTextTheme {
     }
     return typeface2(
       color: textColor ?? Theme.of(context).colorScheme.onSurface,
-      textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 24),
+      textStyle: Theme.of(context).textTheme.titleMedium,
       fontWeight: FontWeight.w500,
       // fontStyle: FontStyle.italic,
 
       // fontStyle: FontStyle.italic,
       letterSpacing: 0.5,
-      height: 1.2,
+      // height: 1.2,
       decoration: isLineThrough == true ? TextDecoration.lineThrough : null,
     );
   }
@@ -189,14 +189,15 @@ class SyntonicTextTheme {
 
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(
-        textStyle: Theme.of(context).textTheme.titleMedium,
+        textStyle: Theme.of(context).textTheme.bodyLarge,
         fontWeight: FontWeight.w400,
         // color: textColor ?? (brightness == Brightness.dark
         //     ? Colors.white.withAlpha(textLabelMedium)
         //     : Colors.black.withAlpha(textLabelMedium)),
-        height: 1.1,
+        // height: 1.1,
         color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
-        letterSpacing: 0.21519288844542);
+        letterSpacing: 0.15
+    );
   }
 
   static TextStyle caption({required BuildContext context, Color? textColor}) {
@@ -208,16 +209,16 @@ class SyntonicTextTheme {
     }
 
     var brightness = MediaQuery.of(context).platformBrightness;
-    return typeface2(
-      textStyle: Theme.of(context).textTheme.bodySmall,
-      fontWeight: FontWeight.w600,
-      fontSize: 13,
+    return typeface3(
+      textStyle: Theme.of(context).textTheme.titleSmall,
+      fontWeight: FontWeight.w500,
+      // fontSize: 13,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),
       color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
       // height: 1.2,
-      letterSpacing: 0.5,
+      letterSpacing: 0.1,
     );
   }
 
@@ -232,13 +233,13 @@ class SyntonicTextTheme {
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(
       textStyle: Theme.of(context).textTheme.labelMedium,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w500,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),
       color: textColor ?? Theme.of(context).colorScheme.secondary,
       // height: 1.2,
-      letterSpacing: -0.2,
+      letterSpacing: 0.5,
     );
   }
 }
