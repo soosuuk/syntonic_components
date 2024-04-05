@@ -191,6 +191,7 @@ class SyntonicTextTheme {
     return typeface3(
         textStyle: Theme.of(context).textTheme.bodyLarge,
         fontWeight: FontWeight.w400,
+        // fontStyle: FontStyle.italic,
         // color: textColor ?? (brightness == Brightness.dark
         //     ? Colors.white.withAlpha(textLabelMedium)
         //     : Colors.black.withAlpha(textLabelMedium)),

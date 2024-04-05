@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 // import 'package:provider/provider.dart';
 
 import '../buttons/syntonic_button.dart';
@@ -21,58 +22,43 @@ abstract class SyntonicModalBottomSheet<
   Function? onPop({required BuildContext context, required WidgetRef ref});
 
   /// Open modal bottom sheet.
-  openModalBottomSheet({
+  openModalBottomSheet<S>({
     required BuildContext context,
   }) {
-    // this.pageController = pageController;
-    // contents = children;
-    // provider = ChangeNotifierProvider<SyntonicModalBottomSheetViewModel>((ref) => SyntonicModalBottomSheetViewModel());
-
     showModalBottomSheet(
         enableDrag: true,
         useSafeArea: true,
         isScrollControlled: true,
+        clipBehavior: Clip.hardEdge,
         // showDragHandle: vm.state.currentPageIndex == 0,
         context: context,
-        builder: (_) {
-          // return Navigator(
-          //   onGenerateRoute: (context) => MaterialPageRoute<_Contents>(
-          //     builder: (context) => Consumer(builder: (context, ref, child) {
-          //       return WillPopScope(
-          //         onWillPop: () async {
-          //           onPop(context: context, ref: ref);
-          //           return true;
-          //         },
-          //         child: _Contents(context: context, ref: ref),
-          //       );
-          //     }),
-          //   ),
-          // );
+        builder: (context) {
           return Consumer(builder: (context, ref, child) {
             return WillPopScope(
               onWillPop: () async {
                 onPop(context: context, ref: ref);
                 return true;
               },
-              child: _contents(context: context, ref: ref),
+              child: _contents<S>(context: context, ref: ref),
             );
           });
         });
   }
 
-  Widget _contents({
+  Widget _contents<S>({
     required BuildContext context,
     required WidgetRef ref,
   }) {
     vm.pageController =
         PageController(initialPage: vm.state.currentPageIndex.toInt());
 
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus!.unfocus();
       },
       child: DraggableScrollableSheet(
-        key: GlobalKey(),
+        // key: GlobalKey(),
         initialChildSize: ref.watch(provider
             .select((viewState) => (viewState).currentExtent)),
         maxChildSize: vm.maxExtent,
@@ -80,54 +66,66 @@ abstract class SyntonicModalBottomSheet<
         expand: false,
         snap: true,
         snapSizes: [vm.minExtent],
-        // controller: viewModel(ref).controller,
+        controller: viewModel(ref).controller,
         builder: (BuildContext context, ScrollController scrollController) {
-          return Padding(padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom), child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              vm.state.currentPageIndex == 0
-                  ? Padding(
-                padding: const EdgeInsets.only(
-                    left: 16, top: 8, right: 16),
-                child: Stack(
-                  alignment: AlignmentDirectional.topEnd,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          return MaterialApp(
+            theme: Theme.of(context),
+            home: Scaffold(
+              // appBar: AppBar(
+              //   title: Text('Example'),
+              // ),
+              body: Column(
+                children: [
+                  vm.state.currentPageIndex == 0
+                      ? Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16, top: 8, right: 16),
+                    child: Stack(
+                      alignment: AlignmentDirectional.topEnd,
                       children: [
-                        Container(
-                          width: 40,
-                          height: 3,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.outline,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 32,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.outlineVariant,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            )
+                          ],
+                        ),
+                        SyntonicButton.transparent(
+                          onTap: () {
+                            onPop(context: context, ref: ref);
+                            Navigator.of(context).pop();
+                          },
+                          text: 'Done',
                         )
                       ],
                     ),
-                    SyntonicButton.transparent(
-                      onTap: () {
-                        onPop(context: context, ref: ref);
-                        Navigator.of(context).pop();
-                      },
-                      text: 'Done',
-                    )
-                  ],
-                ),
-              )
-                  : const SizedBox(),
-              Expanded(
-                  child: PageView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      controller: vm.pageController,
-                      children: _pageViews(
-                          context: context,
-                          ref: ref,
-                          scrollController: scrollController))
-              )
-            ],
-          ),);
+                  )
+                      : const SizedBox(),
+                  Expanded(
+                    child: Navigator(
+                        onGenerateRoute: (context) => MaterialPageRoute<S>(
+                            builder: (context) => SingleChildScrollView(
+                          controller: scrollController,
+                          physics: const ClampingScrollPhysics(),
+                          child: Column(children: [
+                            // SliverPersistentHeader(
+                            //   delegate: TestSliverAppBar(),
+                            //   pinned: true,
+                            // ),
+                            children(context: context, ref: ref)[0]
+                          ],),
+                        )),
+                  ),
+                )],
+              ),
+            ),
+          );
         },
       ),
     );
