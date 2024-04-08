@@ -155,13 +155,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
     bool _isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
-    // ThemeData _data = _isDarkTheme
-    //     ? ThemeData.dark().copyWith(colorScheme: ref.watch(provider.select((viewState) => viewState.colorScheme)))
-    //     : ThemeData.light().copyWith(colorScheme: ref.watch(provider.select((viewState) => viewState.colorScheme)));
-    // if (color != null) {
       return riverpod.Consumer(builder: (context, ref, _) {
-        if (false) {
-          // if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+        // if (false) {
+          if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
         late ColorScheme _colorScheme;
         if (colorScheme != null) {
           _colorScheme = colorScheme!;
@@ -179,11 +175,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       } else {
         return child();
       }});
-    // } else {
-    //   return child();
-    // }
-    // return Theme(data: darkTheme(primaryColor: color ?? Colors.deepPurple), child: child(),
-    // );
   }
 
   Widget ads({required BuildContext context}) {

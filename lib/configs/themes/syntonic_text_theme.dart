@@ -29,22 +29,19 @@ class SyntonicTextTheme {
   static TextStyle headline1(
       {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    print('ロケール');
-    print(currentLocale.countryCode);
-    print(currentLocale.scriptCode);
-    print(currentLocale.languageCode);
 
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.mPlus1(
-        textStyle:
-            Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 48),
-        fontWeight: FontWeight.w900,
-        // letterSpacing: 1,
-        // color: textColor,
-        // color: textColor ?? Theme.of(context).colorScheme.onSurface,
-        // height: 1.4,
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.mPlus1(
+    //     textStyle:
+    //         Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 48),
+    //     fontWeight: FontWeight.w900,
+    //     // letterSpacing: 1,
+    //     // color: textColor,
+    //     // color: textColor ?? Theme.of(context).colorScheme.onSurface,
+    //     // height: 1.4,
+    //   );
+    // }
+
     // cormorant fraurence sourceserif4 saira manrope interTight prommpt rubik hind msmadi leagueSpartan libreBaskerville greatVibes
     // return const TextStyle(fontFamily: 'Ailerons', fontSize: 69, height: 1, letterSpacing: -2);
     return typeface1(
@@ -65,13 +62,13 @@ class SyntonicTextTheme {
   static TextStyle headline4(
       {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        fontWeight: FontWeight.w300,
-        letterSpacing: 1,
-        textStyle: Theme.of(context).textTheme.titleMedium,
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     fontWeight: FontWeight.w300,
+    //     letterSpacing: 1,
+    //     textStyle: Theme.of(context).textTheme.titleMedium,
+    //   );
+    // }
 
     return typeface1(
       textStyle: Theme.of(context).textTheme.displaySmall,
@@ -86,11 +83,11 @@ class SyntonicTextTheme {
   static TextStyle headline5(
       {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        textStyle: Theme.of(context).textTheme.headlineSmall,
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     textStyle: Theme.of(context).textTheme.headlineSmall,
+    //   );
+    // }
 
     return typeface1(
       textStyle: Theme.of(context).textTheme.headlineSmall,
@@ -103,12 +100,12 @@ class SyntonicTextTheme {
   static TextStyle headline6(
       {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        textStyle: Theme.of(context).textTheme.headlineSmall,
-        height: 1,
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     textStyle: Theme.of(context).textTheme.headlineSmall,
+    //     height: 1,
+    //   );
+    // }
 
     return typeface2(
         textStyle: Theme.of(context).textTheme.titleLarge,
@@ -123,13 +120,13 @@ class SyntonicTextTheme {
   static TextStyle subtitle1(
       {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 26),
-      );
-    }
-    return typeface2(
-        textStyle: Theme.of(context).textTheme.headlineSmall,
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 26),
+    //   );
+    // }
+    return typeface3(
+        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
         fontWeight: FontWeight.w500,
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
         // letterSpacing: 1
@@ -140,15 +137,15 @@ class SyntonicTextTheme {
   static TextStyle subtitle2(
       {required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
+    //   );
+    // }
     // workSansselif
     return typeface3(
         textStyle: Theme.of(context).textTheme.titleMedium,
-        fontWeight: isBold ? FontWeight.w400 : FontWeight.w700,
+        fontWeight: isBold ? FontWeight.w500 : FontWeight.w700,
             // fontStyle: FontStyle.italic,
             // .copyWith(fontSize: 23)
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
@@ -160,11 +157,11 @@ class SyntonicTextTheme {
   static TextStyle body1(
       {required BuildContext context, Color? textColor, bool? isLineThrough}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 24),
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 24),
+    //   );
+    // }
     return typeface2(
       color: textColor ?? Theme.of(context).colorScheme.onSurface,
       textStyle: Theme.of(context).textTheme.titleMedium,
@@ -180,12 +177,12 @@ class SyntonicTextTheme {
 
   static TextStyle body2({required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        fontSize: 15,
-        textStyle: Theme.of(context).textTheme.titleMedium,
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     fontSize: 15,
+    //     textStyle: Theme.of(context).textTheme.titleMedium,
+    //   );
+    // }
 
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(
@@ -203,11 +200,11 @@ class SyntonicTextTheme {
 
   static TextStyle caption({required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        textStyle: Theme.of(context).textTheme.bodySmall,
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     textStyle: Theme.of(context).textTheme.bodySmall,
+    //   );
+    // }
 
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(
@@ -225,11 +222,11 @@ class SyntonicTextTheme {
 
   static TextStyle overline({required BuildContext context, Color? textColor}) {
     Locale currentLocale = window.locale;
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.kaiseiHarunoUmi(
-        textStyle: Theme.of(context).textTheme.labelSmall,
-      );
-    }
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.kaiseiHarunoUmi(
+    //     textStyle: Theme.of(context).textTheme.labelSmall,
+    //   );
+    // }
 
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(

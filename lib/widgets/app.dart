@@ -50,8 +50,8 @@ class App extends StatelessWidget {
       home: home,
       debugShowCheckedModeBanner: false,
       supportedLocales: const [
-        Locale('en', ''),
-        // Locale('en', '')
+        Locale('ja', ''),
+        Locale('en', '')
       ],
       localizationsDelegates: localizationDelegates,
     );
