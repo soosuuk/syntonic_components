@@ -241,8 +241,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   Widget _screen(VM viewModel, BuildContext context) {
     // skip initialization, depending on whether [isInitialized] is "true".
     // Because, A screen is Rebuilt if you focus to any text-field.
-    // return riverpod.Consumer(builder: (context, ref, _) {
-    print('ビルド');
     return riverpod.Consumer(builder: (context, ref, child) {
       if (!isChild) {
         viewModel.scrollController = PrimaryScrollController.of(context)..addListener(() {
@@ -251,12 +249,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           if (viewModel.scrollController!.position.userScrollDirection ==
               ScrollDirection.reverse) {
             if (viewModel.state.isFloatingActionButtonExtended == true) {
-              print('リバース');
               viewModel.state = viewModel.state.copyWith(isFloatingActionButtonExtended: false) as VS;
             }
           } else if (viewModel.scrollController!.position.userScrollDirection ==
               ScrollDirection.forward) {
-            print('リバース');
             if (viewModel.state.isFloatingActionButtonExtended == false) {
               viewModel.state = viewModel.state.copyWith(isFloatingActionButtonExtended: true) as VS;
             }
@@ -282,13 +278,11 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                 body: _errorScreen,
               );
             } else if (projectSnap.connectionState == ConnectionState.done) {
-              print('初期化');
               // viewModel.state = viewModel.state.copyWith(isInitialized: true);
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 // ref.read(aProvider.notifier).state = 1;
                 this.viewModel(ref).initialize = true;
               });
-              print('初期化' + viewModel.state.isInitialized.toString());
               // this.viewModel(ref).state =
               // this.viewModel(ref).state.copyWith(isInitialized: true) as VS;
               // (viewModel as VM).state = (viewModel as VM).state.copyWith(isInitialized: true) as VS;
@@ -330,8 +324,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
   /// Get body.
   Widget _body({required BuildContext context}) {
-    print('ボディー');
-    print(runtimeType);
     // return riverpod.Consumer(builder: (context, ref, child) {
     // _ref = ref;
     if (hasAppBar) {
@@ -349,7 +341,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                 return mainContents(context: context, ref: ref);
               } else {
                 return NestedScrollView(
-                  controller: viewModel(ref).scrollController,
+                  // controller: viewModel(ref).scrollController,
                   headerSliverBuilder: (_, __) {
                     return <Widget>[
                       hasHeader
@@ -400,15 +392,12 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                                             .state
                                             .isStickyingAppBar !=
                                         isSticking) {
-                                      print('スティッキー');
                                       viewModel(ref).state = viewModel(ref)
                                               .state
                                               .copyWith(
                                                   isStickyingAppBar: isSticking)
                                           as VS;
                                     }
-                                    print(
-                                        viewModel(ref).state.isStickyingAppBar);
                                   },
                                   height:
                                       viewModel(ref).state.tabBarHeight ?? 0))
@@ -435,7 +424,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                 builder: (context, ref, child) {
                   // _ref = ref;
                   return NestedScrollView(
-                    controller: viewModel(ref).scrollController,
+                    // controller: viewModel(ref).scrollController,
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[];
@@ -558,8 +547,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       {required BuildContext context, required riverpod.WidgetRef ref}) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
-        print(runtimeType);
-        print('スクロール');
         // if (floatingActionButton(context: context, ref: ref) != null &&
         //     scrollNotification is UserScrollNotification) {
         //   if (scrollNotification.direction == ScrollDirection.reverse) {
@@ -825,8 +812,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   Widget _floatingActionButton({
     bool isSecondary = false,
   }) {
-    print("FABビルド");
-    print(vm.state.isFloatingActionButtonExtended);
     return riverpod.Consumer(builder: (context, ref, child) {
       return SyntonicFloatingActionButton(
           floatingActionButtonModel: isSecondary
@@ -873,8 +858,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       if (viewModel(ref).state.height == null) {
         viewModel(ref).state =
         viewModel(ref).state.copyWith(height: renderBox!.size.height) as VS;
-        print('ヘッダの高さ');
-        print(viewModel(ref).state.height);
       }
     });
 
@@ -883,34 +866,12 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         (kToolbarHeight * 1.5) : 0;
     return SyntonicFade.off(
       key: viewModel(ref)._b,
-        zeroOpacityOffset: 0,
+        zeroOpacityOffset: 230,
         //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
         fullOpacityOffset: _ofset,
         scrollController: viewModel(ref).scrollController ?? ScrollController(),
         child: headerContents(context: context, ref: ref)!);
-
-    return _SizeListenableContainer(
-      key: _globalKey,
-      onSizeChanged: (Size size) {
-        if (viewModel(ref).state.height == null ||
-            viewModel(ref).state.height != size.height) {
-          print('高さ');
-          print(size.height);
-          viewModel(ref).state =
-              viewModel(ref).state.copyWith(height: size.height) as VS;
-        }
-      },
-      child: viewModel(ref).state.height == null
-          ? headerContents(context: context, ref: ref)!
-          : SyntonicFade.off(
-              zeroOpacityOffset: 0,
-              //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
-              fullOpacityOffset: (viewModel(ref).state.height ?? 0) -
-                  (viewModel(ref).state.tabBarHeight ?? 0) -
-                  (kToolbarHeight * 1.5),
-              scrollController: viewModel(ref).scrollController ?? ScrollController(),
-              child: headerContents(context: context, ref: ref)!),
-    );
+    return Container(key: viewModel(ref)._b, child: headerContents(context: context, ref: ref)!,);
   }
 
   /// Get header contents.
@@ -1030,12 +991,8 @@ abstract class BaseViewModel<VS extends BaseViewState>
   VS get state => super.state;
 
   set initialize(bool isInitialized) {
-    print('イニシャライズ');
-    print(state.runtimeType);
-    // print((state.copyWith(isInitialized: isInitialized) as VS).runtimeType);
     VS  b = state.copyWith(isInitialized: isInitialized) as VS;
     state = b;
-    print('初期化セット' + isInitialized.toString() + 'を' + b.isInitialized.toString());
   }
   @override
   void dispose() {
