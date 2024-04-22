@@ -11,6 +11,7 @@ class SyntonicIcon extends StatelessWidget {
   final IconSize size;
   final BoxShape shape;
   final bool hasBorder;
+  final bool isFilledColor;
 
   const SyntonicIcon({
     Key? key,
@@ -21,6 +22,7 @@ class SyntonicIcon extends StatelessWidget {
     this.size = IconSize.small,
     this.shape = BoxShape.circle,
     this.hasBorder = false,
+    this.isFilledColor = false,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class SyntonicIcon extends StatelessWidget {
       height: size.size,
       decoration: BoxDecoration(
         color: hasBorder
-            ? null
+            ? (isFilledColor ? Theme.of(context).colorScheme.surface : null)
             : colorScheme != null
                 ? colorScheme!.primary.withOpacity(0.12)
                 : Theme.of(context).colorScheme.primary.withOpacity(0.12),

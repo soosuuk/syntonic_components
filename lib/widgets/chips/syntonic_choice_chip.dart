@@ -29,7 +29,9 @@ class SyntonicChoiceChip extends StatelessWidget {
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
-    return FilterChip(
+    return Padding(padding: EdgeInsets.only(left: index == 0 ? 16 : 4, top: 16), child: FilterChip(
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        labelPadding: EdgeInsets.zero,
         // shape: StadiumBorder(
         //     side: BorderSide(
         //       width: 1,
@@ -41,11 +43,11 @@ class SyntonicChoiceChip extends StatelessWidget {
           child: Subtitle2Text(
             text: label,
             textColor: isSelected
-              ? Theme.of(context).colorScheme.primary
+                ? Theme.of(context).colorScheme.primary
                 : isDarkTheme
-            ? Colors.white70
-            : SyntonicColor.black88,),
-          ),
+                ? Colors.white70
+                : SyntonicColor.black88,),
+        ),
         backgroundColor: isSelected
             ? Theme.of(context).colorScheme.primary.toAlpha
             : Colors.transparent,
@@ -65,12 +67,12 @@ class SyntonicChoiceChip extends StatelessWidget {
         avatar: trailingIcon ??
             (icon != null
                 ? Icon(icon,
-                    color: color ??
-                        (isSelected
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.primary))
+                color: color ??
+                    (isSelected
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.primary))
                 : null),
         showCheckmark: icon != null || trailingIcon != null ? false : true,
-        checkmarkColor: Theme.of(context).colorScheme.primary);
+        checkmarkColor: Theme.of(context).colorScheme.primary),);
   }
 }

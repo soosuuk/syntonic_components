@@ -170,10 +170,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           data: _isDarkTheme
               ? darkTheme(colorScheme: _colorScheme)
               : lightTheme(colorScheme: _colorScheme),
-          child: child(),
+          child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),),
         );
       } else {
-        return child();
+        return ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),);
       }});
   }
 
@@ -246,6 +246,29 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         viewModel.scrollController = PrimaryScrollController.of(context)..addListener(() {
           // if (floatingActionButton(context: context, ref: ref) != null &&
           //     scrollNotification is UserScrollNotification) {
+
+          // if (viewModel.scrollController!.offset == 100) {
+          //   print('でゅれーそん');
+          //   Future.microtask(() => viewModel.scrollController!.animateTo(0,
+          //       duration: Duration(milliseconds: 600), curve: Curves.easeIn));
+          //
+          //   // Future.microtask(() => viewModel.scrollController!.animateTo(snapOffset,
+          //   //     duration: Duration(milliseconds: 200), curve: Curves.easeIn));
+          //
+          // }
+
+          // if (viewModel.scrollController!.position is ScrollEndNotification) {
+          //   print('離した」');
+          //   if (viewModel.scrollController!.position.userScrollDirection ==
+          //       ScrollDirection.reverse) {
+          //     Future.microtask(() => viewModel.scrollController!.animateTo(0,
+          //         duration: Duration(milliseconds: 600), curve: Curves.easeIn));
+          //   } else {
+          //     Future.microtask(() => viewModel.scrollController!.animateTo(viewModel.scrollController!.position.maxScrollExtent,
+          //         duration: Duration(milliseconds: 600), curve: Curves.easeIn));
+          //   }
+          // }
+
           if (viewModel.scrollController!.position.userScrollDirection ==
               ScrollDirection.reverse) {
             if (viewModel.state.isFloatingActionButtonExtended == true) {
@@ -254,6 +277,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           } else if (viewModel.scrollController!.position.userScrollDirection ==
               ScrollDirection.forward) {
             if (viewModel.state.isFloatingActionButtonExtended == false) {
+              // print('でゅれーそん');
+              // Future.microtask(() => viewModel.scrollController!.animateTo(0,
+              //     duration: Duration(milliseconds: 600), curve: Curves.easeIn));
+
               viewModel.state = viewModel.state.copyWith(isFloatingActionButtonExtended: true) as VS;
             }
           }
@@ -562,7 +589,31 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         //   }
         // }
 
-        if (scrollNotification is ScrollEndNotification) {
+
+        if (scrollNotification is ScrollEndNotification && scrollNotification.dragDetails != null) {
+          // if (viewModel(ref).state.height == null) {
+          //   return false;
+          // }
+          // if (viewModel(ref).scrollController!.position.userScrollDirection ==
+          //     ScrollDirection.reverse) {
+          //   print('りばーす');
+          //   print(scrollNotification.metrics.pixels);
+          //   print(scrollNotification.metrics.maxScrollExtent);
+          //   if (scrollNotification.metrics.pixels <
+          //       scrollNotification.metrics.maxScrollExtent) {
+          //     Future.microtask(() => viewModel(ref).scrollController!.animateTo(viewModel(ref).state.height! - scrollNotification.metrics.pixels - kToolbarHeight - viewModel(ref).state.tabBarHeight!.toInt(),
+          //         duration: Duration(milliseconds: 600), curve: Curves.easeIn));
+          //   }
+          // } else {
+          //   print('ふつう');
+          //   print(scrollNotification.metrics.pixels);
+          //   print(scrollNotification.metrics.minScrollExtent);
+          //   if (scrollNotification.metrics.pixels >
+          //       scrollNotification.metrics.minScrollExtent) {
+          //     Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
+          //         duration: Duration(milliseconds: 600), curve: Curves.easeOut));
+          //   }
+          // }
           if (scrollNotification.metrics.pixels ==
               scrollNotification.metrics.maxScrollExtent) {
             onReachBottom();
@@ -866,7 +917,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         (kToolbarHeight * 1.5) : 0;
     return SyntonicFade.off(
       key: viewModel(ref)._b,
-        zeroOpacityOffset: 230,
+        zeroOpacityOffset: 260,
         //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
         fullOpacityOffset: _ofset,
         scrollController: viewModel(ref).scrollController ?? ScrollController(),

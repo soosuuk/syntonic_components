@@ -11,6 +11,7 @@ class SyntonicFade extends StatefulWidget {
   final double fullOpacityOffset;
   final Widget child;
   final _FadeMode fadeMode;
+  final bool shouldRemainOffset;
 
   const SyntonicFade._(
       {
@@ -19,19 +20,20 @@ class SyntonicFade extends StatefulWidget {
       required this.child,
       this.zeroOpacityOffset = 0,
       this.fullOpacityOffset = kToolbarHeight,
-      required this.fadeMode}) : super(key: key);
+      required this.fadeMode, this.shouldRemainOffset = false}) : super(key: key);
 
   const SyntonicFade.on(
       {
         required ScrollController scrollController,
       required Widget child,
       double zeroOpacityOffset = 0,
-      double fullOpacityOffset = kToolbarHeight})
+      double fullOpacityOffset = kToolbarHeight, bool shouldRemainOffset = false})
       : this._(
             scrollController: scrollController,
             child: child,
             zeroOpacityOffset: zeroOpacityOffset,
             fullOpacityOffset: fullOpacityOffset,
+            shouldRemainOffset: shouldRemainOffset,
             fadeMode: _FadeMode.on);
 
   const SyntonicFade.off(
@@ -39,13 +41,14 @@ class SyntonicFade extends StatefulWidget {
         Key? key, required ScrollController scrollController,
       required Widget child,
       double zeroOpacityOffset = 0,
-      double fullOpacityOffset = kToolbarHeight})
+      double fullOpacityOffset = kToolbarHeight, bool shouldRemainOffset = false})
       : this._(
     key: key,
             scrollController: scrollController,
             child: child,
             zeroOpacityOffset: zeroOpacityOffset,
             fullOpacityOffset: fullOpacityOffset,
+      shouldRemainOffset: shouldRemainOffset,
             fadeMode: _FadeMode.off);
 
   @override
@@ -58,10 +61,10 @@ class _FadeState extends State<SyntonicFade> {
   @override
   initState() {
     super.initState();
-    print('オフセット');
-    print(widget.zeroOpacityOffset);
-    print(widget.fullOpacityOffset);
-    if (widget.fullOpacityOffset > 1) {
+    // // print('オフセット');
+    // // print(widget.zeroOpacityOffset);
+    // // print(widget.fullOpacityOffset);
+    if (widget.shouldRemainOffset && widget.fullOpacityOffset > 1) {
       _offset = widget.scrollController.offset;
     }
     widget.scrollController.addListener(_setOffset);
@@ -69,8 +72,8 @@ class _FadeState extends State<SyntonicFade> {
 
   @override
   void didUpdateWidget(covariant SyntonicFade oldWidget) {
-    // print('フェード');
-    // print(widget.fullOpacityOffset);
+    // // print('フェード');
+    // // print(widget.fullOpacityOffset);
     super.didUpdateWidget(oldWidget);
   }
   //
@@ -87,9 +90,9 @@ class _FadeState extends State<SyntonicFade> {
   }
 
   double _calculateOpacity() {
-    // print('高さ');
-    // print(widget.zeroOpacityOffset);
-    // print(widget.fullOpacityOffset);
+    // // print('高さ');
+    // // print(widget.zeroOpacityOffset);
+    // // print(widget.fullOpacityOffset);
     // return (_offset - 0) / (widget.fullOpacityOffset - 0).clamp(0.0, 1.0);
     // return _offset/widget.fullOpacityOffset;
 
@@ -100,7 +103,7 @@ class _FadeState extends State<SyntonicFade> {
     // }
 
     if (widget.fullOpacityOffset == widget.zeroOpacityOffset) {
-      print('メイン0');
+      // // print('メイン0');
       return 0;
     } else if (widget.fullOpacityOffset > widget.zeroOpacityOffset) {
       switch (widget.fadeMode) {
@@ -110,20 +113,20 @@ class _FadeState extends State<SyntonicFade> {
           }
 
           if (_offset <= widget.zeroOpacityOffset) {
-            print("fade onnn if 0");
+            // // print("fade onnn if 0");
             return 0;
           } else if (_offset >= widget.fullOpacityOffset) {
-            print("fade onnn else if 1");
+            // // print("fade onnn else if 1");
             return 1;
           } else {
-            // print((_offset - widget.zeroOpacityOffset) /
+            // // print((_offset - widget.zeroOpacityOffset) /
             //     (widget.fullOpacityOffset - widget.zeroOpacityOffset));
             double _value =
                 0.0 - (widget.zeroOpacityOffset - _offset) / widget.zeroOpacityOffset;
-            print(_value);
+            // print(_value);
             return _value > 1 ? 1 : _value;
-            print(
-                "fade onnn else ${(_offset - widget.zeroOpacityOffset) / (widget.fullOpacityOffset - widget.zeroOpacityOffset)}");
+            // print(
+            //     "fade onnn else ${(_offset - widget.zeroOpacityOffset) / (widget.fullOpacityOffset - widget.zeroOpacityOffset)}");
             return (_offset - widget.zeroOpacityOffset) /
                 (widget.fullOpacityOffset - widget.zeroOpacityOffset);
           }
@@ -133,17 +136,17 @@ class _FadeState extends State<SyntonicFade> {
           }
 
           if (_offset == widget.fullOpacityOffset) {
-            print("fade off if 0");
+            // print("fade off if 0");
 
             return 0;
           } else if (_offset == widget.zeroOpacityOffset) {
-            print("fade off else if 1");
+            // print("fade off else if 1");
 
             return 1;
           } else {
             double _value =
             1.0 - (_offset - widget.zeroOpacityOffset) / widget.zeroOpacityOffset;
-            print("fade off else ${(_value < 0 || _value > 1) ? 0 : _value}");
+            // print("fade off else ${(_value < 0 || _value > 1) ? 0 : _value}");
             return _value < 0 ? 0 : _value;
           }
       }
@@ -151,31 +154,31 @@ class _FadeState extends State<SyntonicFade> {
       switch (widget.fadeMode) {
         case _FadeMode.off:
           if (_offset <= widget.zeroOpacityOffset) {
-            print("BBB fade onnn if 0");
+            // print("BBB fade onnn if 0");
             return 0;
           } else if (_offset >= widget.fullOpacityOffset) {
-            print("BBB fade onnn else if 1");
+            // print("BBB fade onnn else if 1");
             // return 1;
-            print(_offset);
-            print(widget.zeroOpacityOffset);
-            print(widget.fullOpacityOffset);
+            // print(_offset);
+            // print(widget.zeroOpacityOffset);
+            // print(widget.fullOpacityOffset);
             return (_offset - widget.zeroOpacityOffset) /
                 (widget.fullOpacityOffset - widget.zeroOpacityOffset);
           } else {
-            // print((_offset - widget.zeroOpacityOffset) /
+            // // print((_offset - widget.zeroOpacityOffset) /
             //     (widget.fullOpacityOffset - widget.zeroOpacityOffset));
-            print(
-                "BBB fade onnn else ${(_offset - widget.zeroOpacityOffset) / (widget.fullOpacityOffset - widget.zeroOpacityOffset)}");
+            // print(
+            //     "BBB fade onnn else ${(_offset - widget.zeroOpacityOffset) / (widget.fullOpacityOffset - widget.zeroOpacityOffset)}");
             return (_offset - widget.zeroOpacityOffset) /
                 (widget.fullOpacityOffset - widget.zeroOpacityOffset);
           }
         case _FadeMode.on:
           if (_offset == widget.fullOpacityOffset) {
-            print("BBB fade off if 0");
+            // print("BBB fade off if 0");
 
             return 0;
           } else if (_offset == widget.zeroOpacityOffset) {
-            print("BBB fade off else if 1");
+            // print("BBB fade off else if 1");
 
             return 1;
           } else {
@@ -183,25 +186,25 @@ class _FadeState extends State<SyntonicFade> {
             //   return 1;
             // }
 
-            // print((widget.fullOpacityOffset - (widget.fullOpacityOffset - _offset)) /
+            // // print((widget.fullOpacityOffset - (widget.fullOpacityOffset - _offset)) /
             //     widget.fullOpacityOffset);
             double _value =
                 (widget.fullOpacityOffset - _offset) / widget.fullOpacityOffset;
-            print("BBB fade off else ${_value < 0 ? 0 : _value}");
+            // print("BBB fade off else ${_value < 0 ? 0 : _value}");
             return _value < 0 ? 0 : _value;
           }
       }
 
       // fading in
       if (_offset <= widget.zeroOpacityOffset) {
-        print('other 0');
+        // print('other 0');
         return 0;
       } else if (_offset >= widget.fullOpacityOffset) {
-        print('other 1');
+        // print('other 1');
         return 1;
       } else {
-        print(
-            'other ${(_offset - widget.zeroOpacityOffset) / (widget.fullOpacityOffset - widget.zeroOpacityOffset)}');
+        // print(
+        //     'other ${(_offset - widget.zeroOpacityOffset) / (widget.fullOpacityOffset - widget.zeroOpacityOffset)}');
         return (_offset - widget.zeroOpacityOffset) /
             (widget.fullOpacityOffset - widget.zeroOpacityOffset);
       }

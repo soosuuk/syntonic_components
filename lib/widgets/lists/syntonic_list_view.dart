@@ -343,9 +343,10 @@ class SyntonicListView extends ExtendedStatelessWidget {
               return ReorderableListView.builder(
                   padding: const EdgeInsets.only(bottom: 200),
                   // scrollController: ScrollController(),
-                  shrinkWrap: true,
-                  // physics:
-                  // const NeverScrollableScrollPhysics(),
+                  primary: true,
+                  shrinkWrap: false,
+                  physics:
+                  const ClampingScrollPhysics(),
                   itemCount: numberOfItems!,
                   itemBuilder: (_, int index) {
                     final isFirst = index == 0;

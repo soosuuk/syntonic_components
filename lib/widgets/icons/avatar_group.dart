@@ -6,38 +6,39 @@ import '../../models/person_model.dart';
 
 class AvatarGroup extends StatelessWidget {
   final List<PersonModel> persons;
+  final VoidCallback? onPressed;
 
-  const AvatarGroup({required this.persons});
+  const AvatarGroup({required this.persons, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 24,
-      child: Stack(
-        children: [
-          for (var i = 0; i < persons.length + 1; i++)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: (i * (1 - .4) * 27).toDouble(),
-                ),
-                Flexible(
-                    child: i < persons.length
-                        ? SyntonicPersonIcon(
-                            needsMainStaffBorder: true,
-                            person: persons[i],
-                            type: IconSize.small,
-                            hasPadding: false,
-                          )
-                        : const SyntonicIcon(
-                            icon: Icons.add,
-                            padding: 0,
-                          ))
-              ],
-            )
-        ],
-      ),
-    );
+    return InkWell(onTap: onPressed, child: Stack(
+      alignment: Alignment.centerLeft,
+      children: [
+        for (var i = 0; i < persons.length + 1; i++)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: (i * (1 - .4) * 27).toDouble(),
+              ),
+              Flexible(
+                  child: i < persons.length
+                      ? SyntonicPersonIcon(
+                    needsMainStaffBorder: true,
+                    person: persons[i],
+                    type: IconSize.small,
+                    hasPadding: false,
+                  )
+                      : onPressed != null ? const SyntonicIcon(
+                    isFilledColor: true,
+                    hasBorder: true,
+                    icon: Icons.add,
+                    padding: 0,
+                  ) : SizedBox())
+            ],
+          )
+      ],
+    ),);
   }
 }

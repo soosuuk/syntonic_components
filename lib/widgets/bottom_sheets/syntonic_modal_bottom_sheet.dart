@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 // import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ abstract class SyntonicModalBottomSheet<
   StateNotifierProvider<VM, VS> get provider =>
       StateNotifierProvider<VM, VS>((ref) => vm);
 
-  List<Widget> children(
+  Widget child(
       {required BuildContext context, required WidgetRef ref});
   Function? onPop({required BuildContext context, required WidgetRef ref});
 
@@ -79,30 +80,44 @@ abstract class SyntonicModalBottomSheet<
                   vm.state.currentPageIndex == 0
                       ? Padding(
                     padding: const EdgeInsets.only(
-                        left: 16, top: 8, right: 16),
+                        left: 0, top: 8, right: 0),
                     child: Stack(
                       alignment: AlignmentDirectional.topEnd,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 32,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.outlineVariant,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            )
-                          ],
-                        ),
-                        SyntonicButton.transparent(
+                        Center(child: Container(
+                          width: 32,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),),
+                        SyntonicListItem(leadingWidget: IconButton(
+                          icon: const Icon(Icons.arrow_back_outlined),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            // actionAddingViewModel.pageController.jumpToPage(0);
+                          },
+                        ), title: 'title', trailingWidget: SyntonicButton.transparent(
                           onTap: () {
                             onPop(context: context, ref: ref);
                             Navigator.of(context).pop();
                           },
                           text: 'Done',
-                        )
+                        ),),
+                        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [IconButton(
+                        //   icon: const Icon(Icons.arrow_back_outlined),
+                        //   onPressed: () {
+                        //     Navigator.of(context).pop();
+                        //     // actionAddingViewModel.pageController.jumpToPage(0);
+                        //   },
+                        // ), Flexible(child: SyntonicButton.transparent(
+                        //   onTap: () {
+                        //     onPop(context: context, ref: ref);
+                        //     Navigator.of(context).pop();
+                        //   },
+                        //   text: 'Done',
+                        // ))],)
                       ],
                     ),
                   )
@@ -113,13 +128,17 @@ abstract class SyntonicModalBottomSheet<
                             builder: (context) => SingleChildScrollView(
                           controller: scrollController,
                           physics: const ClampingScrollPhysics(),
-                          child: Column(children: [
-                            // SliverPersistentHeader(
-                            //   delegate: TestSliverAppBar(),
-                            //   pinned: true,
-                            // ),
-                            children(context: context, ref: ref)[0]
-                          ],),
+                          child: CustomScrollView(
+                            controller: scrollController,
+                            slivers: [
+                              // SliverToBoxAdapter(
+                              //   child: Column(children: contents,),
+                              // ),
+                              SliverList.list(
+                                children: [child(context: context, ref: ref)],
+                              ),
+                            ],
+                          ),
                         )),
                   ),
                 )],
@@ -128,42 +147,6 @@ abstract class SyntonicModalBottomSheet<
           );
         },
       ),
-    );
-  }
-
-  List<Widget> _pageViews({
-    required BuildContext context,
-    required WidgetRef ref,
-    required ScrollController scrollController,
-  }) {
-    List<Widget> _pageViews = [];
-
-    for (int i = 0; i < children(context: context, ref: ref).length; i++) {
-      _pageViews.add(_pageView(
-          context: context,
-          ref: ref,
-          scrollController: scrollController,
-          index: i));
-    }
-
-    return _pageViews;
-  }
-
-  Widget _pageView(
-      {required BuildContext context,
-      required WidgetRef ref,
-      required ScrollController scrollController,
-      required int index}) {
-    return CustomScrollView(
-      controller: scrollController,
-      slivers: [
-        // SliverToBoxAdapter(
-        //   child: Column(children: contents,),
-        // ),
-        SliverList.list(
-          children: [children(context: context, ref: ref)[index]],
-        ),
-      ],
     );
   }
 }

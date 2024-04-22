@@ -117,7 +117,7 @@ class SyntonicFloatingActionButton extends StatelessWidget {
             ),
             label: AnimatedSize(
         duration: const Duration(milliseconds: 120),
-        child: isExtended ?  Subtitle1Text(
+        child: isExtended ?  Subtitle2Text(
           text: floatingActionButtonModel.text,
           textColor: isSecondary
               ? Theme.of(context).colorScheme.onSurface
