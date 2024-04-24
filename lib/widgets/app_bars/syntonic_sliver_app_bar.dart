@@ -312,9 +312,9 @@ class SyntonicSliverAppBar extends StatelessWidget
       title: isFadedTitle
           ? SyntonicFade.on(
               zeroOpacityOffset:
-                  350,
+                  250,
               fullOpacityOffset:
-                  (expandedHeight ?? kToolbarHeight) - kToolbarHeight - 50,
+                  (expandedHeight ?? kToolbarHeight),
               scrollController: scrollController!,
               // fullOpacityOffset: expandedHeight! - (kToolbarHeight*2.5),
               // zeroOpacityOffset: expandedHeight! - kToolbarHeight,

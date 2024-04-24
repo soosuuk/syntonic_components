@@ -71,6 +71,13 @@ extension SyntonicDateTimeExtension on DateTime {
     return _duration.inHours < 0;
   }
 
+  bool isAcrossDates(DateTime other) {
+    // 2つのDateTimeの日付部分が異なる場合、日付を跨いでいると判断します
+    return year != other.year ||
+        month != other.month ||
+        day != other.day;
+  }
+
   /// Get a formatted [String] of [DateTime] (yyyy-MM-dd).
   get toHyphen => DateFormat('yyyy-MM-dd').format(this);
 }

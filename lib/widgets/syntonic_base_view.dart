@@ -178,7 +178,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   }
 
   Widget ads({required BuildContext context}) {
-    return Container(
+    return SafeArea(child: Container(
       color: Theme.of(context).colorScheme.surface,
       alignment: Alignment.center,
       height: 56,
@@ -224,7 +224,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               return Container();
             }
           }),
-    );
+    ));
   }
 
   /// Get a screen.
@@ -313,10 +313,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               // this.viewModel(ref).state =
               // this.viewModel(ref).state.copyWith(isInitialized: true) as VS;
               // (viewModel as VM).state = (viewModel as VM).state.copyWith(isInitialized: true) as VS;
-              return _body(context: context);
+              return _body(context: context, ref: ref);
             } else {
               if (viewModel.state.isSkeletonLoadingApplied) {
-                return _body(context: context);
+                return _body(context: context, ref: ref);
               } else {
                 return Stack(children: [
                   Scaffold(
@@ -334,7 +334,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                     //     trailing: appBar(context: context, ref: ref)!.trailing)
                     //     : null,
                     bottomSheet: bottomSheet,
-                    bottomNavigationBar: ads(context: context),
+                    bottomNavigationBar: isChild || !hasAds ? isChild || !hasAds ? SizedBox() : ads(context: context) : SizedBox(),
                   ),
                   const Center(child: CircularProgressIndicator())
                 ]);
@@ -343,16 +343,93 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           },
         );
       } else {
-        return _body(context: context);
+        return _body(context: context, ref: ref);
       }
       // );
     });
   }
 
   /// Get body.
-  Widget _body({required BuildContext context}) {
+  Widget _body({required BuildContext context, required riverpod.WidgetRef ref}) {
     // return riverpod.Consumer(builder: (context, ref, child) {
     // _ref = ref;
+
+    Widget _child = DefaultTabController(
+      length: hasTabBar ? 2 : 0,
+      // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
+      child: riverpod.Consumer(builder: (context, ref, child) {
+        if (isPage) {
+          return mainContents(context: context, ref: ref);
+        } else {
+          return NestedScrollView(
+            // controller: viewModel(ref).scrollController,
+            headerSliverBuilder: (_, __) {
+              return <Widget>[
+                hasHeader
+                    ? SliverStack(
+                  children: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          Material(
+                              type: MaterialType.button,
+                              animationDuration: viewModel(ref)
+                                  .state
+                                  .isStickyingAppBar
+                                  ? const Duration(
+                                  milliseconds: 100)
+                                  : const Duration(
+                                  milliseconds: 150),
+                              surfaceTintColor: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceTint,
+                              shadowColor: Colors.transparent,
+                              elevation: ref.watch(provider.select(
+                                      (viewState) => viewState
+                                      .isStickyingAppBar))
+                                  ? 3
+                                  : 0,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surface,
+                              child: _headerContents(
+                                  context: context, ref: ref))
+                        ],
+                      ),
+                    ),
+                    _appBar(context: context),
+                  ],
+                )
+                    : _appBar(context: context),
+                hasTabBar
+                    ? SliverPersistentHeader(
+                    pinned: true,
+                    delegate: StickyTabBarDelegate(
+                        tabBar: _tabBar(context: context, ref: ref)!,
+                        tabBarHeader:
+                        _tabBarHeader(context: context, ref: ref),
+                        setStickyState: (isSticking) {
+                          if (viewModel(ref)
+                              .state
+                              .isStickyingAppBar !=
+                              isSticking) {
+                            viewModel(ref).state = viewModel(ref)
+                                .state
+                                .copyWith(
+                                isStickyingAppBar: isSticking)
+                            as VS;
+                          }
+                        },
+                        height:
+                        viewModel(ref).state.tabBarHeight ?? 0))
+                    : _blank,
+              ];
+            },
+            body: _mainContents(context: context, ref: ref),
+          );
+        }
+      }),
+    );
     if (hasAppBar) {
       if (needsSliverAppBar) {
         return Scaffold(
@@ -360,84 +437,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.endContained,
           floatingActionButton: _floatingActionButtons(context: context),
-          body: DefaultTabController(
-            length: hasTabBar ? 2 : 0,
-            // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
-            child: riverpod.Consumer(builder: (context, ref, child) {
-              if (isPage) {
-                return mainContents(context: context, ref: ref);
-              } else {
-                return NestedScrollView(
-                  // controller: viewModel(ref).scrollController,
-                  headerSliverBuilder: (_, __) {
-                    return <Widget>[
-                      hasHeader
-                          ? SliverStack(
-                              children: [
-                                SliverList(
-                                  delegate: SliverChildListDelegate(
-                                    [
-                                      Material(
-                                          type: MaterialType.button,
-                                          animationDuration: viewModel(ref)
-                                                  .state
-                                                  .isStickyingAppBar
-                                              ? const Duration(
-                                                  milliseconds: 100)
-                                              : const Duration(
-                                                  milliseconds: 150),
-                                          surfaceTintColor: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceTint,
-                                          shadowColor: Colors.transparent,
-                                          elevation: ref.watch(provider.select(
-                                                  (viewState) => viewState
-                                                      .isStickyingAppBar))
-                                              ? 3
-                                              : 0,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .surface,
-                                          child: _headerContents(
-                                              context: context, ref: ref))
-                                    ],
-                                  ),
-                                ),
-                                _appBar(context: context),
-                              ],
-                            )
-                          : _appBar(context: context),
-                      hasTabBar
-                          ? SliverPersistentHeader(
-                              pinned: true,
-                              delegate: StickyTabBarDelegate(
-                                  tabBar: _tabBar(context: context, ref: ref)!,
-                                  tabBarHeader:
-                                      _tabBarHeader(context: context, ref: ref),
-                                  setStickyState: (isSticking) {
-                                    if (viewModel(ref)
-                                            .state
-                                            .isStickyingAppBar !=
-                                        isSticking) {
-                                      viewModel(ref).state = viewModel(ref)
-                                              .state
-                                              .copyWith(
-                                                  isStickyingAppBar: isSticking)
-                                          as VS;
-                                    }
-                                  },
-                                  height:
-                                      viewModel(ref).state.tabBarHeight ?? 0))
-                          : _blank,
-                    ];
-                  },
-                  body: _notificationListener(context: context, ref: ref),
-                );
-              }
-            }),
-          ),
+          body: isChild ? _child : _notificationListener(context: context, ref: ref, child: _child),
           bottomSheet: bottomSheet,
-          bottomNavigationBar: ads(context: context),
+          bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
         );
       } else {
         return DefaultTabController(
@@ -456,12 +458,12 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[];
                     },
-                    body: _notificationListener(context: context, ref: ref),
+                    body: _mainContents(context: context, ref: ref),
                   );
                 },
               ),
               bottomSheet: bottomSheet,
-              bottomNavigationBar: ads(context: context),
+              bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
             ));
       }
     } else {
@@ -484,7 +486,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             },
           ),
           bottomSheet: bottomSheet,
-          bottomNavigationBar: ads(context: context),
+          bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
         );
       }
     }
@@ -571,7 +573,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       null;
 
   NotificationListener _notificationListener(
-      {required BuildContext context, required riverpod.WidgetRef ref}) {
+      {required BuildContext context, required riverpod.WidgetRef ref, required Widget child}) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
         // if (floatingActionButton(context: context, ref: ref) != null &&
@@ -588,32 +590,30 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         //     }
         //   }
         // }
+        print(scrollNotification.metrics.pixels);
 
 
-        if (scrollNotification is ScrollEndNotification && scrollNotification.dragDetails != null) {
-          // if (viewModel(ref).state.height == null) {
-          //   return false;
-          // }
-          // if (viewModel(ref).scrollController!.position.userScrollDirection ==
-          //     ScrollDirection.reverse) {
-          //   print('りばーす');
-          //   print(scrollNotification.metrics.pixels);
-          //   print(scrollNotification.metrics.maxScrollExtent);
-          //   if (scrollNotification.metrics.pixels <
-          //       scrollNotification.metrics.maxScrollExtent) {
-          //     Future.microtask(() => viewModel(ref).scrollController!.animateTo(viewModel(ref).state.height! - scrollNotification.metrics.pixels - kToolbarHeight - viewModel(ref).state.tabBarHeight!.toInt(),
-          //         duration: Duration(milliseconds: 600), curve: Curves.easeIn));
-          //   }
-          // } else {
-          //   print('ふつう');
-          //   print(scrollNotification.metrics.pixels);
-          //   print(scrollNotification.metrics.minScrollExtent);
-          //   if (scrollNotification.metrics.pixels >
-          //       scrollNotification.metrics.minScrollExtent) {
-          //     Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
-          //         duration: Duration(milliseconds: 600), curve: Curves.easeOut));
-          //   }
-          // }
+        if (scrollNotification is ScrollEndNotification) {
+          if (viewModel(ref).state.height == null) {
+            return false;
+          }
+          if (!viewModel(ref).state.isStickyingAppBar && viewModel(ref).scrollController!.position.userScrollDirection ==
+              ScrollDirection.forward) {
+            print('りばーす');
+            if (scrollNotification.metrics.pixels <
+                viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - kToolbarHeight - 12 && scrollNotification.metrics.pixels >
+                0) {
+              Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
+                  duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized));
+            }
+          } else {
+            print('ふつう');
+            if (!viewModel(ref).state.isStickyingAppBar && scrollNotification.metrics.pixels >
+                0 && scrollNotification.metrics.pixels < viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - kToolbarHeight - 12) {
+              Future.microtask(() => viewModel(ref).scrollController!.animateTo(viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - kToolbarHeight - 12,
+                  duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized));
+            }
+          }
           if (scrollNotification.metrics.pixels ==
               scrollNotification.metrics.maxScrollExtent) {
             onReachBottom();
@@ -649,8 +649,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               onRefresh: () async {
                 await onSwipeToRefresh(context: context, ref: ref);
               },
-              child: _mainContents(context: context, ref: ref))
-          : _mainContents(context: context, ref: ref),
+              child: child)
+          : child,
     );
   }
 
@@ -841,7 +841,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   Widget? _floatingActionButtons({required BuildContext context}) {
     if (hasFAB) {
       if (hasFABSecondary) {
-        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 40 : 0), child: Column(
+        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 40 + 32 : 0), child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -850,7 +850,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               _floatingActionButton(),
             ]),);
       } else {
-        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 40 : 0), child: _floatingActionButton(),);
+        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 40 + 32 : 0), child: _floatingActionButton(),);
       }
     } else {
       return null;
@@ -965,6 +965,13 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           if (tabController != null
               ? !tabController!.indexIsChanging
               : _currentIndex == _index) {
+            print(viewModel(ref).state.height!);
+            print(viewModel(ref).state.tabBarHeight!.toInt());
+            // print((tabs(context: context, ref: ref)![0] as Tab).height!.toInt());
+              Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
+                  duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized));
+
+
             // ref.read(provider).changeFloatingActionButtonState(true);
 
             // IF [headerContents] is exist.

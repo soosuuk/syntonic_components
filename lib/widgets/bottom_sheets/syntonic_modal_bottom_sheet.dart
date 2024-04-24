@@ -128,17 +128,7 @@ abstract class SyntonicModalBottomSheet<
                             builder: (context) => SingleChildScrollView(
                           controller: scrollController,
                           physics: const ClampingScrollPhysics(),
-                          child: CustomScrollView(
-                            controller: scrollController,
-                            slivers: [
-                              // SliverToBoxAdapter(
-                              //   child: Column(children: contents,),
-                              // ),
-                              SliverList.list(
-                                children: [child(context: context, ref: ref)],
-                              ),
-                            ],
-                          ),
+                          child: child(context: context, ref: ref),
                         )),
                   ),
                 )],
