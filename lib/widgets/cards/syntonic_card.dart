@@ -23,7 +23,7 @@ class SyntonicCard extends StatelessWidget {
   final ImagePosition imagePosition;
 
   const SyntonicCard(
-      {this.borderRadius = 24,
+      {this.borderRadius = 16,
       this.onTap,
       this.isSelected = false,
       this.image,
@@ -73,8 +73,8 @@ class SyntonicCard extends StatelessWidget {
     Widget _card = Card(
       margin: EdgeInsets.zero,
       // color: null,
-      // surfaceTintColor: colorScheme != null ? colorScheme!.surfaceTint : null,
-      // shadowColor: colorScheme != null ? colorScheme!.shadow : null,
+      surfaceTintColor: colorScheme != null ? colorScheme!.surfaceTint : null,
+      shadowColor: colorScheme != null ? Colors.transparent : null,
       elevation: elevation,
       // color: isSelected ? Theme.of(context).colorScheme.primary.toAlpha : color,
       shape: RoundedRectangleBorder(

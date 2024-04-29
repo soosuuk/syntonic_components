@@ -1,6 +1,7 @@
 import 'package:syntonic_components/widgets/texts/caption_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:syntonic_components/widgets/texts/overline_text.dart';
 
 class SyntonicLabel extends StatelessWidget {
   @required
@@ -46,7 +47,7 @@ class SyntonicLabel extends StatelessWidget {
         children: [
           Container(
               padding: EdgeInsets.symmetric(
-                  horizontal: isFilled ? 4 : 3, vertical: isFilled ? 4 : 3),
+                  horizontal: isFilled ? 8 : 7, vertical: isFilled ? 4 : 3),
               // padding: EdgeInsets.only(left: 4, right: 4),
               decoration: BoxDecoration(
                   border: isFilled
@@ -71,10 +72,10 @@ class SyntonicLabel extends StatelessWidget {
                       : const SizedBox(),
                   text != null
                       ? Flexible(
-                          child: CaptionText(
+                          child: OverlineText(
                           text: text!,
                           // textColor: isFilled ? color : (constColor != null) ? constColor! : null,
-                          textColor: Colors.white,
+                          textColor: Theme.of(context).colorScheme.onTertiary,
                           overflow: TextOverflow.ellipsis,
                         ))
                       : const SizedBox(),

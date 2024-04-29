@@ -10,8 +10,8 @@ const int textLabelDisable = 0x61; // 38%
 
 // abrilFatface poppins quicksands, cinzel, faunaOne, rufina oxygen, spectral, bungee/openSans, caveat/josefinSans, montaguSlab/figtree,  fjallaOne/sourceSans3/yellow, marcellus/dmsans
 const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface1 = GoogleFonts.arima;
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface2 = GoogleFonts.arima;
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface3 = GoogleFonts.mulish;
+const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface2 = GoogleFonts.inter;
+const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface3 = GoogleFonts.inter;
 const bool isBold = true;
 
 extension Material3Palette on Color {
@@ -45,10 +45,10 @@ class SyntonicTextTheme {
     // cormorant fraurence sourceserif4 saira manrope interTight prommpt rubik hind msmadi leagueSpartan libreBaskerville greatVibes
     // return const TextStyle(fontFamily: 'Ailerons', fontSize: 69, height: 1, letterSpacing: -2);
     return typeface1(
-      textStyle: Theme.of(context).textTheme.displayMedium,
+      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 40),
       fontWeight: isBold ? FontWeight.w400 : FontWeight.w200,
       // fontStyle: FontStyle.italic,
-      // height: 1,
+      height: 1,
       // letterSpacing: 4.2,
     );
     return GoogleFonts.prompt(
@@ -89,8 +89,8 @@ class SyntonicTextTheme {
     //   );
     // }
 
-    return typeface1(
-      textStyle: Theme.of(context).textTheme.headlineSmall,
+    return typeface2(
+      textStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 18),
       // fontWeight: FontWeight.w300,
       color: textColor,
       height: 1.4,
@@ -107,9 +107,9 @@ class SyntonicTextTheme {
     //   );
     // }
 
-    return typeface2(
-        textStyle: Theme.of(context).textTheme.titleLarge,
-        fontWeight: FontWeight.w500,
+    return typeface3(
+        textStyle: Theme.of(context).textTheme.titleMedium,
+        fontWeight: FontWeight.w400,
         color: textColor,
         // fontStyle: FontStyle.italic,
         // letterSpacing: 1,
@@ -126,8 +126,8 @@ class SyntonicTextTheme {
     //   );
     // }
     return typeface3(
-        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
-        fontWeight: FontWeight.w500,
+        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16),
+        fontWeight: FontWeight.w700,
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
         // letterSpacing: 1
         // height: 1.4
@@ -144,8 +144,8 @@ class SyntonicTextTheme {
     // }
     // workSansselif
     return typeface3(
-        textStyle: Theme.of(context).textTheme.titleMedium,
-        fontWeight: isBold ? FontWeight.w500 : FontWeight.w700,
+        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 17),
+        fontWeight: isBold ? FontWeight.w400 : FontWeight.w700,
             // fontStyle: FontStyle.italic,
             // .copyWith(fontSize: 23)
         color: textColor ?? Theme.of(context).colorScheme.onSurface,
@@ -209,13 +209,13 @@ class SyntonicTextTheme {
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(
       textStyle: Theme.of(context).textTheme.titleSmall,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
       // fontSize: 13,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),
       color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
-      // height: 1.2,
+      height: 1.2,
       letterSpacing: 0.1,
     );
   }
@@ -231,7 +231,7 @@ class SyntonicTextTheme {
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(
       textStyle: Theme.of(context).textTheme.labelMedium,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),

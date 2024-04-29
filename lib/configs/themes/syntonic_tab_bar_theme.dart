@@ -19,15 +19,15 @@ class SyntonicTabBarTheme {
         //   ),
         // ),
       labelPadding: EdgeInsets.only(top: 0, bottom: 0),
-        unselectedLabelStyle: GoogleFonts.mulish(
-            textStyle: const TextStyle(fontSize: 16),
+        unselectedLabelStyle: GoogleFonts.inter(
+            textStyle: const TextStyle(fontSize: 14),
             fontWeight: FontWeight.w500,
             // fontStyle: FontStyle.italic,
             letterSpacing: 0.1,
             color: colorScheme.primary ?? SyntonicColor.primary_color.toAlpha,
             height: 1.4),
-        labelStyle: GoogleFonts.mulish(
-            textStyle: const TextStyle(fontSize: 16),
+        labelStyle: GoogleFonts.inter(
+            textStyle: const TextStyle(fontSize: 14),
             // fontStyle: FontStyle.italic,
             letterSpacing: 0.1,
             fontWeight: FontWeight.w500,

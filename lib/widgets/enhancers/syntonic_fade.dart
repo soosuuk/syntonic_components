@@ -12,6 +12,7 @@ class SyntonicFade extends StatefulWidget {
   final Widget child;
   final _FadeMode fadeMode;
   final bool shouldRemainOffset;
+  final double offset;
 
   const SyntonicFade._(
       {
@@ -20,20 +21,21 @@ class SyntonicFade extends StatefulWidget {
       required this.child,
       this.zeroOpacityOffset = 0,
       this.fullOpacityOffset = kToolbarHeight,
-      required this.fadeMode, this.shouldRemainOffset = false}) : super(key: key);
+      required this.fadeMode, this.shouldRemainOffset = false, this.offset = 0}) : super(key: key);
 
   const SyntonicFade.on(
       {
         required ScrollController scrollController,
       required Widget child,
       double zeroOpacityOffset = 0,
-      double fullOpacityOffset = kToolbarHeight, bool shouldRemainOffset = false})
+      double fullOpacityOffset = kToolbarHeight, bool shouldRemainOffset = false, double offset = 0})
       : this._(
             scrollController: scrollController,
             child: child,
             zeroOpacityOffset: zeroOpacityOffset,
             fullOpacityOffset: fullOpacityOffset,
             shouldRemainOffset: shouldRemainOffset,
+            offset: offset,
             fadeMode: _FadeMode.on);
 
   const SyntonicFade.off(
@@ -41,7 +43,7 @@ class SyntonicFade extends StatefulWidget {
         Key? key, required ScrollController scrollController,
       required Widget child,
       double zeroOpacityOffset = 0,
-      double fullOpacityOffset = kToolbarHeight, bool shouldRemainOffset = false})
+      double fullOpacityOffset = kToolbarHeight, bool shouldRemainOffset = false, double offset = 0})
       : this._(
     key: key,
             scrollController: scrollController,
@@ -49,6 +51,7 @@ class SyntonicFade extends StatefulWidget {
             zeroOpacityOffset: zeroOpacityOffset,
             fullOpacityOffset: fullOpacityOffset,
       shouldRemainOffset: shouldRemainOffset,
+            offset: offset,
             fadeMode: _FadeMode.off);
 
   @override
@@ -65,7 +68,7 @@ class _FadeState extends State<SyntonicFade> {
     // // print(widget.zeroOpacityOffset);
     // // print(widget.fullOpacityOffset);
     if (widget.shouldRemainOffset && widget.fullOpacityOffset > 1) {
-      _offset = widget.scrollController.offset;
+      _offset = widget.offset;
     }
     widget.scrollController.addListener(_setOffset);
   }

@@ -306,7 +306,7 @@ class SyntonicListItem extends ListItem {
             textAlign: textAlign,
             maxLines: titleMaxLines);
         if (subtitle != null) {
-          subtitleWidget = Body2Text(
+          subtitleWidget = CaptionText(
               text: subtitle!,
               textColor: subTitleColor,
               overflow: needsSubtitleOverFlowStateVisible!
@@ -645,10 +645,7 @@ class SyntonicListItem extends ListItem {
                   crossAxisAlignment: textCrossAxisAlignment,
                   children: [
                     leadingWidget != null
-                        ? Padding(
-                            padding: SyntonicConstraint.horizontal16,
-                            child: Center(child: leadingWidget),
-                          )
+                        ? Row(mainAxisSize: MainAxisSize.min, children: [Center(child: leadingWidget), SizedBox(width: 16,)],)
                         // ConstrainedBox(
                         //     constraints: const BoxConstraints(
                         //         minWidth: 48, minHeight: 32
@@ -673,13 +670,10 @@ class SyntonicListItem extends ListItem {
                           ]),
                     ),
                     trailingWidget != null
-                        ? Padding(
-                            padding: SyntonicConstraint.horizontal16,
-                            child: Center(
-                                child: isReorderMode
-                                    ? const Icon(Icons.drag_handle)
-                                    : trailingWidget),
-                          )
+                        ? Center(
+                        child: isReorderMode
+                            ? const Icon(Icons.drag_handle)
+                            : trailingWidget)
                         // ConstrainedBox(
                         //     constraints: const BoxConstraints(
                         //         minWidth: 48, minHeight: 48),

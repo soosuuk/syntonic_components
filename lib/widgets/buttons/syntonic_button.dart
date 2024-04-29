@@ -1,10 +1,12 @@
 import 'package:syntonic_components/widgets/texts/body_1_text.dart';
+import 'package:syntonic_components/widgets/texts/headline_4_text.dart';
 import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 
 import '../texts/body_2_text.dart';
+import '../texts/headline_5_text.dart';
 
 /// A state of [BasicListView].
 enum _SyntonicButtonStyle {
@@ -121,7 +123,7 @@ class SyntonicButton extends StatelessWidget {
           ),
         style == _SyntonicButtonStyle.text
             ? textStyle == null ? Body2Text( text: text,
-          textColor: isEnabled ? _textColor : null,) : Headline6Text(
+          textColor: isEnabled ? _textColor : null,) : Headline5Text(
                 text: text,
                 textColor: isEnabled ? _textColor : null,
               )

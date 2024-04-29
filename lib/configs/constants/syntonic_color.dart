@@ -28,6 +28,8 @@ class SyntonicColor {
   @Deprecated("Should replace to black/white with alpha color.")
   static const Color concrete = Color(0xFFF2F2F2);
 
+  static const Color success = Color(0xFF379535);
+
   static const Color forest_green = Color(0xFF1DC321);
   static const Color forest_green64 = Color(0xA31DC321);
   static const Color forest_green12 = Color(0x1F1DC321);

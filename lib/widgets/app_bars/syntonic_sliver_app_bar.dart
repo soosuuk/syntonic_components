@@ -266,7 +266,7 @@ class SyntonicSliverAppBar extends StatelessWidget
         SyntonicListItem(
           title: (title == null || title == '') ? 'No title' : title!,
           subtitle: subtitle,
-          titleTextStyle: TitleTextStyle.Subtitle1,
+          titleTextStyle: TitleTextStyle.Subtitle2,
           hasDivider: false,
           hasPadding: false,
           titleColor: accentColor,

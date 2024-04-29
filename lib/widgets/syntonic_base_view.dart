@@ -268,6 +268,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           //         duration: Duration(milliseconds: 600), curve: Curves.easeIn));
           //   }
           // }
+          viewModel.offset =  viewModel.scrollController!.offset;
 
           if (viewModel.scrollController!.position.userScrollDirection ==
               ScrollDirection.reverse) {
@@ -590,38 +591,75 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         //     }
         //   }
         // }
-        print(scrollNotification.metrics.pixels);
+        print('サイズ');
+        print(viewModel(ref).state.height);
+        print(viewModel(ref).state.tabBarHeight);
 
 
-        if (scrollNotification is ScrollEndNotification) {
-          if (viewModel(ref).state.height == null) {
+
+        if (scrollNotification is ScrollUpdateNotification && scrollNotification.metrics.axis == Axis.vertical) {
+
+          if (viewModel(ref).state.height == null ||  scrollNotification.dragDetails != null) {
+            print('とめた');
             return false;
           }
-          if (!viewModel(ref).state.isStickyingAppBar && viewModel(ref).scrollController!.position.userScrollDirection ==
+          if (scrollNotification.metrics.pixels > 0 && viewModel(ref).scrollController!.position.userScrollDirection ==
               ScrollDirection.forward) {
             print('りばーす');
-            if (scrollNotification.metrics.pixels <
-                viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - kToolbarHeight - 12 && scrollNotification.metrics.pixels >
+            if (viewModel(ref).isScrollingAutomatically == false && scrollNotification.metrics.pixels <
+                viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - 72 + 2 && scrollNotification.metrics.pixels >
                 0) {
+              viewModel(ref).isScrollingAutomatically = true;
               Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
-                  duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized));
+                  duration: Duration(milliseconds: 400), curve: Curves.easeInOutCubicEmphasized).whenComplete(() => viewModel(ref).isScrollingAutomatically = false));
             }
           } else {
             print('ふつう');
-            if (!viewModel(ref).state.isStickyingAppBar && scrollNotification.metrics.pixels >
-                0 && scrollNotification.metrics.pixels < viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - kToolbarHeight - 12) {
-              Future.microtask(() => viewModel(ref).scrollController!.animateTo(viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - kToolbarHeight - 12,
-                  duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized));
+            if (viewModel(ref).isScrollingAutomatically == false && !viewModel(ref).state.isStickyingAppBar && scrollNotification.metrics.pixels >
+                0 && scrollNotification.metrics.pixels < viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - 72 + 2) {
+              viewModel(ref).isScrollingAutomatically = true;
+              Future.microtask(() => viewModel(ref).scrollController!.animateTo(viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - 72 + 2,
+                  duration: Duration(milliseconds: 400), curve: Curves.easeInOutCubicEmphasized).whenComplete(() => viewModel(ref).isScrollingAutomatically = false));
             }
           }
           if (scrollNotification.metrics.pixels ==
               scrollNotification.metrics.maxScrollExtent) {
             onReachBottom();
-          } else {}
+            // if (viewModel(ref).state.isFloatingActionButtonExtended == false) {
+            //   viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: true) as VS;
+            // }
+          }
 
           if (scrollNotification.metrics.pixels ==
               scrollNotification.metrics.minScrollExtent) {
             onReachTop();
+          }
+        }
+
+        if (scrollNotification is ScrollEndNotification && scrollNotification.metrics.axis == Axis.vertical) {
+          if (viewModel(ref).state.height == null) {
+            print('とめた');
+            return false;
+          }
+
+          if (scrollNotification.metrics.pixels > 0 && viewModel(ref).scrollController!.position.userScrollDirection ==
+              ScrollDirection.forward) {
+            print('りばーす');
+            if (viewModel(ref).isScrollingAutomatically == false && scrollNotification.metrics.pixels <
+                viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt()  - 72 + 2 && scrollNotification.metrics.pixels >
+                0) {
+              viewModel(ref).isScrollingAutomatically = true;
+              Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
+                  duration: Duration(milliseconds: 400), curve: Curves.easeInOutCubicEmphasized).whenComplete(() => viewModel(ref).isScrollingAutomatically = false));
+            }
+          } else {
+            print('ふつう');
+            if (viewModel(ref).isScrollingAutomatically == false && !viewModel(ref).state.isStickyingAppBar && scrollNotification.metrics.pixels >
+                0 && scrollNotification.metrics.pixels < viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt()  - 72 + 2) {
+              viewModel(ref).isScrollingAutomatically = true;
+              Future.microtask(() => viewModel(ref).scrollController!.animateTo(viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - 72 + 2,
+                  duration: Duration(milliseconds: 400), curve: Curves.easeInOutCubicEmphasized).whenComplete(() => viewModel(ref).isScrollingAutomatically = false));
+            }
           }
         }
 
@@ -906,7 +944,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final RenderBox? renderBox = viewModel(ref)._b.currentContext?.findRenderObject() as RenderBox?;
-      if (viewModel(ref).state.height == null) {
+      if (viewModel(ref).state.height != renderBox!.size.height) {
         viewModel(ref).state =
         viewModel(ref).state.copyWith(height: renderBox!.size.height) as VS;
       }
@@ -914,10 +952,10 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
     double? _ofset = ref.watch(provider.select((viewState) => viewState.height)) != null  ? (viewModel(ref).state.height ?? 0) -
         (viewModel(ref).state.tabBarHeight ?? 0) -
-        (kToolbarHeight * 1.5) : 0;
+        72 + 2 : 0;
     return SyntonicFade.off(
       key: viewModel(ref)._b,
-        zeroOpacityOffset: 260,
+        zeroOpacityOffset: _ofset / 2,
         //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
         fullOpacityOffset: _ofset,
         scrollController: viewModel(ref).scrollController ?? ScrollController(),
@@ -929,17 +967,28 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   /// For listen focus event by tap, and focus out from some widgets.
   Widget _tabBarHeader(
       {required BuildContext context, required riverpod.WidgetRef ref}) {
-    return _SizeListenableContainer(
-      key: _globalKey,
-      onSizeChanged: (Size size) {
-        if (viewModel(ref).state.tabBarHeight == null ||
-            viewModel(ref).state.tabBarHeight != size.height) {
-          viewModel(ref).state =
-              viewModel(ref).state.copyWith(tabBarHeight: size.height) as VS;
-        }
-      },
-      child: tabBarHeader(context: context, ref: ref),
-    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final RenderBox? renderBox = viewModel(ref)._c.currentContext?.findRenderObject() as RenderBox?;
+      if (viewModel(ref).state.tabBarHeight != renderBox!.size.height) {
+        viewModel(ref).state =
+        viewModel(ref).state.copyWith(tabBarHeight: renderBox!.size.height) as VS;
+      }
+    });
+
+    return Container(key: viewModel(ref)._c, child: tabBarHeader(context: context, ref: ref),);
+
+    // return _SizeListenableContainer(
+    //   key: _globalKey,
+    //   onSizeChanged: (Size size) {
+    //     if (viewModel(ref).state.tabBarHeight == null ||
+    //         viewModel(ref).state.tabBarHeight != size.height) {
+    //       viewModel(ref).state =
+    //           viewModel(ref).state.copyWith(tabBarHeight: size.height) as VS;
+    //     }
+    //   },
+    //   child: tabBarHeader(context: context, ref: ref),
+    // );
   }
 
   Widget? tabBarHeader(
@@ -968,8 +1017,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             print(viewModel(ref).state.height!);
             print(viewModel(ref).state.tabBarHeight!.toInt());
             // print((tabs(context: context, ref: ref)![0] as Tab).height!.toInt());
+            viewModel(ref).isScrollingAutomatically = true;
               Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
-                  duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized));
+                  duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized)).whenComplete(() =>  viewModel(ref).isScrollingAutomatically = false);
 
 
             // ref.read(provider).changeFloatingActionButtonState(true);
@@ -1039,6 +1089,9 @@ abstract class BaseViewModel<VS extends BaseViewState>
   late AdSize? adSize;
   late bool isAdLoaded = false;
   GlobalKey _b = GlobalKey();
+  GlobalKey _c = GlobalKey();
+  double offset = 0;
+  bool isScrollingAutomatically = false;
 
   @override
   set state(VS value) {
