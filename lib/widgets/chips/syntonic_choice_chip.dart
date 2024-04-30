@@ -9,6 +9,7 @@ class SyntonicChoiceChip extends StatelessWidget {
   final bool isSelected;
   final Function(bool isSelected) onSelected;
   final Color? color;
+  final bool hasPadding;
 
   @Deprecated("You should use [trailingIcon] instead of this.")
   final IconData? icon;
@@ -22,15 +23,15 @@ class SyntonicChoiceChip extends StatelessWidget {
       required this.onSelected,
       this.color,
       this.icon,
-      this.trailingIcon});
+      this.trailingIcon, this.hasPadding = true});
 
   @override
   Widget build(BuildContext context) {
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
-    return Padding(padding: EdgeInsets.only(left: index == 0 ? 16 : 4, top: 16), child: FilterChip(
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    return Padding(padding: hasPadding ? EdgeInsets.only(left: index == 0 ? 16 : 4, top: 16) : EdgeInsets.zero, child: FilterChip(
+    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         labelPadding: EdgeInsets.zero,
         // shape: StadiumBorder(
         //     side: BorderSide(

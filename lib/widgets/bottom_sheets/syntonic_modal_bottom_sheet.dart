@@ -75,63 +75,33 @@ abstract class SyntonicModalBottomSheet<
               // appBar: AppBar(
               //   title: Text('Example'),
               // ),
-              body: Column(
+              body: Stack(
+                alignment: AlignmentDirectional.topEnd,
                 children: [
-                  vm.state.currentPageIndex == 0
-                      ? Padding(
-                    padding: const EdgeInsets.only(
-                        left: 0, top: 8, right: 0),
-                    child: Stack(
-                      alignment: AlignmentDirectional.topEnd,
-                      children: [
-                        Center(child: Container(
-                          width: 32,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.outlineVariant,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),),
-                        SyntonicListItem(leadingWidget: IconButton(
-                          icon: const Icon(Icons.arrow_back_outlined),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            // actionAddingViewModel.pageController.jumpToPage(0);
-                          },
-                        ), title: 'title', trailingWidget: SyntonicButton.transparent(
-                          onTap: () {
-                            onPop(context: context, ref: ref);
-                            Navigator.of(context).pop();
-                          },
-                          text: 'Done',
-                        ),),
-                        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [IconButton(
-                        //   icon: const Icon(Icons.arrow_back_outlined),
-                        //   onPressed: () {
-                        //     Navigator.of(context).pop();
-                        //     // actionAddingViewModel.pageController.jumpToPage(0);
-                        //   },
-                        // ), Flexible(child: SyntonicButton.transparent(
-                        //   onTap: () {
-                        //     onPop(context: context, ref: ref);
-                        //     Navigator.of(context).pop();
-                        //   },
-                        //   text: 'Done',
-                        // ))],)
-                      ],
+                  Navigator(
+                  onGenerateRoute: (context) => MaterialPageRoute<S>(
+                builder: (context) => SingleChildScrollView(
+            controller: scrollController,
+            physics: const ClampingScrollPhysics(),
+            child: child(context: context, ref: ref),
+          )),
+          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [Center(child: Container(
+                    width: 32,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  )
-                      : const SizedBox(),
-                  Expanded(
-                    child: Navigator(
-                        onGenerateRoute: (context) => MaterialPageRoute<S>(
-                            builder: (context) => SingleChildScrollView(
-                          controller: scrollController,
-                          physics: const ClampingScrollPhysics(),
-                          child: child(context: context, ref: ref),
-                        )),
-                  ),
-                )],
+                  ),),
+                    Padding(padding: EdgeInsets.only(top: 12),child: SyntonicButton.transparent(onTap: () {
+                      Navigator.of(context).pop();
+                      // actionAddingViewModel.pageController.jumpToPage(0);
+                    }, text: 'done'),)
+                  ],)
+                ],
               ),
             ),
           );

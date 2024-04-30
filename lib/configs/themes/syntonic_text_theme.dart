@@ -70,8 +70,8 @@ class SyntonicTextTheme {
     //   );
     // }
 
-    return typeface1(
-      textStyle: Theme.of(context).textTheme.displaySmall,
+    return typeface2(
+      textStyle: Theme.of(context).textTheme.titleLarge,
       fontWeight: FontWeight.w400,
       letterSpacing: 1,
       // color: textColor,
@@ -90,7 +90,7 @@ class SyntonicTextTheme {
     // }
 
     return typeface2(
-      textStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 18),
+      textStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 19),
       // fontWeight: FontWeight.w300,
       color: textColor,
       height: 1.4,
@@ -231,7 +231,7 @@ class SyntonicTextTheme {
     var brightness = MediaQuery.of(context).platformBrightness;
     return typeface3(
       textStyle: Theme.of(context).textTheme.labelMedium,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
       // color: textColor ?? (brightness == Brightness.dark
       //     ? Colors.white.withAlpha(textLabelMedium)
       //     : Colors.black.withAlpha(textLabelMedium)),
