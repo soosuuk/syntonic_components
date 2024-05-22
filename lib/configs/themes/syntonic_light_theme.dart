@@ -15,7 +15,8 @@ ThemeData lightTheme({ColorScheme? colorScheme}) {
       brightness: Brightness.light,
       onSurface: colorScheme != null ? colorScheme.onSurface : _primaryColor.tone(30),
       surface: colorScheme != null ? colorScheme.surface : _primaryColor.tone(98),
-      background: colorScheme != null ? colorScheme.background : _primaryColor.tone(98));
+      background: colorScheme != null ? colorScheme.background : _primaryColor.tone(98)
+  );
 
   return ThemeData(
     useMaterial3: true,
@@ -31,7 +32,7 @@ ThemeData lightTheme({ColorScheme? colorScheme}) {
     // scaffoldBackgroundColor: Colors.white,
     brightness: brightness,
     tabBarTheme: SyntonicTabBarTheme.get(
-        isDarkTheme: true,
+        isDarkTheme: false,
         colorScheme: _colorScheme),
     // primarySwatch: SyntonicColor.materialColor,
     // elevatedButtonTheme: SyntonicElevatedButtonTheme.get(false),

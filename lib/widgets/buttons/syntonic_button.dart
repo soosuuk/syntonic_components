@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 
 import '../texts/body_2_text.dart';
+import '../texts/caption_text.dart';
 import '../texts/headline_5_text.dart';
 
 /// A state of [BasicListView].
@@ -123,7 +124,7 @@ class SyntonicButton extends StatelessWidget {
           ),
         style == _SyntonicButtonStyle.text
             ? textStyle == null ? Body2Text( text: text,
-          textColor: isEnabled ? _textColor : null,) : Headline5Text(
+          textColor: isEnabled ? _textColor : null,) : Body1Text(
                 text: text,
                 textColor: isEnabled ? _textColor : null,
               )

@@ -12,6 +12,7 @@ import 'package:syntonic_components/configs/themes/syntonic_dark_theme.dart';
 import 'package:syntonic_components/configs/themes/syntonic_light_theme.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_fade.dart';
 import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
+import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -26,7 +27,7 @@ import 'package:flutter/scheduler.dart';
 
 part '../extensions/syntonic_color_extension.dart';
 part '../extensions/syntonic_date_time_extension.dart';
-// part '../extensions/syntonic_date_time_range_extension.dart';
+part '../extensions/syntonic_date_time_range_extension.dart';
 part '../extensions/syntonic_int_extension.dart';
 part '../extensions/syntonic_double_extension.dart';
 part '../extensions/syntonic_string_extension.dart';
@@ -693,7 +694,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   }
 
   /// Get the layout for when not found a contents.
-  Widget notFoundContents({required String title}) {
+  Widget notFoundContents({required String title, required String subtitle}) {
     return Container(
       padding: const EdgeInsets.only(top: 16),
       // alignment: Alignment.topCenter,
@@ -702,12 +703,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
 
-          SyntonicListItem(
-            title: [title, 'がありません。'].combineWithSpace(),
-            titleTextStyle: TitleTextStyle.Subtitle2,
-            subtitle: 'Let`s plan your travel',
-            hasDivider: false,
-          ),
+          Subtitle2Text(text: title),
+          Body2Text(text: subtitle),
         ],
       ),
     );

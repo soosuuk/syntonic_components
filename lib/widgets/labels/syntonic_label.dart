@@ -72,7 +72,7 @@ class SyntonicLabel extends StatelessWidget {
                       : const SizedBox(),
                   text != null
                       ? Flexible(
-                          child: OverlineText(
+                          child: CaptionText(
                           text: text!,
                           // textColor: isFilled ? color : (constColor != null) ? constColor! : null,
                           textColor: Theme.of(context).colorScheme.onTertiary,

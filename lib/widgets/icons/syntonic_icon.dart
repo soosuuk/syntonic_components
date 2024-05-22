@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/configs/themes/syntonic_light_theme.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
 
 import '../../configs/themes/syntonic_dark_theme.dart';
@@ -51,10 +52,14 @@ class SyntonicIcon extends StatelessWidget {
         color: colorScheme?.primary ?? Theme.of(context).colorScheme.primary,
       ),
     );
+
+    bool _isDarkTheme =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Theme(
-          data: darkTheme(colorScheme: colorScheme),
+          data: _isDarkTheme ? darkTheme(colorScheme: colorScheme) : lightTheme(colorScheme: colorScheme),
           child: RepaintBoundary(
             child: InkWell(
               onTap: onPressed,

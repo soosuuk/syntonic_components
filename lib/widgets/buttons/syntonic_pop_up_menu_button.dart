@@ -10,6 +10,12 @@ class SyntonicPopupMenuButton extends StatelessWidget {
   /// Whether [SyntonicPopupMenuButton] is enabled?
   final bool isEnabled;
 
+  final Color? backgroundColor;
+
+  final Color? borderColor;
+
+  final BoxShape? boxShape;
+
   /// A color of [icon].
   final Color? color;
 
@@ -29,6 +35,9 @@ class SyntonicPopupMenuButton extends StatelessWidget {
   const SyntonicPopupMenuButton({
     Key? key,
     this.icon = Icons.more_vert,
+    this.backgroundColor,
+    this.borderColor,
+    this.boxShape,
     this.color,
     this.isEnabled = true,
     this.onEditTap,
@@ -53,8 +62,10 @@ class SyntonicPopupMenuButton extends StatelessWidget {
       width: IconSize.normal.size,
       height: IconSize.normal.size,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.48),
+        shape: boxShape ?? BoxShape.circle,
+        borderRadius: boxShape == BoxShape.rectangle ? BorderRadius.circular(8) : null,
+        border: borderColor != null ? Border.all(color: Theme.of(context).colorScheme.outlineVariant) : null,
+        color: backgroundColor ?? Theme.of(context).colorScheme.surface.withOpacity(0.48),
       ),
       child: PopupMenuButton<String>(
         padding: EdgeInsets.zero,

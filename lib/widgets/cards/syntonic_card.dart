@@ -8,6 +8,7 @@ enum ImagePosition {
   top,
   right,
   bottom,
+  spread,
 }
 
 class SyntonicCard extends StatelessWidget {
@@ -23,7 +24,7 @@ class SyntonicCard extends StatelessWidget {
   final ImagePosition imagePosition;
 
   const SyntonicCard(
-      {this.borderRadius = 16,
+      {this.borderRadius = 8,
       this.onTap,
       this.isSelected = false,
       this.image,
@@ -142,6 +143,9 @@ class SyntonicCard extends StatelessWidget {
             imagePosition == ImagePosition.bottom ? image! : const SizedBox(),
           ],
         );
+      case ImagePosition.spread:
+        return IntrinsicHeight(child: Stack(children: [Positioned.fill(child: image!), _child],),);
+        // return Stack(children: [image!, _child],);
     }
   }
 }

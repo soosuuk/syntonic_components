@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 
+import '../texts/subtitle_2_text.dart';
+
 class LinearDotsList extends StatelessWidget {
   const LinearDotsList({
     Key? key,
@@ -20,7 +22,7 @@ class LinearDotsList extends StatelessWidget {
         children: [
           children[i],
           children.length - 1 != i
-              ? Body2Text(
+              ? Subtitle2Text(
                   text: '・',
                   textColor: color,
                 )
