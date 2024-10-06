@@ -23,7 +23,7 @@ class SyntonicActionChip extends StatelessWidget {
     var brightness = SchedulerBinding.instance.window.platformBrightness;
     bool _isDarkTheme = brightness == Brightness.dark;
     return Theme(
-      data: ThemeData(canvasColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.21)),
+      data: ThemeData(canvasColor: Theme.of(context).colorScheme.surface.withOpacity(0)),
       child: ActionChip(
         pressElevation: 0,
         elevation: 0,

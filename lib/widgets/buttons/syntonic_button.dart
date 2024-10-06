@@ -26,6 +26,8 @@ class SyntonicButton extends StatelessWidget {
   final _SyntonicButtonStyle style;
   final TextStyle? textStyle;
   final EdgeInsetsGeometry? padding;
+  final bool isExtended;
+  final bool isNegative;
   Color? _textColor;
 
   SyntonicButton._(
@@ -34,20 +36,28 @@ class SyntonicButton extends StatelessWidget {
       required this.style,
         this.textStyle,
       this.isEnabled = true,
+        this.isExtended = false,
+        this.isNegative = false,
       this.leadingWidget,
       this.maxWidth,
       this.padding});
   SyntonicButton.filled(
       {required VoidCallback onTap,
       required String text,
+        EdgeInsetsGeometry? padding,
         TextStyle? textStyle,
       bool isEnabled = true,
       Widget? leadingWidget,
+        bool isExtended = false,
+        bool isNegative = false,
       double? maxWidth})
       : this._(
             onTap: onTap,
             text: text,
+            padding: padding,
             isEnabled: isEnabled,
+            isExtended: isExtended,
+            isNegative: isNegative,
             leadingWidget: leadingWidget,
             maxWidth: maxWidth,
             textStyle: textStyle,
@@ -55,36 +65,50 @@ class SyntonicButton extends StatelessWidget {
   SyntonicButton.tonal(
       {required VoidCallback onTap,
       required String text,
+        EdgeInsetsGeometry? padding,
         TextStyle? textStyle,
-      bool isEnabled = true,
-      Widget? leadingWidget,
+        bool isExtended = false,
+        bool isEnabled = true,
+        bool isNegative = false,
+        Widget? leadingWidget,
       double? maxWidth})
       : this._(
             onTap: onTap,
             text: text,
-            isEnabled: isEnabled,
-            leadingWidget: leadingWidget,
+      padding: padding,
+      isExtended: isExtended,
+      isEnabled: isEnabled,
+      isNegative: isNegative,
+      leadingWidget: leadingWidget,
             maxWidth: maxWidth,
             textStyle: textStyle,
             style: _SyntonicButtonStyle.tonal);
   SyntonicButton.outlined(
       {required VoidCallback onTap,
       required String text,
-      bool isEnabled = true,
-      Widget? leadingWidget,
+        EdgeInsetsGeometry? padding,
+        bool isExtended = false,
+        bool isEnabled = true,
+        bool isNegative = false,
+        Widget? leadingWidget,
       double? maxWidth})
       : this._(
             onTap: onTap,
             text: text,
-            isEnabled: isEnabled,
-            leadingWidget: leadingWidget,
+      padding: padding,
+      isEnabled: isEnabled,
+      isExtended: isExtended,
+      isNegative: isNegative,
+      leadingWidget: leadingWidget,
             maxWidth: maxWidth,
             style: _SyntonicButtonStyle.outlined);
   SyntonicButton.transparent(
       {required VoidCallback onTap,
       required String text,
         TextStyle? textStyle,
-      bool isEnabled = true,
+        bool isExtended = false,
+        bool isNegative = false,
+        bool isEnabled = true,
       Widget? leadingWidget,
       double? maxWidth,
       EdgeInsetsGeometry? padding})
@@ -92,7 +116,9 @@ class SyntonicButton extends StatelessWidget {
             onTap: onTap,
             text: text,
             isEnabled: isEnabled,
-            leadingWidget: leadingWidget,
+      isExtended: isExtended,
+      isNegative: isNegative,
+      leadingWidget: leadingWidget,
             maxWidth: maxWidth,
             textStyle: textStyle,
             style: _SyntonicButtonStyle.text,
@@ -102,13 +128,22 @@ class SyntonicButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // bool _isDarkTheme = MediaQuery.of(context).platformBrightness ==
     //     Brightness.dark;
+    ButtonStyle _style = ButtonStyle(
+      backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.onSurface),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4), // ここでcorner radiusを指定
+        ),
+      ),
+    );
+
     switch (style) {
       case _SyntonicButtonStyle.elevated:
-      case _SyntonicButtonStyle.tonal:
         _textColor = Theme.of(context).colorScheme.onPrimary;
         break;
       case _SyntonicButtonStyle.outlined:
       case _SyntonicButtonStyle.text:
+      case _SyntonicButtonStyle.tonal:
         _textColor = Theme.of(context).colorScheme.primary;
         break;
     }
@@ -123,14 +158,14 @@ class SyntonicButton extends StatelessWidget {
             width: 16,
           ),
         style == _SyntonicButtonStyle.text
-            ? textStyle == null ? Body2Text( text: text,
-          textColor: isEnabled ? _textColor : null,) : Body1Text(
+            ? textStyle == null ? Subtitle1Text( text: text,
+          textColor: isEnabled ? _textColor : null,) : Headline5Text(
                 text: text,
-                textColor: isEnabled ? _textColor : null,
+                textColor: isNegative ? Colors.red : (isEnabled ? _textColor : null),
               )
-            : Body2Text(
+            : Subtitle1Text(
                 text: text,
-                textColor: isEnabled ? _textColor : null,
+                textColor: isNegative ? Colors.red : (isEnabled ? _textColor : null),
               ),
         // Subtitle2Text(text: text),
       ],
@@ -139,22 +174,30 @@ class SyntonicButton extends StatelessWidget {
     switch (style) {
       case _SyntonicButtonStyle.elevated:
         return Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          width: isExtended ? double.infinity : null,
+          padding: padding ?? EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child:
-              FilledButton(onPressed: isEnabled ? onTap : null, child: _button),
+              FilledButton(style: _style, onPressed: isEnabled ? onTap : null, child: _button),
         );
       case _SyntonicButtonStyle.tonal:
         return Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          width: isExtended ? double.infinity : null,
+
+          padding: padding ??  EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: FilledButton.tonal(
+            style: _style,
             onPressed: isEnabled ? onTap : null,
             child: _button,
           ),
         );
       case _SyntonicButtonStyle.outlined:
         return Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          width: isExtended ? double.infinity : null,
+          padding: padding ??  EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              side: isNegative ? BorderSide(color: Colors.red) : null
+            ),
               onPressed: isEnabled ? onTap : null, child: _button),
         );
       case _SyntonicButtonStyle.text:
@@ -162,7 +205,7 @@ class SyntonicButton extends StatelessWidget {
           onPressed: onTap,
           style: ButtonStyle(
             padding:
-                padding != null ? MaterialStateProperty.all(padding) : null,
+                MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 0)),
             minimumSize: MaterialStateProperty.all(Size.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),

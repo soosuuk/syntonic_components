@@ -127,6 +127,12 @@ class BottomNavigationContainerState extends BaseViewState {
       : super(
             needsInitialize: needsInitialize,
             isSkeletonLoadingApplied: isSkeletonLoadingApplied);
+
+  @override
+  BaseViewState copyWith({bool isChangedAppBar = false, bool isFloatingActionButtonExtended = false, double? height, double? tabBarHeight, bool isFloatingActionButtonVisible = true, ScrollController? scrollController, bool isStickyingAppBar = false, int? currentTabIndex = 0, bool isInitialized = false, bool needsInitialize = false, bool isSkeletonLoadingApplied = false, ColorScheme? colorScheme}) {
+    // TODO: implement copyWith
+    throw UnimplementedError();
+  }
 }
 
 class BottomNavigationContainerManager extends BaseViewModel {

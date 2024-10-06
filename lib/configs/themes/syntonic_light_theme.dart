@@ -9,19 +9,26 @@ const brightness = Brightness.light;
 const _primaryColor = SyntonicColor.primary_color;
 const backgroundColor = Colors.white70;
 
+Color increaseSaturation(Color color, double amount) {
+  final hsl = HSLColor.fromColor(color);
+  final hslSaturated = hsl.withSaturation((hsl.saturation + amount).clamp(0.0, 1.0));
+  return hslSaturated.toColor();
+}
+
 ThemeData lightTheme({ColorScheme? colorScheme}) {
   ColorScheme _colorScheme = ColorScheme.fromSeed(
-      seedColor: colorScheme != null ? colorScheme.primary : _primaryColor,
-      brightness: Brightness.light,
-      onSurface: colorScheme != null ? colorScheme.onSurface : _primaryColor.tone(30),
-      surface: colorScheme != null ? colorScheme.surface : _primaryColor.tone(98),
-      background: colorScheme != null ? colorScheme.background : _primaryColor.tone(98)
+    seedColor: colorScheme != null ? increaseSaturation(colorScheme.primary, 100) : increaseSaturation(_primaryColor, 0.2),
+    brightness: Brightness.light,
+    surface: Colors.white,
+    primary: increaseSaturation(colorScheme?.primary ?? _primaryColor, 0.8),
+    primaryContainer: increaseSaturation(colorScheme?.primaryContainer ?? _primaryColor, 1),
+    background: Colors.white,
   );
 
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
-    colorScheme: colorScheme,
+    colorScheme: _colorScheme,
     // colorScheme: ColorScheme.light(
     //   primary: primaryColor ?? SyntonicColor.primary_color,
     //   secondary: primaryColor ?? SyntonicColor.primary_color,

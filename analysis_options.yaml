@@ -7,8 +7,6 @@ analyzer:
     no_leading_underscores_for_local_identifiers: ignore
     use_key_in_widget_constructors: false
   language:
-    #    strict-casts: true
-    #    strict-inference: true
     strict-raw-types: true
 
 linter:

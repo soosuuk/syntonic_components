@@ -1,3 +1,4 @@
+import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_animation_enhancer.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:flutter/material.dart';
@@ -373,8 +374,9 @@ class SyntonicListView extends ExtendedStatelessWidget {
                               height: double.infinity,
                               // width: 60,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
+                                padding: const EdgeInsets.only(
+                                  left: 8,
+                                  right: 16,
                                 ),
                                 child: Column(
                                   mainAxisAlignment:
@@ -398,20 +400,13 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                         isFirst
                                             ? Padding(
                                           padding: EdgeInsets.symmetric(vertical: 8),
-                                          child: Body1Text(text: 'day 1', textColor: Theme.of(context).colorScheme.tertiary,),
+                                          child: Icon(Icons.today_outlined, color: Theme.of(context).colorScheme.tertiary,),
                                         )
                                             : const SizedBox(),
                                         isFirst
-                                            ? SizedBox(
-                                          height: 48,
-                                          child: CustomPaint(
-                                              painter: DottedLinePainter(
-                                                height: 48,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .tertiary,
-                                              )),
-                                        )
+                                            ? SyntonicDivider.vertical(height: 48, color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,)
                                             : const SizedBox(),
                                         SyntonicIcon(
                                           hasBorder: true,
@@ -490,53 +485,9 @@ class SyntonicListView extends ExtendedStatelessWidget {
                       // SizedBox(width: 4),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.zero,
-                          child: Column(
-                            children: [
-                              // isFirst
-                              //     ? Container(
-                              //   alignment: Alignment.centerLeft,
-                              //   padding: EdgeInsets.only(top: 24),
-                              //   height: 56,
-                              //   child: Body2Text(
-                              //     text: 'Add start time',
-                              //     textColor: Theme.of(context)
-                              //         .colorScheme
-                              //         .primary
-                              //         .withOpacity(0.72),
-                              //   ),
-                              // )
-                              //     : const SizedBox(),
-                              // isFirst
-                              //     ? Container(
-                              //         alignment: Alignment.centerLeft,
-                              //         height: 70,
-                              //         child: Body2Text(
-                              //           text: 'Add step',
-                              //           textColor: Theme.of(context)
-                              //               .colorScheme
-                              //               .primary
-                              //               .withOpacity(0.72),
-                              //         ),
-                              //       )
-                              //     : const SizedBox(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: SyntonicAnimationEnhancer(
-                                  child: listItem!(index),
-                                ),
-                              ),
-                              // Container(
-                              //   alignment: Alignment.centerLeft,
-                              //   height: 56,
-                              //   child: Body2Text(
-                              //       text: 'Add step',
-                              //       textColor: Theme.of(context)
-                              //           .colorScheme
-                              //           .primary
-                              //           .withOpacity(0.72)),
-                              // )
-                            ],
+                          padding: const EdgeInsets.only(left: 0,right: 24),
+                          child: SyntonicAnimationEnhancer(
+                            child: listItem!(index),
                           ),
                         ),
                       ),
@@ -550,7 +501,6 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: timelineTile,
-                                // isLeftAligned ? timelineTile : timelineTile.reversed.toList(),
                               )
                             : SyntonicAnimationEnhancer(
                                 child: listItem!(index),

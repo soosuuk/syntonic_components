@@ -6,9 +6,9 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
     final locale = Localizations.localeOf(context).toString();
     // initializeMessages(locale);
 
-    final DateFormat monthDayWeekFormat = DateFormat('MMMM d (E)', locale);
-    final DateFormat dayWeekFormat = DateFormat('d (E)', locale);
-    final DateFormat fullDateFormat = DateFormat('MMMM d (E), y', locale);
+    final DateFormat monthDayWeekFormat = DateFormat('E, MMMM d', locale);
+    final DateFormat dayWeekFormat = DateFormat('E, d', locale);
+    final DateFormat fullDateFormat = DateFormat('E, MMMM d, y', locale);
 
     if (start.year != end.year) {
       // 年を跨ぐ場合
@@ -29,9 +29,9 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
     final locale = Localizations.localeOf(context).toString();
     // initializeMessages(locale);
 
-    final DateFormat monthDayWeekFormat = DateFormat('MMMM d (E)', locale);
-    final DateFormat dayWeekFormat = DateFormat('d (E)', locale);
-    final DateFormat fullDateFormat = DateFormat('MMMM d (E), y', locale);
+    final DateFormat monthDayWeekFormat = DateFormat('E, MMMM d', locale);
+    final DateFormat dayWeekFormat = DateFormat('E, d', locale);
+    final DateFormat fullDateFormat = DateFormat('E, MMMM d, y', locale);
 
     if (start.year != end.year) {
       // 年を跨ぐ場合
@@ -52,9 +52,9 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
     final locale = Localizations.localeOf(context).toString();
     // initializeMessages(locale);
 
-    final DateFormat monthDayWeekFormat = DateFormat('MMMM d (E)', locale);
-    final DateFormat dayWeekFormat = DateFormat('d (E)', locale);
-    final DateFormat fullDateFormat = DateFormat('MMMM d (E), y', locale);
+    final DateFormat monthDayWeekFormat = DateFormat('E, MMMM d', locale);
+    final DateFormat dayWeekFormat = DateFormat('E, d', locale);
+    final DateFormat fullDateFormat = DateFormat('E, MMMM d, y', locale);
 
     if (start.year != end.year) {
       // 年を跨ぐ場合

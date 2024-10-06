@@ -5,12 +5,14 @@ class SyntonicSearchBox extends StatelessWidget {
   final String? value;
   final VoidCallback? onTap;
   final Function(String searchWord) onSearchButtonTap;
+  final TextEditingController? controller;
   final String? hintText;
   const SyntonicSearchBox(
       {Key? key,
       this.value,
       this.onTap,
       required this.onSearchButtonTap,
+        this.controller,
       this.hintText})
       : super(key: key);
 
@@ -38,7 +40,7 @@ class SyntonicSearchBox extends StatelessWidget {
           autofocus: onTap != null ? false : true,
           onTap: onTap,
           readOnly: onTap != null ? true : false,
-          controller: _textEditingController,
+          controller: controller ?? _textEditingController,
           onChanged: (text) {
             // model.viewModel(text);
           },

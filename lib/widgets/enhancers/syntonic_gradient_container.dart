@@ -46,8 +46,8 @@ class SyntonicGradientContainer extends StatelessWidget {
         break;
     }
 
-    return Stack(children: [child ?? SizedBox(), Container(
-      height: height,
+    return IntrinsicHeight(child: Stack(children: [child != null ? Positioned.fill(child: child!) : SizedBox(), Container(
+      // height: height,
       width: width,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -68,6 +68,6 @@ class SyntonicGradientContainer extends StatelessWidget {
               ],
         ),
       ),
-    )],);
+    )],));
   }
 }

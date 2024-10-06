@@ -47,7 +47,7 @@ class SyntonicLabel extends StatelessWidget {
         children: [
           Container(
               padding: EdgeInsets.symmetric(
-                  horizontal: isFilled ? 8 : 7, vertical: isFilled ? 4 : 3),
+                  horizontal: isFilled ? 12 : 11, vertical: isFilled ? 6 : 5),
               // padding: EdgeInsets.only(left: 4, right: 4),
               decoration: BoxDecoration(
                   border: isFilled

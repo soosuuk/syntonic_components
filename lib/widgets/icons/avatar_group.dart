@@ -20,14 +20,14 @@ class AvatarGroup extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                width: (i * (1 - .4) * 18).toDouble(),
+                width: (i * (1 - .4) * 24).toDouble(),
               ),
               Flexible(
                   child: i < persons.length
                       ? SyntonicPersonIcon(
                     needsMainStaffBorder: true,
                     person: persons[i],
-                    type: IconSize.mini,
+                    type: IconSize.small,
                     hasPadding: false,
                   )
                       : onPressed != null ? const SyntonicIcon(

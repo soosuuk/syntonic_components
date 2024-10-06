@@ -162,7 +162,8 @@ extension SyntonicIntExtension on int {
   /// Format a [this] with thousands separator.
   String _toThousandsSeparator({required int value}) {
     final formatter = NumberFormat("#,###");
-    return formatter.format(value >= 0 ? value : value * -1);
+    String _formattedValue = formatter.format(value >= 0 ? value : value * -1);
+    return 'JPY$_formattedValue';
   }
 //
 //   int toRatio({required int targetValue}) {

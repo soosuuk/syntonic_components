@@ -52,7 +52,7 @@ class SyntonicFloatingActionButton extends StatelessWidget {
         height: 56,
         child: FloatingActionButton.extended(
             backgroundColor:
-                isSecondary ? Theme.of(context).colorScheme.surface : null,
+                isSecondary ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary,
             isExtended: true,
             // extendedPadding:
             //     !isExtended ? SyntonicConstraint.horizontal16 : null,
@@ -60,6 +60,9 @@ class SyntonicFloatingActionButton extends StatelessWidget {
             extendedPadding: isExtended ? null : const EdgeInsets.all(16),
             onPressed: floatingActionButtonModel.onTap,
             heroTag: floatingActionButtonModel.heroTag,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4), // Set the desired radius here
+            ),
             // label: AnimatedSwitcher(
             //   duration: const Duration(milliseconds: 120),
             //   transitionBuilder: (Widget child, Animation<double> animation) =>
@@ -112,18 +115,18 @@ class SyntonicFloatingActionButton extends StatelessWidget {
                   ? Theme.of(context).colorScheme.primary
                   : Theme.of(context)
                   .colorScheme
-                  .onPrimaryContainer,
+                  .onPrimary,
               size: 18,
             ),
             label: AnimatedSize(
         duration: const Duration(milliseconds: 120),
         child: isExtended ?  Subtitle2Text(
-          text: floatingActionButtonModel.text,
+          text: floatingActionButtonModel.text.toUpperCase(),
           textColor: isSecondary
               ? Theme.of(context).colorScheme.onSurface
               : Theme.of(context)
               .colorScheme
-              .onPrimaryContainer,
+              .onPrimary,
           needsLinkify: false,
         ) : const SizedBox(),
       )));

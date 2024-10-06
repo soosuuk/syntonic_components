@@ -25,8 +25,9 @@ class SyntonicToggleButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     EdgeInsets _padding = const EdgeInsets.symmetric(
       horizontal: 8,
-      vertical: 16,
+      vertical: 0,
     );
+    // EdgeInsets _padding = EdgeInsets.zero;
     return ListenableProvider(
       create: (context) =>
           SyntonicToggleButtonsManager(selectedStates: selectedStates),

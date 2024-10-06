@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:path/path.dart';
@@ -121,13 +122,73 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
   @override
   Widget build(BuildContext context) {
-    // if (kIsWeb) {
-    //   this.platformType = PlatformType.Web;
-    // } else if (Platform.isIOS) {
-    //   this.platformType = PlatformType.Ios;
-    // } else if (Platform.isAndroid) {
-    //   this.platformType = PlatformType.Android;
-    // }
+    // FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    // CollectionReference events = _firestore.collection('events');
+    // return StreamBuilder<DocumentSnapshot>(
+    //   stream: events.doc('1HMP0f3xwXOEFHdrM7GV').snapshots(),
+    //   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    //     print(snapshot.toString());
+    //     if (snapshot.hasError) {
+    //       print('えらーーー');
+    //       return Text('Something went wrong');
+    //     }
+    //
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return Text("Loading...");
+    //     }
+    //
+    //     var data = snapshot.data!.data() as Map<String, dynamic>;
+    //     print(data);
+    //
+    //     Widget child() {
+    //       // if (isChild || !hasAds) {
+    //       if (true) {
+    //         return GestureDetector(
+    //           onTap: () {
+    //             FocusManager.instance.primaryFocus!.unfocus();
+    //           },
+    //           child: _screen(vm, context),
+    //         );
+    //       } else {
+    //         return Column(
+    //           children: [
+    //             Expanded(
+    //                 child: GestureDetector(
+    //                   onTap: () {
+    //                     FocusManager.instance.primaryFocus!.unfocus();
+    //                   },
+    //                   child: _screen(vm, context),
+    //                 )),
+    //             ads(context: context)
+    //           ],
+    //         );
+    //       }
+    //     }
+    //
+    //     bool _isDarkTheme =
+    //         MediaQuery.of(context).platformBrightness == Brightness.dark;
+    //     return riverpod.Consumer(builder: (context, ref, _) {
+    //       // if (false) {
+    //       if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+    //         late ColorScheme _colorScheme;
+    //         if (colorScheme != null) {
+    //           _colorScheme = colorScheme!;
+    //         }
+    //
+    //         if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+    //           _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
+    //         }
+    //         return Theme(
+    //           data: _isDarkTheme
+    //               ? darkTheme(colorScheme: _colorScheme)
+    //               : lightTheme(colorScheme: _colorScheme),
+    //           child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),),
+    //         );
+    //       } else {
+    //         return ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),);
+    //       }});
+    //   },
+    // );
 
     Widget child() {
       // if (isChild || !hasAds) {
@@ -245,30 +306,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     return riverpod.Consumer(builder: (context, ref, child) {
       if (!isChild) {
         viewModel.scrollController = PrimaryScrollController.of(context)..addListener(() {
-          // if (floatingActionButton(context: context, ref: ref) != null &&
-          //     scrollNotification is UserScrollNotification) {
-
-          // if (viewModel.scrollController!.offset == 100) {
-          //   print('でゅれーそん');
-          //   Future.microtask(() => viewModel.scrollController!.animateTo(0,
-          //       duration: Duration(milliseconds: 600), curve: Curves.easeIn));
-          //
-          //   // Future.microtask(() => viewModel.scrollController!.animateTo(snapOffset,
-          //   //     duration: Duration(milliseconds: 200), curve: Curves.easeIn));
-          //
-          // }
-
-          // if (viewModel.scrollController!.position is ScrollEndNotification) {
-          //   print('離した」');
-          //   if (viewModel.scrollController!.position.userScrollDirection ==
-          //       ScrollDirection.reverse) {
-          //     Future.microtask(() => viewModel.scrollController!.animateTo(0,
-          //         duration: Duration(milliseconds: 600), curve: Curves.easeIn));
-          //   } else {
-          //     Future.microtask(() => viewModel.scrollController!.animateTo(viewModel.scrollController!.position.maxScrollExtent,
-          //         duration: Duration(milliseconds: 600), curve: Curves.easeIn));
-          //   }
-          // }
           viewModel.offset =  viewModel.scrollController!.offset;
 
           if (viewModel.scrollController!.position.userScrollDirection ==
@@ -279,14 +316,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           } else if (viewModel.scrollController!.position.userScrollDirection ==
               ScrollDirection.forward) {
             if (viewModel.state.isFloatingActionButtonExtended == false) {
-              // print('でゅれーそん');
-              // Future.microtask(() => viewModel.scrollController!.animateTo(0,
-              //     duration: Duration(milliseconds: 600), curve: Curves.easeIn));
-
               viewModel.state = viewModel.state.copyWith(isFloatingActionButtonExtended: true) as VS;
             }
           }
-          // }
         });
       }
       bool _isInitialized = ref.watch(provider.select((viewState) => viewState.isInitialized));
@@ -298,23 +330,18 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               return NestedScrollView(
                 headerSliverBuilder: (_, __) {
                   return <Widget>[
-                    // SyntonicSliverAppBar(
-                    //     isFullscreenDialog:
-                    //     hasAppBar ? appBar(context: context, ref: ref)!.isFullscreenDialog : false,
-                    //     title: hasAppBar ? appBar(context: context, ref: ref)!.title : null),
+                    SyntonicSliverAppBar(
+                        isFullscreenDialog:
+                        hasAppBar ? appBar(context: context, ref: ref)!.isFullscreenDialog : false,
+                        title: hasAppBar ? appBar(context: context, ref: ref)!.title : null),
                   ];
                 },
                 body: _errorScreen,
               );
             } else if (projectSnap.connectionState == ConnectionState.done) {
-              // viewModel.state = viewModel.state.copyWith(isInitialized: true);
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                // ref.read(aProvider.notifier).state = 1;
                 this.viewModel(ref).initialize = true;
               });
-              // this.viewModel(ref).state =
-              // this.viewModel(ref).state.copyWith(isInitialized: true) as VS;
-              // (viewModel as VM).state = (viewModel as VM).state.copyWith(isInitialized: true) as VS;
               return _body(context: context, ref: ref);
             } else {
               if (viewModel.state.isSkeletonLoadingApplied) {
@@ -327,16 +354,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                       context: context,
                     )
                         : null,
-                    // appBar: hasAppBar
-                    //     ? SyntonicSliverAppBar.fixed(
-                    //     title: appBar(context: context, ref: ref)!.title ?? '',
-                    //     context: context,
-                    //     needsNavigationDrawer:
-                    //     appBar(context: context, ref: ref)!.needsNavigationDrawer,
-                    //     trailing: appBar(context: context, ref: ref)!.trailing)
-                    //     : null,
-                    bottomSheet: bottomSheet,
-                    bottomNavigationBar: isChild || !hasAds ? isChild || !hasAds ? SizedBox() : ads(context: context) : SizedBox(),
+                    bottomNavigationBar: isChild || !hasAds ? isChild || !hasAds ? SizedBox() : Column(children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), ads(context: context)],) : SizedBox(),
                   ),
                   const Center(child: CircularProgressIndicator())
                 ]);
@@ -347,15 +365,11 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       } else {
         return _body(context: context, ref: ref);
       }
-      // );
     });
   }
 
   /// Get body.
   Widget _body({required BuildContext context, required riverpod.WidgetRef ref}) {
-    // return riverpod.Consumer(builder: (context, ref, child) {
-    // _ref = ref;
-
     Widget _child = DefaultTabController(
       length: hasTabBar ? 2 : 0,
       // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
@@ -364,7 +378,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           return mainContents(context: context, ref: ref);
         } else {
           return NestedScrollView(
-            // controller: viewModel(ref).scrollController,
             headerSliverBuilder: (_, __) {
               return <Widget>[
                 hasHeader
@@ -437,11 +450,11 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         return Scaffold(
           drawer: navigationDrawer(context: context),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.endContained,
+              FloatingActionButtonLocation.endFloat,
           floatingActionButton: _floatingActionButtons(context: context),
           body: isChild ? _child : _notificationListener(context: context, ref: ref, child: _child),
-          bottomSheet: bottomSheet,
-          bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
+          // bottomSheet: bottomSheet,
+          bottomNavigationBar: isChild || !hasAds ? SizedBox() : Column(mainAxisSize: MainAxisSize.min, children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), ads(context: context)],),
         );
       } else {
         return DefaultTabController(
@@ -449,13 +462,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
             child: Scaffold(
               drawer: navigationDrawer(context: context),
-              // appBar: AppBar(title: const Body2Text(text: 'title',), flexibleSpace: headerContents(context: context, ref: ref), toolbarHeight: MediaQuery.of(context).size.height * 0.7,),
-              // appBar: _appBar as PreferredSizeWidget,
               body: riverpod.Consumer(
                 builder: (context, ref, child) {
-                  // _ref = ref;
                   return NestedScrollView(
-                    // controller: viewModel(ref).scrollController,
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[];
@@ -464,30 +473,36 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                   );
                 },
               ),
-              bottomSheet: bottomSheet,
+              bottomSheet: bottomSheet(context: context, ref: ref),
               bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
             ));
       }
     } else {
       if (isChild) {
+        print(this.runtimeType);
+        print('こども');
         return riverpod.Consumer(
           builder: (context, ref, child) {
-            // _ref = ref;
-            return mainContents(context: context, ref: ref);
-            // return _notificationListener(context: context, ref: ref);
+            return Column(
+              children: [
+                if (headerContents(context: context, ref: ref) != null)
+                  headerContents(context: context, ref: ref)!,
+                Expanded(
+                  child: mainContents(context: context, ref: ref),
+                ),
+              ],
+            );
           },
         );
       } else {
         return Scaffold(
-          // floatingActionButton: _floatingActionButtons(context: context, ref: ref),
           body: riverpod.Consumer(
             builder: (context, ref, child) {
-              // _ref = ref;
               return mainContents(context: context, ref: ref);
               // return _notificationListener(context: context, ref: ref);
             },
           ),
-          bottomSheet: bottomSheet,
+          bottomSheet: bottomSheet(context: context, ref: ref),
           bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
         );
       }
@@ -578,28 +593,15 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       {required BuildContext context, required riverpod.WidgetRef ref, required Widget child}) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
-        // if (floatingActionButton(context: context, ref: ref) != null &&
-        //     scrollNotification is UserScrollNotification) {
-        //   if (scrollNotification.direction == ScrollDirection.reverse) {
-        //     if (viewModel(ref).state.isFloatingActionButtonExtended == true) {
-        //       print('リバース');
-        //       viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: false) as VS;
-        //     }
-        //   } else if (scrollNotification.direction == ScrollDirection.forward) {
-        //     print('リバース');
-        //     if (viewModel(ref).state.isFloatingActionButtonExtended == false) {
-        //       viewModel(ref).state = viewModel(ref).state.copyWith(isFloatingActionButtonExtended: true) as VS;
-        //     }
-        //   }
-        // }
         print('サイズ');
         print(viewModel(ref).state.height);
         print(viewModel(ref).state.tabBarHeight);
 
-
+        if (!viewModel(ref).canScrollHeaderAutomatically) {
+          return false;
+        }
 
         if (scrollNotification is ScrollUpdateNotification && scrollNotification.metrics.axis == Axis.vertical) {
-
           if (viewModel(ref).state.height == null ||  scrollNotification.dragDetails != null) {
             print('とめた');
             return false;
@@ -664,21 +666,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           }
         }
 
-        // if (!needsSliverAppBar) {
-        //   if (scrollNotification.metrics.pixels <=
-        //       scrollNotification.metrics.minScrollExtent) {
-        //     if (!ref.read(provider).isStickyingAppBar) {
-        //       ref.read(provider).isStickyingAppBar = true;
-        //       ref.read(provider).notifier();
-        //     }
-        //   } else {
-        //     if (ref.read(provider).isStickyingAppBar) {
-        //       ref.read(provider).isStickyingAppBar = false;
-        //       ref.read(provider).notifier();
-        //     }
-        //   }
-        // }
-
         return false;
       },
       child: canSwipeToRefresh(context: context, ref: ref)
@@ -711,7 +698,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   }
 
   /// Bottom sheet.
-  Widget? get bottomSheet => null;
+  Widget? bottomSheet({required BuildContext context, required riverpod.WidgetRef ref}) => null;
 
   /// The function that is executed,
   /// when the content is scrolled down to the bottom of a screen.
@@ -876,7 +863,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   Widget? _floatingActionButtons({required BuildContext context}) {
     if (hasFAB) {
       if (hasFABSecondary) {
-        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 40 + 32 : 0), child: Column(
+        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 0 : 0), child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -885,7 +872,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               _floatingActionButton(),
             ]),);
       } else {
-        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 40 + 32 : 0), child: _floatingActionButton(),);
+        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 0 : 0), child: _floatingActionButton(),);
       }
     } else {
       return null;
@@ -1089,6 +1076,7 @@ abstract class BaseViewModel<VS extends BaseViewState>
   GlobalKey _c = GlobalKey();
   double offset = 0;
   bool isScrollingAutomatically = false;
+  bool canScrollHeaderAutomatically = true;
 
   @override
   set state(VS value) {

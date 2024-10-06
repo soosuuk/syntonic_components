@@ -29,7 +29,7 @@ class SyntonicGridView extends ListItem {
       bool hasRemainder = widgetList.length < 2;
       rows.add(Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Flexible(child: widgetList[0]),
-        SizedBox(width: (hasPadding) ? 16 : 0),
+        SizedBox(width: 8),
         hasRemainder
             ? const Flexible(child: SizedBox(width: 0))
             : Flexible(child: widgetList[1])

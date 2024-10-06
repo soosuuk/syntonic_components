@@ -3,11 +3,11 @@ part of '../../widgets/syntonic_base_view.dart';
 extension SyntonicStringListExtension on List<String> {
   /// Combine text strings in [textList] with no space.
   String combineWithNoSpace() {
-    String conbinedString = '';
+    String combinedString = '';
     for (int i = 0; i < length; i++) {
-      conbinedString += this[i];
+      combinedString += this[i];
     }
-    return conbinedString;
+    return combinedString;
   }
 
   /// Combine text strings in [textList] with comma.

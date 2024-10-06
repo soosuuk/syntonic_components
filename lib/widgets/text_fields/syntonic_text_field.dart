@@ -159,6 +159,9 @@ class SyntonicTextField extends StatelessWidget {
             TextFormField(
               key: PageStorageKey(itemKey),
               // initialValue: value,
+              // inputFormatters: [
+              //   _UpperCaseTextFormatter(),
+              // ],
               autofocus: isFocusRequired,
               enabled: isEnabled,
               controller: controller,
@@ -450,6 +453,9 @@ class FitTextFieldState extends State<FitTextField> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
+            // inputFormatters: [
+            //   _UpperCaseTextFormatter(),
+            // ],
             cursorWidth: _CURSOR_WIDTH,
             style: style,
             controller: widget.controller,
@@ -487,7 +493,7 @@ class FitTextFieldState extends State<FitTextField> {
             keyboardType: widget.maxLines != null
                 ? TextInputType.multiline
                 : widget.keyboardType,
-            inputFormatters: widget.inputFormatters,
+            // inputFormatters: widget.inputFormatters,
             // onChanged: (text) {
             //   if (onTextChanged != null) {
             //     onTextChanged!(text.isEmpty ? null : text);
@@ -507,3 +513,13 @@ class FitTextFieldState extends State<FitTextField> {
     );
   }
 }
+
+// class _UpperCaseTextFormatter extends TextInputFormatter {
+//   @override
+//   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+//     return TextEditingValue(
+//       text: newValue.text.toUpperCase(),
+//       selection: newValue.selection,
+//     );
+//   }
+// }

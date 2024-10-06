@@ -68,7 +68,7 @@ class SyntonicListItem extends ListItem {
   /// Default padding is 16.
   ///
   /// Default value is true.
-  final bool hasPadding;
+  final EdgeInsetsGeometry padding;
 
   final bool isReorderMode;
 
@@ -189,7 +189,7 @@ class SyntonicListItem extends ListItem {
       this.crossAxisAlignment = CrossAxisAlignment.start,
       this.textCrossAxisAlignment = CrossAxisAlignment.center,
       this.needsSeeMore = false,
-      this.hasPadding = true,
+      this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       this.isReorderMode = false,
       this.titleMaxLines,
       this.subtitle,
@@ -242,7 +242,7 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
+        if (subtitle?.isNotEmpty == true) {
           subtitleWidget = Subtitle2Text(
               text: subtitle!,
               textColor: subTitleColor,
@@ -263,7 +263,7 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
+        if (subtitle?.isNotEmpty == true) {
           subtitleWidget = Body2Text(
               text: subtitle!,
               textColor: subTitleColor,
@@ -284,7 +284,7 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
+        if (subtitle?.isNotEmpty == true) {
           subtitleWidget = Body2Text(
               text: subtitle!,
               textColor: subTitleColor,
@@ -305,8 +305,8 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
-          subtitleWidget = CaptionText(
+        if (subtitle?.isNotEmpty == true) {
+          subtitleWidget = Body2Text(
               text: subtitle!,
               textColor: subTitleColor,
               overflow: needsSubtitleOverFlowStateVisible!
@@ -326,8 +326,8 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
-          subtitleWidget = CaptionText(
+        if (subtitle?.isNotEmpty == true) {
+          subtitleWidget = Body2Text(
               text: subtitle!,
               textColor: subTitleColor,
               overflow: needsSubtitleOverFlowStateVisible!
@@ -347,7 +347,7 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
+        if (subtitle?.isNotEmpty == true) {
           subtitleWidget = CaptionText(
               text: subtitle!,
               textColor: subTitleColor,
@@ -368,7 +368,7 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
+        if (subtitle?.isNotEmpty == true) {
           subtitleWidget = Subtitle2Text(
               text: subtitle!,
               textColor: subTitleColor,
@@ -389,8 +389,8 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
-          subtitleWidget = Subtitle2Text(
+        if (subtitle?.isNotEmpty == true) {
+          subtitleWidget = Subtitle1Text(
               text: subtitle!,
               textColor: subTitleColor,
               overflow: TextOverflow.visible,
@@ -408,7 +408,7 @@ class SyntonicListItem extends ListItem {
                 : TextOverflow.ellipsis,
             textAlign: textAlign,
             maxLines: titleMaxLines);
-        if (subtitle != null) {
+        if (subtitle?.isNotEmpty == true) {
           subtitleWidget = Headline5Text(
               text: subtitle!,
               textColor: subTitleColor,
@@ -638,8 +638,7 @@ class SyntonicListItem extends ListItem {
           onTap: isReorderMode ? null : onTap,
           child: Column(children: [
             Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: hasPadding ? _verticalPadding : 0),
+                padding: padding,
                 color: backgroundColor,
                 child: Row(
                   crossAxisAlignment: textCrossAxisAlignment,
@@ -653,7 +652,7 @@ class SyntonicListItem extends ListItem {
                         //     ),
                         //     child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
                         // )
-                        : SizedBox(width: hasPadding ? 16 : 0),
+                        : SizedBox(),
                     Expanded(
                       child: Column(
                           crossAxisAlignment: crossAxisAlignment,
@@ -681,7 +680,7 @@ class SyntonicListItem extends ListItem {
                         //         child: isReorderMode
                         //             ? const Icon(Icons.drag_handle)
                         //             : trailingWidget),))
-                        : SizedBox(width: hasPadding ? 16 : 0),
+                        : SizedBox(),
                   ],
                 )),
             if (hasDivider) SyntonicDivider()
@@ -698,8 +697,7 @@ class SyntonicListItem extends ListItem {
           onTap: isReorderMode ? null : onTap,
           child: Column(children: [
             Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: hasPadding ? _verticalPadding : 0),
+                padding: padding,
                 color: backgroundColor,
                 child: Row(
                   crossAxisAlignment: textCrossAxisAlignment,
@@ -718,7 +716,7 @@ class SyntonicListItem extends ListItem {
                             // top: -10,
                             // child: this.leadingWidget!)
                             )
-                        : SizedBox(width: hasPadding ? 16 : 0),
+                        : SizedBox(),
                     Expanded(
                       child: Column(
                           crossAxisAlignment: crossAxisAlignment,
@@ -745,7 +743,7 @@ class SyntonicListItem extends ListItem {
                                       ? const Icon(Icons.drag_handle)
                                       : trailingWidget),
                             ))
-                        : SizedBox(width: hasPadding ? 16 : 0),
+                        : SizedBox(),
                   ],
                 )),
             if (hasDivider) SyntonicDivider()
@@ -758,7 +756,7 @@ class SyntonicListItem extends ListItem {
   /// If needs [optionalWidgetTitle] or[optionalWidgetSubtitle], Set after
   /// [titleWidget] or [subtitleWidget].
   Widget get _texts {
-    if (subtitle != null) {
+    if (subtitleWidget != null) {
       return Column(
         children: <Widget>[
           Row(

@@ -266,9 +266,9 @@ class SyntonicSliverAppBar extends StatelessWidget
         SyntonicListItem(
           title: (title == null || title == '') ? 'No title' : title!,
           subtitle: subtitle,
-          titleTextStyle: TitleTextStyle.Subtitle2,
+          titleTextStyle: TitleTextStyle.Subtitle1,
           hasDivider: false,
-          hasPadding: false,
+          padding: EdgeInsets.zero,
           titleColor: accentColor,
           trailingWidget: trailing,
           needsTitleOverFlowStateVisible: false,
@@ -293,14 +293,7 @@ class SyntonicSliverAppBar extends StatelessWidget
           ? null
           : useCloseButton
               ? SyntonicAnimationEnhancer(
-                  child: SyntonicIcon(
-                    colorScheme: Theme.of(context).colorScheme,
-                  padding: 0,
-                  icon: Icons.close,
-                  onPressed: () =>
-                      onBackButtonPressed ?? Navigator.pop(context),
-                  size: IconSize.normal,
-                ))
+                  child: CloseButton(onPressed: () => onBackButtonPressed ?? Navigator.pop(context),))
               : BackButton(onPressed: onBackButtonPressed, color: accentColor),
       iconTheme: IconThemeData(
         color: accentColor, //change your color here

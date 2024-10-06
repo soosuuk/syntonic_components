@@ -9,10 +9,11 @@ import '../buttons/syntonic_button.dart';
 abstract class SyntonicModalBottomSheet<
     VM extends SyntonicModalBottomSheetViewModel<VS>,
     VS extends SyntonicModalBottomSheetViewState> {
-  const SyntonicModalBottomSheet({Key? key, required this.vm, this.initialSize})
+  const SyntonicModalBottomSheet({Key? key, required this.actionName, required this.vm, this.initialSize})
       : super();
   final VM vm;
   final double? initialSize;
+  final String actionName;
 
   VM viewModel(WidgetRef ref) => ref.read(provider.notifier);
   StateNotifierProvider<VM, VS> get provider =>
@@ -69,26 +70,24 @@ abstract class SyntonicModalBottomSheet<
         snapSizes: [vm.minExtent],
         controller: viewModel(ref).controller,
         builder: (BuildContext context, ScrollController scrollController) {
-          return MaterialApp(
-            theme: Theme.of(context),
-            home: Scaffold(
-              // appBar: AppBar(
-              //   title: Text('Example'),
-              // ),
-              body: Stack(
-                alignment: AlignmentDirectional.topEnd,
-                children: [
-                  Navigator(
+          return Scaffold(
+            // appBar: AppBar(
+            //   title: Text('Example'),
+            // ),
+            body: Stack(
+              alignment: AlignmentDirectional.topEnd,
+              children: [
+                Navigator(
                   onGenerateRoute: (context) => MaterialPageRoute<S>(
-                builder: (context) => SingleChildScrollView(
-            controller: scrollController,
-            physics: const ClampingScrollPhysics(),
-            child: child(context: context, ref: ref),
-          )),
-          ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [Center(child: Container(
+                      builder: (context) => SingleChildScrollView(
+                        controller: scrollController,
+                        physics: const ClampingScrollPhysics(),
+                        child: child(context: context, ref: ref),
+                      )),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [Center(child: Container(
                     width: 32,
                     height: 4,
                     decoration: BoxDecoration(
@@ -97,12 +96,12 @@ abstract class SyntonicModalBottomSheet<
                     ),
                   ),),
                     Padding(padding: EdgeInsets.only(top: 12),child: SyntonicButton.transparent(onTap: () {
+                      onPop(context: context, ref: ref);
                       Navigator.of(context).pop();
                       // actionAddingViewModel.pageController.jumpToPage(0);
-                    }, text: 'done'),)
+                    }, text: actionName),)
                   ],)
-                ],
-              ),
+              ],
             ),
           );
         },

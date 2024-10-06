@@ -48,13 +48,11 @@ class SyntonicChoiceChip extends StatelessWidget {
             text: label,
             textColor: isSelected
                 ? Theme.of(context).colorScheme.primary
-                : isDarkTheme
-                ? Colors.white70
-                : SyntonicColor.black88,),
+                : null,),
         ),
         backgroundColor: isSelected
             ? Theme.of(context).colorScheme.primary.toAlpha
-            : Colors.transparent,
+            : Theme.of(context).colorScheme.surface,
         // shape: StadiumBorder(
         //     side: BorderSide(
         //         width: 0.5,
