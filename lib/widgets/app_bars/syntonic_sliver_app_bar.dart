@@ -38,6 +38,7 @@ class SyntonicSliverAppBar extends StatelessWidget
   final bool hasTabBar;
   final PreferredSizeWidget? bottom;
   final String? manualUrl;
+  final Widget? leading;
   final Widget? trailing;
   final _AppBarState state;
 
@@ -62,6 +63,7 @@ class SyntonicSliverAppBar extends StatelessWidget
     this.scrollController,
     this.hasTabBar = false,
     this.manualUrl,
+    this.leading,
     this.trailing,
     required this.state,
   });
@@ -89,7 +91,8 @@ class SyntonicSliverAppBar extends StatelessWidget
       ScrollController? scrollController,
       bool hasTabBar = false,
       String? manualUrl,
-      Widget? trailing})
+      Widget? trailing,
+      Widget? leading})
       : this._(
             state: _AppBarState.flexible,
             context: context,
@@ -112,6 +115,7 @@ class SyntonicSliverAppBar extends StatelessWidget
             scrollController: scrollController,
             hasTabBar: hasTabBar,
             manualUrl: manualUrl,
+            leading: leading,
             trailing: trailing);
 
   /// App bar for normal state.
@@ -136,6 +140,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       ScrollController? scrollController,
       bool hasTabBar = false,
       String? manualUrl,
+        Widget? leading,
       Widget? trailing})
       : this._(
             state: _AppBarState.fixed,
@@ -159,6 +164,7 @@ class SyntonicSliverAppBar extends StatelessWidget
             scrollController: scrollController,
             hasTabBar: hasTabBar,
             manualUrl: manualUrl,
+            leading: leading,
             trailing: trailing);
 
   /// App bar for fullscreen dialog.
@@ -183,11 +189,13 @@ class SyntonicSliverAppBar extends StatelessWidget
     SyntonicSearchBox? searchBox,
     String? subtitle,
     String? manualUrl,
+    Widget? leading,
     Widget? trailing,
   }) : this._(
             state: _AppBarState.flexible,
             context: context,
             title: title,
+            leading: leading,
             trailing: trailing,
             manualUrl: manualUrl,
             actions: actionIcons != null
@@ -270,6 +278,7 @@ class SyntonicSliverAppBar extends StatelessWidget
           hasDivider: false,
           padding: EdgeInsets.zero,
           titleColor: accentColor,
+          leadingWidget: leading,
           trailingWidget: trailing,
           needsTitleOverFlowStateVisible: false,
           needsSubtitleOverFlowStateVisible: false,
@@ -383,11 +392,13 @@ class SyntonicSliverAppBar extends StatelessWidget
 }
 
 class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
-  const StickyTabBarDelegate(
+  static final GlobalKey _textKey = GlobalKey();
+
+  StickyTabBarDelegate(
       {required this.tabBar,
-      required this.tabBarHeader,
+      required Widget? tabBarHeader,
       required this.setStickyState,
-      required this.height});
+      required this.height}) : tabBarHeader = Container(key: _textKey, child: tabBarHeader,);
   final TabBar tabBar;
   final Widget? tabBarHeader;
   final Function(bool) setStickyState;
@@ -417,12 +428,35 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
     return _height;
   }
 
+  double _getTextHeight() {
+    final context = _textKey.currentContext;
+    if (context != null) {
+      final renderBox = context.findRenderObject() as RenderBox?;
+      if (renderBox != null) {
+        return renderBox.size.height;
+      }
+    }
+    return 0.0;
+  }
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setStickyState(overlapsContent);
     });
+    //
+    // return Container(
+    //   color: Theme.of(context).colorScheme.surface,
+    //   child: Column(
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       tabBarHeader ?? const SizedBox(),
+    //       tabBar,
+    //     ],
+    //   ),
+    // );
+
     // bool isDarkTheme =
     //     MediaQuery.of(context).platformBrightness == Brightness.dark;
 
@@ -436,7 +470,8 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
         elevation: overlapsContent ? 3.0 : 0,
         color: _color,
         child: Column(
-          children: [tabBarHeader ?? const SizedBox(), tabBar],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [tabBarHeader ?? const SizedBox(), Padding(padding: EdgeInsets.symmetric(horizontal:24), child: tabBar,)],
         ));
   }
 

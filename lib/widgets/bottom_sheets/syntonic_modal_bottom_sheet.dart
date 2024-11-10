@@ -87,15 +87,15 @@ abstract class SyntonicModalBottomSheet<
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [Center(child: Container(
+                  children: [Center(child: Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Container(
                     width: 32,
                     height: 4,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.outlineVariant,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                  ),),
-                    Padding(padding: EdgeInsets.only(top: 12),child: SyntonicButton.transparent(onTap: () {
+                  ),),),
+                    Padding(padding: EdgeInsets.only(top: 12, left: 16),child: SyntonicButton.transparent(onTap: () {
                       onPop(context: context, ref: ref);
                       Navigator.of(context).pop();
                       // actionAddingViewModel.pageController.jumpToPage(0);

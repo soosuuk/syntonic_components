@@ -487,7 +487,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 0,right: 24),
                           child: SyntonicAnimationEnhancer(
-                            child: listItem!(index),
+                            child: listItem != null ? listItem!(index) : const SizedBox(),
                           ),
                         ),
                       ),

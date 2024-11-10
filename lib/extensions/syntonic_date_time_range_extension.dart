@@ -71,6 +71,14 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
     }
   }
 
+  List<DateTime> toList() {
+    List<DateTime> dateTimes = [];
+    for (int i = 0; i <= end.difference(start).inDays; i++) {
+      dateTimes.add(DateTime(start.year, start.month, start.day + i));
+    }
+    return dateTimes;
+  }
+
   // /// Format a [dateTime] to string (yyyy/MM/dd).
   // String toText({bool needsTime = false}) {
   //   if (needsTime) {

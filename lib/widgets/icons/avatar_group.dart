@@ -13,7 +13,7 @@ class AvatarGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(onTap: onPressed, child: Stack(
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.bottomLeft,
       children: [
         for (var i = 0; i < persons.length + 1; i++)
           Row(
@@ -25,7 +25,7 @@ class AvatarGroup extends StatelessWidget {
               Flexible(
                   child: i < persons.length
                       ? SyntonicPersonIcon(
-                    needsMainStaffBorder: true,
+                    needsMainStaffBorder: false,
                     person: persons[i],
                     type: IconSize.small,
                     hasPadding: false,

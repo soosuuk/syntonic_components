@@ -17,7 +17,7 @@ enum TextFieldTheme {
   underline,
 }
 
-class SyntonicTextField extends StatelessWidget {
+class SyntonicTextField extends StatefulWidget {
   /// [errorMessage] is display to below the text field.
   /// [label] is a name of the text field.
   /// [value] is entered texts.
@@ -48,10 +48,12 @@ class SyntonicTextField extends StatelessWidget {
   final String? hintText;
   final bool hasBorder;
   final FocusNode? focusNode;
+  final Function(bool)? onFocusChanged;
+  final bool isScalable;
 
   TextInputAction? get _textInputAction =>
       textInputAction ??
-      ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
+          ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
   OutlinedTextFieldType get outlinedTextFieldType => needsMasking
       ? OutlinedTextFieldType.Obscure
       : OutlinedTextFieldType.Normal;
@@ -82,6 +84,8 @@ class SyntonicTextField extends StatelessWidget {
     this.hintText,
     this.hasBorder = true,
     this.focusNode,
+    this.onFocusChanged,
+    this.isScalable = false,
   });
 
   const SyntonicTextField.outlined({
@@ -109,204 +113,148 @@ class SyntonicTextField extends StatelessWidget {
     String? hintText,
     bool hasBorder = true,
     FocusNode? focusNode,
+    Function(bool)? onFocusChanged,
+    bool isScalable = false,
   }) : this._(
-            label: label,
-            onFocused: onFocused,
-            onTextChanged: onTextChanged,
-            value: value,
-            errorMessage: errorMessage,
-            maxLines: maxLines,
-            minLines: minLines,
-            hasPadding: hasPadding,
-            helperText: helperText,
-            validator: validator,
-            textInputAction: textInputAction,
-            keyboardType: keyboardType,
-            inputFormatters: inputFormatters,
-            controller: controller,
-            isEnabled: isEnabled,
-            isFocusRequired: isFocusRequired,
-            needsMasking: needsMasking,
-            itemKey: itemKey,
-            theme: theme,
-            textAlign: textAlign,
-            textStyle: textStyle,
-            hintText: hintText,
-            hasBorder: hasBorder, focusNode: focusNode);
+      label: label,
+      onFocused: onFocused,
+      onTextChanged: onTextChanged,
+      value: value,
+      errorMessage: errorMessage,
+      maxLines: maxLines,
+      minLines: minLines,
+      hasPadding: hasPadding,
+      helperText: helperText,
+      validator: validator,
+      textInputAction: textInputAction,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      controller: controller,
+      isEnabled: isEnabled,
+      isFocusRequired: isFocusRequired,
+      needsMasking: needsMasking,
+      itemKey: itemKey,
+      theme: theme,
+      textAlign: textAlign,
+      textStyle: textStyle,
+      hintText: hintText,
+      hasBorder: hasBorder, focusNode: focusNode, onFocusChanged: onFocusChanged, isScalable: isScalable);
 
-  // static final TextEditingController _controller = TextEditingController();
+  @override
+  _SyntonicTextFieldState createState() => _SyntonicTextFieldState();
+}
+
+class _SyntonicTextFieldState extends State<SyntonicTextField> {
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+    widget.controller.addListener(_updateScale);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_handleFocusChange);
+    if (widget.focusNode == null) {
+      _focusNode.dispose();
+    }
+    widget.controller.removeListener(_updateScale);
+    super.dispose();
+  }
+
+  void _handleFocusChange() {
+    if (widget.onFocusChanged != null) {
+      widget.onFocusChanged!(_focusNode.hasFocus);
+    }
+  }
+
+  void _updateScale() {
+    setState(() {});
+  }
+
+  int _countLineWraps(String text, double maxWidth, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: null,
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: maxWidth);
+
+    return textPainter.computeLineMetrics().length - 1;
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TextEditingController _controller = TextEditingController();
-    // set value of the text fields.
-    if (controller.text.isEmpty && value != null) {
-      controller.text = value!;
+    if (widget.controller.text.isEmpty && widget.value != null) {
+      widget.controller.text = widget.value!;
     }
-    //
-    // set cursor position at the end of the value.
-    // controller.selection = TextSelection.fromPosition(
-    //     TextPosition(offset: controller.text.length));
+
+    final double maxWidth = MediaQuery.of(context).size.width - 32; // Adjust for padding
+    final TextStyle baseStyle = widget.textStyle ?? TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 16, height: 1.25, letterSpacing: -0.2);
+    int lineWrapCount = _countLineWraps(widget.controller.text, maxWidth, baseStyle);
+    double scale = 1.0;
+    if (widget.isScalable) {
+      int lineWrapCount = _countLineWraps(widget.controller.text, maxWidth, baseStyle);
+      scale = 1.0 - (lineWrapCount * 0.1).clamp(0.0, 0.3);
+    }
+    final TextStyle scaledStyle = baseStyle.copyWith(fontSize: baseStyle.fontSize! * scale);
 
     return RepaintBoundary(
       child: Padding(
-        padding: hasPadding
+        padding: widget.hasPadding
             ? const EdgeInsets.symmetric(vertical: 8, horizontal: 16)
             : EdgeInsets.zero,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              key: PageStorageKey(itemKey),
-              // initialValue: value,
-              // inputFormatters: [
-              //   _UpperCaseTextFormatter(),
-              // ],
-              autofocus: isFocusRequired,
-              enabled: isEnabled,
-              controller: controller,
-              maxLines: maxLines,
-              minLines: minLines,
-              validator: validator,
+              key: PageStorageKey(widget.itemKey),
+              autofocus: widget.isFocusRequired,
+              enabled: widget.isEnabled,
+              controller: widget.controller,
+              maxLines: widget.maxLines,
+              minLines: widget.minLines,
+              validator: widget.validator,
               decoration: InputDecoration(
-                hintText: hintText,
-                // hintStyle: GoogleFonts.roboto(
-                //   textStyle: textStyle != null ? textStyle!.copyWith(color: Colors.white) : null,
-                //   fontWeight: FontWeight.w400,
-                //   // fontStyle: FontStyle.italic,
-                //   // height: 1,
-                //   // letterSpacing: -2,
-                // ),
-                labelText: label,
-                errorText: errorMessage,
-                helperText: helperText,
-                border: theme == TextFieldTheme.outlined
+                hintText: widget.hintText,
+                labelText: widget.label,
+                errorText: widget.errorMessage,
+                helperText: widget.helperText,
+                border: widget.theme == TextFieldTheme.outlined
                     ? const OutlineInputBorder()
                     : InputBorder.none,
-                suffixIcon: errorMessage != null
+                suffixIcon: widget.errorMessage != null
                     ? SyntonicIcon(
-                        icon: Icons.error, colorScheme: ColorScheme.fromSeed(seedColor: SyntonicColor.torch_red))
+                    icon: Icons.error, colorScheme: ColorScheme.fromSeed(seedColor: SyntonicColor.torch_red))
                     : null,
-                contentPadding: theme == TextFieldTheme.underline
+                contentPadding: widget.theme == TextFieldTheme.underline
                     ? const EdgeInsets.all(0)
                     : null,
-                isDense: theme == TextFieldTheme.underline,
+                isDense: widget.theme == TextFieldTheme.underline,
               ),
-              textInputAction: _textInputAction,
-              textAlign: textAlign ?? TextAlign.start,
-              keyboardType:
-                  maxLines != null ? TextInputType.multiline : keyboardType,
-              inputFormatters: inputFormatters,
-              focusNode: focusNode,
+              textInputAction: widget._textInputAction,
+              textAlign: widget.textAlign ?? TextAlign.start,
+              keyboardType: widget.maxLines != null ? TextInputType.multiline : widget.keyboardType,
+              inputFormatters: widget.inputFormatters,
+              focusNode: _focusNode,
               onChanged: (text) {
-                if (onTextChanged != null) {
-                  onTextChanged!(text.isEmpty ? null : text);
+                if (widget.onTextChanged != null) {
+                  widget.onTextChanged!(text.isEmpty ? null : text);
                 }
               },
-              onTap: () => onFocused!(),
-              // onSaved: (text) => onTextChanged(controller.text),
-              style: textStyle,
+              onTap: () => widget.onFocused!(),
+              style: scaledStyle,
             ),
-            const SizedBox(
-              height: 2,
-            ),
-            // hasBorder
-            //     ? SyntonicDivider(
-            //         hasDotted: true,
-            //       )
-            //     : const SizedBox()
+            // const SizedBox(
+            //   height: 2,
+            // ),
           ],
         ),
       ),
     );
-
-    // return ListenableProvider(
-    //     create: (context) => OutlinedTextFieldManager(),
-    //     child: Consumer<OutlinedTextFieldManager>(
-    //         builder: (context, model, child) {
-    //           return Padding(padding: hasPadding ? const EdgeInsets.only(left: 16, right: 16) : EdgeInsets.zero, child: getTextFormField(context, model),);
-    //     }));
   }
-
-  // /// Get text form field depends on [outlinedTextFieldType].
-  // Widget getTextFormField(
-  //     BuildContext context, OutlinedTextFieldManager outlinedTextFieldManager) {
-  //
-  //   // set value of the text fields.
-  //   _controller.text = value ?? '';
-  //
-  //   // set cursor position at the end of the value.
-  //   _controller.selection = TextSelection.fromPosition(
-  //       TextPosition(offset: _controller.text.length));
-  //
-  //   switch (outlinedTextFieldType) {
-  //     case OutlinedTextFieldType.Normal:
-  //       return TextFormField(
-  //         key: PageStorageKey(itemKey),
-  //         enabled: isEnabled,
-  //         controller: controller ?? _controller,
-  //         maxLines: maxLines,
-  //         minLines: minLines,
-  //         validator: validator,
-  //         decoration: InputDecoration(
-  //           hintText: hintText,
-  //           labelText: label,
-  //           errorText: errorMessage,
-  //           helperText: helperText,
-  //           border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
-  //           suffixIcon: errorMessage != null
-  //               ? const SyntonicIcon(icon: Icons.error, color: SyntonicColor.torch_red)
-  //               : null,
-  //         ),
-  //         textInputAction: _textInputAction,
-  //         keyboardType: keyboardType,
-  //         inputFormatters: inputFormatters,
-  //         onFieldSubmitted: (text) {
-  //           onTextChanged(text);
-  //         },
-  //         onChanged: (text) {
-  //           onTextChanged(text);
-  //         },
-  //         style: textStyle,
-  //       );
-  //     case OutlinedTextFieldType.Obscure:
-  //       return Stack(alignment: Alignment.centerRight, children: [
-  //         TextFormField(
-  //           key: PageStorageKey(itemKey),
-  //           controller: controller,
-  //           validator: validator,
-  //           obscureText: !outlinedTextFieldManager.isVisible,
-  //           decoration: InputDecoration(
-  //             hintText: hintText,
-  //             labelText: label,
-  //             errorText: errorMessage,
-  //             border: theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
-  //           ),
-  //           textInputAction: TextInputAction.done,
-  //           onFieldSubmitted: (text) {
-  //             onTextChanged(text);
-  //           },
-  //           onChanged: (text) {
-  //             onTextChanged(text);
-  //           },
-  //           style: textStyle,
-  //         ),
-  //         Positioned(
-  //           top: 6,
-  //           right: 0,
-  //           child: IconButton(
-  //             icon: Icon(!outlinedTextFieldManager.isVisible
-  //                 ? Icons.visibility_off
-  //                 : Icons.visibility),
-  //             onPressed: () {
-  //               // value = controller.text;
-  //               outlinedTextFieldManager.changeTextVisibilityState();
-  //             },
-  //           ),
-  //         ),
-  //       ]);
-  //   }
-  // }
 }
 
 class OutlinedTextFieldManager extends ChangeNotifier {
@@ -523,3 +471,61 @@ class FitTextFieldState extends State<FitTextField> {
 //     );
 //   }
 // }
+
+
+class ScaledTextField extends StatefulWidget {
+  final TextEditingController controller;
+
+  const ScaledTextField({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  _ScaledTextFieldState createState() => _ScaledTextFieldState();
+}
+
+class _ScaledTextFieldState extends State<ScaledTextField> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_updateScale);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_updateScale);
+    super.dispose();
+  }
+
+  void _updateScale() {
+    setState(() {});
+  }
+
+  int _countLineWraps(String text, double maxWidth, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: null,
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: maxWidth);
+
+    return textPainter.computeLineMetrics().length - 1;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double maxWidth = MediaQuery.of(context).size.width - 32; // Adjust for padding
+    final TextStyle style = Theme.of(context).textTheme.bodyMedium!;
+    int lineWrapCount = _countLineWraps(widget.controller.text, maxWidth, style);
+    double scale = 1.0 - (lineWrapCount * 0.1).clamp(0.0, 0.5);
+
+    return Transform.scale(
+      scale: scale,
+      child: TextFormField(
+        controller: widget.controller,
+        maxLines: null, // Allow multiple lines
+        decoration: InputDecoration(
+          labelText: 'Enter text',
+        ),
+        style: style,
+      ),
+    );
+  }
+}

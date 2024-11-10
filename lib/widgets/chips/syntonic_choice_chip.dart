@@ -42,6 +42,9 @@ class SyntonicChoiceChip extends StatelessWidget {
         //       color: Colors.redAccent,
         //     )),
 
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
         label: SizedBox(
           // width: double.infinity,
           child: Body2Text(

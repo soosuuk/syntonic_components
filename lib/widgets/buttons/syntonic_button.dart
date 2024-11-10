@@ -132,7 +132,7 @@ class SyntonicButton extends StatelessWidget {
       backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.onSurface),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4), // ここでcorner radiusを指定
+          borderRadius: BorderRadius.circular(30), // ここでcorner radiusを指定
         ),
       ),
     );

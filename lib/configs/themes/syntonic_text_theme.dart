@@ -45,7 +45,8 @@ class SyntonicTextTheme {
     // cormorant fraurence sourceserif4 saira manrope interTight prommpt rubik hind msmadi leagueSpartan libreBaskerville greatVibes
     // return const TextStyle(fontFamily: 'swiss721 Medium', fontWeight: FontWeight.w400, fontSize: 30, height: 1.17, letterSpacing: 0.2);
     // return const TextStyle(fontFamily: 'swiss721 Medium', fontWeight: FontWeight.w400, fontSize: 32, height: 1.2, letterSpacing: -0.9);
-    return const TextStyle(fontFamily: 'social', fontWeight: FontWeight.w400, fontSize: 24, height: 1.27, letterSpacing: -0.7);
+    return TextStyle(fontFamily: 'caslon 540 italic', fontWeight: FontWeight.w400, fontSize: 48, color: textColor, letterSpacing: -1, height: 1.10);
+
     return typeface1(
       textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 28),
       fontWeight: isBold ? FontWeight.w500 : FontWeight.w200,
@@ -73,7 +74,7 @@ class SyntonicTextTheme {
     //   );
     // }
 
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w300, fontSize: 30, color: textColor, letterSpacing: 0.3, height: 1.05);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 30, color: textColor, letterSpacing: -0.2, height: 1.12);
 
 
     return typeface1(
@@ -95,7 +96,7 @@ class SyntonicTextTheme {
     //   );
     // }
 
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w400, fontSize: 18, color: textColor, height: 1.24, letterSpacing: 1);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 22, color: textColor, height: 1.24, letterSpacing: 0);
 
     return typeface2(
       textStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 20),
@@ -114,7 +115,7 @@ class SyntonicTextTheme {
     //     height: 1,
     //   );
     // }
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w400, fontSize: 18, color: textColor, height: 1.17, letterSpacing: 0.5);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 18, color: textColor, height: 1.32, letterSpacing: -0.2);
 
     return typeface2(
         textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
@@ -134,7 +135,7 @@ class SyntonicTextTheme {
     //     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 26),
     //   );
     // }
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w400, fontSize: 16, color: textColor, height: 1.27);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 18, color: textColor, height: 1);
 
     return typeface2(
         textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16),
@@ -155,7 +156,7 @@ class SyntonicTextTheme {
     // }
     // workSansselif
 
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w300, fontSize: 16, color: textColor, height: 1.44, letterSpacing: 0);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w300, fontSize: 16, color: textColor, height: 1.44, letterSpacing: -0.2);
 
     return typeface3(
         textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 17),
@@ -177,7 +178,7 @@ class SyntonicTextTheme {
     //     textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 24),
     //   );
     // }
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w100, fontSize: 14, color: textColor, letterSpacing: 0.4, height: 1.5);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w100, fontSize: 14, color: textColor, letterSpacing: -0.2, height: 1);
 
     return typeface3(
       color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
@@ -203,7 +204,7 @@ class SyntonicTextTheme {
 
     var brightness = MediaQuery.of(context).platformBrightness;
 
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w300, fontSize: 14, color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant, height: 1.27, letterSpacing: 1.7);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w300, fontSize: 14, color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant, height: 1, letterSpacing: -0.2);
 
     return typeface3(
         textStyle: Theme.of(context).textTheme.bodyMedium,
@@ -228,7 +229,7 @@ class SyntonicTextTheme {
 
     var brightness = MediaQuery.of(context).platformBrightness;
 
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w300, fontSize: 12, color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant, height: 1.2, letterSpacing: 0.4);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w300, fontSize: 12, color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant, height: 1.2, letterSpacing: 0.4);
 
     return typeface3(
       textStyle: Theme.of(context).textTheme.titleSmall,
@@ -253,7 +254,7 @@ class SyntonicTextTheme {
 
     var brightness = MediaQuery.of(context).platformBrightness;
 
-    return TextStyle(fontFamily: 'social', fontWeight: FontWeight.w300, fontSize: 10, color: textColor);
+    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w300, fontSize: 10, color: textColor);
 
     return typeface3(
       textStyle: Theme.of(context).textTheme.labelSmall,

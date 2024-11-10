@@ -22,6 +22,8 @@ ThemeData lightTheme({ColorScheme? colorScheme}) {
     surface: Colors.white,
     primary: increaseSaturation(colorScheme?.primary ?? _primaryColor, 0.8),
     primaryContainer: increaseSaturation(colorScheme?.primaryContainer ?? _primaryColor, 1),
+    onSurface: Color(0xFF1E1E1E),
+    onSurfaceVariant: Color(0xFF707070),
     background: Colors.white,
   );
 

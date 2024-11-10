@@ -28,7 +28,7 @@ class SyntonicCard extends StatelessWidget {
   final bool isGlassmorphismEnabled;
 
   const SyntonicCard(
-      {this.borderRadius = 4,
+      {this.borderRadius = 16,
       this.onTap,
       this.isSelected = false,
       this.image,
@@ -85,7 +85,7 @@ class SyntonicCard extends StatelessWidget {
         MediaQuery.of(context).platformBrightness == Brightness.dark;
     Widget _card = Card(
       // color: isGlassmorphismEnabled ? Colors.transparent : null,
-      color: colorScheme != null ? colorScheme!.primaryContainer : Colors.transparent,
+      color: colorScheme != null ? colorScheme!.surface : Colors.transparent,
       surfaceTintColor: colorScheme != null ? colorScheme!.surfaceTint : null,
       shadowColor: colorScheme != null ? Colors.transparent : null,
       elevation: elevation,
@@ -112,7 +112,7 @@ class SyntonicCard extends StatelessWidget {
                   ? darkTheme(colorScheme: colorScheme)
                   : lightTheme(colorScheme: colorScheme)
               : Theme.of(context),
-          child: _card);
+          child: Padding(padding: hasPadding ? EdgeInsets.symmetric(horizontal: 16, vertical: 8) : EdgeInsets.zero, child: _card,));
     } else {
       return _card;
     }

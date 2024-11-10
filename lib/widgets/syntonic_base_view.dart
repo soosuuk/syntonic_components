@@ -69,7 +69,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       this.hasFABSecondary = false,
       this.isPage = false,
       this.colorScheme,
-      this.hasAds = true})
+      this.hasAds = true,
+      this.useStreamBuilder = false,})
       : super(key: key);
 
   final VM vm;
@@ -83,6 +84,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   final bool isPage;
   final ColorScheme? colorScheme;
   final bool hasAds;
+  final bool useStreamBuilder;
 
   Future<AdSize?> _getAdSize(BuildContext context) async {
     // if (vm.adSize != null) {
@@ -122,122 +124,65 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    // CollectionReference events = _firestore.collection('events');
-    // return StreamBuilder<DocumentSnapshot>(
-    //   stream: events.doc('1HMP0f3xwXOEFHdrM7GV').snapshots(),
-    //   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-    //     print(snapshot.toString());
-    //     if (snapshot.hasError) {
-    //       print('えらーーー');
-    //       return Text('Something went wrong');
-    //     }
-    //
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return Text("Loading...");
-    //     }
-    //
-    //     var data = snapshot.data!.data() as Map<String, dynamic>;
-    //     print(data);
-    //
-    //     Widget child() {
-    //       // if (isChild || !hasAds) {
-    //       if (true) {
-    //         return GestureDetector(
-    //           onTap: () {
-    //             FocusManager.instance.primaryFocus!.unfocus();
-    //           },
-    //           child: _screen(vm, context),
-    //         );
-    //       } else {
-    //         return Column(
-    //           children: [
-    //             Expanded(
-    //                 child: GestureDetector(
-    //                   onTap: () {
-    //                     FocusManager.instance.primaryFocus!.unfocus();
-    //                   },
-    //                   child: _screen(vm, context),
-    //                 )),
-    //             ads(context: context)
-    //           ],
-    //         );
-    //       }
-    //     }
-    //
-    //     bool _isDarkTheme =
-    //         MediaQuery.of(context).platformBrightness == Brightness.dark;
-    //     return riverpod.Consumer(builder: (context, ref, _) {
-    //       // if (false) {
-    //       if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-    //         late ColorScheme _colorScheme;
-    //         if (colorScheme != null) {
-    //           _colorScheme = colorScheme!;
-    //         }
-    //
-    //         if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-    //           _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
-    //         }
-    //         return Theme(
-    //           data: _isDarkTheme
-    //               ? darkTheme(colorScheme: _colorScheme)
-    //               : lightTheme(colorScheme: _colorScheme),
-    //           child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),),
-    //         );
-    //       } else {
-    //         return ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),);
-    //       }});
-    //   },
-    // );
-
-    Widget child() {
-      // if (isChild || !hasAds) {
-      if (true) {
-        return GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus!.unfocus();
-          },
-          child: _screen(vm, context),
-        );
-      } else {
-        return Column(
-          children: [
-            Expanded(
-                child: GestureDetector(
-              onTap: () {
-                FocusManager.instance.primaryFocus!.unfocus();
-              },
-              child: _screen(vm, context),
-            )),
-            ads(context: context)
-          ],
-        );
+      Widget child() {
+        // if (isChild || !hasAds) {
+        if (true) {
+          return GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus!.unfocus();
+            },
+            child: _screen(vm, context),
+          );
+        } else {
+          return Column(
+            children: [
+              Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      FocusManager.instance.primaryFocus!.unfocus();
+                    },
+                    child: _screen(vm, context),
+                  )),
+              ads(context: context)
+            ],
+          );
+        }
       }
-    }
 
-    bool _isDarkTheme =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
+      Widget _content({required riverpod.WidgetRef ref}) {
+        if (useStreamBuilder) {
+          return buildStreamBuilder(context, child(), ref)!;
+        }
+
+        return child();
+      }
+
+      bool _isDarkTheme =
+          MediaQuery.of(context).platformBrightness == Brightness.dark;
       return riverpod.Consumer(builder: (context, ref, _) {
         // if (false) {
-          if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-        late ColorScheme _colorScheme;
-        if (colorScheme != null) {
-          _colorScheme = colorScheme!;
-        }
+        if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+          late ColorScheme _colorScheme;
+          if (colorScheme != null) {
+            _colorScheme = colorScheme!;
+          }
 
-        if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-          _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
-        }
-        return Theme(
-          data: _isDarkTheme
-              ? darkTheme(colorScheme: _colorScheme)
-              : lightTheme(colorScheme: _colorScheme),
-          child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),),
-        );
-      } else {
-        return ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),);
-      }});
+          if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+            _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
+          }
+          return Theme(
+            data: _isDarkTheme
+                ? darkTheme(colorScheme: _colorScheme)
+                : lightTheme(colorScheme: _colorScheme),
+            child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: _content(ref: ref),),
+          );
+        } else {
+          return ColoredBox(color: Theme.of(context).colorScheme.surface, child: _content(ref: ref),);
+        }});
+
   }
+
+  Widget? buildStreamBuilder(BuildContext context, Widget content, riverpod.WidgetRef ref) => null;
 
   Widget ads({required BuildContext context}) {
     return SafeArea(child: Container(
@@ -304,7 +249,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     // skip initialization, depending on whether [isInitialized] is "true".
     // Because, A screen is Rebuilt if you focus to any text-field.
     return riverpod.Consumer(builder: (context, ref, child) {
-      if (!isChild) {
+      if (!isChild && hasFAB) {
         viewModel.scrollController = PrimaryScrollController.of(context)..addListener(() {
           viewModel.offset =  viewModel.scrollController!.offset;
 
@@ -371,7 +316,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   /// Get body.
   Widget _body({required BuildContext context, required riverpod.WidgetRef ref}) {
     Widget _child = DefaultTabController(
-      length: hasTabBar ? 2 : 0,
+      length: hasTabBar ? 4 : 0,
       // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
       child: riverpod.Consumer(builder: (context, ref, child) {
         if (isPage) {
@@ -481,6 +426,24 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       if (isChild) {
         print(this.runtimeType);
         print('こども');
+        if (bottomSheet(context: context, ref: ref) != null) {
+          return Scaffold(
+            body: riverpod.Consumer(
+              builder: (context, ref, child) {
+                return Column(
+                  children: [
+                    if (headerContents(context: context, ref: ref) != null)
+                      headerContents(context: context, ref: ref)!,
+                    Expanded(
+                      child: mainContents(context: context, ref: ref),
+                    ),
+                  ],
+                );
+              },
+            ),
+            bottomNavigationBar: Column(mainAxisSize: MainAxisSize.min, children: [bottomSheet(context: context, ref: ref) ?? SizedBox(),],),
+          );
+        }
         return riverpod.Consumer(
           builder: (context, ref, child) {
             return Column(
@@ -987,13 +950,14 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     int _currentIndex = 0;
     if (hasTabBar) {
       return TabBar(
-        dividerColor: ref.watch(
-                provider.select((viewState) => viewState.isStickyingAppBar))
-            ? Colors.transparent
-            : Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
+        // dividerColor: ref.watch(
+        //         provider.select((viewState) => viewState.isStickyingAppBar))
+        //     ? Colors.transparent
+        //     : Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
         controller: tabController,
         isScrollable:
             tabs(context: context, ref: ref)!.length > 2 ? true : false,
+        tabAlignment: TabAlignment.start,
         onTap: (_index) {
           if (tabController != null
               ? !tabController!.indexIsChanging

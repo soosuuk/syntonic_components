@@ -75,6 +75,7 @@ dependencies:
   uuid: ^3.0.7
   version: ^3.0.2
   visibility_detector: ^0.3.3
+  vs_scrollbar: ^1.0.0
 #  web_browser_detect: ^2.0.2
 dev_dependencies:
   drift_dev: ^2.2.0+1
