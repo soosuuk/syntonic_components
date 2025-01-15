@@ -57,6 +57,6 @@ extension SyntonicStringExtension on String {
   String get withoutUrl {
     RegExp _regExp = RegExp(
         r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
-    return replaceAll(_regExp, '');
+    return replaceAll(_regExp, '').replaceAll('\n', '').replaceAll('\r', '');
   }
 }

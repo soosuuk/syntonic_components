@@ -46,31 +46,33 @@ class SyntonicDivider extends StatelessWidget {
       return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final double lineWidth = constraints.maxWidth; // Dividerの横幅
-          const double dashWidth = 4.0; // 点線の幅
+          const double dashWidth = 1.0; // 点線の幅
           const double dashSpace = 2.0; // 線と線の間隔
 
           // 点線の個数を計算
           int dashCount = (lineWidth / (dashWidth + dashSpace)).floor();
 
           return SizedBox(
-            width: lineWidth,
-            height: 1.0, // Dividerの高さ
+            width: type == DividerType.horizontal ? lineWidth : 1.0,
+            height: type == DividerType.horizontal ? 1.0 : height ?? double.infinity,
             child: ListView.builder(
               itemCount: dashCount,
               scrollDirection: type == DividerType.horizontal
                   ? Axis.horizontal
-                  : Axis.horizontal,
+                  : Axis.vertical,
               itemBuilder: (BuildContext context, int index) {
-                // 各点線の描画
                 return Container(
-                  width: dashWidth,
-                  height: 1.0, // 点線の高さ
+                  width: type == DividerType.horizontal ? dashWidth : 1.0,
+                  height: type == DividerType.horizontal ? 1.0 : dashWidth,
                   color: color ??
                       Theme.of(context)
                           .colorScheme
                           .onSurface
-                          .withOpacity(0.38), // 点線の色
-                  margin: const EdgeInsets.symmetric(horizontal: dashSpace),
+                          .withOpacity(0.38),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: type == DividerType.horizontal ? dashSpace : 0.0,
+                    vertical: type == DividerType.horizontal ? 0.0 : dashSpace,
+                  ),
                 );
               },
             ),
@@ -92,13 +94,13 @@ class SyntonicDivider extends StatelessWidget {
                 color: color ?? Theme.of(context).colorScheme.outline,
               );
       case DividerType.horizontal:
-        return Divider(
+        return Padding(padding: EdgeInsets.symmetric(horizontal: 20,), child: Divider(
           thickness: _thickness,
           color: color ??
               (isBold
                   ? SyntonicColor().backgroundFilled
                   : Theme.of(context).colorScheme.outline),
-        );
+        ),);
     }
   }
 }

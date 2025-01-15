@@ -25,11 +25,14 @@ ThemeData lightTheme({ColorScheme? colorScheme}) {
     onSurface: Color(0xFF1E1E1E),
     onSurfaceVariant: Color(0xFF707070),
     background: Colors.white,
+    outline: SyntonicColor().divider,
+    outlineVariant: colorScheme?.outlineVariant.withAlpha(95),
   );
 
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
+    dividerColor: Colors.transparent,
     colorScheme: _colorScheme,
     // colorScheme: ColorScheme.light(
     //   primary: primaryColor ?? SyntonicColor.primary_color,

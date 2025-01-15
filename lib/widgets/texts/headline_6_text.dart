@@ -42,5 +42,5 @@ class Headline6Text extends BaseText {
 
   @override
   TextStyle textStyle({required BuildContext context}) =>
-      SyntonicTextTheme.headline6(context: context, textColor: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant);
+      SyntonicTextTheme.headline6(context: context, textColor: textColor ?? Theme.of(context).colorScheme.onSurface);
 }

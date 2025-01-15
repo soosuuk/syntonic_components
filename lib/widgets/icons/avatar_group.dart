@@ -15,7 +15,7 @@ class AvatarGroup extends StatelessWidget {
     return InkWell(onTap: onPressed, child: Stack(
       alignment: Alignment.bottomLeft,
       children: [
-        for (var i = 0; i < persons.length + 1; i++)
+        for (var i = 0; i < (persons.length > 4 ? 4 : persons.length) + 1; i++)
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -23,7 +23,7 @@ class AvatarGroup extends StatelessWidget {
                 width: (i * (1 - .4) * 24).toDouble(),
               ),
               Flexible(
-                  child: i < persons.length
+                  child: i < (persons.length > 4 ? 4 : persons.length)
                       ? SyntonicPersonIcon(
                     needsMainStaffBorder: false,
                     person: persons[i],

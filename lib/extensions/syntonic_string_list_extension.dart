@@ -12,6 +12,9 @@ extension SyntonicStringListExtension on List<String> {
 
   /// Combine text strings in [textList] with comma.
   String combineWithComma() {
+    if (length == 0) {
+      return '';
+    }
     String combinedString = '';
     for (int i = 0; i < length; i++) {
       combinedString += '${this[i]}, ';

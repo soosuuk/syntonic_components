@@ -139,11 +139,12 @@ class SyntonicPopupMenuButton extends StatelessWidget {
             _buttonList.add(SyntonicDialogButtonInfoModel(
                 buttonTxt: 'Cancel', buttonAction: () {}));
             _buttonList.add(SyntonicDialogButtonInfoModel(
-                buttonTxt: 'OK', buttonAction: onDeleteTap));
+                buttonTxt: 'Delete', buttonAction: onDeleteTap));
             showDialog(
                 context: context,
                 builder: (context) => SyntonicDialog(
-                      content: 'Can i delete?',
+                      title: 'Can i delete?',
+                      content: 'Once deleted, it cannot be restored.',
                       buttonInfoList: _buttonList,
                     ));
           }));

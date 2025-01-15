@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
+import 'dart:math';
 
 import 'base_view_state.dart';
 import 'buttons/syntonic_floating_action_button.dart';
@@ -55,22 +56,22 @@ abstract class ExtendedModel {
 
 // ignore: must_be_immutable
 abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
-    VS extends BaseViewState> extends StatelessWidget {
+VS extends BaseViewState> extends StatelessWidget {
   const SyntonicBaseView(
       {Key? key,
-      required this.vm,
-      this.childViews,
-      this.globalKey,
-      this.hasAppBar = true,
-      this.hasHeader = false,
-      this.hasTabBar = false,
-      this.isChild = false,
-      this.hasFAB = false,
-      this.hasFABSecondary = false,
-      this.isPage = false,
-      this.colorScheme,
-      this.hasAds = true,
-      this.useStreamBuilder = false,})
+        required this.vm,
+        this.childViews,
+        this.globalKey,
+        this.hasAppBar = true,
+        this.hasHeader = false,
+        this.hasTabBar = false,
+        this.isChild = false,
+        this.hasFAB = false,
+        this.hasFABSecondary = false,
+        this.isPage = false,
+        this.colorScheme,
+        this.hasAds = true,
+        this.useStreamBuilder = false,})
       : super(key: key);
 
   final VM vm;
@@ -86,6 +87,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   final bool hasAds;
   final bool useStreamBuilder;
 
+
   Future<AdSize?> _getAdSize(BuildContext context) async {
     // if (vm.adSize != null) {
     //   print('こうこくある');
@@ -98,8 +100,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             ? Orientation.portrait
             : Orientation.landscape,
         MediaQuery.of(context).size.width.toInt()).then((value) {
-          print('ADサイズ');
-          vm.adSize = value;
+      print('ADサイズ');
+      vm.adSize = value;
     });
     return vm.adSize;
   }
@@ -124,62 +126,121 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
   @override
   Widget build(BuildContext context) {
-      Widget child() {
-        // if (isChild || !hasAds) {
-        if (true) {
-          return GestureDetector(
-            onTap: () {
-              FocusManager.instance.primaryFocus!.unfocus();
-            },
-            child: _screen(vm, context),
-          );
-        } else {
-          return Column(
-            children: [
-              Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      FocusManager.instance.primaryFocus!.unfocus();
-                    },
-                    child: _screen(vm, context),
-                  )),
-              ads(context: context)
-            ],
-          );
-        }
+    // FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    // CollectionReference events = _firestore.collection('events');
+    // return StreamBuilder<DocumentSnapshot>(
+    //   stream: events.doc('1HMP0f3xwXOEFHdrM7GV').snapshots(),
+    //   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    //     print(snapshot.toString());
+    //     if (snapshot.hasError) {
+    //       print('えらーーー');
+    //       return Text('Something went wrong');
+    //     }
+    //
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return Text("Loading...");
+    //     }
+    //
+    //     var data = snapshot.data!.data() as Map<String, dynamic>;
+    //     print(data);
+    //
+    //     Widget child() {
+    //       // if (isChild || !hasAds) {
+    //       if (true) {
+    //         return GestureDetector(
+    //           onTap: () {
+    //             FocusManager.instance.primaryFocus!.unfocus();
+    //           },
+    //           child: _screen(vm, context),
+    //         );
+    //       } else {
+    //         return Column(
+    //           children: [
+    //             Expanded(
+    //                 child: GestureDetector(
+    //                   onTap: () {
+    //                     FocusManager.instance.primaryFocus!.unfocus();
+    //                   },
+    //                   child: _screen(vm, context),
+    //                 )),
+    //             ads(context: context)
+    //           ],
+    //         );
+    //       }
+    //     }
+    //
+    //     bool _isDarkTheme =
+    //         MediaQuery.of(context).platformBrightness == Brightness.dark;
+    //     return riverpod.Consumer(builder: (context, ref, _) {
+    //       // if (false) {
+    //       if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+    //         late ColorScheme _colorScheme;
+    //         if (colorScheme != null) {
+    //           _colorScheme = colorScheme!;
+    //         }
+    //
+    //         if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+    //           _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
+    //         }
+    //         return Theme(
+    //           data: _isDarkTheme
+    //               ? darkTheme(colorScheme: _colorScheme)
+    //               : lightTheme(colorScheme: _colorScheme),
+    //           child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),),
+    //         );
+    //       } else {
+    //         return ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),);
+    //       }});
+    //   },
+    // );
+
+    Widget child() {
+      // if (isChild || !hasAds) {
+      if (true) {
+        return GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus!.unfocus();
+          },
+          child: _screen(vm, context),
+        );
+      } else {
+        return Column(
+          children: [
+            Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    FocusManager.instance.primaryFocus!.unfocus();
+                  },
+                  child: _screen(vm, context),
+                )),
+            ads(context: context)
+          ],
+        );
       }
+    }
 
-      Widget _content({required riverpod.WidgetRef ref}) {
-        if (useStreamBuilder) {
-          return buildStreamBuilder(context, child(), ref)!;
+    bool _isDarkTheme =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    return riverpod.Consumer(builder: (context, ref, _) {
+      // if (false) {
+      if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+        late ColorScheme _colorScheme;
+        if (colorScheme != null) {
+          _colorScheme = colorScheme!;
         }
 
-        return child();
-      }
-
-      bool _isDarkTheme =
-          MediaQuery.of(context).platformBrightness == Brightness.dark;
-      return riverpod.Consumer(builder: (context, ref, _) {
-        // if (false) {
-        if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-          late ColorScheme _colorScheme;
-          if (colorScheme != null) {
-            _colorScheme = colorScheme!;
-          }
-
-          if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-            _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
-          }
-          return Theme(
-            data: _isDarkTheme
-                ? darkTheme(colorScheme: _colorScheme)
-                : lightTheme(colorScheme: _colorScheme),
-            child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: _content(ref: ref),),
-          );
-        } else {
-          return ColoredBox(color: Theme.of(context).colorScheme.surface, child: _content(ref: ref),);
-        }});
-
+        if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
+          _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
+        }
+        return Theme(
+          data: _isDarkTheme
+              ? darkTheme(colorScheme: _colorScheme)
+              : lightTheme(colorScheme: _colorScheme),
+          child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: useStreamBuilder ? buildStreamBuilder(context, child(), ref) : child(),),
+        );
+      } else {
+        return ColoredBox(color: Theme.of(context).colorScheme.surface, child: useStreamBuilder ? buildStreamBuilder(context, child(), ref) : child(),);
+      }});
   }
 
   Widget? buildStreamBuilder(BuildContext context, Widget content, riverpod.WidgetRef ref) => null;
@@ -249,8 +310,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     // skip initialization, depending on whether [isInitialized] is "true".
     // Because, A screen is Rebuilt if you focus to any text-field.
     return riverpod.Consumer(builder: (context, ref, child) {
-      if (!isChild && hasFAB) {
+      if (hasFAB && !isChild) {
         viewModel.scrollController = PrimaryScrollController.of(context)..addListener(() {
+          print(this.runtimeType);
           viewModel.offset =  viewModel.scrollController!.offset;
 
           if (viewModel.scrollController!.position.userScrollDirection ==
@@ -267,7 +329,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         });
       }
       bool _isInitialized = ref.watch(provider.select((viewState) => viewState.isInitialized));
-      if (viewModel.state.needsInitialize && !viewModel.state.isInitialized) {
+      if (viewModel.state.needsInitialize && !viewModel.state.isInitialized && !viewModel._isInitializing) {
         return FutureBuilder(
           future: viewModel.onInit(context: context),
           builder: (context, projectSnap) {
@@ -316,7 +378,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   /// Get body.
   Widget _body({required BuildContext context, required riverpod.WidgetRef ref}) {
     Widget _child = DefaultTabController(
-      length: hasTabBar ? 4 : 0,
+      length: hasTabBar ? 2 : 0,
       // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
       child: riverpod.Consumer(builder: (context, ref, child) {
         if (isPage) {
@@ -395,7 +457,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         return Scaffold(
           drawer: navigationDrawer(context: context),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.endFloat,
+          FloatingActionButtonLocation.endFloat,
           floatingActionButton: _floatingActionButtons(context: context),
           body: isChild ? _child : _notificationListener(context: context, ref: ref, child: _child),
           // bottomSheet: bottomSheet,
@@ -426,24 +488,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       if (isChild) {
         print(this.runtimeType);
         print('こども');
-        if (bottomSheet(context: context, ref: ref) != null) {
-          return Scaffold(
-            body: riverpod.Consumer(
-              builder: (context, ref, child) {
-                return Column(
-                  children: [
-                    if (headerContents(context: context, ref: ref) != null)
-                      headerContents(context: context, ref: ref)!,
-                    Expanded(
-                      child: mainContents(context: context, ref: ref),
-                    ),
-                  ],
-                );
-              },
-            ),
-            bottomNavigationBar: Column(mainAxisSize: MainAxisSize.min, children: [bottomSheet(context: context, ref: ref) ?? SizedBox(),],),
-          );
-        }
         return riverpod.Consumer(
           builder: (context, ref, child) {
             return Column(
@@ -465,6 +509,9 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               // return _notificationListener(context: context, ref: ref);
             },
           ),
+          floatingActionButtonLocation:
+          FloatingActionButtonLocation.endFloat,
+          floatingActionButton: _floatingActionButtons(context: context),
           bottomSheet: bottomSheet(context: context, ref: ref),
           bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
         );
@@ -500,7 +547,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Container(
           padding:
-              !isChild ? EdgeInsets.zero : const EdgeInsets.only(bottom: 100),
+          !isChild ? EdgeInsets.zero : const EdgeInsets.only(bottom: 100),
           child: mainContents(context: context, ref: ref),
         ));
     // child: Center(
@@ -633,12 +680,12 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       },
       child: canSwipeToRefresh(context: context, ref: ref)
           ? RefreshIndicator(
-              // key: GlobalKey<RefreshIndicatorState>(),
-              //   color: SyntonicColor.primary_color,
-              onRefresh: () async {
-                await onSwipeToRefresh(context: context, ref: ref);
-              },
-              child: child)
+        // key: GlobalKey<RefreshIndicatorState>(),
+        //   color: SyntonicColor.primary_color,
+          onRefresh: () async {
+            await onSwipeToRefresh(context: context, ref: ref);
+          },
+          child: child)
           : child,
     );
   }
@@ -681,14 +728,14 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   ///
   /// Default is none.
   Widget? headerContents(
-          {required BuildContext context, required riverpod.WidgetRef ref}) =>
+      {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
 
   /// Get tabs of tab bar.
   ///
   /// Default is none.
   List<Widget>? tabs(
-          {required BuildContext context, required riverpod.WidgetRef ref}) =>
+      {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
 
   /// Get tab controller.
@@ -707,25 +754,25 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   /// Occasionally two FABs can be used, if they perform distinct,
   /// yet equally important, actions.
   FloatingActionButtonModel? floatingActionButton(
-          {required BuildContext context, required riverpod.WidgetRef ref}) =>
+      {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
   FloatingActionButtonModel? floatingActionButtonSecondary(
-          {required BuildContext context, required riverpod.WidgetRef ref}) =>
+      {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
 
   /// Get an action of pull to refresh.
   ///
   /// Default is none.
   Future<dynamic>? onSwipeToRefresh(
-          {required BuildContext context,
-          required riverpod.WidgetRef ref}) async =>
+      {required BuildContext context,
+        required riverpod.WidgetRef ref}) async =>
       viewModel(ref).onInit(context: context);
 
   /// Get whether main content can swipe to refresh.
   ///
   /// Default is false.
   bool canSwipeToRefresh(
-          {required BuildContext context, required riverpod.WidgetRef ref}) =>
+      {required BuildContext context, required riverpod.WidgetRef ref}) =>
       viewModel(ref).state.needsInitialize;
 
   /// Whether needs [SliverAppBar].
@@ -778,11 +825,11 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             ? _tabBar(context: context, ref: ref)!.preferredSize.height
             : 0;
         _height += _tabBar(context: context, ref: ref) == null &&
-                _appBar.searchBox != null
+            _appBar.searchBox != null
             ? 12
             : 0;
         _height +=
-            _appBar.bottom != null ? _appBar.bottom!.preferredSize.height : 0;
+        _appBar.bottom != null ? _appBar.bottom!.preferredSize.height : 0;
 
         return PreferredSize(
             preferredSize: Size.fromHeight(_height),
@@ -901,7 +948,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         (viewModel(ref).state.tabBarHeight ?? 0) -
         72 + 2 : 0;
     return SyntonicFade.off(
-      key: viewModel(ref)._b,
+        key: viewModel(ref)._b,
         zeroOpacityOffset: _ofset / 2,
         //   zeroOpacityOffset: viewModel(ref).state.height - kToolbarHeight < 0 ? 0 : viewModel(ref).state.height - (kToolbarHeight * 3),
         fullOpacityOffset: _ofset,
@@ -939,7 +986,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   }
 
   Widget? tabBarHeader(
-          {required BuildContext context, required riverpod.WidgetRef ref}) =>
+      {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
 
   ///TODO: InfiniteLoadingListViewなどで、scrollControllerをセットしていないと、エラーになるので、必ずセットするようにするなどチェックを検討する。
@@ -950,14 +997,13 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     int _currentIndex = 0;
     if (hasTabBar) {
       return TabBar(
-        // dividerColor: ref.watch(
-        //         provider.select((viewState) => viewState.isStickyingAppBar))
-        //     ? Colors.transparent
-        //     : Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
+        dividerColor: ref.watch(
+            provider.select((viewState) => viewState.isStickyingAppBar))
+            ? Colors.transparent
+            : Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
         controller: tabController,
         isScrollable:
-            tabs(context: context, ref: ref)!.length > 2 ? true : false,
-        tabAlignment: TabAlignment.start,
+        tabs(context: context, ref: ref)!.length > 2 ? true : false,
         onTap: (_index) {
           if (tabController != null
               ? !tabController!.indexIsChanging
@@ -966,8 +1012,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             print(viewModel(ref).state.tabBarHeight!.toInt());
             // print((tabs(context: context, ref: ref)![0] as Tab).height!.toInt());
             viewModel(ref).isScrollingAutomatically = true;
-              Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
-                  duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized)).whenComplete(() =>  viewModel(ref).isScrollingAutomatically = false);
+            Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
+                duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized)).whenComplete(() =>  viewModel(ref).isScrollingAutomatically = false);
 
 
             // ref.read(provider).changeFloatingActionButtonState(true);
@@ -1006,33 +1052,11 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   }
 }
 
-abstract class BaseViewModel<VS extends BaseViewState>
-    extends riverpod.StateNotifier<VS> {
-  BaseViewModel({required VS viewState}) : super(viewState) {
-    // scrollController.addListener(() {
-    //   // if (floatingActionButton(context: context, ref: ref) != null &&
-    //   //     scrollNotification is UserScrollNotification) {
-    //   if (scrollController.position.userScrollDirection ==
-    //       ScrollDirection.reverse) {
-    //     if (state.isFloatingActionButtonExtended == true) {
-    //       print('リバース');
-    //       state = state.copyWith(isFloatingActionButtonExtended: false) as VS;
-    //     }
-    //   } else if (scrollController.position.userScrollDirection ==
-    //       ScrollDirection.forward) {
-    //     print('リバース');
-    //     if (state.isFloatingActionButtonExtended == false) {
-    //       state = state.copyWith(isFloatingActionButtonExtended: true) as VS;
-    //     }
-    //   }
-    //   // }
-    // });
-  }
+class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNotifier<VS> {
+  BaseViewModel({required VS viewState}) : super(viewState);
 
-  // bool isInitialized = false;
   final GlobalKey<FormState>? formKey = GlobalKey<FormState>();
   late ScrollController? scrollController;
-  // ..addListener(scrollListener);
   late BannerAd ad;
   late AdSize? adSize;
   late bool isAdLoaded = false;
@@ -1041,6 +1065,7 @@ abstract class BaseViewModel<VS extends BaseViewState>
   double offset = 0;
   bool isScrollingAutomatically = false;
   bool canScrollHeaderAutomatically = true;
+  bool _isInitializing = false; // Add this flag
 
   @override
   set state(VS value) {
@@ -1051,28 +1076,31 @@ abstract class BaseViewModel<VS extends BaseViewState>
   VS get state => super.state;
 
   set initialize(bool isInitialized) {
-    VS  b = state.copyWith(isInitialized: isInitialized) as VS;
+    VS b = state.copyWith(isInitialized: isInitialized) as VS;
     state = b;
   }
+
   @override
   void dispose() {
     onDispose();
     super.dispose();
   }
 
-  Future<dynamic>? onInit({required BuildContext context}) => null;
+  Future<dynamic>? onInit({required BuildContext context}) async {
+    if (_isInitializing) return; // Prevent multiple executions
+    _isInitializing = true;
+    try {
+      // Your initialization logic here
+    } finally {
+      _isInitializing = false;
+    }
+  }
 
   @protected
   void onDispose() {}
 
-  void setCurrentTabIndex(int? index) {
-    // state = state.copyWith(currentTabIndex: index) as VS;
-  }
+  void setCurrentTabIndex(int? index) {}
 
-  /// Validate a [Form] in [view._mainContents].
-  ///
-  /// Execute [onSucceeded] when on the validation pass.
-  /// In the case validation failed, execute [onFailed].
   validate({Function()? onSucceeded, Function()? onFailed}) async {
     if (formKey!.currentState!.validate()) {
       if (onSucceeded != null) {

@@ -25,6 +25,7 @@ ThemeData darkTheme({ColorScheme? colorScheme}) {
       brightness: Brightness.dark,
       onPrimaryContainer: Colors.white,
       surface: colorScheme != null ? colorScheme.surface.tone(0) : null,
+      outline: SyntonicColor().divider,
       onSurface: colorScheme != null ? colorScheme.primary.tone(100) : SyntonicColor.primary_color
           .tone(100)
   );

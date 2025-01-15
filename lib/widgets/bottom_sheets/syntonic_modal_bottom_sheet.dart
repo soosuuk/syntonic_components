@@ -9,11 +9,11 @@ import '../buttons/syntonic_button.dart';
 abstract class SyntonicModalBottomSheet<
     VM extends SyntonicModalBottomSheetViewModel<VS>,
     VS extends SyntonicModalBottomSheetViewState> {
-  const SyntonicModalBottomSheet({Key? key, required this.actionName, required this.vm, this.initialSize})
+  const SyntonicModalBottomSheet({Key? key, this.actionName, required this.vm, this.initialSize})
       : super();
   final VM vm;
   final double? initialSize;
-  final String actionName;
+  final String? actionName;
 
   VM viewModel(WidgetRef ref) => ref.read(provider.notifier);
   StateNotifierProvider<VM, VS> get provider =>
@@ -70,37 +70,67 @@ abstract class SyntonicModalBottomSheet<
         snapSizes: [vm.minExtent],
         controller: viewModel(ref).controller,
         builder: (BuildContext context, ScrollController scrollController) {
-          return Scaffold(
-            // appBar: AppBar(
-            //   title: Text('Example'),
-            // ),
-            body: Stack(
-              alignment: AlignmentDirectional.topEnd,
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              // color: Colors.transparent,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(0),
+              ),
+            ),
+            child: Column(
               children: [
-                Navigator(
-                  onGenerateRoute: (context) => MaterialPageRoute<S>(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Container(
+                          width: 56,
+                          height: 2,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          actionName != null ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                            child:SyntonicButton.transparent(
+                              onTap: () {
+                                onPop(context: context, ref: ref);
+                                Navigator.of(context).pop();
+                              },
+                              text: actionName!,
+                            ),
+                          ) : Padding(padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8), child: IconButton(onPressed: () {
+                            onPop(context: context, ref: ref);
+                            Navigator.of(context).pop();
+                          }, icon: Icon(Icons.close)),),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded( // Add Expanded here to ensure the Navigator gets proper constraints
+                  child: Navigator(
+                    onGenerateRoute: (context) => MaterialPageRoute(
                       builder: (context) => SingleChildScrollView(
                         controller: scrollController,
                         physics: const ClampingScrollPhysics(),
                         child: child(context: context, ref: ref),
-                      )),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [Center(child: Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Container(
-                    width: 32,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),),),
-                    Padding(padding: EdgeInsets.only(top: 12, left: 16),child: SyntonicButton.transparent(onTap: () {
-                      onPop(context: context, ref: ref);
-                      Navigator.of(context).pop();
-                      // actionAddingViewModel.pageController.jumpToPage(0);
-                    }, text: actionName),)
-                  ],)
+                  ),
+                ),
               ],
             ),
           );

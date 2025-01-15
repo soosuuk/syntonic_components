@@ -27,244 +27,279 @@ extension Material3Palette on Color {
 /// If set a value to "letterSpacing", need to convert ems(character spacing / 1000) to pt.
 class SyntonicTextTheme {
   static TextStyle headline1(
-      {required BuildContext context, Color? textColor}) {
-    Locale currentLocale = window.locale;
-
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.mPlus1(
-    //     textStyle:
-    //         Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 48),
-    //     fontWeight: FontWeight.w900,
-    //     // letterSpacing: 1,
-    //     // color: textColor,
-    //     // color: textColor ?? Theme.of(context).colorScheme.onSurface,
-    //     // height: 1.4,
-    //   );
-    // }
-
-    // cormorant fraurence sourceserif4 saira manrope interTight prommpt rubik hind msmadi leagueSpartan libreBaskerville greatVibes
-    // return const TextStyle(fontFamily: 'swiss721 Medium', fontWeight: FontWeight.w400, fontSize: 30, height: 1.17, letterSpacing: 0.2);
-    // return const TextStyle(fontFamily: 'swiss721 Medium', fontWeight: FontWeight.w400, fontSize: 32, height: 1.2, letterSpacing: -0.9);
-    return TextStyle(fontFamily: 'caslon 540 italic', fontWeight: FontWeight.w400, fontSize: 48, color: textColor, letterSpacing: -1, height: 1.10);
-
-    return typeface1(
-      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 28),
-      fontWeight: isBold ? FontWeight.w500 : FontWeight.w200,
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
+    return TextStyle(
+      fontFamily: 'caslon 540 italic',
+      fontWeight: FontWeight.w400,
+      fontSize: 48,
       color: textColor,
-      fontStyle: FontStyle.italic,
-      height: 1.2,
-      letterSpacing: -0.6,
+      letterSpacing: -1,
+      height: 1.10,
+      decoration: isLined ? TextDecoration.underline : null,
     );
-    return GoogleFonts.prompt(
-      textStyle: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 52),
-      fontWeight: FontWeight.w900,
-      fontStyle: FontStyle.italic,
-      letterSpacing: 1.2,
+  }
+
+  static TextStyle headline3(
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
+
+    Locale currentLocale = window.locale;
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.notoSansJp(
+        fontWeight: FontWeight.w400,
+        fontSize: 32,
+        color: textColor,
+        height: 1.16,
+        letterSpacing: -0.38,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
+
+    return TextStyle(
+      fontFamily: 'atacama',
+      fontWeight: FontWeight.w400,
+      fontSize: 32,
+      color: textColor,
+      height: 1.16,
+      letterSpacing: -0.38,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
   static TextStyle headline4(
-      {required BuildContext context, Color? textColor}) {
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
     Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     fontWeight: FontWeight.w300,
-    //     letterSpacing: 1,
-    //     textStyle: Theme.of(context).textTheme.titleMedium,
-    //   );
-    // }
 
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 30, color: textColor, letterSpacing: -0.2, height: 1.12);
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.notoSansJp(
+        fontWeight: FontWeight.w500,
+        fontSize: 27,
+        color: textColor,
+        height: 1.07,
+        letterSpacing: 0.14,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
 
-
-    return typeface1(
-      textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 27),
+    return TextStyle(
+      fontFamily: 'gt-america',
       fontWeight: FontWeight.w500,
-      // letterSpacing: 1,
-      // color: textColor,
-      color: textColor ?? Theme.of(context).colorScheme.onSurface,
-      // height: 1.4,
+      fontSize: 27,
+      color: textColor,
+      height: 1.07,
+      letterSpacing: 0.14,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
   static TextStyle headline5(
-      {required BuildContext context, Color? textColor}) {
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
     Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     textStyle: Theme.of(context).textTheme.headlineSmall,
-    //   );
-    // }
 
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 22, color: textColor, height: 1.24, letterSpacing: 0);
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.notoSansJp(
+        fontWeight: FontWeight.w500,
+        fontSize: 23,
+        color: textColor,
+        height: 1.26,
+        letterSpacing: 0.69,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
 
-    return typeface2(
-      textStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 20),
-      fontWeight: FontWeight.w600,
+    return TextStyle(
+      fontFamily: 'gt-america',
+      fontWeight: FontWeight.w500,
+      fontSize: 23,
       color: textColor,
-      // height: 1.4,
+      height: 1.26,
+      letterSpacing: 0.69,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
   static TextStyle headline6(
-      {required BuildContext context, Color? textColor}) {
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
     Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     textStyle: Theme.of(context).textTheme.headlineSmall,
-    //     height: 1,
-    //   );
-    // }
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 18, color: textColor, height: 1.32, letterSpacing: -0.2);
 
-    return typeface2(
-        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
-        fontWeight: FontWeight.w600,
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.notoSansJp(
+        fontWeight: FontWeight.w500,
+        fontSize: 17,
         color: textColor,
-        // fontStyle: FontStyle.italic,
-        letterSpacing: -0.5,
-        // height: 1.4
+        height: 1.18,
+        letterSpacing: -0.17,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
+
+    return TextStyle(
+      fontFamily: 'gt-america',
+      fontWeight: FontWeight.w500,
+      fontSize: 17,
+      color: textColor,
+      height: 1.18,
+      letterSpacing: -0.17,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
   static TextStyle subtitle1(
-      {required BuildContext context, Color? textColor}) {
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
     Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 26),
-    //   );
-    // }
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 18, color: textColor, height: 1);
 
-    return typeface2(
-        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16),
-        fontWeight: FontWeight.w600,
-        color: textColor ?? Theme.of(context).colorScheme.onSurface,
-        // letterSpacing: 1
-        height: 1.17
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.notoSansJp(
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+        color: textColor,
+        height: 2.36,
+        letterSpacing: 0.70,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
+
+    return TextStyle(
+      fontFamily: 'gt-america',
+      fontWeight: FontWeight.w500,
+      fontSize: 14,
+      color: textColor,
+      height: 2.36,
+      letterSpacing: 0.70,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
   static TextStyle subtitle2(
-      {required BuildContext context, Color? textColor}) {
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
     Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18),
-    //   );
-    // }
-    // workSansselif
 
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w300, fontSize: 16, color: textColor, height: 1.44, letterSpacing: -0.2);
+    if (currentLocale.languageCode == 'ja') {
+      return GoogleFonts.notoSansJp(
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        color: textColor,
+        height: 1.20,
+        letterSpacing: -0.15,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
 
-    return typeface3(
-        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 17),
-        fontWeight: isBold ? FontWeight.w400 : FontWeight.w700,
-            // fontStyle: FontStyle.italic,
-            // .copyWith(fontSize: 23)
-        color: textColor ?? Theme.of(context).colorScheme.onSurface,
-
-        // letterSpacing: -0.8,
-        // height: 1.4
+    return TextStyle(
+      fontFamily: 'gt-america',
+      fontWeight: FontWeight.w500,
+      fontSize: 15,
+      color: textColor,
+      height: 1.20,
+      letterSpacing: -0.15,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
   static TextStyle body1(
-      {required BuildContext context, Color? textColor, bool? isLineThrough}) {
+      {required BuildContext context, Color? textColor, bool? isLineThrough, bool isLined = false}) {
     Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 24),
-    //   );
-    // }
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w100, fontSize: 14, color: textColor, letterSpacing: -0.2, height: 1);
 
-    return typeface3(
-      color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
-      textStyle: Theme.of(context).textTheme.titleMedium,
-      fontWeight: FontWeight.w500,
-      // fontStyle: FontStyle.italic,
-
-      // fontStyle: FontStyle.italic,
-      letterSpacing: 0.5,
-      // height: 1.2,
-      decoration: isLineThrough == true ? TextDecoration.lineThrough : null,
-    );
-  }
-
-  static TextStyle body2({required BuildContext context, Color? textColor}) {
-    Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     fontSize: 15,
-    //     textStyle: Theme.of(context).textTheme.titleMedium,
-    //   );
-    // }
-
-    var brightness = MediaQuery.of(context).platformBrightness;
-
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w300, fontSize: 14, color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant, height: 1, letterSpacing: -0.2);
-
-    return typeface3(
-        textStyle: Theme.of(context).textTheme.bodyMedium,
+    if (currentLocale.languageCode == 'ja') {
+      return TextStyle(
+        fontFamily: 'helvetica',
         fontWeight: FontWeight.w400,
-        // fontStyle: FontStyle.italic,
-        // color: textColor ?? (brightness == Brightness.dark
-        //     ? Colors.white.withAlpha(textLabelMedium)
-        //     : Colors.black.withAlpha(textLabelMedium)),
-        // height: 1.1,
+        fontSize: 15,
+        color: textColor,
+        letterSpacing: -0.15,
+        height: 1.20,
+        decoration: isLined ? TextDecoration.underline : (isLineThrough == true ? TextDecoration.lineThrough : null),
+      );
+    }
+
+    return TextStyle(
+      fontFamily: 'gt-america',
+      fontWeight: FontWeight.w400,
+      fontSize: 15,
+      color: textColor,
+      letterSpacing: -0.15,
+      height: 1.20,
+      decoration: isLined ? TextDecoration.underline : (isLineThrough == true ? TextDecoration.lineThrough : null),
+    );
+  }
+
+  static TextStyle body2(
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
+    Locale currentLocale = window.locale;
+
+    if (currentLocale.languageCode == 'ja') {
+      return TextStyle(
+        fontFamily: 'helvetica',
+        fontWeight: FontWeight.w400,
+        fontSize: 13,
         color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
-        // letterSpacing: 0.15
-    );
-  }
+        height: 1.38,
+        letterSpacing: 0.26,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
 
-  static TextStyle caption({required BuildContext context, Color? textColor}) {
-    Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     textStyle: Theme.of(context).textTheme.bodySmall,
-    //   );
-    // }
-
-    var brightness = MediaQuery.of(context).platformBrightness;
-
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w300, fontSize: 12, color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant, height: 1.2, letterSpacing: 0.4);
-
-    return typeface3(
-      textStyle: Theme.of(context).textTheme.titleSmall,
+    return TextStyle(
+      fontFamily: 'gt-america',
       fontWeight: FontWeight.w400,
-      // fontSize: 13,
-      // color: textColor ?? (brightness == Brightness.dark
-      //     ? Colors.white.withAlpha(textLabelMedium)
-      //     : Colors.black.withAlpha(textLabelMedium)),
+      fontSize: 13,
       color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
-      height: 1.2,
-      letterSpacing: 0.1,
+      height: 1.38,
+      letterSpacing: 0.26,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
-  static TextStyle overline({required BuildContext context, Color? textColor}) {
+  static TextStyle caption(
+      {BuildContext? context, Color? textColor, bool isLined = false}) {
     Locale currentLocale = window.locale;
-    // if (currentLocale.languageCode == 'ja') {
-    //   return GoogleFonts.kaiseiHarunoUmi(
-    //     textStyle: Theme.of(context).textTheme.labelSmall,
-    //   );
-    // }
 
-    var brightness = MediaQuery.of(context).platformBrightness;
+    if (currentLocale.languageCode == 'ja') {
+      return TextStyle(
+        fontFamily: 'helvetica',
+        fontWeight: FontWeight.w400,
+        fontSize: 13,
+        color: textColor,
+        height: 1.38,
+        letterSpacing: -0.13,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
 
-    return TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w300, fontSize: 10, color: textColor);
-
-    return typeface3(
-      textStyle: Theme.of(context).textTheme.labelSmall,
+    return TextStyle(
+      fontFamily: 'gt-america',
       fontWeight: FontWeight.w400,
-      // color: textColor ?? (brightness == Brightness.dark
-      //     ? Colors.white.withAlpha(textLabelMedium)
-      //     : Colors.black.withAlpha(textLabelMedium)),
-      color: textColor ?? Theme.of(context).colorScheme.secondary,
-      // height: 1.2,
-      letterSpacing: 0.5,
+      fontSize: 13,
+      color: textColor,
+      height: 1.38,
+      letterSpacing: -0.13,
+      decoration: isLined ? TextDecoration.underline : null,
+    );
+  }
+
+  static TextStyle overline(
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
+    Locale currentLocale = window.locale;
+
+    if (currentLocale.languageCode == 'ja') {
+      return TextStyle(
+        fontFamily: 'helvetica',
+        fontWeight: FontWeight.w400,
+        fontSize: 12,
+        color: textColor,
+        height: 1.17,
+        letterSpacing: 0.36,
+        decoration: isLined ? TextDecoration.underline : null,
+      );
+    }
+
+    return TextStyle(
+      fontFamily: 'gt-america',
+      fontWeight: FontWeight.w400,
+      fontSize: 12,
+      color: textColor,
+      height: 1.17,
+      letterSpacing: 0.36,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 }

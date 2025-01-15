@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/widgets/buttons/syntonic_button.dart';
+import 'package:syntonic_components/widgets/texts/body_2_text.dart';
+import 'package:syntonic_components/widgets/texts/headline_5_text.dart';
+import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
+
+import '../texts/body_1_text.dart';
 
 class SyntonicDialog extends StatelessWidget {
   final String? title;
@@ -24,12 +30,12 @@ class SyntonicDialog extends StatelessWidget {
       Widget tempWidget = Column(
         children: [
           for (final buttonItem in buttonInfoList) ...[
-            TextButton(
-              onPressed: () => {
+            SyntonicButton.transparent(
+              onTap: () => {
                 buttonItem.buttonAction(), // 呼び出し側で指定されたActionを実行する
                 Navigator.of(context).pop()
               },
-              child: Text(buttonItem.buttonTxt),
+              text: buttonItem.buttonTxt,
             ),
           ]
         ],
@@ -40,14 +46,25 @@ class SyntonicDialog extends StatelessWidget {
       // 2 個以下の場合、横並びで表示するため
 
       if (buttonInfoList.isNotEmpty) {
-        for (final buttonItem in buttonInfoList) {
+        for (int i = 0; i < buttonInfoList.length; i++) {
+          final buttonItem = buttonInfoList[i];
           widgetList.add(
-            TextButton(
-              onPressed: () => {
-                buttonItem.buttonAction(), // 呼び出し側で指定されたActionを実行する
+            i == 1
+                ? SyntonicButton.filled(
+              padding: EdgeInsets.zero,
+              onTap: () => {
+                buttonItem.buttonAction(), // Execute the action specified by the caller
                 Navigator.of(context).pop()
               },
-              child: Text(buttonItem.buttonTxt),
+              text: buttonItem.buttonTxt,
+            )
+                : SyntonicButton.outlined(
+              padding: EdgeInsets.zero,
+              onTap: () => {
+                buttonItem.buttonAction(), // Execute the action specified by the caller
+                Navigator.of(context).pop()
+              },
+              text: buttonItem.buttonTxt,
             ),
           );
         }
@@ -60,11 +77,14 @@ class SyntonicDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: (title != null) ? Text(title ?? "") : null,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0), // Adjust the radius as needed
+      ),
+      title: (title != null) ? Headline6Text(text: title ?? "") : null,
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            if (content != null) Text(content ?? ""),
+            if (content != null) Body1Text(text: content ?? ""),
             contentWidget ?? Container()
           ],
         ),

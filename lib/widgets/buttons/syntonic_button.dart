@@ -28,6 +28,7 @@ class SyntonicButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final bool isExtended;
   final bool isNegative;
+  final bool isLined;
   Color? _textColor;
 
   SyntonicButton._(
@@ -40,7 +41,7 @@ class SyntonicButton extends StatelessWidget {
         this.isNegative = false,
       this.leadingWidget,
       this.maxWidth,
-      this.padding});
+      this.padding, this.isLined = false});
   SyntonicButton.filled(
       {required VoidCallback onTap,
       required String text,
@@ -111,7 +112,8 @@ class SyntonicButton extends StatelessWidget {
         bool isEnabled = true,
       Widget? leadingWidget,
       double? maxWidth,
-      EdgeInsetsGeometry? padding})
+      EdgeInsetsGeometry? padding,
+      bool? isLined})
       : this._(
             onTap: onTap,
             text: text,
@@ -122,17 +124,15 @@ class SyntonicButton extends StatelessWidget {
             maxWidth: maxWidth,
             textStyle: textStyle,
             style: _SyntonicButtonStyle.text,
-            padding: padding);
+            padding: padding, isLined: isLined ?? false);
 
   @override
   Widget build(BuildContext context) {
-    // bool _isDarkTheme = MediaQuery.of(context).platformBrightness ==
-    //     Brightness.dark;
     ButtonStyle _style = ButtonStyle(
       backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.onSurface),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30), // ここでcorner radiusを指定
+          borderRadius: BorderRadius.circular(0),
         ),
       ),
     );
@@ -142,9 +142,11 @@ class SyntonicButton extends StatelessWidget {
         _textColor = Theme.of(context).colorScheme.onPrimary;
         break;
       case _SyntonicButtonStyle.outlined:
-      case _SyntonicButtonStyle.text:
       case _SyntonicButtonStyle.tonal:
         _textColor = Theme.of(context).colorScheme.primary;
+        break;
+      case _SyntonicButtonStyle.text:
+        _textColor = Theme.of(context).colorScheme.onSurface;
         break;
     }
 
@@ -158,16 +160,21 @@ class SyntonicButton extends StatelessWidget {
             width: 16,
           ),
         style == _SyntonicButtonStyle.text
-            ? textStyle == null ? Subtitle1Text( text: text,
-          textColor: isEnabled ? _textColor : null,) : Headline5Text(
-                text: text,
-                textColor: isNegative ? Colors.red : (isEnabled ? _textColor : null),
-              )
+            ? textStyle == null
+            ? Subtitle1Text(
+          text: text,
+          textColor: isEnabled ? _textColor : null,
+          isLined: isLined,
+        )
             : Subtitle1Text(
-                text: text,
-                textColor: isNegative ? Colors.red : (isEnabled ? _textColor : null),
-              ),
-        // Subtitle2Text(text: text),
+          text: text,
+          textColor: isNegative ? Colors.red : (isEnabled ? _textColor : null),
+          isLined: isLined,
+        )
+            : Subtitle1Text(
+          text: text.toUpperCase(),
+          textColor: isNegative ? Colors.red : (isEnabled ? _textColor : null),
+        ),
       ],
     );
 
@@ -176,14 +183,13 @@ class SyntonicButton extends StatelessWidget {
         return Container(
           width: isExtended ? double.infinity : null,
           padding: padding ?? EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child:
-              FilledButton(style: _style, onPressed: isEnabled ? onTap : null, child: _button),
+          child: FilledButton(
+              style: _style, onPressed: isEnabled ? onTap : null, child: _button),
         );
       case _SyntonicButtonStyle.tonal:
         return Container(
           width: isExtended ? double.infinity : null,
-
-          padding: padding ??  EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          padding: padding ?? EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: FilledButton.tonal(
             style: _style,
             onPressed: isEnabled ? onTap : null,
@@ -193,57 +199,26 @@ class SyntonicButton extends StatelessWidget {
       case _SyntonicButtonStyle.outlined:
         return Container(
           width: isExtended ? double.infinity : null,
-          padding: padding ??  EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          padding: padding ?? EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              side: isNegative ? BorderSide(color: Colors.red) : null
-            ),
-              onPressed: isEnabled ? onTap : null, child: _button),
+              style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  side: isNegative ? BorderSide(color: Colors.red) : null),
+              onPressed: isEnabled ? onTap : null,
+              child: _button),
         );
       case _SyntonicButtonStyle.text:
         return TextButton(
           onPressed: onTap,
           style: ButtonStyle(
-            padding:
-                MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 0)),
+            padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 0)),
             minimumSize: MaterialStateProperty.all(Size.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: _button,
         );
     }
-
-    // return OutlinedButton(
-    //   onPressed: onTap,
-    //   child: Stack(
-    //     alignment: Alignment.centerLeft,
-    //     children: <Widget>[
-    //       Icon(leadingIcon, color: Theme.of(context).colorScheme.primary),
-    //       Padding(
-    //         padding: EdgeInsets.only(left: 32.0, top: 16.0, bottom: 16.0),
-    //         child: Row(
-    //           children: <Widget>[
-    //             Padding(
-    //               padding: EdgeInsets.only(left: 16.0),
-    //               child: Subtitle2Text(text: text),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //       Row(
-    //         mainAxisAlignment: MainAxisAlignment.end,
-    //         children: <Widget>[
-    //           Icon(trailingIcon, color: SyntonicColor.mid_gray),
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    //   style: OutlinedButton.styleFrom(
-    //     primary: SyntonicColor.black88,
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(10.0),
-    //     ),
-    //   ),
-    // );
   }
 }

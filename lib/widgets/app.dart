@@ -21,7 +21,7 @@ class App extends StatelessWidget {
   /// Apply the color as primary color in the app.
   final ColorScheme colorScheme;
 
-  final Function(BuildContext context)? onCheckSupportedVersion;
+  final Future<bool> Function(BuildContext context)? onCheckSupportedVersion;
 
   List<LocalizationsDelegate<dynamic>> localizationDelegates;
 
@@ -29,31 +29,31 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     NavigationService();
 
-    if (onCheckSupportedVersion != null) {
-      print('チェックバージョン');
-      onCheckSupportedVersion!(context);
-    }
-
-    RatingService();
-    return MaterialApp(
-      scrollBehavior: const MaterialScrollBehavior().copyWith(
-        dragDevices: {
-          PointerDeviceKind.mouse,
-          PointerDeviceKind.touch,
-          PointerDeviceKind.stylus,
-          PointerDeviceKind.unknown
-        },
-      ),
-      navigatorKey: NavigationService().navigatorKey,
-      theme: lightTheme(colorScheme: colorScheme),
-      darkTheme: darkTheme(colorScheme: colorScheme),
-      home: home,
-      debugShowCheckedModeBanner: false,
-      supportedLocales: const [
-        Locale('ja', ''),
-        Locale('en', '')
-      ],
-      localizationsDelegates: localizationDelegates,
+    return FutureBuilder<bool>(
+      future: onCheckSupportedVersion != null ? onCheckSupportedVersion!(context) : Future.value(true),
+      builder: (context, snapshot) {
+        RatingService();
+        return MaterialApp(
+          scrollBehavior: const MaterialScrollBehavior().copyWith(
+            dragDevices: {
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.touch,
+              PointerDeviceKind.stylus,
+              PointerDeviceKind.unknown,
+            },
+          ),
+          navigatorKey: NavigationService().navigatorKey,
+          theme: lightTheme(colorScheme: colorScheme),
+          darkTheme: darkTheme(colorScheme: colorScheme),
+          home: (snapshot.connectionState == ConnectionState.waiting || snapshot.data == true) ? Container(color: Colors.white) : home,
+          debugShowCheckedModeBanner: false,
+          supportedLocales: const [
+            Locale('ja', ''),
+            // Locale('en', ''),
+          ],
+          localizationsDelegates: localizationDelegates,
+        );
+      },
     );
   }
 }

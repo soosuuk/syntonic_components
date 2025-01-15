@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'base_text.dart';
 
-class Subtitle1Text extends BaseText {
+class Headline3Text extends BaseText {
   @override
   @required
   final String text;
@@ -13,9 +13,8 @@ class Subtitle1Text extends BaseText {
   final int? maxLines;
   @override
   final bool needsSeeMore;
-  final bool isLined;
 
-  const Subtitle1Text(
+  const Headline3Text(
       {required this.text,
       this.overflow = TextOverflow.ellipsis,
       this.textAlign = TextAlign.left,
@@ -23,13 +22,13 @@ class Subtitle1Text extends BaseText {
       Color? linkColor,
       this.maxLines,
       bool needsLinkify = false,
-      this.needsSeeMore = false, this.isLined = false})
+      this.needsSeeMore = false})
       : super(linkColor: linkColor, needsLinkify: needsLinkify);
 
   @override
   Widget textWidget({required BuildContext context}) {
     return Text(
-      text.toUpperCase(),
+      text,
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
@@ -41,5 +40,5 @@ class Subtitle1Text extends BaseText {
 
   @override
   TextStyle textStyle({required BuildContext context}) =>
-      SyntonicTextTheme.subtitle1(context: context, textColor: textColor, isLined: isLined);
+      SyntonicTextTheme.headline3(context: context, textColor: textColor);
 }

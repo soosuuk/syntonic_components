@@ -348,7 +348,7 @@ class SyntonicListItem extends ListItem {
             textAlign: textAlign,
             maxLines: titleMaxLines);
         if (subtitle?.isNotEmpty == true) {
-          subtitleWidget = CaptionText(
+          subtitleWidget = Body2Text(
               text: subtitle!,
               textColor: subTitleColor,
               overflow: needsSubtitleOverFlowStateVisible!

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 
 import '../constants/syntonic_color.dart';
@@ -20,11 +21,11 @@ class SyntonicTabBarTheme {
               )
           ),
         ),
-      labelPadding: EdgeInsets.only(top: 0, bottom: 0, left: 8, right: 8),
-        unselectedLabelStyle: TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 16, color: colorScheme.primary, letterSpacing: 0),
-        labelStyle: TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 16, color: colorScheme.primary, letterSpacing: 0),
+      labelPadding: EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 16),
+        unselectedLabelStyle: SyntonicTextTheme.caption(),
+        labelStyle: SyntonicTextTheme.caption(),
         labelColor: colorScheme.onSurface,
-        unselectedLabelColor: colorScheme.onSurfaceVariant
+        unselectedLabelColor: colorScheme.onSurface
     );
   }
 }

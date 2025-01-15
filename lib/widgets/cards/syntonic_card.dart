@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/widgets/enhancers/syntonic_gradient_container.dart';
 
 import '../../configs/themes/syntonic_dark_theme.dart';
 import '../../configs/themes/syntonic_light_theme.dart';
@@ -28,7 +29,7 @@ class SyntonicCard extends StatelessWidget {
   final bool isGlassmorphismEnabled;
 
   const SyntonicCard(
-      {this.borderRadius = 16,
+      {this.borderRadius = 0,
       this.onTap,
       this.isSelected = false,
       this.image,
@@ -41,12 +42,14 @@ class SyntonicCard extends StatelessWidget {
       this.imagePosition = ImagePosition.top, this.isGlassmorphismEnabled = false});
 
   const SyntonicCard.transparent(
-      {double borderRadius = 4,
+      {double borderRadius = 0,
         VoidCallback? onTap,
       bool isSelected = false,
       Widget? child, bool hasMargin = true,
       bool hasPadding = true,
-      Widget? image})
+      Widget? image,
+      ImagePosition? imagePosition,
+      })
       : this(
     borderRadius: borderRadius,
             onTap: onTap,
@@ -56,17 +59,19 @@ class SyntonicCard extends StatelessWidget {
             elevation: 0,
             needsBorder: false,
             hasPadding: hasPadding,
+    imagePosition: imagePosition ?? ImagePosition.top,
       );
 
   const SyntonicCard.outlined(
       {
-        double borderRadius = 4,
+        double borderRadius = 0,
         VoidCallback? onTap,
       bool isSelected = false,
       Widget? child,
       bool hasMargin = true,
       bool hasPadding = true,
-      Widget? image})
+      Widget? image,
+        ImagePosition? imagePosition,})
       : this(
     borderRadius: borderRadius,
             onTap: onTap,
@@ -77,6 +82,7 @@ class SyntonicCard extends StatelessWidget {
             needsBorder: true,
             hasMargin: hasMargin,
             hasPadding: hasPadding,
+    imagePosition: imagePosition ?? ImagePosition.top,
       );
 
   @override
@@ -84,6 +90,8 @@ class SyntonicCard extends StatelessWidget {
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
     Widget _card = Card(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
       // color: isGlassmorphismEnabled ? Colors.transparent : null,
       color: colorScheme != null ? colorScheme!.surface : Colors.transparent,
       surfaceTintColor: colorScheme != null ? colorScheme!.surfaceTint : null,
@@ -93,7 +101,7 @@ class SyntonicCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      clipBehavior: Clip.antiAlias,
+      // clipBehavior: Clip.antiAlias,
       child: InkWell(
         borderRadius: BorderRadius.circular(borderRadius),
         onTap: () {
@@ -101,7 +109,7 @@ class SyntonicCard extends StatelessWidget {
             onTap!();
           }
         },
-        child: Padding(padding: hasMargin ? EdgeInsets.all(16) : EdgeInsets.zero, child: _childWithImage(context: context),),
+        child: _childWithImage(context: context),
       ),
     );
 
@@ -119,7 +127,7 @@ class SyntonicCard extends StatelessWidget {
   }
 
   Widget _childWithImage({required BuildContext context}) {
-    Widget _child = Container(
+    Widget _child = Padding(padding: hasMargin ? EdgeInsets.all(16) : EdgeInsets.zero, child: Container(
       decoration: needsBorder
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadius),
@@ -127,9 +135,9 @@ class SyntonicCard extends StatelessWidget {
                   width: 1,
                   color: Theme.of(context).colorScheme.outlineVariant))
           : null,
-      padding: const EdgeInsets.only(right: 16),
+      // padding: const EdgeInsets.only(right: 16),
       child: Padding(padding: hasPadding ? EdgeInsets.all(16) : EdgeInsets.zero, child: child,),
-    );
+    ));
 
     if (image == null) {
       return isGlassmorphismEnabled ? Container(
@@ -182,13 +190,13 @@ class SyntonicCard extends StatelessWidget {
       case ImagePosition.bottom:
         return Column(
           children: [
-            imagePosition == ImagePosition.top ? image! : const SizedBox(),
+            imagePosition == ImagePosition.top ? SizedBox(height: 150, child: image!,) : const SizedBox(),
             _child,
             imagePosition == ImagePosition.bottom ? image! : const SizedBox(),
           ],
         );
       case ImagePosition.spread:
-        return IntrinsicHeight(child: Stack(children: [Positioned.fill(child: image!), isGlassmorphismEnabled ? ClipRRect(
+        return IntrinsicHeight(child: Stack(children: [Positioned.fill(child: SyntonicGradientContainer(child: image!, color: [Colors.black38, Colors.transparent,], startAt: GradientStartPosition.left,)), isGlassmorphismEnabled ? ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
           child: BackdropFilter(
             // 背景をぼかす
@@ -210,7 +218,10 @@ class SyntonicCard extends StatelessWidget {
               child: _child,
             ),
           ),
-        ) : _child],),);
+        ) : Theme(
+          data: darkTheme(colorScheme: colorScheme),
+          child: _child,
+        )],),);
         // return Stack(children: [image!, _child],);
     }
   }

@@ -12,4 +12,12 @@ extension SyntonicDoubleExtension on double {
     final formatter = NumberFormat("#,###");
     return formatter.format(value >= 0 ? value : value * -1);
   }
+
+  /// Format a [this] to hours and minutes (xh xm).
+  List<int> toHoursMinutes() {
+    int totalMinutes = this.round();
+    int hours = totalMinutes ~/ 60;
+    int minutes = totalMinutes % 60;
+    return [hours, minutes];
+  }
 }

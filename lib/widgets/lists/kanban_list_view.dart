@@ -874,8 +874,8 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
           slivers: [
             SliverPersistentHeader(
               delegate: _SliverAppBarDelegate(
-                minHeight: 60.0,
-                maxHeight: 60.0,
+                minHeight: 70.0,
+                maxHeight: 70.0,
                 child: widget.headerBuilder(context, widget.index!),
               ),
               pinned: true,

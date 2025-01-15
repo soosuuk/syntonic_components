@@ -297,7 +297,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                       );
                     }
                     if (index < numberOfItems! + numberOfAdditionalItems!) {
-                      // return listItem!(index);
+                      return listItem!(index);
                       return Padding(
                         padding: EdgeInsets.only(
                             top: index == 0 ? 16 : 8,
