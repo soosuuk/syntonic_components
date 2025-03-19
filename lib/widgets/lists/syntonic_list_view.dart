@@ -531,6 +531,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                         i < (numberOfItems! / numberOfRow).ceil();
                         i++)
                       Column(
+                        mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

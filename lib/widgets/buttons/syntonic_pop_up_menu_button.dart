@@ -59,8 +59,8 @@ class SyntonicPopupMenuButton extends StatelessWidget {
     }
 
     return Container(
-      width: IconSize.normal.size,
-      height: IconSize.normal.size,
+      // width: IconSize.mini.size,
+      // height: IconSize.mini.size,
       decoration: BoxDecoration(
         shape: boxShape ?? BoxShape.circle,
         borderRadius: boxShape == BoxShape.rectangle ? BorderRadius.circular(8) : null,

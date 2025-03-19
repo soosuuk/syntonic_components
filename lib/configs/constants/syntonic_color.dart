@@ -30,11 +30,11 @@ class SyntonicColor {
 
   static const Color success = Color(0xFF379535);
 
-  static const Color forest_green = Color(0xFF1DC321);
+  static const Color forest_green = Color(0xFF7AB89E);
   static const Color forest_green64 = Color(0xA31DC321);
   static const Color forest_green12 = Color(0x1F1DC321);
 
-  static const Color radiance = Color(0xFF1877F2);
+  static const Color radiance = Color(0xFF97D8DB);
   static const Color radiance64 = Color(0xA31877F2);
   static const Color radiance12 = Color(0x1F1877F2);
 
@@ -42,15 +42,15 @@ class SyntonicColor {
   static const Color brown64 = Color(0xA3B56E2A);
   static const Color brown12 = Color(0x1FB56E2A);
 
-  static const Color torch_red = Color(0xFFF90C1A);
+  static const Color torch_red = Color(0xFFF82B2E);
   static const Color torch_red54 = Color(0xA3F90C1A);
   static const Color torch_red12 = Color(0x1FF90C1A);
 
-  static const Color orange = Color(0xFFFD683A);
+  static const Color orange = Color(0xFFF8792B);
   static const Color orange64 = Color(0xA3FD683A);
   static const Color orange12 = Color(0x1FFD683A);
 
-  static const Color yellow = Color(0xFFFEDB41);
+  static const Color yellow = Color(0xFFF8F12B);
   static const Color yellow64 = Color(0xA3FEDB41);
   static const Color yellow12 = Color(0x1FFEDB41);
 
@@ -70,7 +70,7 @@ class SyntonicColor {
   static const Color lime_green64 = Color(0xA327BA3D);
   static const Color lime_green12 = Color(0x1F27BA3D);
 
-  static const Color cornflower_blue = Color(0xFF587BF0);
+  static const Color cornflower_blue = Color(0xFF7C83C7);
   static const Color cornflower_blue64 = Color(0xA3587BF0);
   static const Color cornflower_blue12 = Color(0x1F587BF0);
 
@@ -82,7 +82,7 @@ class SyntonicColor {
   static const Color pink64 = Color(0xA3FF84D0);
   static const Color pink12 = Color(0x1FFF84D0);
 
-  static const Color violet_red = Color(0xFFFA428F);
+  static const Color violet_red = Color(0xFFF82BA9);
   static const Color violet_red64 = Color(0xA3FA428F);
   static const Color violet_red12 = Color(0x1FFA428F);
 

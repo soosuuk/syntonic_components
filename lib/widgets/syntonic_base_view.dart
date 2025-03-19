@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -11,6 +12,7 @@ import 'package:syntonic_components/configs/constants/syntonic_date_and_time.dar
 import 'package:syntonic_components/configs/constants/syntonic_language.dart';
 import 'package:syntonic_components/configs/themes/syntonic_dark_theme.dart';
 import 'package:syntonic_components/configs/themes/syntonic_light_theme.dart';
+import 'package:syntonic_components/widgets/banners/syntonic_ad_banner.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_fade.dart';
 import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
@@ -19,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
-import 'dart:math';
 
 import 'base_view_state.dart';
 import 'buttons/syntonic_floating_action_button.dart';
@@ -88,24 +89,6 @@ VS extends BaseViewState> extends StatelessWidget {
   final bool useStreamBuilder;
 
 
-  Future<AdSize?> _getAdSize(BuildContext context) async {
-    // if (vm.adSize != null) {
-    //   print('こうこくある');
-    //   return vm.adSize;
-    // }
-
-    print('こうこく');
-    await AdSize.getAnchoredAdaptiveBannerAdSize(
-        MediaQuery.of(context).orientation == Orientation.portrait
-            ? Orientation.portrait
-            : Orientation.landscape,
-        MediaQuery.of(context).size.width.toInt()).then((value) {
-      print('ADサイズ');
-      vm.adSize = value;
-    });
-    return vm.adSize;
-  }
-
   GlobalKey get _globalKey => globalKey ?? GlobalKey();
 
   // @protected
@@ -163,7 +146,7 @@ VS extends BaseViewState> extends StatelessWidget {
     //                   },
     //                   child: _screen(vm, context),
     //                 )),
-    //             ads(context: context)
+    //             SyntonicAdBanner()
     //           ],
     //         );
     //       }
@@ -213,7 +196,7 @@ VS extends BaseViewState> extends StatelessWidget {
                   },
                   child: _screen(vm, context),
                 )),
-            ads(context: context)
+            SyntonicAdBanner()
           ],
         );
       }
@@ -240,60 +223,11 @@ VS extends BaseViewState> extends StatelessWidget {
         );
       } else {
         return ColoredBox(color: Theme.of(context).colorScheme.surface, child: useStreamBuilder ? buildStreamBuilder(context, child(), ref) : child(),);
-      }});
+      }}
+    );
   }
 
   Widget? buildStreamBuilder(BuildContext context, Widget content, riverpod.WidgetRef ref) => null;
-
-  Widget ads({required BuildContext context}) {
-    return SafeArea(child: Container(
-      color: Theme.of(context).colorScheme.surface,
-      alignment: Alignment.center,
-      height: 56,
-      // width: 88,
-      // height: vm.adSize != null ? vm.adSize!.height.toDouble() : 0,
-      // width: vm.adSize != null ? vm.adSize!.width.toDouble() : 0,
-      child: FutureBuilder(
-          future: _getAdSize(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              // if (snapshot.hasError) {
-              //   print(snapshot.error);
-              //   return Center(
-              //     child: Text(snapshot.error.toString(),
-              //         textAlign: TextAlign.center,
-              //         textScaleFactor: 1.3),
-              //   );
-              // }
-
-              if (!vm.isAdLoaded) {
-                vm.ad = BannerAd(
-                  adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-                  size: vm.adSize!,
-                  request: AdRequest(),
-                  listener: BannerAdListener(
-                    onAdLoaded: (_) {
-                      vm.isAdLoaded = true;
-                    },
-                    onAdFailedToLoad: (ad, error) {
-                      //Load失敗時の処理
-                      ad.dispose();
-                      print(
-                          'Ad load failed (code=${error.code} message=${error.message})');
-                    },
-                  ),
-                );
-                vm.ad.load();
-                return AdWidget(ad: vm.ad);
-                // return Container();
-              }
-              return AdWidget(ad: vm.ad);
-            } else {
-              return Container();
-            }
-          }),
-    ));
-  }
 
   /// Get a screen.
   ///
@@ -310,7 +244,7 @@ VS extends BaseViewState> extends StatelessWidget {
     // skip initialization, depending on whether [isInitialized] is "true".
     // Because, A screen is Rebuilt if you focus to any text-field.
     return riverpod.Consumer(builder: (context, ref, child) {
-      if (hasFAB && !isChild) {
+      if (!isChild) {
         viewModel.scrollController = PrimaryScrollController.of(context)..addListener(() {
           print(this.runtimeType);
           viewModel.offset =  viewModel.scrollController!.offset;
@@ -361,7 +295,7 @@ VS extends BaseViewState> extends StatelessWidget {
                       context: context,
                     )
                         : null,
-                    bottomNavigationBar: isChild || !hasAds ? isChild || !hasAds ? SizedBox() : Column(children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), ads(context: context)],) : SizedBox(),
+                    bottomNavigationBar: isChild || !hasAds ? isChild || !hasAds ? SizedBox() : Column(mainAxisSize: MainAxisSize.min, children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), SyntonicAdBanner()],) : SizedBox(),
                   ),
                   const Center(child: CircularProgressIndicator())
                 ]);
@@ -461,7 +395,7 @@ VS extends BaseViewState> extends StatelessWidget {
           floatingActionButton: _floatingActionButtons(context: context),
           body: isChild ? _child : _notificationListener(context: context, ref: ref, child: _child),
           // bottomSheet: bottomSheet,
-          bottomNavigationBar: isChild || !hasAds ? SizedBox() : Column(mainAxisSize: MainAxisSize.min, children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), ads(context: context)],),
+          bottomNavigationBar: isChild || !hasAds ? SizedBox() : Column(mainAxisSize: MainAxisSize.min, children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), SyntonicAdBanner()],),
         );
       } else {
         return DefaultTabController(
@@ -480,8 +414,8 @@ VS extends BaseViewState> extends StatelessWidget {
                   );
                 },
               ),
-              bottomSheet: bottomSheet(context: context, ref: ref),
-              bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
+              // bottomSheet: bottomSheet(context: context, ref: ref),
+              bottomNavigationBar: isChild || !hasAds ? SizedBox() : Column(children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), SyntonicAdBanner(),]),
             ));
       }
     } else {
@@ -490,6 +424,15 @@ VS extends BaseViewState> extends StatelessWidget {
         print('こども');
         return riverpod.Consumer(
           builder: (context, ref, child) {
+            return Scaffold(
+              // primary: true,
+              // // extendBody: true,
+              //   extendBodyBehindAppBar: false,
+              body: SafeArea(top: false, child: mainContents(context: context, ref: ref)),
+              floatingActionButton: _floatingActionButtons(context: context),
+              // bottomSheet: bottomSheet(context: context, ref: ref),
+              bottomNavigationBar: bottomSheet(context: context, ref: ref) != null || !hasAds ? bottomSheet(context: context, ref: ref) : SizedBox(),
+            );
             return Column(
               children: [
                 if (headerContents(context: context, ref: ref) != null)
@@ -509,11 +452,8 @@ VS extends BaseViewState> extends StatelessWidget {
               // return _notificationListener(context: context, ref: ref);
             },
           ),
-          floatingActionButtonLocation:
-          FloatingActionButtonLocation.endFloat,
-          floatingActionButton: _floatingActionButtons(context: context),
-          bottomSheet: bottomSheet(context: context, ref: ref),
-          bottomNavigationBar: isChild || !hasAds ? SizedBox() : ads(context: context),
+          // bottomSheet: bottomSheet(context: context, ref: ref),
+          bottomNavigationBar: bottomSheet(context: context, ref: ref) != null || !hasAds ? bottomSheet(context: context, ref: ref) : SizedBox(),
         );
       }
     }
@@ -1052,11 +992,33 @@ VS extends BaseViewState> extends StatelessWidget {
   }
 }
 
-class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNotifier<VS> {
-  BaseViewModel({required VS viewState}) : super(viewState);
+abstract class BaseViewModel<VS extends BaseViewState>
+    extends riverpod.StateNotifier<VS> {
+  BaseViewModel({required VS viewState}) : super(viewState) {
+    // scrollController.addListener(() {
+    //   // if (floatingActionButton(context: context, ref: ref) != null &&
+    //   //     scrollNotification is UserScrollNotification) {
+    //   if (scrollController.position.userScrollDirection ==
+    //       ScrollDirection.reverse) {
+    //     if (state.isFloatingActionButtonExtended == true) {
+    //       print('リバース');
+    //       state = state.copyWith(isFloatingActionButtonExtended: false) as VS;
+    //     }
+    //   } else if (scrollController.position.userScrollDirection ==
+    //       ScrollDirection.forward) {
+    //     print('リバース');
+    //     if (state.isFloatingActionButtonExtended == false) {
+    //       state = state.copyWith(isFloatingActionButtonExtended: true) as VS;
+    //     }
+    //   }
+    //   // }
+    // });
+  }
 
+  // bool isInitialized = false;
   final GlobalKey<FormState>? formKey = GlobalKey<FormState>();
   late ScrollController? scrollController;
+  // ..addListener(scrollListener);
   late BannerAd ad;
   late AdSize? adSize;
   late bool isAdLoaded = false;
@@ -1076,31 +1038,28 @@ class BaseViewModel<VS extends BaseViewState> extends riverpod.StateNotifier<VS>
   VS get state => super.state;
 
   set initialize(bool isInitialized) {
-    VS b = state.copyWith(isInitialized: isInitialized) as VS;
+    VS  b = state.copyWith(isInitialized: isInitialized) as VS;
     state = b;
   }
-
   @override
   void dispose() {
     onDispose();
     super.dispose();
   }
 
-  Future<dynamic>? onInit({required BuildContext context}) async {
-    if (_isInitializing) return; // Prevent multiple executions
-    _isInitializing = true;
-    try {
-      // Your initialization logic here
-    } finally {
-      _isInitializing = false;
-    }
-  }
+  Future<dynamic>? onInit({required BuildContext context}) => null;
 
   @protected
   void onDispose() {}
 
-  void setCurrentTabIndex(int? index) {}
+  void setCurrentTabIndex(int? index) {
+    // state = state.copyWith(currentTabIndex: index) as VS;
+  }
 
+  /// Validate a [Form] in [view._mainContents].
+  ///
+  /// Execute [onSucceeded] when on the validation pass.
+  /// In the case validation failed, execute [onFailed].
   validate({Function()? onSucceeded, Function()? onFailed}) async {
     if (formKey!.currentState!.validate()) {
       if (onSucceeded != null) {

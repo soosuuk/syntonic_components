@@ -77,20 +77,20 @@ class SyntonicLabel extends StatelessWidget {
                     ),
                   if (text != null)
                     Flexible(
-                      child: OverlineText(
+                      child: Opacity(opacity: isDotted ? 0.38 : 1, child: OverlineText(
                         text: text!,
                         textColor: isFilled ? color?.optimalColor : Theme.of(context).colorScheme.onSurface,
                         overflow: TextOverflow.ellipsis,
-                      ),
+                      ),),
                     ),
                   if (child != null) Flexible(child: child!),
                   if (trailing != null) ...[SizedBox(width: 4,), trailing!],
-                  if (onTap != null)
-                    Icon(
-                      Icons.keyboard_arrow_right,
-                      size: 16,
-                      color: color,
-                    ),
+                  // if (onTap != null)
+                  //   Icon(
+                  //     Icons.keyboard_arrow_right,
+                  //     size: 16,
+                  //     color: color,
+                  //   ),
                   if (onDeleted != null)
                     Row(
                       children: [

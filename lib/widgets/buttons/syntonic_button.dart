@@ -18,7 +18,7 @@ enum _SyntonicButtonStyle {
 }
 
 class SyntonicButton extends StatelessWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String text;
   final bool isEnabled;
   final Widget? leadingWidget;
@@ -29,6 +29,7 @@ class SyntonicButton extends StatelessWidget {
   final bool isExtended;
   final bool isNegative;
   final bool isLined;
+  final bool isInput;
   Color? _textColor;
 
   SyntonicButton._(
@@ -41,7 +42,7 @@ class SyntonicButton extends StatelessWidget {
         this.isNegative = false,
       this.leadingWidget,
       this.maxWidth,
-      this.padding, this.isLined = false});
+      this.padding, this.isLined = false, this.isInput = false});
   SyntonicButton.filled(
       {required VoidCallback onTap,
       required String text,
@@ -104,7 +105,7 @@ class SyntonicButton extends StatelessWidget {
             maxWidth: maxWidth,
             style: _SyntonicButtonStyle.outlined);
   SyntonicButton.transparent(
-      {required VoidCallback onTap,
+      {VoidCallback? onTap,
       required String text,
         TextStyle? textStyle,
         bool isExtended = false,
@@ -113,7 +114,8 @@ class SyntonicButton extends StatelessWidget {
       Widget? leadingWidget,
       double? maxWidth,
       EdgeInsetsGeometry? padding,
-      bool? isLined})
+      bool? isLined,
+      bool isInput = false})
       : this._(
             onTap: onTap,
             text: text,
@@ -124,7 +126,7 @@ class SyntonicButton extends StatelessWidget {
             maxWidth: maxWidth,
             textStyle: textStyle,
             style: _SyntonicButtonStyle.text,
-            padding: padding, isLined: isLined ?? false);
+            padding: padding, isLined: isLined ?? false, isInput: isInput);
 
   @override
   Widget build(BuildContext context) {
@@ -166,11 +168,7 @@ class SyntonicButton extends StatelessWidget {
           textColor: isEnabled ? _textColor : null,
           isLined: isLined,
         )
-            : Subtitle1Text(
-          text: text,
-          textColor: isNegative ? Colors.red : (isEnabled ? _textColor : null),
-          isLined: isLined,
-        )
+            : Text(text, style: textStyle,)
             : Subtitle1Text(
           text: text.toUpperCase(),
           textColor: isNegative ? Colors.red : (isEnabled ? _textColor : null),
@@ -184,7 +182,9 @@ class SyntonicButton extends StatelessWidget {
           width: isExtended ? double.infinity : null,
           padding: padding ?? EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: FilledButton(
-              style: _style, onPressed: isEnabled ? onTap : null, child: _button),
+              style: _style,
+              onPressed: isEnabled ? onTap : null,
+              child: _button),
         );
       case _SyntonicButtonStyle.tonal:
         return Container(
@@ -210,7 +210,10 @@ class SyntonicButton extends StatelessWidget {
               child: _button),
         );
       case _SyntonicButtonStyle.text:
-        return TextButton(
+        // if (onTap == null) {
+        //   return _button;
+        // }
+        return Opacity(opacity: isInput ? 0.38 : 1, child: TextButton(
           onPressed: onTap,
           style: ButtonStyle(
             padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 0)),
@@ -218,7 +221,7 @@ class SyntonicButton extends StatelessWidget {
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: _button,
-        );
+        ),);
     }
   }
 }

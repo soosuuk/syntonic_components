@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:syntonic_components/widgets/texts/caption_text.dart';
 
 class SyntonicBulletListItem extends StatelessWidget {
@@ -16,8 +17,8 @@ class SyntonicBulletListItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          width: 8,
-          height: 8,
+          width: 12,
+          height: 12,
           decoration: BoxDecoration(
             color: color,
             shape: BoxShape.circle,
@@ -25,7 +26,9 @@ class SyntonicBulletListItem extends StatelessWidget {
         ),
         SizedBox(width: 4),
         Expanded(
-          child: CaptionText(text: text, textColor: Theme.of(context).colorScheme.onSurfaceVariant),
+          child: Body2Text(text: text,
+              // textColor: Theme.of(context).colorScheme.onSurfaceVariant
+          ),
         ),
       ],
     );

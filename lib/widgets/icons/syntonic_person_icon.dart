@@ -7,7 +7,7 @@ import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/material.dart';
 
-enum IconSize { normal, large, extraLarge, medium, small, mini }
+enum IconSize { normal, large, extraLarge, medium, semiSmall, small, mini }
 
 /// A state of [iconShape].
 enum IconShape {
@@ -21,6 +21,7 @@ extension IconSizeExtension on IconSize {
     IconSize.large: 88.0,
     IconSize.extraLarge: 112.0,
     IconSize.medium: 56.0,
+    IconSize.semiSmall: 32.0,
     IconSize.small: 24.0,
     IconSize.mini: 16.0,
   };
@@ -84,6 +85,15 @@ class SyntonicPersonIcon extends StatelessWidget {
         break;
       case IconSize.medium:
         _initialText = Headline5Text(
+          text: person.name != null && person.name != ''
+              ? person.name!.getInitial().toUpperCase()
+              : '',
+          textColor: Colors.white,
+          needsLinkify: false,
+        );
+        break;
+      case IconSize.semiSmall:
+        _initialText = Subtitle2Text(
           text: person.name != null && person.name != ''
               ? person.name!.getInitial().toUpperCase()
               : '',

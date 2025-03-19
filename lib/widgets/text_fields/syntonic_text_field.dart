@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
+import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
 import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class SyntonicTextField extends StatefulWidget {
   final int minLines;
   final bool hasPadding;
   final Function? onFocused;
+  final Function? onEditingComplete;
   final Function(String? text)? onTextChanged;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
@@ -62,6 +64,7 @@ class SyntonicTextField extends StatefulWidget {
   const SyntonicTextField._({
     required this.label,
     this.onFocused,
+    this.onEditingComplete,
     this.onTextChanged,
     this.value,
     this.errorMessage,
@@ -91,6 +94,7 @@ class SyntonicTextField extends StatefulWidget {
   const SyntonicTextField.outlined({
     String? label,
     Function? onFocused,
+    Function? onEditingComplete,
     Function(String? text)? onTextChanged,
     required String? value,
     String? errorMessage,
@@ -118,6 +122,7 @@ class SyntonicTextField extends StatefulWidget {
   }) : this._(
       label: label,
       onFocused: onFocused,
+      onEditingComplete: onEditingComplete,
       onTextChanged: onTextChanged,
       value: value,
       errorMessage: errorMessage,
@@ -218,6 +223,7 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
               minLines: widget.minLines,
               validator: widget.validator,
               decoration: InputDecoration(
+                hintStyle: scaledStyle.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.38)),
                 hintText: widget.hintText,
                 labelText: widget.label,
                 errorText: widget.errorMessage,
@@ -227,7 +233,7 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
                     : InputBorder.none,
                 suffixIcon: widget.errorMessage != null
                     ? SyntonicIcon(
-                    icon: Icons.error, colorScheme: ColorScheme.fromSeed(seedColor: SyntonicColor.torch_red))
+                    icon: Icons.error, color: SyntonicColor.torch_red)
                     : null,
                 contentPadding: widget.theme == TextFieldTheme.underline
                     ? const EdgeInsets.all(0)
@@ -240,11 +246,17 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
               inputFormatters: widget.inputFormatters,
               focusNode: _focusNode,
               onChanged: (text) {
+                print(text);
                 if (widget.onTextChanged != null) {
-                  widget.onTextChanged!(text.isEmpty ? null : text);
+                  widget.onTextChanged!(text);
                 }
               },
-              onTap: () => widget.onFocused!(),
+              onEditingComplete: () => widget.onEditingComplete,
+              onTap: () {
+                if (widget.onFocused != null) {
+                  widget.onFocused!();
+                }
+              },
               style: scaledStyle,
             ),
             // const SizedBox(
@@ -427,9 +439,10 @@ class FitTextFieldState extends State<FitTextField> {
               helperText: widget.helperText,
               border: InputBorder.none,
               // border: widget.theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
+
               suffixIcon: widget.errorMessage != null
                   ? SyntonicIcon(
-                      icon: Icons.error, colorScheme: ColorScheme.fromSeed(seedColor: SyntonicColor.torch_red))
+                      icon: Icons.error, color: SyntonicColor.torch_red)
                   : null,
               contentPadding: widget.theme == TextFieldTheme.underline
                   ? const EdgeInsets.all(0)

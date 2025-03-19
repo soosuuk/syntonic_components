@@ -93,9 +93,11 @@ class SyntonicCard extends StatelessWidget {
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       // color: isGlassmorphismEnabled ? Colors.transparent : null,
+      // color: colorScheme != null ? colorScheme!.surface : Theme.of(context).colorScheme.surfaceBright,
       color: colorScheme != null ? colorScheme!.surface : Colors.transparent,
       surfaceTintColor: colorScheme != null ? colorScheme!.surfaceTint : null,
-      shadowColor: colorScheme != null ? Colors.transparent : null,
+      // shadowColor: colorScheme != null ? Colors.transparent : null,
+      shadowColor: Colors.transparent,
       elevation: elevation,
       // color: isSelected ? Theme.of(context).colorScheme.primary.toAlpha : color,
       shape: RoundedRectangleBorder(
@@ -127,7 +129,10 @@ class SyntonicCard extends StatelessWidget {
   }
 
   Widget _childWithImage({required BuildContext context}) {
-    Widget _child = Padding(padding: hasMargin ? EdgeInsets.all(16) : EdgeInsets.zero, child: Container(
+    Widget _child = Padding(
+        padding: EdgeInsets.zero,
+        // padding: hasMargin ? EdgeInsets.all(16) : EdgeInsets.zero,
+        child: Container(
       decoration: needsBorder
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadius),
@@ -136,7 +141,7 @@ class SyntonicCard extends StatelessWidget {
                   color: Theme.of(context).colorScheme.outlineVariant))
           : null,
       // padding: const EdgeInsets.only(right: 16),
-      child: Padding(padding: hasPadding ? EdgeInsets.all(16) : EdgeInsets.zero, child: child,),
+      child: Padding(padding: hasPadding ? EdgeInsets.all(16) : EdgeInsets.zero, child: Row(children: [Expanded(child: child!)],),),
     ));
 
     if (image == null) {

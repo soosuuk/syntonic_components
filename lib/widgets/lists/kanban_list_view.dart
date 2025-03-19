@@ -19,6 +19,7 @@ class BoardView extends StatefulWidget {
   final double? width;
   final Widget Function(BuildContext, int, int) itemBuilder;
   final Widget Function(BuildContext, int) headerBuilder;
+  final Widget Function(BuildContext, int) fotterBuilder;
   Widget? middleWidget;
   double? bottomPadding;
   bool isSelecting;
@@ -31,7 +32,7 @@ class BoardView extends StatefulWidget {
 
   Function(bool)? itemInMiddleWidget;
   OnDropBottomWidget? onDropItemInMiddleWidget;
-  BoardView({Key? key, this.itemInMiddleWidget, this.scrollbar, this.scrollbarStyle, this.boardViewController, this.dragDelay = 300, this.onDropItemInMiddleWidget, this.isSelecting = false, this.lists, this.width, this.middleWidget, this.bottomPadding, required this.itemBuilder, required this.headerBuilder}) : super(key: key);
+  BoardView({Key? key, this.itemInMiddleWidget, this.scrollbar, this.scrollbarStyle, this.boardViewController, this.dragDelay = 300, this.onDropItemInMiddleWidget, this.isSelecting = false, this.lists, this.width, this.middleWidget, this.bottomPadding, required this.itemBuilder, required this.headerBuilder, required this.fotterBuilder}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -67,7 +68,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
 
   bool canDrag = true;
 
-  PageController boardViewController = PageController(viewportFraction: 0.8);
+  PageController boardViewController = PageController(viewportFraction: 1);
 
   List<BoardListState> listStates = [];
 
@@ -335,6 +336,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
             items: widget.lists![index].items,
             itemBuilder: widget.itemBuilder,
             headerBuilder: widget.headerBuilder,
+            footerBuilder: widget.fotterBuilder,
             headerBackgroundColor: widget.lists![index].headerBackgroundColor,
             backgroundColor: widget.lists![index].backgroundColor,
             footer: widget.lists![index].footer,
@@ -351,6 +353,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
             items: widget.lists![index].items,
             itemBuilder: widget.itemBuilder,
             headerBuilder: widget.headerBuilder,
+            footerBuilder: widget.fotterBuilder,
             headerBackgroundColor: widget.lists![index].headerBackgroundColor,
             backgroundColor: widget.lists![index].backgroundColor,
             footer: widget.lists![index].footer,
@@ -714,6 +717,7 @@ class BoardList extends StatefulWidget {
   final List<BoardItem>? items;
   final Widget Function(BuildContext, int, int) itemBuilder;
   final Widget Function(BuildContext, int) headerBuilder;
+  final Widget Function(BuildContext, int) footerBuilder;
   final Color? backgroundColor;
   final Color? headerBackgroundColor;
   final BoardViewState? boardView;
@@ -721,6 +725,7 @@ class BoardList extends StatefulWidget {
   final Function(int? listIndex)? onTapList;
   final Function(int? listIndex)? onStartDragList;
   final bool draggable;
+   static GlobalKey headerKey = GlobalKey();
 
   const BoardList({
     Key? key,
@@ -729,6 +734,7 @@ class BoardList extends StatefulWidget {
     required this.itemBuilder,
     required this.headerBuilder,
     this.footer,
+    required this.footerBuilder,
     this.backgroundColor,
     this.headerBackgroundColor,
     this.boardView,
@@ -744,9 +750,12 @@ class BoardList extends StatefulWidget {
   }
 }
 
-class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin{
+class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin {
   List<BoardItemState> itemStates = [];
   ScrollController boardListController = new ScrollController();
+  double height = 0;
+  // double _height = 80;
+  GlobalKey _key = GlobalKey();
 
   void onDropList(int? listIndex) {
     if(widget.onDropList != null){
@@ -781,6 +790,19 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
   @override
   bool get wantKeepAlive => true;
 
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final RenderBox renderBox = BoardList.headerKey.currentContext?.findRenderObject() as RenderBox;
+      setState(() {
+        print('高さささ + ${renderBox.size.height}');
+        height = renderBox.size.height;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> listWidgets = [];
@@ -811,42 +833,46 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
         child: Container(child: Text("Header"))));
 
     // }
-    if (widget.items != null) {
-      listWidgets.add(Container(
-          child: Flexible(
-              fit: FlexFit.loose,
-              child: new ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                controller: boardListController,
-                itemCount: widget.items!.length,
-                itemBuilder: (ctx, index) {
-                  if (widget.items![index].boardList == null ||
-                      widget.items![index].index != index ||
-                      widget.items![index].boardList!.widget.index != widget.index ||
-                      widget.items![index].boardList != this) {
-                    widget.items![index] = new BoardItem(
-                      boardList: this,
-                      item: widget.items![index].item,
-                      draggable: widget.items![index].draggable,
-                      index: index,
-                      onDropItem: widget.items![index].onDropItem,
-                      onTapItem: widget.items![index].onTapItem,
-                      onDragItem: widget.items![index].onDragItem,
-                      onStartDragItem: widget.items![index].onStartDragItem,
-                    );
-                  }
-                  if (widget.boardView!.draggedItemIndex == index &&
-                      widget.boardView!.draggedListIndex == widget.index) {
-                    return Opacity(
-                      opacity: 0.0,
-                      child: widget.items![index],
-                    );
-                  } else {
-                    return widget.items![index];
-                  }
-                },
-              ))));
+    // if (widget.items != null) {
+    //   listWidgets.add(Container(
+    //       child: Flexible(
+    //           fit: FlexFit.loose,
+    //           child: new ListView.builder(
+    //             shrinkWrap: true,
+    //             physics: ClampingScrollPhysics(),
+    //             controller: boardListController,
+    //             itemCount: widget.items!.length,
+    //             itemBuilder: (ctx, index) {
+    //               if (widget.items![index].boardList == null ||
+    //                   widget.items![index].index != index ||
+    //                   widget.items![index].boardList!.widget.index != widget.index ||
+    //                   widget.items![index].boardList != this) {
+    //                 widget.items![index] = new BoardItem(
+    //                   boardList: this,
+    //                   item: widget.items![index].item,
+    //                   draggable: widget.items![index].draggable,
+    //                   index: index,
+    //                   onDropItem: widget.items![index].onDropItem,
+    //                   onTapItem: widget.items![index].onTapItem,
+    //                   onDragItem: widget.items![index].onDragItem,
+    //                   onStartDragItem: widget.items![index].onStartDragItem,
+    //                 );
+    //               }
+    //               if (widget.boardView!.draggedItemIndex == index &&
+    //                   widget.boardView!.draggedListIndex == widget.index) {
+    //                 return Opacity(
+    //                   opacity: 0.0,
+    //                   child: widget.items![index],
+    //                 );
+    //               } else {
+    //                 return widget.items![index];
+    //               }
+    //             },
+    //           ))));
+    // }
+
+    if (widget.footerBuilder != null) {
+      listWidgets.add(Container(child: widget.footerBuilder!(context, widget.index!)));
     }
 
     if (widget.footer != null) {
@@ -864,25 +890,24 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
     widget.boardView!.listStates.insert(widget.index!, this);
 
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(16.0),
-        ),
         child: Padding(padding: EdgeInsets.symmetric(horizontal: 16), child:
         CustomScrollView(
+          controller: ScrollController(),
           slivers: [
             SliverPersistentHeader(
               delegate: _SliverAppBarDelegate(
-                minHeight: 70.0,
-                maxHeight: 70.0,
-                child: widget.headerBuilder(context, widget.index!),
+                height: 60,
+                child: _headerBuilder(context: context, index: widget.index!),
               ),
               pinned: true,
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (context, index) {
+                  if (index == widget.items!.length) {
+                    // Add your processing here
+                    return widget.footerBuilder!(context, index);
+                  }
                   if (widget.items![index].boardList == null ||
                       widget.items![index].index != index ||
                       widget.items![index].boardList!.widget.index != widget.index ||
@@ -898,21 +923,30 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
                       onStartDragItem: widget.items![index].onStartDragItem,
                     );
                   }
-                  if (widget.boardView!.draggedItemIndex == index &&
-                      widget.boardView!.draggedListIndex == widget.index) {
-                    return Opacity(
-                      opacity: 0.0,
-                      child: widget.items![index],
-                    );
-                  } else {
-                    return widget.items![index];
-                  }
+                  return widget.items![index];
                 },
-                childCount: widget.items!.length,
+                childCount: widget.items!.length + 1, // Adjust childCount
               ),
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(height: MediaQuery.of(context).size.height / 3), // Add 40px height spacer
             ),
           ],
         ),));
+  }
+
+  Widget _headerBuilder(
+      {required BuildContext context, required int index}) {
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   final RenderBox renderBox = _key.currentContext?.findRenderObject() as RenderBox;
+    //   // setState(() {
+    //   //   height = renderBox.size.height;
+    //   //   print("高さ + ${height}");
+    //   // });
+    // });
+
+    return Container(key: BoardList.headerKey, child: widget.headerBuilder(context, widget.index!),);
   }
 }
 
@@ -1047,20 +1081,18 @@ class BoardItemState extends State<BoardItem> with AutomaticKeepAliveClientMixin
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
-    required this.minHeight,
-    required this.maxHeight,
+    required this.height,
     required this.child,
   });
 
-  final double minHeight;
-  final double maxHeight;
+  final double height;
   final Widget child;
 
   @override
-  double get minExtent => minHeight;
+  double get minExtent => height;
 
   @override
-  double get maxExtent => max(maxHeight, minHeight);
+  double get maxExtent => height;
 
   @override
   Widget build(
@@ -1070,9 +1102,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
+    return child != oldDelegate.child;
   }
 }
 

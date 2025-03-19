@@ -17,10 +17,10 @@ class OpenGraphProtocolService {
 
   static Future<String?> gett({required String url}) async {
     // const String url = 'https://flutterlabo.tech/';
-    Widget title;
+    Widget? title;
     Widget? image;
     Widget? description;
-    late String? src;
+    String? src;
 
 // URLにアクセスして情報をすべて取得
     Response response = await get(Uri.parse(url));
@@ -29,12 +29,14 @@ class OpenGraphProtocolService {
     var document = parse(response.body);
 
 // ヘッダー内のtitleタグの中身を取得
-    title = Text(
-      document.head!.getElementsByTagName('title')[0].innerHtml,
-      overflow: TextOverflow.ellipsis,
-      maxLines: 1,
-      style: const TextStyle(fontSize: 13),
-    );
+    if (document.head!.getElementsByTagName('title').isNotEmpty) {
+      title = Text(
+        document.head!.getElementsByTagName('title')[0].innerHtml,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        style: const TextStyle(fontSize: 13),
+      );
+    }
 
 // ヘッダー内のmetaタグをすべて取得
     var metas = document.head!.getElementsByTagName('meta');

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
+import 'package:syntonic_components/widgets/texts/caption_text.dart';
 
 class SyntonicToggleButtons extends StatelessWidget {
   final List<String> buttonNames;
@@ -24,7 +26,7 @@ class SyntonicToggleButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     EdgeInsets _padding = const EdgeInsets.symmetric(
-      horizontal: 8,
+      horizontal: 0,
       vertical: 0,
     );
     // EdgeInsets _padding = EdgeInsets.zero;
@@ -37,19 +39,25 @@ class SyntonicToggleButtons extends StatelessWidget {
               builder: (context, constraints) => Padding(
                   padding: _padding,
                   child: ToggleButtons(
-                    constraints: BoxConstraints.expand(
-                        width: constraints.maxWidth / buttonNames.length -
-                            _padding.horizontal,
-                        height: 40),
-                    borderWidth: 1,
-                    borderRadius: BorderRadius.circular(24),
-                    onPressed: (int index) {
-                      model.changeSelection(index);
-                      onToggleButtonPressed(index);
-                    },
-                    isSelected: model.selectedStates,
-                    children: getButtonTexts(),
-                  )));
+              // constraints: BoxConstraints.expand(
+              // width: constraints.maxWidth / buttonNames.length - _padding.horizontal,
+              //     height: 40),
+                    constraints:
+                    BoxConstraints.expand(width: constraints.maxWidth / 2, height: 32),
+            borderWidth: 1,
+            borderColor: Theme.of(context).colorScheme.onSurfaceVariant,
+            borderRadius: BorderRadius.circular(0), // Set rounded corners to 0
+            onPressed: (int index) {
+              model.changeSelection(index);
+              onToggleButtonPressed(index);
+            },
+                    textStyle: SyntonicTextTheme.caption(),
+            isSelected: model.selectedStates,
+                    fillColor: Theme.of(context).colorScheme.onSurface,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant, // Set unselected color to black
+            selectedColor: Theme.of(context).colorScheme.surface, // Set selected color to black
+            children: getButtonTexts(),
+          )));
         }, // a
       ),
     );
@@ -59,9 +67,7 @@ class SyntonicToggleButtons extends StatelessWidget {
   List<Widget> getButtonTexts() {
     List<Widget> buttonTexts = [];
     for (int i = 0; i < buttonNames.length; i++) {
-      buttonTexts.add(Text(
-        buttonNames[i],
-      ));
+      buttonTexts.add(CaptionText(text: buttonNames[i],));
     }
     return buttonTexts;
   }

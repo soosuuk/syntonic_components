@@ -22,8 +22,8 @@ class SyntonicTabBarTheme {
           ),
         ),
       labelPadding: EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 16),
-        unselectedLabelStyle: SyntonicTextTheme.caption(),
-        labelStyle: SyntonicTextTheme.caption(),
+        unselectedLabelStyle: SyntonicTextTheme.overline(),
+        labelStyle: SyntonicTextTheme.overline().copyWith(fontWeight: FontWeight.w600),
         labelColor: colorScheme.onSurface,
         unselectedLabelColor: colorScheme.onSurface
     );

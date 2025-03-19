@@ -270,11 +270,11 @@ class SyntonicSliverAppBar extends StatelessWidget
     //       // }
     //     },
     //     onSearchButtonTap: (searchWord) {});
-    Widget _title = searchBox ??
+    Widget? _title = searchBox ?? (title != null ?
         SyntonicListItem(
           title: (title == null || title == '') ? 'No title' : title!,
           subtitle: subtitle,
-          titleTextStyle: TitleTextStyle.Subtitle1,
+          titleTextStyle: TitleTextStyle.Subtitle2,
           hasDivider: false,
           padding: EdgeInsets.zero,
           titleColor: accentColor,
@@ -284,7 +284,7 @@ class SyntonicSliverAppBar extends StatelessWidget
           needsSubtitleOverFlowStateVisible: false,
           optionalWidgetTitle:
               onTap != null ? const Icon(Icons.arrow_drop_down_outlined) : null,
-        );
+        ) : null);
 
     print('Appbar スティッキー');
 
@@ -301,9 +301,8 @@ class SyntonicSliverAppBar extends StatelessWidget
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
-              ? SyntonicAnimationEnhancer(
-                  child: CloseButton(onPressed: () => onBackButtonPressed ?? Navigator.pop(context),))
-              : BackButton(onPressed: onBackButtonPressed, color: accentColor),
+          ? SizedBox()
+          : BackButton(onPressed: onBackButtonPressed, color: accentColor),
       iconTheme: IconThemeData(
         color: accentColor, //change your color here
       ),
@@ -321,7 +320,7 @@ class SyntonicSliverAppBar extends StatelessWidget
               // fullOpacityOffset: expandedHeight! - (kToolbarHeight*2.5),
               // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
               // fullOpacityOffset: expandedHeight!,
-              child: _title)
+              child: _title!)
           : _title,
       actions: manualUrl != null && actions != null
           ? [
@@ -332,7 +331,8 @@ class SyntonicSliverAppBar extends StatelessWidget
               ? [
                   _getManualIcon(manualUrl: manualUrl, context: context),
                 ]
-              : actions,
+              : [...?actions, useCloseButton ? SyntonicAnimationEnhancer(
+                child: CloseButton(color: Theme.of(context).colorScheme.onSurface, onPressed: () => onBackButtonPressed ?? Navigator.pop(context),)) : SizedBox()],
       elevation: 0,
       // elevation: elevation ?? (this.isStickying ? 0 : 3),
       // scrolledUnderElevation: 3,

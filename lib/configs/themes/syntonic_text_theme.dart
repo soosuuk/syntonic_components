@@ -97,7 +97,7 @@ class SyntonicTextTheme {
 
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
         fontSize: 23,
         color: textColor,
         height: 1.26,
@@ -123,7 +123,7 @@ class SyntonicTextTheme {
 
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
         fontSize: 17,
         color: textColor,
         height: 1.18,
@@ -149,7 +149,7 @@ class SyntonicTextTheme {
 
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
         fontSize: 14,
         color: textColor,
         height: 2.36,
@@ -175,7 +175,7 @@ class SyntonicTextTheme {
 
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
         fontSize: 15,
         color: textColor,
         height: 1.20,
@@ -183,6 +183,15 @@ class SyntonicTextTheme {
         decoration: isLined ? TextDecoration.underline : null,
       );
     }
+
+    return GoogleFonts.workSans(
+      fontWeight: FontWeight.w600,
+      fontSize: 15,
+      color: textColor,
+      height: 1.20,
+      letterSpacing: -0.15,
+      decoration: isLined ? TextDecoration.underline : null,
+    );
 
     return TextStyle(
       fontFamily: 'gt-america',
@@ -200,8 +209,7 @@ class SyntonicTextTheme {
     Locale currentLocale = window.locale;
 
     if (currentLocale.languageCode == 'ja') {
-      return TextStyle(
-        fontFamily: 'helvetica',
+      return GoogleFonts.notoSansJp(
         fontWeight: FontWeight.w400,
         fontSize: 15,
         color: textColor,
@@ -227,8 +235,7 @@ class SyntonicTextTheme {
     Locale currentLocale = window.locale;
 
     if (currentLocale.languageCode == 'ja') {
-      return TextStyle(
-        fontFamily: 'helvetica',
+      return GoogleFonts.notoSansJp(
         fontWeight: FontWeight.w400,
         fontSize: 13,
         color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
@@ -254,9 +261,8 @@ class SyntonicTextTheme {
     Locale currentLocale = window.locale;
 
     if (currentLocale.languageCode == 'ja') {
-      return TextStyle(
-        fontFamily: 'helvetica',
-        fontWeight: FontWeight.w400,
+      return GoogleFonts.notoSansJp(
+        fontWeight: FontWeight.w500,
         fontSize: 13,
         color: textColor,
         height: 1.38,
@@ -267,7 +273,7 @@ class SyntonicTextTheme {
 
     return TextStyle(
       fontFamily: 'gt-america',
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w500,
       fontSize: 13,
       color: textColor,
       height: 1.38,
@@ -277,12 +283,11 @@ class SyntonicTextTheme {
   }
 
   static TextStyle overline(
-      {required BuildContext context, Color? textColor, bool isLined = false}) {
+      {BuildContext? context, Color? textColor, bool isLined = false}) {
     Locale currentLocale = window.locale;
 
     if (currentLocale.languageCode == 'ja') {
-      return TextStyle(
-        fontFamily: 'helvetica',
+      return GoogleFonts.notoSansJp(
         fontWeight: FontWeight.w400,
         fontSize: 12,
         color: textColor,
