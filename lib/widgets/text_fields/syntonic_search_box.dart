@@ -12,7 +12,7 @@ class SyntonicSearchBox extends StatelessWidget {
       this.value,
       this.onTap,
       required this.onSearchButtonTap,
-        this.controller,
+      this.controller,
       this.hintText})
       : super(key: key);
 

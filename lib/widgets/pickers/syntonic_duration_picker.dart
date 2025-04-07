@@ -33,11 +33,22 @@ class _SyntonicDurationPickerState extends State<SyntonicDurationPicker> {
       color: Theme.of(context).colorScheme.surfaceContainer,
       child: Column(
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.start, children: [Padding(padding: EdgeInsets.only(top: 12, left: 16, right: 16),child: SyntonicButton.transparent(onTap: () {
-            widget.onSelected(_selectedDuration);
-            Navigator.pop(context);
-            // actionAddingViewModel.pageController.jumpToPage(0);
-          }, text: 'Done'),),],),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12, left: 16, right: 16),
+                child: SyntonicButton.transparent(
+                    onTap: () {
+                      widget.onSelected(_selectedDuration);
+                      Navigator.pop(context);
+                      // actionAddingViewModel.pageController.jumpToPage(0);
+                    },
+                    text: 'Done'),
+              ),
+            ],
+          ),
           Expanded(
             child: CupertinoTimerPicker(
               mode: CupertinoTimerPickerMode.hm,

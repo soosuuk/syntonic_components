@@ -23,7 +23,8 @@ class Subtitle1Text extends BaseText {
       Color? linkColor,
       this.maxLines,
       bool needsLinkify = false,
-      this.needsSeeMore = false, this.isLined = false})
+      this.needsSeeMore = false,
+      this.isLined = false})
       : super(linkColor: linkColor, needsLinkify: needsLinkify);
 
   @override
@@ -41,5 +42,6 @@ class Subtitle1Text extends BaseText {
 
   @override
   TextStyle textStyle({required BuildContext context}) =>
-      SyntonicTextTheme.subtitle1(context: context, textColor: textColor, isLined: isLined);
+      SyntonicTextTheme.subtitle1(
+          context: context, textColor: textColor, isLined: isLined);
 }

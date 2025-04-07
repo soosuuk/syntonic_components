@@ -15,20 +15,23 @@ class SyntonicFade extends StatefulWidget {
   final double offset;
 
   const SyntonicFade._(
-      {
-        Key? key,
-        required this.scrollController,
+      {Key? key,
+      required this.scrollController,
       required this.child,
       this.zeroOpacityOffset = 0,
       this.fullOpacityOffset = kToolbarHeight,
-      required this.fadeMode, this.shouldRemainOffset = false, this.offset = 0}) : super(key: key);
+      required this.fadeMode,
+      this.shouldRemainOffset = false,
+      this.offset = 0})
+      : super(key: key);
 
   const SyntonicFade.on(
-      {
-        required ScrollController scrollController,
+      {required ScrollController scrollController,
       required Widget child,
       double zeroOpacityOffset = 0,
-      double fullOpacityOffset = kToolbarHeight, bool shouldRemainOffset = false, double offset = 0})
+      double fullOpacityOffset = kToolbarHeight,
+      bool shouldRemainOffset = false,
+      double offset = 0})
       : this._(
             scrollController: scrollController,
             child: child,
@@ -39,18 +42,20 @@ class SyntonicFade extends StatefulWidget {
             fadeMode: _FadeMode.on);
 
   const SyntonicFade.off(
-      {
-        Key? key, required ScrollController scrollController,
+      {Key? key,
+      required ScrollController scrollController,
       required Widget child,
       double zeroOpacityOffset = 0,
-      double fullOpacityOffset = kToolbarHeight, bool shouldRemainOffset = false, double offset = 0})
+      double fullOpacityOffset = kToolbarHeight,
+      bool shouldRemainOffset = false,
+      double offset = 0})
       : this._(
-    key: key,
+            key: key,
             scrollController: scrollController,
             child: child,
             zeroOpacityOffset: zeroOpacityOffset,
             fullOpacityOffset: fullOpacityOffset,
-      shouldRemainOffset: shouldRemainOffset,
+            shouldRemainOffset: shouldRemainOffset,
             offset: offset,
             fadeMode: _FadeMode.off);
 
@@ -79,6 +84,7 @@ class _FadeState extends State<SyntonicFade> {
     // // print(widget.fullOpacityOffset);
     super.didUpdateWidget(oldWidget);
   }
+
   //
   @override
   dispose() {
@@ -124,8 +130,8 @@ class _FadeState extends State<SyntonicFade> {
           } else {
             // // print((_offset - widget.zeroOpacityOffset) /
             //     (widget.fullOpacityOffset - widget.zeroOpacityOffset));
-            double _value =
-                0.0 - (widget.zeroOpacityOffset - _offset) / widget.zeroOpacityOffset;
+            double _value = 0.0 -
+                (widget.zeroOpacityOffset - _offset) / widget.zeroOpacityOffset;
             // print(_value);
             return _value > 1 ? 1 : _value;
             // print(
@@ -147,8 +153,8 @@ class _FadeState extends State<SyntonicFade> {
 
             return 1;
           } else {
-            double _value =
-            1.0 - (_offset - widget.zeroOpacityOffset) / widget.zeroOpacityOffset;
+            double _value = 1.0 -
+                (_offset - widget.zeroOpacityOffset) / widget.zeroOpacityOffset;
             // print("fade off else ${(_value < 0 || _value > 1) ? 0 : _value}");
             return _value < 0 ? 0 : _value;
           }

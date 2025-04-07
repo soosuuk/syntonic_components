@@ -129,7 +129,19 @@ class BottomNavigationContainerState extends BaseViewState {
             isSkeletonLoadingApplied: isSkeletonLoadingApplied);
 
   @override
-  BaseViewState copyWith({bool isChangedAppBar = false, bool isFloatingActionButtonExtended = false, double? height, double? tabBarHeight, bool isFloatingActionButtonVisible = true, ScrollController? scrollController, bool isStickyingAppBar = false, int? currentTabIndex = 0, bool isInitialized = false, bool needsInitialize = false, bool isSkeletonLoadingApplied = false, ColorScheme? colorScheme}) {
+  BaseViewState copyWith(
+      {bool isChangedAppBar = false,
+      bool isFloatingActionButtonExtended = false,
+      double? height,
+      double? tabBarHeight,
+      bool isFloatingActionButtonVisible = true,
+      ScrollController? scrollController,
+      bool isStickyingAppBar = false,
+      int? currentTabIndex = 0,
+      bool isInitialized = false,
+      bool needsInitialize = false,
+      bool isSkeletonLoadingApplied = false,
+      ColorScheme? colorScheme}) {
     // TODO: implement copyWith
     throw UnimplementedError();
   }

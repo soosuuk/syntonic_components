@@ -2,11 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:syntonic_components/configs/constants/syntonic_date_and_time.dart';
 import 'package:syntonic_components/configs/constants/syntonic_language.dart';
@@ -14,7 +11,6 @@ import 'package:syntonic_components/configs/themes/syntonic_dark_theme.dart';
 import 'package:syntonic_components/configs/themes/syntonic_light_theme.dart';
 import 'package:syntonic_components/widgets/banners/syntonic_ad_banner.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_fade.dart';
-import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 import 'package:flutter/material.dart';
@@ -55,25 +51,30 @@ abstract class ExtendedModel {
   ExtendedModel();
 }
 
+Future<void> initializeee() async {
+  await Future.delayed(const Duration(seconds: 2)); // 初期化処理
+  print('Initialized! + super');
+}
+
 // ignore: must_be_immutable
 abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
-VS extends BaseViewState> extends StatelessWidget {
-  const SyntonicBaseView(
-      {Key? key,
-        required this.vm,
-        this.childViews,
-        this.globalKey,
-        this.hasAppBar = true,
-        this.hasHeader = false,
-        this.hasTabBar = false,
-        this.isChild = false,
-        this.hasFAB = false,
-        this.hasFABSecondary = false,
-        this.isPage = false,
-        this.colorScheme,
-        this.hasAds = true,
-        this.useStreamBuilder = false,})
-      : super(key: key);
+    VS extends BaseViewState> extends StatelessWidget {
+  const SyntonicBaseView({
+    Key? key,
+    required this.vm,
+    this.childViews,
+    this.globalKey,
+    this.hasAppBar = true,
+    this.hasHeader = false,
+    this.hasTabBar = false,
+    this.isChild = false,
+    this.hasFAB = false,
+    this.hasFABSecondary = false,
+    this.isPage = false,
+    this.colorScheme,
+    this.hasAds = true,
+    this.useStreamBuilder = false,
+  }) : super(key: key);
 
   final VM vm;
   final GlobalKey? globalKey;
@@ -87,7 +88,6 @@ VS extends BaseViewState> extends StatelessWidget {
   final ColorScheme? colorScheme;
   final bool hasAds;
   final bool useStreamBuilder;
-
 
   GlobalKey get _globalKey => globalKey ?? GlobalKey();
 
@@ -109,73 +109,7 @@ VS extends BaseViewState> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    // CollectionReference events = _firestore.collection('events');
-    // return StreamBuilder<DocumentSnapshot>(
-    //   stream: events.doc('1HMP0f3xwXOEFHdrM7GV').snapshots(),
-    //   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-    //     print(snapshot.toString());
-    //     if (snapshot.hasError) {
-    //       print('えらーーー');
-    //       return Text('Something went wrong');
-    //     }
-    //
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return Text("Loading...");
-    //     }
-    //
-    //     var data = snapshot.data!.data() as Map<String, dynamic>;
-    //     print(data);
-    //
-    //     Widget child() {
-    //       // if (isChild || !hasAds) {
-    //       if (true) {
-    //         return GestureDetector(
-    //           onTap: () {
-    //             FocusManager.instance.primaryFocus!.unfocus();
-    //           },
-    //           child: _screen(vm, context),
-    //         );
-    //       } else {
-    //         return Column(
-    //           children: [
-    //             Expanded(
-    //                 child: GestureDetector(
-    //                   onTap: () {
-    //                     FocusManager.instance.primaryFocus!.unfocus();
-    //                   },
-    //                   child: _screen(vm, context),
-    //                 )),
-    //             SyntonicAdBanner()
-    //           ],
-    //         );
-    //       }
-    //     }
-    //
-    //     bool _isDarkTheme =
-    //         MediaQuery.of(context).platformBrightness == Brightness.dark;
-    //     return riverpod.Consumer(builder: (context, ref, _) {
-    //       // if (false) {
-    //       if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-    //         late ColorScheme _colorScheme;
-    //         if (colorScheme != null) {
-    //           _colorScheme = colorScheme!;
-    //         }
-    //
-    //         if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-    //           _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
-    //         }
-    //         return Theme(
-    //           data: _isDarkTheme
-    //               ? darkTheme(colorScheme: _colorScheme)
-    //               : lightTheme(colorScheme: _colorScheme),
-    //           child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),),
-    //         );
-    //       } else {
-    //         return ColoredBox(color: Theme.of(context).colorScheme.surface, child: child(),);
-    //       }});
-    //   },
-    // );
+    bool _isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     Widget child() {
       // if (isChild || !hasAds) {
@@ -191,43 +125,61 @@ VS extends BaseViewState> extends StatelessWidget {
           children: [
             Expanded(
                 child: GestureDetector(
-                  onTap: () {
-                    FocusManager.instance.primaryFocus!.unfocus();
-                  },
-                  child: _screen(vm, context),
-                )),
-            SyntonicAdBanner()
+              onTap: () {
+                FocusManager.instance.primaryFocus!.unfocus();
+              },
+              child: _screen(vm, context),
+            )),
+            const SyntonicAdBanner()
           ],
         );
       }
     }
 
-    bool _isDarkTheme =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
-    return riverpod.Consumer(builder: (context, ref, _) {
-      // if (false) {
-      if (colorScheme != null || ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-        late ColorScheme _colorScheme;
-        if (colorScheme != null) {
-          _colorScheme = colorScheme!;
-        }
+    Widget get() {
+      return riverpod.Consumer(builder: (context, ref, _) {
+        print('baseリビルド+ $runtimeType');
+        // if (false) {
+        if (colorScheme != null ||
+            ref.watch(provider.select((viewState) => viewState.colorScheme)) !=
+                null) {
+          late ColorScheme _colorScheme;
+          if (colorScheme != null) {
+            _colorScheme = colorScheme!;
+          }
 
-        if (ref.watch(provider.select((viewState) => viewState.colorScheme)) != null) {
-          _colorScheme = ref.watch(provider.select((viewState) => viewState.colorScheme!));
+          if (ref.watch(
+                  provider.select((viewState) => viewState.colorScheme)) !=
+              null) {
+            _colorScheme = ref
+                .watch(provider.select((viewState) => viewState.colorScheme!));
+          }
+          return Theme(
+            data: _isDarkTheme
+                ? darkTheme(colorScheme: _colorScheme)
+                : lightTheme(colorScheme: _colorScheme),
+            child: ColoredBox(
+              color: Theme.of(context).colorScheme.surface,
+              child: child(),
+            ),
+          );
+        } else {
+          return ColoredBox(
+            color: Theme.of(context).colorScheme.surface,
+            child: child(),
+          );
         }
-        return Theme(
-          data: _isDarkTheme
-              ? darkTheme(colorScheme: _colorScheme)
-              : lightTheme(colorScheme: _colorScheme),
-          child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: useStreamBuilder ? buildStreamBuilder(context, child(), ref) : child(),),
-        );
-      } else {
-        return ColoredBox(color: Theme.of(context).colorScheme.surface, child: useStreamBuilder ? buildStreamBuilder(context, child(), ref) : child(),);
-      }}
-    );
+      });
+    }
+
+    return useStreamBuilder ? buildStreamBuilder(context, get())! : get();
   }
 
-  Widget? buildStreamBuilder(BuildContext context, Widget content, riverpod.WidgetRef ref) => null;
+  Widget? buildStreamBuilder(
+    BuildContext context,
+    Widget content,
+  ) =>
+      null;
 
   /// Get a screen.
   ///
@@ -245,25 +197,34 @@ VS extends BaseViewState> extends StatelessWidget {
     // Because, A screen is Rebuilt if you focus to any text-field.
     return riverpod.Consumer(builder: (context, ref, child) {
       if (!isChild) {
-        viewModel.scrollController = PrimaryScrollController.of(context)..addListener(() {
-          print(this.runtimeType);
-          viewModel.offset =  viewModel.scrollController!.offset;
+        viewModel.scrollController = PrimaryScrollController.of(context)
+          ..addListener(() {
+            print(runtimeType);
+            viewModel.offset = viewModel.scrollController!.offset;
 
-          if (viewModel.scrollController!.position.userScrollDirection ==
-              ScrollDirection.reverse) {
-            if (viewModel.state.isFloatingActionButtonExtended == true) {
-              viewModel.state = viewModel.state.copyWith(isFloatingActionButtonExtended: false) as VS;
+            if (viewModel.scrollController!.position.userScrollDirection ==
+                ScrollDirection.reverse) {
+              if (viewModel.state.isFloatingActionButtonExtended == true) {
+                print('ステート更新 + $runtimeType + extended true');
+                viewModel.state = viewModel.state
+                    .copyWith(isFloatingActionButtonExtended: false) as VS;
+              }
+            } else if (viewModel
+                    .scrollController!.position.userScrollDirection ==
+                ScrollDirection.forward) {
+              if (viewModel.state.isFloatingActionButtonExtended == false) {
+                print('ステート更新 + $runtimeType + extended false');
+                viewModel.state = viewModel.state
+                    .copyWith(isFloatingActionButtonExtended: true) as VS;
+              }
             }
-          } else if (viewModel.scrollController!.position.userScrollDirection ==
-              ScrollDirection.forward) {
-            if (viewModel.state.isFloatingActionButtonExtended == false) {
-              viewModel.state = viewModel.state.copyWith(isFloatingActionButtonExtended: true) as VS;
-            }
-          }
-        });
+          });
       }
-      bool _isInitialized = ref.watch(provider.select((viewState) => viewState.isInitialized));
-      if (viewModel.state.needsInitialize && !viewModel.state.isInitialized && !viewModel._isInitializing) {
+      bool _isInitialized =
+          ref.watch(provider.select((viewState) => viewState.isInitialized));
+      if (viewModel.state.needsInitialize &&
+          !viewModel.state.isInitialized &&
+          !viewModel._isInitializing) {
         return FutureBuilder(
           future: viewModel.onInit(context: context),
           builder: (context, projectSnap) {
@@ -272,9 +233,13 @@ VS extends BaseViewState> extends StatelessWidget {
                 headerSliverBuilder: (_, __) {
                   return <Widget>[
                     SyntonicSliverAppBar(
-                        isFullscreenDialog:
-                        hasAppBar ? appBar(context: context, ref: ref)!.isFullscreenDialog : false,
-                        title: hasAppBar ? appBar(context: context, ref: ref)!.title : null),
+                        isFullscreenDialog: hasAppBar
+                            ? appBar(context: context, ref: ref)!
+                                .isFullscreenDialog
+                            : false,
+                        title: hasAppBar
+                            ? appBar(context: context, ref: ref)!.title
+                            : null),
                   ];
                 },
                 body: _errorScreen,
@@ -290,12 +255,24 @@ VS extends BaseViewState> extends StatelessWidget {
               } else {
                 return Stack(children: [
                   Scaffold(
+                    resizeToAvoidBottomInset: true,
                     drawer: hasAppBar
                         ? navigationDrawer(
-                      context: context,
-                    )
+                            context: context,
+                          )
                         : null,
-                    bottomNavigationBar: isChild || !hasAds ? isChild || !hasAds ? SizedBox() : Column(mainAxisSize: MainAxisSize.min, children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), SyntonicAdBanner()],) : SizedBox(),
+                    bottomNavigationBar: isChild || !hasAds
+                        ? isChild || !hasAds
+                            ? const SizedBox()
+                            : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  bottomSheet(context: context, ref: ref) ??
+                                      const SizedBox(),
+                                  // SyntonicAdBanner()
+                                ],
+                              )
+                        : const SizedBox(),
                   ),
                   const Center(child: CircularProgressIndicator())
                 ]);
@@ -310,7 +287,8 @@ VS extends BaseViewState> extends StatelessWidget {
   }
 
   /// Get body.
-  Widget _body({required BuildContext context, required riverpod.WidgetRef ref}) {
+  Widget _body(
+      {required BuildContext context, required riverpod.WidgetRef ref}) {
     Widget _child = DefaultTabController(
       length: hasTabBar ? 2 : 0,
       // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
@@ -323,61 +301,54 @@ VS extends BaseViewState> extends StatelessWidget {
               return <Widget>[
                 hasHeader
                     ? SliverStack(
-                  children: [
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          Material(
-                              type: MaterialType.button,
-                              animationDuration: viewModel(ref)
-                                  .state
-                                  .isStickyingAppBar
-                                  ? const Duration(
-                                  milliseconds: 100)
-                                  : const Duration(
-                                  milliseconds: 150),
-                              surfaceTintColor: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceTint,
-                              shadowColor: Colors.transparent,
-                              elevation: ref.watch(provider.select(
-                                      (viewState) => viewState
-                                      .isStickyingAppBar))
-                                  ? 3
-                                  : 0,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .surface,
-                              child: _headerContents(
-                                  context: context, ref: ref))
+                        children: [
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                Material(
+                                    type: MaterialType.button,
+                                    animationDuration:
+                                        viewModel(ref).state.isStickyingAppBar
+                                            ? const Duration(milliseconds: 100)
+                                            : const Duration(milliseconds: 150),
+                                    surfaceTintColor: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceTint,
+                                    shadowColor: Colors.transparent,
+                                    elevation: ref.watch(provider.select(
+                                            (viewState) =>
+                                                viewState.isStickyingAppBar))
+                                        ? 3
+                                        : 0,
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    child: _headerContents(
+                                        context: context, ref: ref))
+                              ],
+                            ),
+                          ),
+                          _appBar(context: context),
                         ],
-                      ),
-                    ),
-                    _appBar(context: context),
-                  ],
-                )
+                      )
                     : _appBar(context: context),
                 hasTabBar
                     ? SliverPersistentHeader(
-                    pinned: true,
-                    delegate: StickyTabBarDelegate(
-                        tabBar: _tabBar(context: context, ref: ref)!,
-                        tabBarHeader:
-                        _tabBarHeader(context: context, ref: ref),
-                        setStickyState: (isSticking) {
-                          if (viewModel(ref)
-                              .state
-                              .isStickyingAppBar !=
-                              isSticking) {
-                            viewModel(ref).state = viewModel(ref)
-                                .state
-                                .copyWith(
-                                isStickyingAppBar: isSticking)
-                            as VS;
-                          }
-                        },
-                        height:
-                        viewModel(ref).state.tabBarHeight ?? 0))
+                        pinned: true,
+                        delegate: StickyTabBarDelegate(
+                            tabBar: _tabBar(context: context, ref: ref)!,
+                            tabBarHeader:
+                                _tabBarHeader(context: context, ref: ref),
+                            setStickyState: (isSticking) {
+                              if (viewModel(ref).state.isStickyingAppBar !=
+                                  isSticking) {
+                                print('ステート更新 + $runtimeType + stickying');
+                                viewModel(ref).state = viewModel(ref)
+                                        .state
+                                        .copyWith(isStickyingAppBar: isSticking)
+                                    as VS;
+                              }
+                            },
+                            height: viewModel(ref).state.tabBarHeight ?? 0))
                     : _blank,
               ];
             },
@@ -389,19 +360,31 @@ VS extends BaseViewState> extends StatelessWidget {
     if (hasAppBar) {
       if (needsSliverAppBar) {
         return Scaffold(
+          resizeToAvoidBottomInset: true,
           drawer: navigationDrawer(context: context),
-          floatingActionButtonLocation:
-          FloatingActionButtonLocation.endFloat,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           floatingActionButton: _floatingActionButtons(context: context),
-          body: isChild ? _child : _notificationListener(context: context, ref: ref, child: _child),
+          body: isChild
+              ? _child
+              : _notificationListener(
+                  context: context, ref: ref, child: _child),
           // bottomSheet: bottomSheet,
-          bottomNavigationBar: isChild || !hasAds ? SizedBox() : Column(mainAxisSize: MainAxisSize.min, children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), SyntonicAdBanner()],),
+          bottomNavigationBar: isChild || !hasAds
+              ? const SizedBox()
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    bottomSheet(context: context, ref: ref) ?? const SizedBox(),
+                    // SyntonicAdBanner()
+                  ],
+                ),
         );
       } else {
         return DefaultTabController(
             length: hasTabBar ? 2 : 0,
             // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
             child: Scaffold(
+              resizeToAvoidBottomInset: true,
               drawer: navigationDrawer(context: context),
               body: riverpod.Consumer(
                 builder: (context, ref, child) {
@@ -415,23 +398,34 @@ VS extends BaseViewState> extends StatelessWidget {
                 },
               ),
               // bottomSheet: bottomSheet(context: context, ref: ref),
-              bottomNavigationBar: isChild || !hasAds ? SizedBox() : Column(children: [bottomSheet(context: context, ref: ref) ?? SizedBox(), SyntonicAdBanner(),]),
+              bottomNavigationBar: isChild || !hasAds
+                  ? const SizedBox()
+                  : Column(children: [
+                      bottomSheet(context: context, ref: ref) ??
+                          const SizedBox(),
+                      // SyntonicAdBanner(),
+                    ]),
             ));
       }
     } else {
       if (isChild) {
-        print(this.runtimeType);
+        print(runtimeType);
         print('こども');
         return riverpod.Consumer(
           builder: (context, ref, child) {
             return Scaffold(
+              resizeToAvoidBottomInset: true,
               // primary: true,
               // // extendBody: true,
               //   extendBodyBehindAppBar: false,
-              body: SafeArea(top: false, child: mainContents(context: context, ref: ref)),
+              body: SafeArea(
+                  top: false, child: mainContents(context: context, ref: ref)),
               floatingActionButton: _floatingActionButtons(context: context),
               // bottomSheet: bottomSheet(context: context, ref: ref),
-              bottomNavigationBar: bottomSheet(context: context, ref: ref) != null || !hasAds ? bottomSheet(context: context, ref: ref) : SizedBox(),
+              bottomNavigationBar:
+                  bottomSheet(context: context, ref: ref) != null || !hasAds
+                      ? bottomSheet(context: context, ref: ref)
+                      : const SizedBox(),
             );
             return Column(
               children: [
@@ -446,6 +440,7 @@ VS extends BaseViewState> extends StatelessWidget {
         );
       } else {
         return Scaffold(
+          resizeToAvoidBottomInset: true,
           body: riverpod.Consumer(
             builder: (context, ref, child) {
               return mainContents(context: context, ref: ref);
@@ -453,7 +448,10 @@ VS extends BaseViewState> extends StatelessWidget {
             },
           ),
           // bottomSheet: bottomSheet(context: context, ref: ref),
-          bottomNavigationBar: bottomSheet(context: context, ref: ref) != null || !hasAds ? bottomSheet(context: context, ref: ref) : SizedBox(),
+          bottomNavigationBar:
+              bottomSheet(context: context, ref: ref) != null || !hasAds
+                  ? bottomSheet(context: context, ref: ref)
+                  : const SizedBox(),
         );
       }
     }
@@ -487,7 +485,7 @@ VS extends BaseViewState> extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Container(
           padding:
-          !isChild ? EdgeInsets.zero : const EdgeInsets.only(bottom: 100),
+              !isChild ? EdgeInsets.zero : const EdgeInsets.only(bottom: 100),
           child: mainContents(context: context, ref: ref),
         ));
     // child: Center(
@@ -540,7 +538,9 @@ VS extends BaseViewState> extends StatelessWidget {
       null;
 
   NotificationListener _notificationListener(
-      {required BuildContext context, required riverpod.WidgetRef ref, required Widget child}) {
+      {required BuildContext context,
+      required riverpod.WidgetRef ref,
+      required Widget child}) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
         print('サイズ');
@@ -551,28 +551,55 @@ VS extends BaseViewState> extends StatelessWidget {
           return false;
         }
 
-        if (scrollNotification is ScrollUpdateNotification && scrollNotification.metrics.axis == Axis.vertical) {
-          if (viewModel(ref).state.height == null ||  scrollNotification.dragDetails != null) {
+        if (scrollNotification is ScrollUpdateNotification &&
+            scrollNotification.metrics.axis == Axis.vertical) {
+          if (viewModel(ref).state.height == null ||
+              scrollNotification.dragDetails != null) {
             print('とめた');
             return false;
           }
-          if (scrollNotification.metrics.pixels > 0 && viewModel(ref).scrollController!.position.userScrollDirection ==
-              ScrollDirection.forward) {
+          if (scrollNotification.metrics.pixels > 0 &&
+              viewModel(ref).scrollController!.position.userScrollDirection ==
+                  ScrollDirection.forward) {
             print('りばーす');
-            if (viewModel(ref).isScrollingAutomatically == false && scrollNotification.metrics.pixels <
-                viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - 72 + 2 && scrollNotification.metrics.pixels >
-                0) {
+            if (viewModel(ref).isScrollingAutomatically == false &&
+                scrollNotification.metrics.pixels <
+                    viewModel(ref).state.height! -
+                        viewModel(ref).state.tabBarHeight!.toInt() -
+                        72 +
+                        2 &&
+                scrollNotification.metrics.pixels > 0) {
               viewModel(ref).isScrollingAutomatically = true;
-              Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
-                  duration: Duration(milliseconds: 400), curve: Curves.easeInOutCubicEmphasized).whenComplete(() => viewModel(ref).isScrollingAutomatically = false));
+              Future.microtask(() => viewModel(ref)
+                  .scrollController!
+                  .animateTo(0,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeInOutCubicEmphasized)
+                  .whenComplete(
+                      () => viewModel(ref).isScrollingAutomatically = false));
             }
           } else {
             print('ふつう');
-            if (viewModel(ref).isScrollingAutomatically == false && !viewModel(ref).state.isStickyingAppBar && scrollNotification.metrics.pixels >
-                0 && scrollNotification.metrics.pixels < viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - 72 + 2) {
+            if (viewModel(ref).isScrollingAutomatically == false &&
+                !viewModel(ref).state.isStickyingAppBar &&
+                scrollNotification.metrics.pixels > 0 &&
+                scrollNotification.metrics.pixels <
+                    viewModel(ref).state.height! -
+                        viewModel(ref).state.tabBarHeight!.toInt() -
+                        72 +
+                        2) {
               viewModel(ref).isScrollingAutomatically = true;
-              Future.microtask(() => viewModel(ref).scrollController!.animateTo(viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - 72 + 2,
-                  duration: Duration(milliseconds: 400), curve: Curves.easeInOutCubicEmphasized).whenComplete(() => viewModel(ref).isScrollingAutomatically = false));
+              Future.microtask(() => viewModel(ref)
+                  .scrollController!
+                  .animateTo(
+                      viewModel(ref).state.height! -
+                          viewModel(ref).state.tabBarHeight!.toInt() -
+                          72 +
+                          2,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeInOutCubicEmphasized)
+                  .whenComplete(
+                      () => viewModel(ref).isScrollingAutomatically = false));
             }
           }
           if (scrollNotification.metrics.pixels ==
@@ -589,29 +616,55 @@ VS extends BaseViewState> extends StatelessWidget {
           }
         }
 
-        if (scrollNotification is ScrollEndNotification && scrollNotification.metrics.axis == Axis.vertical) {
+        if (scrollNotification is ScrollEndNotification &&
+            scrollNotification.metrics.axis == Axis.vertical) {
           if (viewModel(ref).state.height == null) {
             print('とめた');
             return false;
           }
 
-          if (scrollNotification.metrics.pixels > 0 && viewModel(ref).scrollController!.position.userScrollDirection ==
-              ScrollDirection.forward) {
+          if (scrollNotification.metrics.pixels > 0 &&
+              viewModel(ref).scrollController!.position.userScrollDirection ==
+                  ScrollDirection.forward) {
             print('りばーす');
-            if (viewModel(ref).isScrollingAutomatically == false && scrollNotification.metrics.pixels <
-                viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt()  - 72 + 2 && scrollNotification.metrics.pixels >
-                0) {
+            if (viewModel(ref).isScrollingAutomatically == false &&
+                scrollNotification.metrics.pixels <
+                    viewModel(ref).state.height! -
+                        viewModel(ref).state.tabBarHeight!.toInt() -
+                        72 +
+                        2 &&
+                scrollNotification.metrics.pixels > 0) {
               viewModel(ref).isScrollingAutomatically = true;
-              Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
-                  duration: Duration(milliseconds: 400), curve: Curves.easeInOutCubicEmphasized).whenComplete(() => viewModel(ref).isScrollingAutomatically = false));
+              Future.microtask(() => viewModel(ref)
+                  .scrollController!
+                  .animateTo(0,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeInOutCubicEmphasized)
+                  .whenComplete(
+                      () => viewModel(ref).isScrollingAutomatically = false));
             }
           } else {
             print('ふつう');
-            if (viewModel(ref).isScrollingAutomatically == false && !viewModel(ref).state.isStickyingAppBar && scrollNotification.metrics.pixels >
-                0 && scrollNotification.metrics.pixels < viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt()  - 72 + 2) {
+            if (viewModel(ref).isScrollingAutomatically == false &&
+                !viewModel(ref).state.isStickyingAppBar &&
+                scrollNotification.metrics.pixels > 0 &&
+                scrollNotification.metrics.pixels <
+                    viewModel(ref).state.height! -
+                        viewModel(ref).state.tabBarHeight!.toInt() -
+                        72 +
+                        2) {
               viewModel(ref).isScrollingAutomatically = true;
-              Future.microtask(() => viewModel(ref).scrollController!.animateTo(viewModel(ref).state.height! - viewModel(ref).state.tabBarHeight!.toInt() - 72 + 2,
-                  duration: Duration(milliseconds: 400), curve: Curves.easeInOutCubicEmphasized).whenComplete(() => viewModel(ref).isScrollingAutomatically = false));
+              Future.microtask(() => viewModel(ref)
+                  .scrollController!
+                  .animateTo(
+                      viewModel(ref).state.height! -
+                          viewModel(ref).state.tabBarHeight!.toInt() -
+                          72 +
+                          2,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeInOutCubicEmphasized)
+                  .whenComplete(
+                      () => viewModel(ref).isScrollingAutomatically = false));
             }
           }
         }
@@ -620,12 +673,12 @@ VS extends BaseViewState> extends StatelessWidget {
       },
       child: canSwipeToRefresh(context: context, ref: ref)
           ? RefreshIndicator(
-        // key: GlobalKey<RefreshIndicatorState>(),
-        //   color: SyntonicColor.primary_color,
-          onRefresh: () async {
-            await onSwipeToRefresh(context: context, ref: ref);
-          },
-          child: child)
+              // key: GlobalKey<RefreshIndicatorState>(),
+              //   color: SyntonicColor.primary_color,
+              onRefresh: () async {
+                await onSwipeToRefresh(context: context, ref: ref);
+              },
+              child: child)
           : child,
     );
   }
@@ -639,7 +692,6 @@ VS extends BaseViewState> extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           Subtitle2Text(text: title),
           Body2Text(text: subtitle),
         ],
@@ -648,7 +700,9 @@ VS extends BaseViewState> extends StatelessWidget {
   }
 
   /// Bottom sheet.
-  Widget? bottomSheet({required BuildContext context, required riverpod.WidgetRef ref}) => null;
+  Widget? bottomSheet(
+          {required BuildContext context, required riverpod.WidgetRef ref}) =>
+      null;
 
   /// The function that is executed,
   /// when the content is scrolled down to the bottom of a screen.
@@ -668,14 +722,14 @@ VS extends BaseViewState> extends StatelessWidget {
   ///
   /// Default is none.
   Widget? headerContents(
-      {required BuildContext context, required riverpod.WidgetRef ref}) =>
+          {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
 
   /// Get tabs of tab bar.
   ///
   /// Default is none.
   List<Widget>? tabs(
-      {required BuildContext context, required riverpod.WidgetRef ref}) =>
+          {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
 
   /// Get tab controller.
@@ -694,25 +748,25 @@ VS extends BaseViewState> extends StatelessWidget {
   /// Occasionally two FABs can be used, if they perform distinct,
   /// yet equally important, actions.
   FloatingActionButtonModel? floatingActionButton(
-      {required BuildContext context, required riverpod.WidgetRef ref}) =>
+          {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
   FloatingActionButtonModel? floatingActionButtonSecondary(
-      {required BuildContext context, required riverpod.WidgetRef ref}) =>
+          {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
 
   /// Get an action of pull to refresh.
   ///
   /// Default is none.
   Future<dynamic>? onSwipeToRefresh(
-      {required BuildContext context,
-        required riverpod.WidgetRef ref}) async =>
+          {required BuildContext context,
+          required riverpod.WidgetRef ref}) async =>
       viewModel(ref).onInit(context: context);
 
   /// Get whether main content can swipe to refresh.
   ///
   /// Default is false.
   bool canSwipeToRefresh(
-      {required BuildContext context, required riverpod.WidgetRef ref}) =>
+          {required BuildContext context, required riverpod.WidgetRef ref}) =>
       viewModel(ref).state.needsInitialize;
 
   /// Whether needs [SliverAppBar].
@@ -765,11 +819,11 @@ VS extends BaseViewState> extends StatelessWidget {
             ? _tabBar(context: context, ref: ref)!.preferredSize.height
             : 0;
         _height += _tabBar(context: context, ref: ref) == null &&
-            _appBar.searchBox != null
+                _appBar.searchBox != null
             ? 12
             : 0;
         _height +=
-        _appBar.bottom != null ? _appBar.bottom!.preferredSize.height : 0;
+            _appBar.bottom != null ? _appBar.bottom!.preferredSize.height : 0;
 
         return PreferredSize(
             preferredSize: Size.fromHeight(_height),
@@ -813,16 +867,22 @@ VS extends BaseViewState> extends StatelessWidget {
   Widget? _floatingActionButtons({required BuildContext context}) {
     if (hasFAB) {
       if (hasFABSecondary) {
-        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 0 : 0), child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              _floatingActionButton(isSecondary: true),
-              const SizedBox(height: 8),
-              _floatingActionButton(),
-            ]),);
+        return Padding(
+          padding: EdgeInsets.only(bottom: hasAds ? 0 : 0),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                _floatingActionButton(isSecondary: true),
+                const SizedBox(height: 8),
+                _floatingActionButton(),
+              ]),
+        );
       } else {
-        return Padding(padding: EdgeInsets.only(bottom: hasAds ? 0 : 0), child: _floatingActionButton(),);
+        return Padding(
+          padding: EdgeInsets.only(bottom: hasAds ? 0 : 0),
+          child: _floatingActionButton(),
+        );
       }
     } else {
       return null;
@@ -852,6 +912,7 @@ VS extends BaseViewState> extends StatelessWidget {
   /// And also, hide action item in [appbar], [floatingActionButton] too.
   Widget get _errorScreen {
     return const Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Center(
@@ -877,16 +938,22 @@ VS extends BaseViewState> extends StatelessWidget {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final RenderBox? renderBox = viewModel(ref)._b.currentContext?.findRenderObject() as RenderBox?;
+      final RenderBox? renderBox =
+          viewModel(ref)._b.currentContext?.findRenderObject() as RenderBox?;
       if (viewModel(ref).state.height != renderBox!.size.height) {
+        print('ステート更新 + $runtimeType + height');
         viewModel(ref).state =
-        viewModel(ref).state.copyWith(height: renderBox!.size.height) as VS;
+            viewModel(ref).state.copyWith(height: renderBox.size.height) as VS;
       }
     });
 
-    double? _ofset = ref.watch(provider.select((viewState) => viewState.height)) != null  ? (viewModel(ref).state.height ?? 0) -
-        (viewModel(ref).state.tabBarHeight ?? 0) -
-        72 + 2 : 0;
+    double? _ofset =
+        ref.watch(provider.select((viewState) => viewState.height)) != null
+            ? (viewModel(ref).state.height ?? 0) -
+                (viewModel(ref).state.tabBarHeight ?? 0) -
+                72 +
+                2
+            : 0;
     return SyntonicFade.off(
         key: viewModel(ref)._b,
         zeroOpacityOffset: _ofset / 2,
@@ -894,23 +961,31 @@ VS extends BaseViewState> extends StatelessWidget {
         fullOpacityOffset: _ofset,
         scrollController: viewModel(ref).scrollController ?? ScrollController(),
         child: headerContents(context: context, ref: ref)!);
-    return Container(key: viewModel(ref)._b, child: headerContents(context: context, ref: ref)!,);
+    return Container(
+      key: viewModel(ref)._b,
+      child: headerContents(context: context, ref: ref)!,
+    );
   }
 
   /// Get header contents.
   /// For listen focus event by tap, and focus out from some widgets.
   Widget _tabBarHeader(
       {required BuildContext context, required riverpod.WidgetRef ref}) {
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final RenderBox? renderBox = viewModel(ref)._c.currentContext?.findRenderObject() as RenderBox?;
+      final RenderBox? renderBox =
+          viewModel(ref)._c.currentContext?.findRenderObject() as RenderBox?;
       if (viewModel(ref).state.tabBarHeight != renderBox!.size.height) {
-        viewModel(ref).state =
-        viewModel(ref).state.copyWith(tabBarHeight: renderBox!.size.height) as VS;
+        print('ステート更新 + $runtimeType + tab height');
+        viewModel(ref).state = viewModel(ref)
+            .state
+            .copyWith(tabBarHeight: renderBox.size.height) as VS;
       }
     });
 
-    return Container(key: viewModel(ref)._c, child: tabBarHeader(context: context, ref: ref),);
+    return Container(
+      key: viewModel(ref)._c,
+      child: tabBarHeader(context: context, ref: ref),
+    );
 
     // return _SizeListenableContainer(
     //   key: _globalKey,
@@ -926,7 +1001,7 @@ VS extends BaseViewState> extends StatelessWidget {
   }
 
   Widget? tabBarHeader(
-      {required BuildContext context, required riverpod.WidgetRef ref}) =>
+          {required BuildContext context, required riverpod.WidgetRef ref}) =>
       null;
 
   ///TODO: InfiniteLoadingListViewなどで、scrollControllerをセットしていないと、エラーになるので、必ずセットするようにするなどチェックを検討する。
@@ -938,12 +1013,12 @@ VS extends BaseViewState> extends StatelessWidget {
     if (hasTabBar) {
       return TabBar(
         dividerColor: ref.watch(
-            provider.select((viewState) => viewState.isStickyingAppBar))
+                provider.select((viewState) => viewState.isStickyingAppBar))
             ? Colors.transparent
             : Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
         controller: tabController,
         isScrollable:
-        tabs(context: context, ref: ref)!.length > 2 ? true : false,
+            tabs(context: context, ref: ref)!.length > 2 ? true : false,
         onTap: (_index) {
           if (tabController != null
               ? !tabController!.indexIsChanging
@@ -953,8 +1028,10 @@ VS extends BaseViewState> extends StatelessWidget {
             // print((tabs(context: context, ref: ref)![0] as Tab).height!.toInt());
             viewModel(ref).isScrollingAutomatically = true;
             Future.microtask(() => viewModel(ref).scrollController!.animateTo(0,
-                duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized)).whenComplete(() =>  viewModel(ref).isScrollingAutomatically = false);
-
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOutCubicEmphasized))
+                .whenComplete(
+                    () => viewModel(ref).isScrollingAutomatically = false);
 
             // ref.read(provider).changeFloatingActionButtonState(true);
 
@@ -1013,6 +1090,10 @@ abstract class BaseViewModel<VS extends BaseViewState>
     //   }
     //   // }
     // });
+
+    print('リビルド + $runtimeType');
+
+    initialization ??= initializeee();
   }
 
   // bool isInitialized = false;
@@ -1022,15 +1103,23 @@ abstract class BaseViewModel<VS extends BaseViewState>
   late BannerAd ad;
   late AdSize? adSize;
   late bool isAdLoaded = false;
-  GlobalKey _b = GlobalKey();
-  GlobalKey _c = GlobalKey();
+  final GlobalKey _b = GlobalKey();
+  final GlobalKey _c = GlobalKey();
   double offset = 0;
   bool isScrollingAutomatically = false;
   bool canScrollHeaderAutomatically = true;
-  bool _isInitializing = false; // Add this flag
+  final bool _isInitializing = false; // Add this flag
+
+  Future<void>? initialization;
+
+  Future<void> initializeee() async {
+    await Future.delayed(const Duration(seconds: 2)); // 初期化処理
+    print('Initialized! + $runtimeType');
+  }
 
   @override
   set state(VS value) {
+    print('ステート更新 + $runtimeType + 何か');
     super.state = value;
   }
 
@@ -1038,9 +1127,12 @@ abstract class BaseViewModel<VS extends BaseViewState>
   VS get state => super.state;
 
   set initialize(bool isInitialized) {
-    VS  b = state.copyWith(isInitialized: isInitialized) as VS;
+    VS b = state.copyWith(isInitialized: isInitialized) as VS;
+    print('ステート更新 + $runtimeType + initialize');
     state = b;
   }
+
+  get isInitialized => state.isInitialized;
   @override
   void dispose() {
     onDispose();

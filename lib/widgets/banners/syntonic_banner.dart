@@ -27,8 +27,22 @@ class SyntonicBanner extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             leading,
-            SizedBox(width: 16),
-            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Subtitle2Text(text: message, overflow: TextOverflow.visible,), SizedBox(height: 4,), SyntonicButton.transparent(isLined: true, onTap: () => onTapped(), text: actionText)],)),
+            const SizedBox(width: 16),
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Subtitle2Text(
+                  text: message,
+                  overflow: TextOverflow.visible,
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                SyntonicButton.transparent(
+                    isLined: true, onTap: () => onTapped(), text: actionText)
+              ],
+            )),
           ],
         ),
       ),

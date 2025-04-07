@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
-import 'package:syntonic_components/services/navigation_service.dart';
 
 import '../constants/syntonic_color.dart';
 import 'syntonic_tab_bar_theme.dart';
@@ -21,14 +20,16 @@ ThemeData darkTheme({ColorScheme? colorScheme}) {
   // }
 
   ColorScheme _colorScheme = ColorScheme.fromSeed(
-      seedColor: colorScheme != null ? colorScheme.primary : SyntonicColor.primary_color,
+      seedColor: colorScheme != null
+          ? colorScheme.primary
+          : SyntonicColor.primary_color,
       brightness: Brightness.dark,
       onPrimaryContainer: Colors.white,
-      surface: colorScheme != null ? colorScheme.surface.tone(0) : null,
+      surface: colorScheme?.surface.tone(0),
       outline: SyntonicColor().divider,
-      onSurface: colorScheme != null ? colorScheme.primary.tone(100) : SyntonicColor.primary_color
-          .tone(100)
-  );
+      onSurface: colorScheme != null
+          ? colorScheme.primary.tone(100)
+          : SyntonicColor.primary_color.tone(100));
   return ThemeData(
     useMaterial3: true,
     // colorSchemeSeed: primaryColor,
@@ -47,9 +48,8 @@ ThemeData darkTheme({ColorScheme? colorScheme}) {
     // outlinedButtonTheme: SyntonicOutlinedButtonTheme.get(true),
     // textButtonTheme: SyntonicTextButtonTheme.get(true),
     // appBarTheme: SyntonicAppBarTheme.get(true),
-    tabBarTheme: SyntonicTabBarTheme.get(
-        isDarkTheme: true,
-        colorScheme: _colorScheme),
+    tabBarTheme:
+        SyntonicTabBarTheme.get(isDarkTheme: true, colorScheme: _colorScheme),
     // bottomNavigationBarTheme: SyntonicBottomNavigationBarTheme.get(true),
     // dialogTheme: SyntonicDialogTheme.get(true),
     // chipTheme: SyntonicChipTheme.get(true),
@@ -66,46 +66,46 @@ ThemeData darkTheme({ColorScheme? colorScheme}) {
           dateTimePickerTextStyle: TextStyle(color: Colors.white),
         )),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
+      fillColor:
+          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.disabled)) {
           return null;
         }
-        if (states.contains(MaterialState.selected)) {
+        if (states.contains(WidgetState.selected)) {
           return primaryColor ?? SyntonicColor.primary_color;
         }
         return null;
       }),
     ),
     radioTheme: RadioThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
+      fillColor:
+          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.disabled)) {
           return null;
         }
-        if (states.contains(MaterialState.selected)) {
+        if (states.contains(WidgetState.selected)) {
           return primaryColor ?? SyntonicColor.primary_color;
         }
         return null;
       }),
     ),
     switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
+      thumbColor:
+          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.disabled)) {
           return null;
         }
-        if (states.contains(MaterialState.selected)) {
+        if (states.contains(WidgetState.selected)) {
           return primaryColor ?? SyntonicColor.primary_color;
         }
         return null;
       }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
+      trackColor:
+          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.disabled)) {
           return null;
         }
-        if (states.contains(MaterialState.selected)) {
+        if (states.contains(WidgetState.selected)) {
           return primaryColor ?? SyntonicColor.primary_color;
         }
         return null;

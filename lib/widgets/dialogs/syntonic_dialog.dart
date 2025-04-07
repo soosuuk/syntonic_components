@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/buttons/syntonic_button.dart';
-import 'package:syntonic_components/widgets/texts/body_2_text.dart';
-import 'package:syntonic_components/widgets/texts/headline_5_text.dart';
 import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
 
 import '../texts/body_1_text.dart';
@@ -51,21 +49,23 @@ class SyntonicDialog extends StatelessWidget {
           widgetList.add(
             i == 1
                 ? SyntonicButton.filled(
-              padding: EdgeInsets.zero,
-              onTap: () => {
-                buttonItem.buttonAction(), // Execute the action specified by the caller
-                Navigator.of(context).pop()
-              },
-              text: buttonItem.buttonTxt,
-            )
+                    padding: EdgeInsets.zero,
+                    onTap: () => {
+                      buttonItem
+                          .buttonAction(), // Execute the action specified by the caller
+                      Navigator.of(context).pop()
+                    },
+                    text: buttonItem.buttonTxt,
+                  )
                 : SyntonicButton.outlined(
-              padding: EdgeInsets.zero,
-              onTap: () => {
-                buttonItem.buttonAction(), // Execute the action specified by the caller
-                Navigator.of(context).pop()
-              },
-              text: buttonItem.buttonTxt,
-            ),
+                    padding: EdgeInsets.zero,
+                    onTap: () => {
+                      buttonItem
+                          .buttonAction(), // Execute the action specified by the caller
+                      Navigator.of(context).pop()
+                    },
+                    text: buttonItem.buttonTxt,
+                  ),
           );
         }
       }

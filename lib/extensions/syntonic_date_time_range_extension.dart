@@ -1,8 +1,9 @@
 part of '../../widgets/syntonic_base_view.dart';
 
 extension SyntonicDateTimeRangeExtension on DateTimeRange {
-
-  String formatDateRange(BuildContext context,) {
+  String formatDateRange(
+    BuildContext context,
+  ) {
     final locale = Localizations.localeOf(context).toString();
     // initializeMessages(locale);
 
@@ -15,17 +16,25 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
       return '${fullDateFormat.format(start)} - ${fullDateFormat.format(end)}';
     } else if (start.month != end.month) {
       // 月を跨ぐ場合
-      final String startFormat = (start.year == DateTime.now().year) ? monthDayWeekFormat.format(start) : fullDateFormat.format(start);
+      final String startFormat = (start.year == DateTime.now().year)
+          ? monthDayWeekFormat.format(start)
+          : fullDateFormat.format(start);
       return '$startFormat - ${fullDateFormat.format(end)}';
     } else {
       // 同じ月の場合
-      final String startFormat = (start.year == DateTime.now().year) ? monthDayWeekFormat.format(start) : fullDateFormat.format(start);
-      final String endFormat = (start.year == DateTime.now().year) ? dayWeekFormat.format(end) : fullDateFormat.format(end);
+      final String startFormat = (start.year == DateTime.now().year)
+          ? monthDayWeekFormat.format(start)
+          : fullDateFormat.format(start);
+      final String endFormat = (start.year == DateTime.now().year)
+          ? dayWeekFormat.format(end)
+          : fullDateFormat.format(end);
       return '$startFormat - $endFormat';
     }
   }
 
-  String formatStartDate(BuildContext context,) {
+  String formatStartDate(
+    BuildContext context,
+  ) {
     final locale = Localizations.localeOf(context).toString();
     // initializeMessages(locale);
 
@@ -38,17 +47,25 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
       return fullDateFormat.format(start);
     } else if (start.month != end.month) {
       // 月を跨ぐ場合
-      final String startFormat = (start.year == DateTime.now().year) ? monthDayWeekFormat.format(start) : fullDateFormat.format(start);
+      final String startFormat = (start.year == DateTime.now().year)
+          ? monthDayWeekFormat.format(start)
+          : fullDateFormat.format(start);
       return startFormat;
     } else {
       // 同じ月の場合
-      final String startFormat = (start.year == DateTime.now().year) ? monthDayWeekFormat.format(start) : fullDateFormat.format(start);
-      final String endFormat = (start.year == DateTime.now().year) ? dayWeekFormat.format(end) : fullDateFormat.format(end);
+      final String startFormat = (start.year == DateTime.now().year)
+          ? monthDayWeekFormat.format(start)
+          : fullDateFormat.format(start);
+      final String endFormat = (start.year == DateTime.now().year)
+          ? dayWeekFormat.format(end)
+          : fullDateFormat.format(end);
       return startFormat;
     }
   }
 
-  String formatEndDate(BuildContext context,) {
+  String formatEndDate(
+    BuildContext context,
+  ) {
     final locale = Localizations.localeOf(context).toString();
     // initializeMessages(locale);
 
@@ -61,12 +78,18 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
       return fullDateFormat.format(end);
     } else if (start.month != end.month) {
       // 月を跨ぐ場合
-      final String startFormat = (start.year == DateTime.now().year) ? monthDayWeekFormat.format(start) : fullDateFormat.format(start);
+      final String startFormat = (start.year == DateTime.now().year)
+          ? monthDayWeekFormat.format(start)
+          : fullDateFormat.format(start);
       return fullDateFormat.format(end);
     } else {
       // 同じ月の場合
-      final String startFormat = (start.year == DateTime.now().year) ? monthDayWeekFormat.format(start) : fullDateFormat.format(start);
-      final String endFormat = (start.year == DateTime.now().year) ? dayWeekFormat.format(end) : fullDateFormat.format(end);
+      final String startFormat = (start.year == DateTime.now().year)
+          ? monthDayWeekFormat.format(start)
+          : fullDateFormat.format(start);
+      final String endFormat = (start.year == DateTime.now().year)
+          ? dayWeekFormat.format(end)
+          : fullDateFormat.format(end);
       return endFormat;
     }
   }

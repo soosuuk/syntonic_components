@@ -39,25 +39,31 @@ class SyntonicToggleButtons extends StatelessWidget {
               builder: (context, constraints) => Padding(
                   padding: _padding,
                   child: ToggleButtons(
-              // constraints: BoxConstraints.expand(
-              // width: constraints.maxWidth / buttonNames.length - _padding.horizontal,
-              //     height: 40),
-                    constraints:
-                    BoxConstraints.expand(width: constraints.maxWidth / 2, height: 32),
-            borderWidth: 1,
-            borderColor: Theme.of(context).colorScheme.onSurfaceVariant,
-            borderRadius: BorderRadius.circular(0), // Set rounded corners to 0
-            onPressed: (int index) {
-              model.changeSelection(index);
-              onToggleButtonPressed(index);
-            },
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    // constraints: BoxConstraints.expand(
+                    // width: constraints.maxWidth / buttonNames.length - _padding.horizontal,
+                    //     height: 40),
+                    constraints: BoxConstraints.expand(
+                        width: (constraints.maxWidth - 4) / 2, height: 32),
+                    borderWidth: 1,
+                    borderColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                    borderRadius:
+                        BorderRadius.circular(0), // Set rounded corners to 0
+                    onPressed: (int index) {
+                      model.changeSelection(index);
+                      onToggleButtonPressed(index);
+                    },
                     textStyle: SyntonicTextTheme.caption(),
-            isSelected: model.selectedStates,
+                    isSelected: model.selectedStates,
                     fillColor: Theme.of(context).colorScheme.onSurface,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant, // Set unselected color to black
-            selectedColor: Theme.of(context).colorScheme.surface, // Set selected color to black
-            children: getButtonTexts(),
-          )));
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurfaceVariant, // Set unselected color to black
+                    selectedColor: Theme.of(context)
+                        .colorScheme
+                        .surface, // Set selected color to black
+                    children: getButtonTexts(),
+                  )));
         }, // a
       ),
     );
@@ -67,7 +73,9 @@ class SyntonicToggleButtons extends StatelessWidget {
   List<Widget> getButtonTexts() {
     List<Widget> buttonTexts = [];
     for (int i = 0; i < buttonNames.length; i++) {
-      buttonTexts.add(CaptionText(text: buttonNames[i],));
+      buttonTexts.add(CaptionText(
+        text: buttonNames[i],
+      ));
     }
     return buttonTexts;
   }

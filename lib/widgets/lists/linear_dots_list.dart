@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 
 import '../texts/subtitle_2_text.dart';
 

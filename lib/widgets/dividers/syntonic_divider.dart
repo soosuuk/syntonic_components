@@ -54,7 +54,9 @@ class SyntonicDivider extends StatelessWidget {
 
           return SizedBox(
             width: type == DividerType.horizontal ? lineWidth : 1.0,
-            height: type == DividerType.horizontal ? 1.0 : height ?? double.infinity,
+            height: type == DividerType.horizontal
+                ? 1.0
+                : height ?? double.infinity,
             child: ListView.builder(
               itemCount: dashCount,
               scrollDirection: type == DividerType.horizontal
@@ -65,12 +67,10 @@ class SyntonicDivider extends StatelessWidget {
                   width: type == DividerType.horizontal ? dashWidth : 1.0,
                   height: type == DividerType.horizontal ? 1.0 : dashWidth,
                   color: color ??
-                      Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.38),
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.38),
                   margin: EdgeInsets.symmetric(
-                    horizontal: type == DividerType.horizontal ? dashSpace : 0.0,
+                    horizontal:
+                        type == DividerType.horizontal ? dashSpace : 0.0,
                     vertical: type == DividerType.horizontal ? 0.0 : dashSpace,
                   ),
                 );
@@ -94,13 +94,18 @@ class SyntonicDivider extends StatelessWidget {
                 color: color ?? Theme.of(context).colorScheme.outline,
               );
       case DividerType.horizontal:
-        return Padding(padding: EdgeInsets.symmetric(horizontal: 20,), child: Divider(
-          thickness: _thickness,
-          color: color ??
-              (isBold
-                  ? SyntonicColor().backgroundFilled
-                  : Theme.of(context).colorScheme.outline),
-        ),);
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
+          child: Divider(
+            thickness: _thickness,
+            color: color ??
+                (isBold
+                    ? SyntonicColor().backgroundFilled
+                    : Theme.of(context).colorScheme.outline),
+          ),
+        );
     }
   }
 }

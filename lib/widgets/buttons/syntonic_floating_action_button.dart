@@ -1,6 +1,3 @@
-import 'package:syntonic_components/configs/constants/syntonic_constraint.dart';
-import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
-import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 
@@ -38,7 +35,7 @@ class SyntonicFloatingActionButton extends StatelessWidget {
 
     if (isSecondary) {
       return FloatingActionButton.small(
-        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         onPressed: floatingActionButtonModel.onTap,
         child: Icon(
           floatingActionButtonModel.icon ?? Icons.add,
@@ -52,8 +49,9 @@ class SyntonicFloatingActionButton extends StatelessWidget {
             width: width,
             height: 56,
             child: FloatingActionButton.extended(
-                backgroundColor:
-                isSecondary ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary,
+                backgroundColor: isSecondary
+                    ? Theme.of(context).colorScheme.surface
+                    : Theme.of(context).colorScheme.primary,
                 isExtended: true,
                 // extendedPadding:
                 //     !isExtended ? SyntonicConstraint.horizontal16 : null,
@@ -62,7 +60,8 @@ class SyntonicFloatingActionButton extends StatelessWidget {
                 onPressed: floatingActionButtonModel.onTap,
                 heroTag: floatingActionButtonModel.heroTag,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30), // Set the desired radius here
+                  borderRadius:
+                      BorderRadius.circular(30), // Set the desired radius here
                 ),
                 // label: AnimatedSwitcher(
                 //   duration: const Duration(milliseconds: 120),
@@ -114,32 +113,31 @@ class SyntonicFloatingActionButton extends StatelessWidget {
                   floatingActionButtonModel.icon ?? Icons.add,
                   color: isSecondary
                       ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                      .colorScheme
-                      .onPrimary,
+                      : Theme.of(context).colorScheme.onPrimary,
                   size: 18,
                 ),
                 label: AnimatedSize(
                   duration: const Duration(milliseconds: 120),
-                  child: isExtended ?  Subtitle2Text(
-                    text: floatingActionButtonModel.text.toUpperCase(),
-                    textColor: isSecondary
-                        ? Theme.of(context).colorScheme.onSurface
-                        : Theme.of(context)
-                        .colorScheme
-                        .onPrimary,
-                    needsLinkify: false,
-                  ) : const SizedBox(),
+                  child: isExtended
+                      ? Subtitle2Text(
+                          text: floatingActionButtonModel.text.toUpperCase(),
+                          textColor: isSecondary
+                              ? Theme.of(context).colorScheme.onSurface
+                              : Theme.of(context).colorScheme.onPrimary,
+                          needsLinkify: false,
+                        )
+                      : const SizedBox(),
                 )));
       } else {
         return FloatingActionButton(
           elevation: 2,
-          backgroundColor: floatingActionButtonModel.color ?? Theme.of(context).colorScheme.primary,
+          backgroundColor: floatingActionButtonModel.color ??
+              Theme.of(context).colorScheme.primary,
           onPressed: floatingActionButtonModel.onTap,
           heroTag: floatingActionButtonModel.heroTag,
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30),
-    ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
           child: Icon(
             floatingActionButtonModel.icon ?? Icons.add,
             color: Theme.of(context).colorScheme.onSurface,
@@ -162,5 +160,7 @@ class FloatingActionButtonModel {
       {required this.onTap,
       required this.text,
       this.icon = Icons.add,
-      this.heroTag = '', this.canExtended = true, this.color});
+      this.heroTag = '',
+      this.canExtended = true,
+      this.color});
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-
 class QuarterCirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -11,11 +9,12 @@ class QuarterCirclePainter extends CustomPainter {
       ..strokeWidth = 2.0;
 
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final startAngle = -3.14 / 2;
-    final sweepAngle = 3.14 / 2;
+    const startAngle = -3.14 / 2;
+    const sweepAngle = 3.14 / 2;
 
     for (int i = 0; i < 4; i++) {
-      canvas.drawArc(rect, startAngle + (sweepAngle * i), sweepAngle, true, paint);
+      canvas.drawArc(
+          rect, startAngle + (sweepAngle * i), sweepAngle, true, paint);
     }
   }
 
@@ -28,14 +27,14 @@ class QuarterCirclePainter extends CustomPainter {
 class QuarterCircleIcon extends StatelessWidget {
   final List<String> imageUrls;
 
-  QuarterCircleIcon({required this.imageUrls});
+  const QuarterCircleIcon({required this.imageUrls});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         CustomPaint(
-          size: Size(32, 32),
+          size: const Size(32, 32),
           painter: QuarterCirclePainter(),
         ),
         ...imageUrls.asMap().entries.map((entry) {
@@ -65,8 +64,8 @@ class _QuarterClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     final path = Path();
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final startAngle = -3.14 / 2;
-    final sweepAngle = 3.14 / 2;
+    const startAngle = -3.14 / 2;
+    const sweepAngle = 3.14 / 2;
 
     path.moveTo(size.width / 2, size.height / 2);
     path.arcTo(rect, startAngle + (sweepAngle * index), sweepAngle, false);

@@ -30,7 +30,9 @@ class App extends StatelessWidget {
     NavigationService();
 
     return FutureBuilder<bool>(
-      future: onCheckSupportedVersion != null ? onCheckSupportedVersion!(context) : Future.value(true),
+      future: onCheckSupportedVersion != null
+          ? onCheckSupportedVersion!(context)
+          : Future.value(true),
       builder: (context, snapshot) {
         RatingService();
         return MaterialApp(
@@ -45,7 +47,10 @@ class App extends StatelessWidget {
           navigatorKey: NavigationService().navigatorKey,
           theme: lightTheme(colorScheme: colorScheme),
           darkTheme: darkTheme(colorScheme: colorScheme),
-          home: (snapshot.connectionState == ConnectionState.waiting || snapshot.data == true) ? Container(color: Colors.white) : home,
+          home: (snapshot.connectionState == ConnectionState.waiting ||
+                  snapshot.data == true)
+              ? Container(color: Colors.white)
+              : home,
           debugShowCheckedModeBanner: false,
           supportedLocales: const [
             Locale('ja', ''),

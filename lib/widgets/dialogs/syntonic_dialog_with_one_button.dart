@@ -14,45 +14,24 @@ class SyntonicDialogWithOneButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (title != null) {
-      return AlertDialog(
-        title: Text(title),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(content),
-            ],
-          ),
+    return AlertDialog(
+      title: Text(title),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(content),
+          ],
         ),
-        actions: <Widget>[
-          TextButton(
-            child: Text(buttonName),
-            onPressed: () {
-              Navigator.of(context).pop();
-              onTap();
-            },
-          ),
-        ],
-      );
-    } else {
-      return AlertDialog(
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(content),
-            ],
-          ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(buttonName),
+          onPressed: () {
+            Navigator.of(context).pop();
+            onTap();
+          },
         ),
-        actions: <Widget>[
-          TextButton(
-            child: Text(buttonName),
-            onPressed: () {
-              Navigator.of(context).pop();
-              onTap();
-            },
-          ),
-        ],
-      );
-    }
+      ],
+    );
   }
 }

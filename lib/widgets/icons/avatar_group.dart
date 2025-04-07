@@ -12,33 +12,40 @@ class AvatarGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(onTap: onPressed, child: Stack(
-      alignment: Alignment.bottomLeft,
-      children: [
-        for (var i = 0; i < (persons.length > 4 ? 4 : persons.length) + 1; i++)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: (i * (1 - .4) * 24).toDouble(),
-              ),
-              Flexible(
-                  child: i < (persons.length > 4 ? 4 : persons.length)
-                      ? SyntonicPersonIcon(
-                    needsMainStaffBorder: false,
-                    person: persons[i],
-                    type: IconSize.small,
-                    hasPadding: false,
-                  )
-                      : onPressed != null ? const SyntonicIcon(
-                    isFilledColor: true,
-                    hasBorder: true,
-                    icon: Icons.add,
-                    padding: 0,
-                  ) : SizedBox())
-            ],
-          )
-      ],
-    ),);
+    return InkWell(
+      onTap: onPressed,
+      child: Stack(
+        alignment: Alignment.bottomLeft,
+        children: [
+          for (var i = 0;
+              i < (persons.length > 4 ? 4 : persons.length) + 1;
+              i++)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: (i * (1 - .4) * 24).toDouble(),
+                ),
+                Flexible(
+                    child: i < (persons.length > 4 ? 4 : persons.length)
+                        ? SyntonicPersonIcon(
+                            needsMainStaffBorder: false,
+                            person: persons[i],
+                            type: IconSize.small,
+                            hasPadding: false,
+                          )
+                        : onPressed != null
+                            ? const SyntonicIcon(
+                                isFilledColor: true,
+                                hasBorder: true,
+                                icon: Icons.add,
+                                padding: 0,
+                              )
+                            : const SizedBox())
+              ],
+            )
+        ],
+      ),
+    );
   }
 }

@@ -1,13 +1,11 @@
 import 'package:syntonic_components/widgets/buttons/syntonic_button.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_animation_enhancer.dart';
-import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
 import 'package:syntonic_components/widgets/text_fields/syntonic_search_box.dart';
 import 'package:flutter/material.dart';
 
 import '../../configs/constants/syntonic_color.dart';
 import '../../services/navigation_service.dart';
 import '../enhancers/syntonic_fade.dart';
-import '../icons/syntonic_icon.dart';
 import '../lists/syntonic_list_item.dart';
 import '../syntonic_base_view.dart';
 
@@ -140,7 +138,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       ScrollController? scrollController,
       bool hasTabBar = false,
       String? manualUrl,
-        Widget? leading,
+      Widget? leading,
       Widget? trailing})
       : this._(
             state: _AppBarState.fixed,
@@ -270,24 +268,24 @@ class SyntonicSliverAppBar extends StatelessWidget
     //       // }
     //     },
     //     onSearchButtonTap: (searchWord) {});
-    Widget? _title = searchBox ?? (title != null ?
-        SyntonicListItem(
-          title: (title == null || title == '') ? 'No title' : title!,
-          subtitle: subtitle,
-          titleTextStyle: TitleTextStyle.Subtitle2,
-          hasDivider: false,
-          padding: EdgeInsets.zero,
-          titleColor: accentColor,
-          leadingWidget: leading,
-          trailingWidget: trailing,
-          needsTitleOverFlowStateVisible: false,
-          needsSubtitleOverFlowStateVisible: false,
-          optionalWidgetTitle:
-              onTap != null ? const Icon(Icons.arrow_drop_down_outlined) : null,
-        ) : null);
-
-    print('Appbar スティッキー');
-
+    Widget? _title = searchBox ??
+        (title != null
+            ? SyntonicListItem(
+                title: (title == null || title == '') ? 'No title' : title!,
+                subtitle: subtitle,
+                titleTextStyle: TitleTextStyle.Subtitle2,
+                hasDivider: false,
+                padding: EdgeInsets.zero,
+                titleColor: accentColor,
+                leadingWidget: leading,
+                trailingWidget: trailing,
+                needsTitleOverFlowStateVisible: false,
+                needsSubtitleOverFlowStateVisible: false,
+                optionalWidgetTitle: onTap != null
+                    ? const Icon(Icons.arrow_drop_down_outlined)
+                    : null,
+              )
+            : null);
     // return SliverAppBar(title: TextField(),);
 
     return SliverAppBar(
@@ -301,8 +299,8 @@ class SyntonicSliverAppBar extends StatelessWidget
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
-          ? SizedBox()
-          : BackButton(onPressed: onBackButtonPressed, color: accentColor),
+              ? const SizedBox()
+              : BackButton(onPressed: onBackButtonPressed, color: accentColor),
       iconTheme: IconThemeData(
         color: accentColor, //change your color here
       ),
@@ -312,10 +310,8 @@ class SyntonicSliverAppBar extends StatelessWidget
       pinned: (isFullscreenDialog || hasTabBar || isFadedTitle) ? true : false,
       title: isFadedTitle
           ? SyntonicFade.on(
-              zeroOpacityOffset:
-                  250,
-              fullOpacityOffset:
-                  (expandedHeight ?? kToolbarHeight),
+              zeroOpacityOffset: 250,
+              fullOpacityOffset: (expandedHeight ?? kToolbarHeight),
               scrollController: scrollController!,
               // fullOpacityOffset: expandedHeight! - (kToolbarHeight*2.5),
               // zeroOpacityOffset: expandedHeight! - kToolbarHeight,
@@ -331,8 +327,17 @@ class SyntonicSliverAppBar extends StatelessWidget
               ? [
                   _getManualIcon(manualUrl: manualUrl, context: context),
                 ]
-              : [...?actions, useCloseButton ? SyntonicAnimationEnhancer(
-                child: CloseButton(color: Theme.of(context).colorScheme.onSurface, onPressed: () => onBackButtonPressed ?? Navigator.pop(context),)) : SizedBox()],
+              : [
+                  ...?actions,
+                  useCloseButton
+                      ? SyntonicAnimationEnhancer(
+                          child: CloseButton(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          onPressed: () =>
+                              onBackButtonPressed ?? Navigator.pop(context),
+                        ))
+                      : const SizedBox()
+                ],
       elevation: 0,
       // elevation: elevation ?? (this.isStickying ? 0 : 3),
       // scrolledUnderElevation: 3,
@@ -398,7 +403,11 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
       {required this.tabBar,
       required Widget? tabBarHeader,
       required this.setStickyState,
-      required this.height}) : tabBarHeader = Container(key: _textKey, child: tabBarHeader,);
+      required this.height})
+      : tabBarHeader = Container(
+          key: _textKey,
+          child: tabBarHeader,
+        );
   final TabBar tabBar;
   final Widget? tabBarHeader;
   final Function(bool) setStickyState;
@@ -471,7 +480,13 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
         color: _color,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [tabBarHeader ?? const SizedBox(), Padding(padding: EdgeInsets.symmetric(horizontal:24), child: tabBar,)],
+          children: [
+            tabBarHeader ?? const SizedBox(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: tabBar,
+            )
+          ],
         ));
   }
 

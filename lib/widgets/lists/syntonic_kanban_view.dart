@@ -35,22 +35,22 @@ class _KanbanViewState extends State<KanbanView> {
     pageIndex = pageIndex.clamp(0, widget.sectionNames.length - 1);
     _pageController.animateToPage(
       pageIndex,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.ease,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(title: const Text('PageView Example')),
       body: Padding(
-        padding: const EdgeInsets.only(left: 16.0), // Add 16px padding to the left
+        padding:
+            const EdgeInsets.only(left: 16.0), // Add 16px padding to the left
         child: PageView.builder(
           controller: _pageController,
-          padEnds: false,  // Prevent padding at edges
-          itemCount: 5,  // Number of pages
+          padEnds: false, // Prevent padding at edges
+          itemCount: 5, // Number of pages
           itemBuilder: (context, sectionIndex) {
             return KanbanSection(
               sectionIndex: sectionIndex,
@@ -62,7 +62,7 @@ class _KanbanViewState extends State<KanbanView> {
             );
             return Container(
               width: MediaQuery.of(context).size.width * 0.8,
-              margin: const EdgeInsets.only(right: 8.0),  // Space between pages
+              margin: const EdgeInsets.only(right: 8.0), // Space between pages
               decoration: BoxDecoration(
                 color: Colors.blueAccent,
                 borderRadius: BorderRadius.circular(12.0),
@@ -130,9 +130,8 @@ class KanbanSection extends StatelessWidget {
                     return LongPressDraggable<String>(
                       key: ValueKey('Task ${itemIndex + 1}'),
                       data: 'Task ${itemIndex + 1}',
-                      child: itemBuilder(context, sectionIndex, itemIndex),
                       feedback: Material(
-                        child: Container(
+                        child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: itemBuilder(context, sectionIndex, itemIndex),
                         ),
@@ -141,6 +140,7 @@ class KanbanSection extends StatelessWidget {
                       onDragUpdate: (details) {
                         onItemMove(details.globalPosition);
                       },
+                      child: itemBuilder(context, sectionIndex, itemIndex),
                     );
                   },
                 ),

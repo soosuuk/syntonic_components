@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
-import 'package:syntonic_components/widgets/texts/caption_text.dart';
 
 class SyntonicBulletListItem extends StatelessWidget {
   final String text;
   final Color? color;
 
-  SyntonicBulletListItem({
+  const SyntonicBulletListItem({
     required this.text,
     this.color = Colors.black,
   });
@@ -24,10 +23,11 @@ class SyntonicBulletListItem extends StatelessWidget {
             shape: BoxShape.circle,
           ),
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Expanded(
-          child: Body2Text(text: text,
-              // textColor: Theme.of(context).colorScheme.onSurfaceVariant
+          child: Body2Text(
+            text: text,
+            // textColor: Theme.of(context).colorScheme.onSurfaceVariant
           ),
         ),
       ],

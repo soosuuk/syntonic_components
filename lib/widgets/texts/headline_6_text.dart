@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'base_text.dart';
 
@@ -42,5 +41,7 @@ class Headline6Text extends BaseText {
 
   @override
   TextStyle textStyle({required BuildContext context}) =>
-      SyntonicTextTheme.headline6(context: context, textColor: textColor ?? Theme.of(context).colorScheme.onSurface);
+      SyntonicTextTheme.headline6(
+          context: context,
+          textColor: textColor ?? Theme.of(context).colorScheme.onSurface);
 }

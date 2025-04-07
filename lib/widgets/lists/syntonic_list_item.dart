@@ -644,7 +644,15 @@ class SyntonicListItem extends ListItem {
                   crossAxisAlignment: textCrossAxisAlignment,
                   children: [
                     leadingWidget != null
-                        ? Row(mainAxisSize: MainAxisSize.min, children: [Center(child: leadingWidget), SizedBox(width: 16,)],)
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Center(child: leadingWidget),
+                              const SizedBox(
+                                width: 16,
+                              )
+                            ],
+                          )
                         // ConstrainedBox(
                         //     constraints: const BoxConstraints(
                         //         minWidth: 48, minHeight: 32
@@ -652,7 +660,7 @@ class SyntonicListItem extends ListItem {
                         //     ),
                         //     child: Padding(padding: SyntonicConstraint.horizontal16, child: Center(child: leadingWidget),)
                         // )
-                        : SizedBox(),
+                        : const SizedBox(),
                     Expanded(
                       child: Column(
                           crossAxisAlignment: crossAxisAlignment,
@@ -670,9 +678,9 @@ class SyntonicListItem extends ListItem {
                     ),
                     trailingWidget != null
                         ? Center(
-                        child: isReorderMode
-                            ? const Icon(Icons.drag_handle)
-                            : trailingWidget)
+                            child: isReorderMode
+                                ? const Icon(Icons.drag_handle)
+                                : trailingWidget)
                         // ConstrainedBox(
                         //     constraints: const BoxConstraints(
                         //         minWidth: 48, minHeight: 48),
@@ -680,7 +688,7 @@ class SyntonicListItem extends ListItem {
                         //         child: isReorderMode
                         //             ? const Icon(Icons.drag_handle)
                         //             : trailingWidget),))
-                        : SizedBox(),
+                        : const SizedBox(),
                   ],
                 )),
             if (hasDivider) SyntonicDivider()
@@ -716,7 +724,7 @@ class SyntonicListItem extends ListItem {
                             // top: -10,
                             // child: this.leadingWidget!)
                             )
-                        : SizedBox(),
+                        : const SizedBox(),
                     Expanded(
                       child: Column(
                           crossAxisAlignment: crossAxisAlignment,
@@ -743,7 +751,7 @@ class SyntonicListItem extends ListItem {
                                       ? const Icon(Icons.drag_handle)
                                       : trailingWidget),
                             ))
-                        : SizedBox(),
+                        : const SizedBox(),
                   ],
                 )),
             if (hasDivider) SyntonicDivider()

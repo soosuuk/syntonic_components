@@ -4,11 +4,6 @@ import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:syntonic_components/widgets/lists/syntonic_list_item.dart';
-import 'package:syntonic_components/widgets/texts/body_1_text.dart';
-import 'package:syntonic_components/widgets/texts/body_2_text.dart';
-import 'package:syntonic_components/widgets/texts/headline_6_text.dart';
-import 'package:syntonic_components/widgets/texts/overline_text.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../syntonic_base_view.dart';
@@ -103,7 +98,6 @@ class SyntonicListView extends ExtendedStatelessWidget {
   final Function(int index, bool isBefore)? onAdded;
 
   final Function()? onTimeButtonTapped;
-
 
   // ScrollController? scrollController;
 
@@ -220,13 +214,12 @@ class SyntonicListView extends ExtendedStatelessWidget {
     ItemScrollController? itemScrollController,
     Axis? scrollDirection,
     bool hasStepper = false,
-
   }) : this._(
             listItem: listItem,
             numberOfItems: numberOfItems,
             onReordered: onReordered,
             onAdded: onAdded,
-      onTimeButtonTapped: onTimeButtonTapped,
+            onTimeButtonTapped: onTimeButtonTapped,
             isReorderMode: isReorderMode,
             stepIcon: stepIcon,
             isNested: isNested,
@@ -346,8 +339,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                   // scrollController: ScrollController(),
                   primary: true,
                   shrinkWrap: false,
-                  physics:
-                  const ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   itemCount: numberOfItems!,
                   itemBuilder: (_, int index) {
                     final isFirst = index == 0;
@@ -384,29 +376,40 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                   children: [
                                     Column(
                                       children: [
-                                        isFirst ? SizedBox(
+                                        isFirst
+                                            ? const SizedBox(
                                                 height: 16,
                                               )
                                             : SizedBox(
-                                          height: 16,
-                                          child: CustomPaint(
-                                              painter: DottedLinePainter(
                                                 height: 16,
+                                                child: CustomPaint(
+                                                    painter: DottedLinePainter(
+                                                  height: 16,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
+                                                )),
+                                              ),
+                                        isFirst
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8),
+                                                child: Icon(
+                                                  Icons.today_outlined,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
+                                                ),
+                                              )
+                                            : const SizedBox(),
+                                        isFirst
+                                            ? SyntonicDivider.vertical(
+                                                height: 48,
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .tertiary,
-                                              )),
-                                        ),
-                                        isFirst
-                                            ? Padding(
-                                          padding: EdgeInsets.symmetric(vertical: 8),
-                                          child: Icon(Icons.today_outlined, color: Theme.of(context).colorScheme.tertiary,),
-                                        )
-                                            : const SizedBox(),
-                                        isFirst
-                                            ? SyntonicDivider.vertical(height: 48, color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,)
+                                              )
                                             : const SizedBox(),
                                         SyntonicIcon(
                                           hasBorder: true,
@@ -419,11 +422,11 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                           height: 16,
                                           child: CustomPaint(
                                               painter: DottedLinePainter(
-                                                height: 16,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .tertiary,
-                                              )),
+                                            height: 16,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                          )),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(
@@ -468,12 +471,12 @@ class SyntonicListView extends ExtendedStatelessWidget {
                                     //     : const SizedBox(),
                                     isLast
                                         ? SyntonicIcon(
-                                      hasBorder: true,
-                                      icon: Icons.add,
-                                      padding: 0,
-                                      onPressed: () =>
-                                          onAdded!(index, true),
-                                    )
+                                            hasBorder: true,
+                                            icon: Icons.add,
+                                            padding: 0,
+                                            onPressed: () =>
+                                                onAdded!(index, true),
+                                          )
                                         : const SizedBox(),
                                   ],
                                 ),
@@ -485,9 +488,11 @@ class SyntonicListView extends ExtendedStatelessWidget {
                       // SizedBox(width: 4),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 0,right: 24),
+                          padding: const EdgeInsets.only(left: 0, right: 24),
                           child: SyntonicAnimationEnhancer(
-                            child: listItem != null ? listItem!(index) : const SizedBox(),
+                            child: listItem != null
+                                ? listItem!(index)
+                                : const SizedBox(),
                           ),
                         ),
                       ),
@@ -531,7 +536,7 @@ class SyntonicListView extends ExtendedStatelessWidget {
                         i < (numberOfItems! / numberOfRow).ceil();
                         i++)
                       Column(
-                        mainAxisSize: MainAxisSize.max,
+                          mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

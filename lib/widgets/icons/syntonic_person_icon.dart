@@ -219,10 +219,10 @@ class SyntonicPersonIcon extends StatelessWidget {
             height: type.size,
             decoration: BoxDecoration(
               color: person.getCustomerColor(
-                  id: 1,
-                  // id: person.id != null
-                  //     ? int.parse(person.id!.toString().getFinal())
-                  //     : 1
+                id: 1,
+                // id: person.id != null
+                //     ? int.parse(person.id!.toString().getFinal())
+                //     : 1
               ),
               shape: shape == IconShape.circle
                   ? BoxShape.circle

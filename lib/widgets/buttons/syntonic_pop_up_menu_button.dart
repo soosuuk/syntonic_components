@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:syntonic_components/widgets/icons/syntonic_person_icon.dart';
 
 import '../dialogs/syntonic_dialog.dart';
 
@@ -63,9 +62,13 @@ class SyntonicPopupMenuButton extends StatelessWidget {
       // height: IconSize.mini.size,
       decoration: BoxDecoration(
         shape: boxShape ?? BoxShape.circle,
-        borderRadius: boxShape == BoxShape.rectangle ? BorderRadius.circular(8) : null,
-        border: borderColor != null ? Border.all(color: Theme.of(context).colorScheme.outlineVariant) : null,
-        color: backgroundColor ?? Theme.of(context).colorScheme.surface.withOpacity(0.48),
+        borderRadius:
+            boxShape == BoxShape.rectangle ? BorderRadius.circular(8) : null,
+        border: borderColor != null
+            ? Border.all(color: Theme.of(context).colorScheme.outlineVariant)
+            : null,
+        color: backgroundColor ??
+            Theme.of(context).colorScheme.surface.withOpacity(0.48),
       ),
       child: PopupMenuButton<String>(
         padding: EdgeInsets.zero,

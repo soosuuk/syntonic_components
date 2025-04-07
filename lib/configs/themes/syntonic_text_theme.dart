@@ -9,9 +9,66 @@ const int textLabelMedium = 0x99; // 60%
 const int textLabelDisable = 0x61; // 38%
 
 // abrilFatface poppins quicksands, cinzel, faunaOne, rufina oxygen, spectral, bungee/openSans, caveat/josefinSans, montaguSlab/figtree,  fjallaOne/sourceSans3/yellow, marcellus/dmsans,,  tenorsans nunitoSans, nunito, inter
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface1 = GoogleFonts.libreCaslonText;
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface2 = GoogleFonts.libreCaslonText;
-const TextStyle Function({Paint? background, Color? backgroundColor, Color? color, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle, double? decorationThickness, List<FontFeature>? fontFeatures, double? fontSize, FontStyle? fontStyle, FontWeight? fontWeight, Paint? foreground, double? height, double? letterSpacing, Locale? locale, List<Shadow>? shadows, TextBaseline? textBaseline, TextStyle? textStyle, double? wordSpacing}) typeface3 = GoogleFonts.lato;
+const TextStyle Function(
+    {Paint? background,
+    Color? backgroundColor,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
+    List<FontFeature>? fontFeatures,
+    double? fontSize,
+    FontStyle? fontStyle,
+    FontWeight? fontWeight,
+    Paint? foreground,
+    double? height,
+    double? letterSpacing,
+    Locale? locale,
+    List<Shadow>? shadows,
+    TextBaseline? textBaseline,
+    TextStyle? textStyle,
+    double? wordSpacing}) typeface1 = GoogleFonts.libreCaslonText;
+const TextStyle Function(
+    {Paint? background,
+    Color? backgroundColor,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
+    List<FontFeature>? fontFeatures,
+    double? fontSize,
+    FontStyle? fontStyle,
+    FontWeight? fontWeight,
+    Paint? foreground,
+    double? height,
+    double? letterSpacing,
+    Locale? locale,
+    List<Shadow>? shadows,
+    TextBaseline? textBaseline,
+    TextStyle? textStyle,
+    double? wordSpacing}) typeface2 = GoogleFonts.libreCaslonText;
+const TextStyle Function(
+    {Paint? background,
+    Color? backgroundColor,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
+    List<FontFeature>? fontFeatures,
+    double? fontSize,
+    FontStyle? fontStyle,
+    FontWeight? fontWeight,
+    Paint? foreground,
+    double? height,
+    double? letterSpacing,
+    Locale? locale,
+    List<Shadow>? shadows,
+    TextBaseline? textBaseline,
+    TextStyle? textStyle,
+    double? wordSpacing}) typeface3 = GoogleFonts.lato;
 const bool isBold = true;
 
 extension Material3Palette on Color {
@@ -41,7 +98,6 @@ class SyntonicTextTheme {
 
   static TextStyle headline3(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-
     Locale currentLocale = window.locale;
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.notoSansJp(
@@ -185,7 +241,7 @@ class SyntonicTextTheme {
     }
 
     return GoogleFonts.workSans(
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       fontSize: 15,
       color: textColor,
       height: 1.20,
@@ -205,7 +261,10 @@ class SyntonicTextTheme {
   }
 
   static TextStyle body1(
-      {required BuildContext context, Color? textColor, bool? isLineThrough, bool isLined = false}) {
+      {required BuildContext context,
+      Color? textColor,
+      bool? isLineThrough,
+      bool isLined = false}) {
     Locale currentLocale = window.locale;
 
     if (currentLocale.languageCode == 'ja') {
@@ -215,7 +274,9 @@ class SyntonicTextTheme {
         color: textColor,
         letterSpacing: -0.15,
         height: 1.20,
-        decoration: isLined ? TextDecoration.underline : (isLineThrough == true ? TextDecoration.lineThrough : null),
+        decoration: isLined
+            ? TextDecoration.underline
+            : (isLineThrough == true ? TextDecoration.lineThrough : null),
       );
     }
 
@@ -226,7 +287,9 @@ class SyntonicTextTheme {
       color: textColor,
       letterSpacing: -0.15,
       height: 1.20,
-      decoration: isLined ? TextDecoration.underline : (isLineThrough == true ? TextDecoration.lineThrough : null),
+      decoration: isLined
+          ? TextDecoration.underline
+          : (isLineThrough == true ? TextDecoration.lineThrough : null),
     );
   }
 

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
-import 'package:syntonic_components/widgets/texts/caption_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:syntonic_components/widgets/texts/overline_text.dart';
@@ -59,12 +58,13 @@ class SyntonicLabel extends StatelessWidget {
                   border: isFilled
                       ? null
                       : Border.all(
-                      color: (constColor != null)
-                          ? constColor!
-                          : _isDarkTheme
-                          ? Colors.white38
-                          : Colors.black38,
-                      style: isDotted ? BorderStyle.none : BorderStyle.solid),
+                          color: (constColor != null)
+                              ? constColor!
+                              : _isDarkTheme
+                                  ? Colors.white38
+                                  : Colors.black38,
+                          style:
+                              isDotted ? BorderStyle.none : BorderStyle.solid),
                   borderRadius: BorderRadius.circular(4),
                   color: isFilled ? color ?? Colors.black54 : null),
               child: Row(
@@ -77,14 +77,24 @@ class SyntonicLabel extends StatelessWidget {
                     ),
                   if (text != null)
                     Flexible(
-                      child: Opacity(opacity: isDotted ? 0.38 : 1, child: OverlineText(
-                        text: text!,
-                        textColor: isFilled ? color?.optimalColor : Theme.of(context).colorScheme.onSurface,
-                        overflow: TextOverflow.ellipsis,
-                      ),),
+                      child: Opacity(
+                        opacity: isDotted ? 0.38 : 1,
+                        child: OverlineText(
+                          text: text!,
+                          textColor: isFilled
+                              ? color?.optimalColor
+                              : Theme.of(context).colorScheme.onSurface,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
                   if (child != null) Flexible(child: child!),
-                  if (trailing != null) ...[SizedBox(width: 4,), trailing!],
+                  if (trailing != null) ...[
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    trailing!
+                  ],
                   // if (onTap != null)
                   //   Icon(
                   //     Icons.keyboard_arrow_right,
@@ -118,8 +128,8 @@ class SyntonicLabel extends StatelessWidget {
                   color: (constColor != null)
                       ? constColor!
                       : _isDarkTheme
-                      ? Colors.white38
-                      : Colors.black38,
+                          ? Colors.white38
+                          : Colors.black38,
                 ),
               ),
             ),
@@ -153,7 +163,8 @@ class _DottedBorderPainter extends CustomPainter {
 
     final Path path = Path()
       ..addRRect(RRect.fromRectAndRadius(
-          Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(4)));
+          Rect.fromLTWH(0, 0, size.width, size.height),
+          const Radius.circular(4)));
 
     final Path dashPath = Path();
     const double dashWidth = 2.0;

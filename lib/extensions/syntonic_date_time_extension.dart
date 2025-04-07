@@ -73,16 +73,12 @@ extension SyntonicDateTimeExtension on DateTime {
 
   bool isAcrossDates(DateTime other) {
     // 2つのDateTimeの日付部分が異なる場合、日付を跨いでいると判断します
-    return year != other.year ||
-        month != other.month ||
-        day != other.day;
+    return year != other.year || month != other.month || day != other.day;
   }
 
   bool isSameDate(DateTime other) {
     // 2つのDateTimeの日付部分が異なる場合、日付を跨いでいると判断します
-    return year == other.year ||
-        month == other.month ||
-        day == other.day;
+    return year == other.year || month == other.month || day == other.day;
   }
 
   /// Get a formatted [String] of [DateTime] (yyyy-MM-dd).

@@ -46,51 +46,62 @@ class SyntonicGradientContainer extends StatelessWidget {
         break;
     }
 
-    return Stack(children: [child != null ? Positioned.fill(child: child!) : SizedBox(), Container(
-      // height: height,
-      // width: width,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: _begin,
-          end: _end,
-          colors: color ??
-              [
-                ElevationOverlay.applyOverlay(
-                    context, Theme.of(context).colorScheme.surface, 4),
-                ElevationOverlay.applyOverlay(
-                    context, Theme.of(context).colorScheme.surface, 4)
-                    .withOpacity(0),
-              ],
-          stops: stops ??
-              const [
-                0.0,
-                1.0,
-              ],
-        ),
-      ),
-    )],);
-    return IntrinsicHeight(child: Stack(children: [child != null ? Positioned.fill(child: child!) : SizedBox(), Container(
-      // height: height,
-      width: width,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: _begin,
-          end: _end,
-          colors: color ??
-              [
-                ElevationOverlay.applyOverlay(
-                    context, Theme.of(context).colorScheme.surface, 4),
-                ElevationOverlay.applyOverlay(
-                    context, Theme.of(context).colorScheme.surface, 4)
-                    .withOpacity(0),
-              ],
-          stops: stops ??
-              const [
-                0.0,
-                1.0,
-              ],
-        ),
-      ),
-    )],));
+    return Stack(
+      children: [
+        child != null ? Positioned.fill(child: child!) : const SizedBox(),
+        Container(
+          // height: height,
+          // width: width,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: _begin,
+              end: _end,
+              colors: color ??
+                  [
+                    ElevationOverlay.applyOverlay(
+                        context, Theme.of(context).colorScheme.surface, 4),
+                    ElevationOverlay.applyOverlay(
+                            context, Theme.of(context).colorScheme.surface, 4)
+                        .withOpacity(0),
+                  ],
+              stops: stops ??
+                  const [
+                    0.0,
+                    1.0,
+                  ],
+            ),
+          ),
+        )
+      ],
+    );
+    return IntrinsicHeight(
+        child: Stack(
+      children: [
+        child != null ? Positioned.fill(child: child!) : const SizedBox(),
+        Container(
+          // height: height,
+          width: width,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: _begin,
+              end: _end,
+              colors: color ??
+                  [
+                    ElevationOverlay.applyOverlay(
+                        context, Theme.of(context).colorScheme.surface, 4),
+                    ElevationOverlay.applyOverlay(
+                            context, Theme.of(context).colorScheme.surface, 4)
+                        .withOpacity(0),
+                  ],
+              stops: stops ??
+                  const [
+                    0.0,
+                    1.0,
+                  ],
+            ),
+          ),
+        )
+      ],
+    ));
   }
 }

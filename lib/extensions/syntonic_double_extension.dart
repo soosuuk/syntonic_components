@@ -15,7 +15,7 @@ extension SyntonicDoubleExtension on double {
 
   /// Format a [this] to hours and minutes (xh xm).
   List<int> toHoursMinutes() {
-    int totalMinutes = this.round();
+    int totalMinutes = round();
     int hours = totalMinutes ~/ 60;
     int minutes = totalMinutes % 60;
     return [hours, minutes];

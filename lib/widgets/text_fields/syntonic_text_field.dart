@@ -1,9 +1,6 @@
 import 'dart:math';
 
-import 'package:google_fonts/google_fonts.dart';
 import 'package:syntonic_components/configs/constants/syntonic_color.dart';
-import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
-import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
 import 'package:syntonic_components/widgets/icons/syntonic_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +52,7 @@ class SyntonicTextField extends StatefulWidget {
 
   TextInputAction? get _textInputAction =>
       textInputAction ??
-          ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
+      ((minLines > 1) ? TextInputAction.newline : TextInputAction.done);
   OutlinedTextFieldType get outlinedTextFieldType => needsMasking
       ? OutlinedTextFieldType.Obscure
       : OutlinedTextFieldType.Normal;
@@ -120,30 +117,33 @@ class SyntonicTextField extends StatefulWidget {
     Function(bool)? onFocusChanged,
     bool isScalable = false,
   }) : this._(
-      label: label,
-      onFocused: onFocused,
-      onEditingComplete: onEditingComplete,
-      onTextChanged: onTextChanged,
-      value: value,
-      errorMessage: errorMessage,
-      maxLines: maxLines,
-      minLines: minLines,
-      hasPadding: hasPadding,
-      helperText: helperText,
-      validator: validator,
-      textInputAction: textInputAction,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      controller: controller,
-      isEnabled: isEnabled,
-      isFocusRequired: isFocusRequired,
-      needsMasking: needsMasking,
-      itemKey: itemKey,
-      theme: theme,
-      textAlign: textAlign,
-      textStyle: textStyle,
-      hintText: hintText,
-      hasBorder: hasBorder, focusNode: focusNode, onFocusChanged: onFocusChanged, isScalable: isScalable);
+            label: label,
+            onFocused: onFocused,
+            onEditingComplete: onEditingComplete,
+            onTextChanged: onTextChanged,
+            value: value,
+            errorMessage: errorMessage,
+            maxLines: maxLines,
+            minLines: minLines,
+            hasPadding: hasPadding,
+            helperText: helperText,
+            validator: validator,
+            textInputAction: textInputAction,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
+            controller: controller,
+            isEnabled: isEnabled,
+            isFocusRequired: isFocusRequired,
+            needsMasking: needsMasking,
+            itemKey: itemKey,
+            theme: theme,
+            textAlign: textAlign,
+            textStyle: textStyle,
+            hintText: hintText,
+            hasBorder: hasBorder,
+            focusNode: focusNode,
+            onFocusChanged: onFocusChanged,
+            isScalable: isScalable);
 
   @override
   _SyntonicTextFieldState createState() => _SyntonicTextFieldState();
@@ -196,15 +196,25 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
       widget.controller.text = widget.value!;
     }
 
-    final double maxWidth = MediaQuery.of(context).size.width - 32; // Adjust for padding
-    final TextStyle baseStyle = widget.textStyle ?? TextStyle(fontFamily: 'swiss721', fontWeight: FontWeight.w400, fontSize: 16, height: 1.25, letterSpacing: -0.2);
-    int lineWrapCount = _countLineWraps(widget.controller.text, maxWidth, baseStyle);
+    final double maxWidth =
+        MediaQuery.of(context).size.width - 32; // Adjust for padding
+    final TextStyle baseStyle = widget.textStyle ??
+        const TextStyle(
+            fontFamily: 'swiss721',
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
+            height: 1.25,
+            letterSpacing: -0.2);
+    int lineWrapCount =
+        _countLineWraps(widget.controller.text, maxWidth, baseStyle);
     double scale = 1.0;
     if (widget.isScalable) {
-      int lineWrapCount = _countLineWraps(widget.controller.text, maxWidth, baseStyle);
+      int lineWrapCount =
+          _countLineWraps(widget.controller.text, maxWidth, baseStyle);
       scale = 1.0 - (lineWrapCount * 0.1).clamp(0.0, 0.3);
     }
-    final TextStyle scaledStyle = baseStyle.copyWith(fontSize: baseStyle.fontSize! * scale);
+    final TextStyle scaledStyle =
+        baseStyle.copyWith(fontSize: baseStyle.fontSize! * scale);
 
     return RepaintBoundary(
       child: Padding(
@@ -223,7 +233,11 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
               minLines: widget.minLines,
               validator: widget.validator,
               decoration: InputDecoration(
-                hintStyle: scaledStyle.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.38)),
+                hintStyle: scaledStyle.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.38)),
                 hintText: widget.hintText,
                 labelText: widget.label,
                 errorText: widget.errorMessage,
@@ -232,8 +246,8 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
                     ? const OutlineInputBorder()
                     : InputBorder.none,
                 suffixIcon: widget.errorMessage != null
-                    ? SyntonicIcon(
-                    icon: Icons.error, color: SyntonicColor.torch_red)
+                    ? const SyntonicIcon(
+                        icon: Icons.error, color: SyntonicColor.torch_red)
                     : null,
                 contentPadding: widget.theme == TextFieldTheme.underline
                     ? const EdgeInsets.all(0)
@@ -242,7 +256,9 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
               ),
               textInputAction: widget._textInputAction,
               textAlign: widget.textAlign ?? TextAlign.start,
-              keyboardType: widget.maxLines != null ? TextInputType.multiline : widget.keyboardType,
+              keyboardType: widget.maxLines != null
+                  ? TextInputType.multiline
+                  : widget.keyboardType,
               inputFormatters: widget.inputFormatters,
               focusNode: _focusNode,
               onChanged: (text) {
@@ -441,7 +457,7 @@ class FitTextFieldState extends State<FitTextField> {
               // border: widget.theme == TextFieldTheme.outlined ? const OutlineInputBorder() : InputBorder.none,
 
               suffixIcon: widget.errorMessage != null
-                  ? SyntonicIcon(
+                  ? const SyntonicIcon(
                       icon: Icons.error, color: SyntonicColor.torch_red)
                   : null,
               contentPadding: widget.theme == TextFieldTheme.underline
@@ -485,7 +501,6 @@ class FitTextFieldState extends State<FitTextField> {
 //   }
 // }
 
-
 class ScaledTextField extends StatefulWidget {
   final TextEditingController controller;
 
@@ -524,9 +539,11 @@ class _ScaledTextFieldState extends State<ScaledTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final double maxWidth = MediaQuery.of(context).size.width - 32; // Adjust for padding
+    final double maxWidth =
+        MediaQuery.of(context).size.width - 32; // Adjust for padding
     final TextStyle style = Theme.of(context).textTheme.bodyMedium!;
-    int lineWrapCount = _countLineWraps(widget.controller.text, maxWidth, style);
+    int lineWrapCount =
+        _countLineWraps(widget.controller.text, maxWidth, style);
     double scale = 1.0 - (lineWrapCount * 0.1).clamp(0.0, 0.5);
 
     return Transform.scale(
@@ -534,7 +551,7 @@ class _ScaledTextFieldState extends State<ScaledTextField> {
       child: TextFormField(
         controller: widget.controller,
         maxLines: null, // Allow multiple lines
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: 'Enter text',
         ),
         style: style,

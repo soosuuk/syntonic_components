@@ -34,8 +34,8 @@ class Body2Text extends BaseText {
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
       overflow: needsSeeMore ? TextOverflow.ellipsis : overflow,
-      maxLines:
-          maxLines ?? (needsSeeMore || overflow == TextOverflow.ellipsis ? 1 : maxLines),
+      maxLines: maxLines ??
+          (needsSeeMore || overflow == TextOverflow.ellipsis ? 1 : maxLines),
     );
   }
 

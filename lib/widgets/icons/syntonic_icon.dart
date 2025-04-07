@@ -56,7 +56,8 @@ class SyntonicIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _isDarkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    bool _isDarkTheme =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Padding(
       padding: EdgeInsets.all(padding),
@@ -85,15 +86,21 @@ class SyntonicIcon extends StatelessWidget {
                   height: size.size,
                   decoration: BoxDecoration(
                     color: hasBorder
-                        ? (isFilledColor ? Theme.of(context).colorScheme.surface : null)
+                        ? (isFilledColor
+                            ? Theme.of(context).colorScheme.surface
+                            : null)
                         : color,
-                    borderRadius: shape == BoxShape.circle ? null : BorderRadius.circular(21),
+                    borderRadius: shape == BoxShape.circle
+                        ? null
+                        : BorderRadius.circular(21),
                     shape: shape,
                   ),
                   child: Icon(
                     icon,
                     size: 18,
-                    color: isFilledColor ? Colors.white : (color ?? Theme.of(context).colorScheme.primary),
+                    color: isFilledColor
+                        ? Colors.white
+                        : (color ?? Theme.of(context).colorScheme.primary),
                   ),
                 ),
               ],

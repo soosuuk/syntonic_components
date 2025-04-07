@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'base_text.dart';
 
@@ -43,5 +43,7 @@ class Body1Text extends BaseText {
   @override
   TextStyle textStyle({required BuildContext context}) =>
       SyntonicTextTheme.body1(
-          context: context, textColor: textColor, isLineThrough: isLineThrough);
+          context: context,
+          textColor: textColor ?? Theme.of(context).colorScheme.onSurface,
+          isLineThrough: isLineThrough);
 }

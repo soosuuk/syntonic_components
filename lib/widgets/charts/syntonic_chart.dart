@@ -89,7 +89,7 @@ class SyntonicChart extends StatelessWidget {
                                     Icon(
                                       icon,
                                       size: 18,
-                                      color: colorScheme != null ? colorScheme!.primary : null,
+                                      color: colorScheme?.primary,
                                     ),
                                     const SizedBox(
                                       width: 8,

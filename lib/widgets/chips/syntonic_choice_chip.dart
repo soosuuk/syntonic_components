@@ -1,10 +1,6 @@
-import 'package:syntonic_components/configs/constants/syntonic_color.dart';
 import 'package:syntonic_components/widgets/syntonic_base_view.dart';
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
-import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
-
-import '../texts/body_1_text.dart';
 
 class SyntonicChoiceChip extends StatelessWidget {
   final int index;
@@ -26,58 +22,64 @@ class SyntonicChoiceChip extends StatelessWidget {
       required this.onSelected,
       this.color,
       this.icon,
-      this.trailingIcon, this.hasPadding = true});
+      this.trailingIcon,
+      this.hasPadding = true});
 
   @override
   Widget build(BuildContext context) {
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
 
-    return Padding(padding: hasPadding ? EdgeInsets.only(left: index == 0 ? 16 : 4, top: 16) : EdgeInsets.zero, child: FilterChip(
-    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        labelPadding: EdgeInsets.zero,
-        // shape: StadiumBorder(
-        //     side: BorderSide(
-        //       width: 1,
-        //       color: Colors.redAccent,
-        //     )),
+    return Padding(
+      padding: hasPadding
+          ? EdgeInsets.only(left: index == 0 ? 16 : 4, top: 16)
+          : EdgeInsets.zero,
+      child: FilterChip(
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          labelPadding: EdgeInsets.zero,
+          // shape: StadiumBorder(
+          //     side: BorderSide(
+          //       width: 1,
+          //       color: Colors.redAccent,
+          //     )),
 
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
-        label: SizedBox(
-          // width: double.infinity,
-          child: Body2Text(
-            text: label,
-            textColor: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : null,),
-        ),
-        backgroundColor: isSelected
-            ? Theme.of(context).colorScheme.primary.toAlpha
-            : Theme.of(context).colorScheme.surface,
-        // shape: StadiumBorder(
-        //     side: BorderSide(
-        //         width: 0.5,
-        //         color: isSelected
-        //             ? Theme.of(context).colorScheme.primary
-        //             : isDarkTheme
-        //                 ? Colors.white60
-        //                 : SyntonicColor.black40)),
-        selectedColor: Theme.of(context).colorScheme.primary.toAlpha,
-        selected: isSelected,
-        onSelected: (bool isSelected) {
-          onSelected(isSelected);
-        },
-        avatar: trailingIcon ??
-            (icon != null
-                ? Icon(icon,
-                color: color ??
-                    (isSelected
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.primary))
-                : null),
-        showCheckmark: icon != null || trailingIcon != null ? false : true,
-        checkmarkColor: Theme.of(context).colorScheme.primary),);
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+          label: SizedBox(
+            // width: double.infinity,
+            child: Body2Text(
+              text: label,
+              textColor:
+                  isSelected ? Theme.of(context).colorScheme.primary : null,
+            ),
+          ),
+          backgroundColor: isSelected
+              ? Theme.of(context).colorScheme.primary.toAlpha
+              : Theme.of(context).colorScheme.surface,
+          // shape: StadiumBorder(
+          //     side: BorderSide(
+          //         width: 0.5,
+          //         color: isSelected
+          //             ? Theme.of(context).colorScheme.primary
+          //             : isDarkTheme
+          //                 ? Colors.white60
+          //                 : SyntonicColor.black40)),
+          selectedColor: Theme.of(context).colorScheme.primary.toAlpha,
+          selected: isSelected,
+          onSelected: (bool isSelected) {
+            onSelected(isSelected);
+          },
+          avatar: trailingIcon ??
+              (icon != null
+                  ? Icon(icon,
+                      color: color ??
+                          (isSelected
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.primary))
+                  : null),
+          showCheckmark: icon != null || trailingIcon != null ? false : true,
+          checkmarkColor: Theme.of(context).colorScheme.primary),
+    );
   }
 }
