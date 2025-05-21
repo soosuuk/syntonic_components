@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'package:vs_scrollbar/vs_scrollbar.dart';
 import 'dart:core';
@@ -413,6 +414,7 @@ class BoardViewState extends State<BoardView>
             onDropList: widget.lists![index].onDropList,
             onTapList: widget.lists![index].onTapList,
             onStartDragList: widget.lists![index].onStartDragList,
+            itemScrollController: widget.lists![index].itemScrollController,
           );
         }
         if (widget.lists![index].index != index) {
@@ -431,6 +433,7 @@ class BoardViewState extends State<BoardView>
             onDropList: widget.lists![index].onDropList,
             onTapList: widget.lists![index].onTapList,
             onStartDragList: widget.lists![index].onStartDragList,
+            itemScrollController: widget.lists![index].itemScrollController,
           );
         }
 
@@ -849,6 +852,7 @@ class BoardList extends StatefulWidget {
   final Function(int? listIndex, int? oldListIndex)? onDropList;
   final Function(int? listIndex)? onTapList;
   final Function(int? listIndex)? onStartDragList;
+  final ItemScrollController itemScrollController;
   final bool draggable;
   static GlobalKey headerKey = GlobalKey();
 
@@ -868,6 +872,7 @@ class BoardList extends StatefulWidget {
     this.onDropList,
     this.onTapList,
     this.onStartDragList,
+    required this.itemScrollController,
   }) : super(key: key);
 
   final int? index;
@@ -883,8 +888,8 @@ class BoardListState extends State<BoardList>
   List<BoardItemState> itemStates = [];
   ScrollController boardListController = ScrollController();
   double height = 0;
-  // double _height = 80;
-  final GlobalKey _key = GlobalKey();
+  final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
+
 
   void onDropList(int? listIndex) {
     if (widget.onDropList != null) {
@@ -1021,25 +1026,18 @@ class BoardListState extends State<BoardList>
       child: CustomScrollView(
         controller: ScrollController(),
         slivers: [
-          // SliverPersistentHeader(
-          //   delegate: _SliverAppBarDelegate(
-          //     height: 30,
-          //     child: _headerBuilder(context: context, index: widget.index!),
-          //   ),
-          //   pinned: true,
-          // ),
           AutoSizeSliverHeader(child: _headerBuilder(context: context, index: widget.index!)),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
+          SliverFillRemaining(
+            child: ScrollablePositionedList.builder(
+              itemCount: widget.items!.length + 1, // Adjust childCount
+              itemBuilder: (context, index) {
                 if (index == widget.items!.length) {
                   // Add your processing here
                   return widget.footerBuilder(context, index);
                 }
                 if (widget.items![index].boardList == null ||
                     widget.items![index].index != index ||
-                    widget.items![index].boardList!.widget.index !=
-                        widget.index ||
+                    widget.items![index].boardList!.widget.index != widget.index ||
                     widget.items![index].boardList != this) {
                   widget.items![index] = BoardItem(
                     boardList: this,
@@ -1054,9 +1052,35 @@ class BoardListState extends State<BoardList>
                 }
                 return widget.items![index];
               },
-              childCount: widget.items!.length + 1, // Adjust childCount
+              itemScrollController: widget.itemScrollController,
+              itemPositionsListener: _itemPositionsListener,
             ),
           ),
+        //   SliverList.builder(
+        //   itemCount: widget.items!.length + 1, // Adjust childCount
+        //   itemBuilder: (context, index) {
+        //     if (index == widget.items!.length) {
+        //       // Add your processing here
+        //       return widget.footerBuilder(context, index);
+        //     }
+        //     if (widget.items![index].boardList == null ||
+        //         widget.items![index].index != index ||
+        //         widget.items![index].boardList!.widget.index != widget.index ||
+        //         widget.items![index].boardList != this) {
+        //       widget.items![index] = BoardItem(
+        //         boardList: this,
+        //         item: widget.items![index].item,
+        //         draggable: widget.items![index].draggable,
+        //         index: index,
+        //         onDropItem: widget.items![index].onDropItem,
+        //         onTapItem: widget.items![index].onTapItem,
+        //         onDragItem: widget.items![index].onDragItem,
+        //         onStartDragItem: widget.items![index].onStartDragItem,
+        //       );
+        //     }
+        //     return widget.items![index];
+        //   },
+        // ),
           SliverToBoxAdapter(
             child: SizedBox(
                 height: MediaQuery.of(context).size.height /
@@ -1077,7 +1101,7 @@ class BoardListState extends State<BoardList>
     // });
 
     return Container(
-      key: BoardList.headerKey,
+      // key: BoardList.headerKey,
       child: widget.headerBuilder(context, widget.index!),
     );
   }
@@ -1341,7 +1365,7 @@ class _AutoSizeSliverHeaderState extends State<AutoSizeSliverHeader> {
     }
 
     return SliverPersistentHeader(
-      pinned: true,
+      // floating: true,
       delegate: _CustomHeaderDelegate(
         child: widget.child,
         height: _height,
@@ -1368,10 +1392,7 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return SizedBox(
-      height: height,
-      child: child,
-    );
+    return child;
   }
 
   @override

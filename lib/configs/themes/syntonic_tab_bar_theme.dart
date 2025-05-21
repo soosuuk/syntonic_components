@@ -7,13 +7,7 @@ class SyntonicTabBarTheme {
     return TabBarTheme(
         dividerHeight: 1,
         dividerColor: colorScheme.outlineVariant,
-        indicator: ShapeDecoration(
-          shape: UnderlineInputBorder(
-              borderSide: BorderSide(
-                  color: colorScheme.onSurface,
-                  width: 2,
-                  style: BorderStyle.solid)),
-        ),
+        indicator: BoxDecoration(),
         labelPadding:
             const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 16),
         unselectedLabelStyle: SyntonicTextTheme.overline(),

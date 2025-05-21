@@ -226,8 +226,8 @@ class SyntonicCard extends StatelessWidget {
             children: [
               Positioned.fill(
                   child: SyntonicGradientContainer(
-                color: const [
-                  Colors.black38,
+                color: [
+                  Colors.black.withAlpha(50),
                   Colors.transparent,
                 ],
                 startAt: GradientStartPosition.left,

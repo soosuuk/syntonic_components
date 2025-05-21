@@ -136,6 +136,15 @@ class SyntonicTextTheme {
       );
     }
 
+    return GoogleFonts.workSans(
+      color: textColor,
+      fontSize: 28,
+      fontWeight: FontWeight.w400,
+      height: 1.46,
+      letterSpacing: 2.38,
+      decoration: isLined ? TextDecoration.underline : null,
+    );
+
     return TextStyle(
       fontFamily: 'gt-america',
       fontWeight: FontWeight.w500,
@@ -161,6 +170,15 @@ class SyntonicTextTheme {
         decoration: isLined ? TextDecoration.underline : null,
       );
     }
+
+    // return GoogleFonts.workSans(
+    //   fontWeight: FontWeight.w400,
+    //   fontSize: 25,
+    //   color: textColor,
+    //   height: 1.64,
+    //   letterSpacing: 0.50,
+    //   decoration: isLined ? TextDecoration.underline : null,
+    // );
 
     return TextStyle(
       fontFamily: 'gt-america',
@@ -242,7 +260,7 @@ class SyntonicTextTheme {
 
     return GoogleFonts.workSans(
       fontWeight: FontWeight.w500,
-      fontSize: 15,
+      fontSize: 14,
       color: textColor,
       height: 1.20,
       letterSpacing: -0.15,
@@ -336,7 +354,7 @@ class SyntonicTextTheme {
 
     return TextStyle(
       fontFamily: 'gt-america',
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
       fontSize: 13,
       color: textColor,
       height: 1.38,
