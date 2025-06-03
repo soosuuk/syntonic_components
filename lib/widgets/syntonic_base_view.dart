@@ -255,7 +255,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
               } else {
                 return Stack(children: [
                   Scaffold(
-                    resizeToAvoidBottomInset: true,
+                    resizeToAvoidBottomInset: false,
                     drawer: hasAppBar
                         ? navigationDrawer(
                             context: context,
@@ -360,7 +360,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
     if (hasAppBar) {
       if (needsSliverAppBar) {
         return Scaffold(
-          resizeToAvoidBottomInset: true,
+          resizeToAvoidBottomInset: false,
           drawer: navigationDrawer(context: context),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           floatingActionButton: _floatingActionButtons(context: context),
@@ -384,7 +384,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             length: hasTabBar ? 2 : 0,
             // length: hasTabBar ? tabs(context: context, ref: ref)!.length : 0,
             child: Scaffold(
-              resizeToAvoidBottomInset: true,
+              resizeToAvoidBottomInset: false,
               drawer: navigationDrawer(context: context),
               body: riverpod.Consumer(
                 builder: (context, ref, child) {
@@ -414,7 +414,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         return riverpod.Consumer(
           builder: (context, ref, child) {
             return Scaffold(
-              resizeToAvoidBottomInset: true,
+              resizeToAvoidBottomInset: false,
               // primary: true,
               // // extendBody: true,
               //   extendBodyBehindAppBar: false,
@@ -440,7 +440,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         );
       } else {
         return Scaffold(
-          resizeToAvoidBottomInset: true,
+          resizeToAvoidBottomInset: false,
           body: riverpod.Consumer(
             builder: (context, ref, child) {
               return mainContents(context: context, ref: ref);
@@ -912,7 +912,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   /// And also, hide action item in [appbar], [floatingActionButton] too.
   Widget get _errorScreen {
     return const Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Center(

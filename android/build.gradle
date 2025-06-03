@@ -25,7 +25,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 34
+    namespace 'dev.soosuuk.syntonic_components'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -34,7 +35,7 @@ android {
 
     kotlinOptions {
 //        jvmTarget = '1.8'
-        jvmTarget = JavaVersion.VERSION_11
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     sourceSets {

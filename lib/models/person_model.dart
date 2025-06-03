@@ -4,17 +4,23 @@ import 'package:flutter/widgets.dart';
 class PersonModel {
   final String? id;
   final String? email;
-  final String? name;
+ final String? firstName;
+      final String? lastName;
   final String? photoUrl;
   final bool isEnabled;
 
   const PersonModel({
     this.id,
     this.email,
-    this.name,
+    this.firstName,
+    this.lastName,
     this.photoUrl,
     this.isEnabled = true,
   });
+
+  String get fullName {
+    return '$firstName $lastName';
+  }
 
   // /// Get a [PersonModel] for dummy.
   // factory PersonModel.dummy() {

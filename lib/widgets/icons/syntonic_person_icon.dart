@@ -58,8 +58,8 @@ class SyntonicPersonIcon extends StatelessWidget {
       case IconSize.normal:
         // print(person.name);
         _initialText = Headline6Text(
-          text: person.name != null && person.name != ''
-              ? person.name!.getInitial().toUpperCase()
+          text: person.fullName != null && person.fullName != ''
+              ? person.fullName!.getInitial().toUpperCase()
               : '',
           textColor: Colors.white,
           needsLinkify: false,
@@ -67,8 +67,8 @@ class SyntonicPersonIcon extends StatelessWidget {
         break;
       case IconSize.large:
         _initialText = Headline4Text(
-          text: person.name != null && person.name != ''
-              ? person.name!.getInitial().toUpperCase()
+          text: person.fullName != null && person.fullName != ''
+              ? person.fullName!.getInitial().toUpperCase()
               : '',
           textColor: Colors.white,
           needsLinkify: false,
@@ -76,8 +76,8 @@ class SyntonicPersonIcon extends StatelessWidget {
         break;
       case IconSize.extraLarge:
         _initialText = Headline4Text(
-          text: person.name != null && person.name != ''
-              ? person.name!.getInitial().toUpperCase()
+          text: person.fullName != null && person.fullName != ''
+              ? person.fullName!.getInitial().toUpperCase()
               : '',
           textColor: Colors.white,
           needsLinkify: false,
@@ -85,8 +85,8 @@ class SyntonicPersonIcon extends StatelessWidget {
         break;
       case IconSize.medium:
         _initialText = Headline5Text(
-          text: person.name != null && person.name != ''
-              ? person.name!.getInitial().toUpperCase()
+          text: person.fullName != null && person.fullName != ''
+              ? person.fullName!.getInitial().toUpperCase()
               : '',
           textColor: Colors.white,
           needsLinkify: false,
@@ -94,8 +94,8 @@ class SyntonicPersonIcon extends StatelessWidget {
         break;
       case IconSize.semiSmall:
         _initialText = Subtitle2Text(
-          text: person.name != null && person.name != ''
-              ? person.name!.getInitial().toUpperCase()
+          text: person.fullName != null && person.fullName != ''
+              ? person.fullName!.getInitial().toUpperCase()
               : '',
           textColor: Colors.white,
           needsLinkify: false,
@@ -103,8 +103,8 @@ class SyntonicPersonIcon extends StatelessWidget {
         break;
       case IconSize.small:
         _initialText = Subtitle2Text(
-          text: person.name != null && person.name != ''
-              ? person.name!.getInitial().toUpperCase()
+          text: person.fullName != null && person.fullName != ''
+              ? person.fullName!.getInitial().toUpperCase()
               : '',
           textColor: Colors.white,
           needsLinkify: false,
@@ -112,8 +112,8 @@ class SyntonicPersonIcon extends StatelessWidget {
         break;
       case IconSize.mini:
         _initialText = CaptionText(
-          text: person.name != null && person.name != ''
-              ? person.name!.getInitial().toUpperCase()
+          text: person.fullName != null && person.fullName != ''
+              ? person.fullName!.getInitial().toUpperCase()
               : '',
           textColor: Colors.white,
           needsLinkify: false,

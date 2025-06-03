@@ -110,13 +110,12 @@ class SyntonicTextTheme {
       );
     }
 
-    return TextStyle(
-      fontFamily: 'atacama',
-      fontWeight: FontWeight.w400,
-      fontSize: 32,
+    return GoogleFonts.workSans(
       color: textColor,
-      height: 1.16,
-      letterSpacing: -0.38,
+      fontSize: 28,
+      fontWeight: FontWeight.w400,
+      height: 1.46,
+      letterSpacing: 2.38,
       decoration: isLined ? TextDecoration.underline : null,
     );
   }
@@ -138,12 +137,13 @@ class SyntonicTextTheme {
 
     return GoogleFonts.workSans(
       color: textColor,
-      fontSize: 28,
+      fontSize: 25,
       fontWeight: FontWeight.w400,
-      height: 1.46,
-      letterSpacing: 2.38,
+      height: 1.64,
+      letterSpacing: 0.50,
       decoration: isLined ? TextDecoration.underline : null,
     );
+
 
     return TextStyle(
       fontFamily: 'gt-america',
@@ -180,14 +180,14 @@ class SyntonicTextTheme {
     //   decoration: isLined ? TextDecoration.underline : null,
     // );
 
-    return TextStyle(
-      fontFamily: 'gt-america',
-      fontWeight: FontWeight.w500,
-      fontSize: 23,
-      color: textColor,
-      height: 1.26,
-      letterSpacing: 0.69,
-      decoration: isLined ? TextDecoration.underline : null,
+
+    return GoogleFonts.workSans(
+    fontWeight: FontWeight.w400,
+    fontSize: 18,
+    color: textColor,
+    height: 1.33,
+    letterSpacing: 1.17,
+    decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
@@ -205,6 +205,15 @@ class SyntonicTextTheme {
         decoration: isLined ? TextDecoration.underline : null,
       );
     }
+
+    return GoogleFonts.workSans(
+    fontWeight: FontWeight.w300,
+    fontSize: 18,
+    color: textColor,
+    height: 1.50,
+    letterSpacing: 1.35,
+    decoration: isLined ? TextDecoration.underline : null,
+    );
 
     return TextStyle(
       fontFamily: 'gt-america',
@@ -234,13 +243,15 @@ class SyntonicTextTheme {
 
     return TextStyle(
       fontFamily: 'gt-america',
-      fontWeight: FontWeight.w500,
-      fontSize: 14,
+      fontSize: 17,
       color: textColor,
       height: 2.36,
-      letterSpacing: 0.70,
+      letterSpacing: -0.34,
+      fontWeight: FontWeight.w600,
       decoration: isLined ? TextDecoration.underline : null,
     );
+
+
   }
 
   static TextStyle subtitle2(
@@ -259,11 +270,10 @@ class SyntonicTextTheme {
     }
 
     return GoogleFonts.workSans(
-      fontWeight: FontWeight.w500,
-      fontSize: 14,
+      fontWeight: FontWeight.w600,
       color: textColor,
       height: 1.20,
-      letterSpacing: -0.15,
+      letterSpacing: -0.30,
       decoration: isLined ? TextDecoration.underline : null,
     );
 
@@ -297,6 +307,15 @@ class SyntonicTextTheme {
             : (isLineThrough == true ? TextDecoration.lineThrough : null),
       );
     }
+
+    return GoogleFonts.workSans(
+    fontWeight: FontWeight.w500,
+    fontSize: 14,
+    color: textColor,
+    height: 1.43,
+    letterSpacing: 0.14,
+    decoration: isLined ? TextDecoration.underline : null,
+    );
 
     return TextStyle(
       fontFamily: 'gt-america',
@@ -338,7 +357,7 @@ class SyntonicTextTheme {
   }
 
   static TextStyle caption(
-      {BuildContext? context, Color? textColor, bool isLined = false}) {
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
     Locale currentLocale = window.locale;
 
     if (currentLocale.languageCode == 'ja') {
@@ -356,7 +375,7 @@ class SyntonicTextTheme {
       fontFamily: 'gt-america',
       fontWeight: FontWeight.w400,
       fontSize: 13,
-      color: textColor,
+      color: textColor ?? Theme.of(context).colorScheme.onSurface,
       height: 1.38,
       letterSpacing: -0.13,
       decoration: isLined ? TextDecoration.underline : null,

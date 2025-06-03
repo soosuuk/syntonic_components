@@ -36,19 +36,12 @@ class App extends StatelessWidget {
       builder: (context, snapshot) {
         RatingService();
         return MaterialApp(
-          scrollBehavior: const MaterialScrollBehavior().copyWith(
-            dragDevices: {
-              PointerDeviceKind.mouse,
-              PointerDeviceKind.touch,
-              PointerDeviceKind.stylus,
-              PointerDeviceKind.unknown,
-            },
-          ),
+          // scrollBehavior: const _ClampingScrollBehavior(),
           navigatorKey: NavigationService().navigatorKey,
           theme: lightTheme(colorScheme: colorScheme),
           darkTheme: darkTheme(colorScheme: colorScheme),
           home: (snapshot.connectionState == ConnectionState.waiting ||
-                  snapshot.data == true)
+              snapshot.data == true)
               ? Container(color: Colors.white)
               : home,
           debugShowCheckedModeBanner: false,
@@ -60,5 +53,15 @@ class App extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class _ClampingScrollBehavior extends ScrollBehavior {
+  const _ClampingScrollBehavior();
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    // 常に ClampingScrollPhysics（= Android 標準のバウンドなし）を使う
+    return const BouncingScrollPhysics();
   }
 }

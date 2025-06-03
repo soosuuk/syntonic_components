@@ -45,6 +45,7 @@ class SyntonicTextField extends StatefulWidget {
   final TextAlign? textAlign;
   final TextStyle? textStyle;
   final String? hintText;
+  final TextStyle? hintStyle;
   final bool hasBorder;
   final FocusNode? focusNode;
   final Function(bool)? onFocusChanged;
@@ -82,6 +83,7 @@ class SyntonicTextField extends StatefulWidget {
     this.textAlign,
     this.textStyle,
     this.hintText,
+    this.hintStyle,
     this.hasBorder = true,
     this.focusNode,
     this.onFocusChanged,
@@ -112,6 +114,7 @@ class SyntonicTextField extends StatefulWidget {
     TextAlign? textAlign,
     TextStyle? textStyle,
     String? hintText,
+    TextStyle? hintStyle,
     bool hasBorder = true,
     FocusNode? focusNode,
     Function(bool)? onFocusChanged,
@@ -140,6 +143,7 @@ class SyntonicTextField extends StatefulWidget {
             textAlign: textAlign,
             textStyle: textStyle,
             hintText: hintText,
+            hintStyle: hintStyle,
             hasBorder: hasBorder,
             focusNode: focusNode,
             onFocusChanged: onFocusChanged,
@@ -158,6 +162,10 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_handleFocusChange);
     widget.controller.addListener(_updateScale);
+
+    if (widget.controller.text.isEmpty && widget.value != null) {
+      widget.controller.text = widget.value!;
+    }
   }
 
   @override
@@ -172,6 +180,7 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
 
   void _handleFocusChange() {
     if (widget.onFocusChanged != null) {
+      print('onFocusChanged: ${widget.controller.text}');
       widget.onFocusChanged!(_focusNode.hasFocus);
     }
   }
@@ -192,10 +201,6 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.controller.text.isEmpty && widget.value != null) {
-      widget.controller.text = widget.value!;
-    }
-
     final double maxWidth =
         MediaQuery.of(context).size.width - 32; // Adjust for padding
     final TextStyle baseStyle = widget.textStyle ??
@@ -214,7 +219,7 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
       scale = 1.0 - (lineWrapCount * 0.1).clamp(0.0, 0.3);
     }
     final TextStyle scaledStyle =
-        baseStyle.copyWith(fontSize: baseStyle.fontSize! * scale);
+        baseStyle.copyWith(fontSize: baseStyle.fontSize ?? 15 * scale);
 
     return RepaintBoundary(
       child: Padding(
@@ -233,7 +238,7 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
               minLines: widget.minLines,
               validator: widget.validator,
               decoration: InputDecoration(
-                hintStyle: scaledStyle.copyWith(
+                hintStyle: widget.hintStyle ?? scaledStyle.copyWith(
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
@@ -262,12 +267,14 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
               inputFormatters: widget.inputFormatters,
               focusNode: _focusNode,
               onChanged: (text) {
-                print(text);
+                print('onChanged: $text');
                 if (widget.onTextChanged != null) {
                   widget.onTextChanged!(text);
                 }
               },
-              onEditingComplete: () => widget.onEditingComplete,
+              onEditingComplete: () {
+                print('onEditingComplete: ${widget.controller.text}');
+                widget.onEditingComplete;},
               onTap: () {
                 if (widget.onFocused != null) {
                   widget.onFocused!();

@@ -10,6 +10,7 @@ class BoardView extends StatefulWidget {
   final Widget Function(BuildContext, int, int) itemBuilder;
   final Widget Function(BuildContext, int) headerBuilder;
   final Widget Function(BuildContext, int) fotterBuilder;
+  final Function(int)? onPageChanged;
   Widget? middleWidget;
   double? bottomPadding;
   bool isSelecting;
@@ -35,6 +36,7 @@ class BoardView extends StatefulWidget {
       this.width,
       this.middleWidget,
       this.bottomPadding,
+        this.onPageChanged,
       required this.itemBuilder,
       required this.headerBuilder,
       required this.fotterBuilder})
@@ -395,6 +397,11 @@ class BoardViewState extends State<BoardView>
       });
     }
     Widget listWidget = PageView.builder(
+      onPageChanged: (widget.onPageChanged != null)
+          ? (index) {
+              widget.onPageChanged!(index);
+            }
+          : null,
       padEnds: false,
       itemCount: widget.lists!.length,
       controller: boardViewController,
@@ -1004,7 +1011,7 @@ class BoardListState extends State<BoardList>
     // }
 
     listWidgets
-        .add(Container(child: widget.footerBuilder(context, widget.index!)));
+        .add(Column(mainAxisSize: MainAxisSize.min, children: [widget.footerBuilder(context, widget.index!), SizedBox(height: 80,)],));
 
     if (widget.footer != null) {
       listWidgets.add(widget.footer!);
@@ -1020,11 +1027,9 @@ class BoardListState extends State<BoardList>
     }
     widget.boardView!.listStates.insert(widget.index!, this);
 
-    return Container(
-        child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: CustomScrollView(
-        controller: ScrollController(),
+    return CustomScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+        // controller: ScrollController(),
         slivers: [
           AutoSizeSliverHeader(child: _headerBuilder(context: context, index: widget.index!)),
           SliverFillRemaining(
@@ -1033,7 +1038,7 @@ class BoardListState extends State<BoardList>
               itemBuilder: (context, index) {
                 if (index == widget.items!.length) {
                   // Add your processing here
-                  return widget.footerBuilder(context, index);
+                  return Column(mainAxisSize: MainAxisSize.min, children: [widget.footerBuilder(context, widget.index!), SizedBox(height: MediaQuery.sizeOf(context).height / 3,)],);
                 }
                 if (widget.items![index].boardList == null ||
                     widget.items![index].index != index ||
@@ -1056,39 +1061,13 @@ class BoardListState extends State<BoardList>
               itemPositionsListener: _itemPositionsListener,
             ),
           ),
-        //   SliverList.builder(
-        //   itemCount: widget.items!.length + 1, // Adjust childCount
-        //   itemBuilder: (context, index) {
-        //     if (index == widget.items!.length) {
-        //       // Add your processing here
-        //       return widget.footerBuilder(context, index);
-        //     }
-        //     if (widget.items![index].boardList == null ||
-        //         widget.items![index].index != index ||
-        //         widget.items![index].boardList!.widget.index != widget.index ||
-        //         widget.items![index].boardList != this) {
-        //       widget.items![index] = BoardItem(
-        //         boardList: this,
-        //         item: widget.items![index].item,
-        //         draggable: widget.items![index].draggable,
-        //         index: index,
-        //         onDropItem: widget.items![index].onDropItem,
-        //         onTapItem: widget.items![index].onTapItem,
-        //         onDragItem: widget.items![index].onDragItem,
-        //         onStartDragItem: widget.items![index].onStartDragItem,
-        //       );
-        //     }
-        //     return widget.items![index];
-        //   },
-        // ),
           SliverToBoxAdapter(
             child: SizedBox(
                 height: MediaQuery.of(context).size.height /
                     3), // Add 40px height spacer
           ),
         ],
-      ),
-    ));
+      );
   }
 
   Widget _headerBuilder({required BuildContext context, required int index}) {

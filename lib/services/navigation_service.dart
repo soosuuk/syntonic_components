@@ -54,12 +54,12 @@ class NavigationService {
           return screen;
         },
         transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const curve = Curves.easeInOutCubicEmphasized; // ここでカスタムのCurveを指定
-          var curvedAnimation =
-              CurvedAnimation(parent: animation, curve: curve);
-          return FadeTransition(opacity: curvedAnimation, child: child);
-        },
+        // transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        //   const curve = Curves.easeInOutCubicEmphasized; // ここでカスタムのCurveを指定
+        //   var curvedAnimation =
+        //       CurvedAnimation(parent: animation, curve: curve);
+        //   return FadeTransition(opacity: curvedAnimation, child: child);
+        // },
       ),
     );
   }

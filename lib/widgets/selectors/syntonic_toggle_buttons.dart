@@ -53,7 +53,7 @@ class SyntonicToggleButtons extends StatelessWidget {
                       model.changeSelection(index);
                       onToggleButtonPressed(index);
                     },
-                    textStyle: SyntonicTextTheme.caption(),
+                    textStyle: SyntonicTextTheme.caption(context: context),
                     isSelected: model.selectedStates,
                     fillColor: Theme.of(context).colorScheme.onSurface,
                     color: Theme.of(context)

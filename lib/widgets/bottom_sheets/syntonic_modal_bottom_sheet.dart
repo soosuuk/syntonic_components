@@ -72,50 +72,45 @@ abstract class SyntonicModalBottomSheet<
         builder: (context) {
           return Consumer(builder: (context, ref, _) {
             return LayoutBuilder(builder: (_, constraints) {
-              return Padding(
-                padding: const EdgeInsets.only(
-                  top: 0,
-                ),
-                child: Scaffold(
-                  backgroundColor: Colors.transparent,
-                  // appBar: appBar(
-                  //     context: context,
-                  //     ref: ref,
-                  //     extent: viewModel(ref).state.currentExtent) as PreferredSizeWidget?,
-                  // resizeToAvoidBottomInset: false,
-                  bottomSheet: bottomBar(
+              return Scaffold(
+                backgroundColor: Colors.transparent,
+                // appBar: appBar(
+                //     context: context,
+                //     ref: ref,
+                //     extent: viewModel(ref).state.currentExtent) as PreferredSizeWidget?,
+                // resizeToAvoidBottomInset: false,
+                bottomSheet: bottomBar(
+                    context: context,
+                    ref: ref,
+                    extent: viewModel(ref).state.currentExtent),
+                body: ContentsWidget(
+                  context: context,
+                  ref: ref,
+                  constraints: constraints,
+                  onPop: onPop(context: context, ref: ref),
+                  covers: covers(
                       context: context,
                       ref: ref,
                       extent: viewModel(ref).state.currentExtent),
-                  body: ContentsWidget(
-                    context: context,
-                    ref: ref,
-                    constraints: constraints,
-                    onPop: onPop(context: context, ref: ref),
-                    covers: covers(
-                        context: context,
-                        ref: ref,
-                        extent: viewModel(ref).state.currentExtent),
-                    appBar: appBar(
-                        context: context,
-                        ref: ref,
-                        extent: viewModel(ref).state.currentExtent),
-                    bottomBar: bottomBar(
-                        context: context,
-                        ref: ref,
-                        extent: viewModel(ref).state.currentExtent),
-                    additionalSheetChild: additionalSheetChild(
-                        context: context,
-                        ref: ref,
-                        extent: viewModel(ref).state.currentExtent),
-                    viewModel: vm,
-                    provider: provider,
-                    shouldAdjustExtentToChild: shouldAdjustExtentToChild,
-                    child: child(
-                        context: context,
-                        ref: ref,
-                        extent: viewModel(ref).state.currentExtent),
-                  ),
+                  appBar: appBar(
+                      context: context,
+                      ref: ref,
+                      extent: viewModel(ref).state.currentExtent),
+                  bottomBar: bottomBar(
+                      context: context,
+                      ref: ref,
+                      extent: viewModel(ref).state.currentExtent),
+                  additionalSheetChild: additionalSheetChild(
+                      context: context,
+                      ref: ref,
+                      extent: viewModel(ref).state.currentExtent),
+                  viewModel: vm,
+                  provider: provider,
+                  shouldAdjustExtentToChild: shouldAdjustExtentToChild,
+                  child: child(
+                      context: context,
+                      ref: ref,
+                      extent: viewModel(ref).state.currentExtent),
                 ),
               );
             });
@@ -236,7 +231,6 @@ class _ContentsWidgetState extends State<ContentsWidget> {
   late ValueNotifier<double> extentNotifier;
   late GlobalKey childKey;
   double _contentHeight = 0.5;
-  final double _previousExtent = 0.0;
   double height = 0.0;
 
   @override
@@ -255,17 +249,17 @@ class _ContentsWidgetState extends State<ContentsWidget> {
       final _extent = childHeight /
           (widget.constraints.maxHeight -
               kToolbarHeight -
-              MediaQuery.of(
+              MediaQuery.viewPaddingOf(
                       NavigationService().navigatorKey.currentState!.context)
-                  .viewPadding
                   .top);
       print('キーボード処理中');
       print('childHeight: $childHeight');
       print('extent: $_extent');
 
       setState(() {
+        print('ステートセット1');
         height = childHeight;
-        extentNotifier = ValueNotifier<double>(_extent);
+        extentNotifier.value = _extent;
         _contentHeight = _extent;
       });
     });
@@ -275,9 +269,8 @@ class _ContentsWidgetState extends State<ContentsWidget> {
   @override
   Widget build(BuildContext context) {
     double adjustedMinChildSize = (kToolbarHeight +
-            MediaQuery.of(
+            MediaQuery.viewPaddingOf(
                     NavigationService().navigatorKey.currentState!.context)
-                .viewPadding
                 .top) /
         widget.constraints.maxHeight;
     print('adjustedMinChildSize: $adjustedMinChildSize');
@@ -286,33 +279,154 @@ class _ContentsWidgetState extends State<ContentsWidget> {
     double _m = _contentHeight + adjustedMinChildSize;
 
     double _minExtent = widget.shouldAdjustExtentToChild ? _m : 0.5;
+    // double _minExtent = 0.1745049504950495;
     print('final minExtent: $_minExtent');
     double actualHeight = _minExtent *
-        (widget.constraints.maxHeight - MediaQuery.of(NavigationService()
+        (widget.constraints.maxHeight - MediaQuery.viewInsetsOf(NavigationService()
             .navigatorKey
             .currentState!
-            .context).viewInsets.bottom -
-            (MediaQuery.of(NavigationService()
+            .context).bottom -
+            (MediaQuery.viewPaddingOf(NavigationService()
                 .navigatorKey
                 .currentState!
                 .context)
-                .viewPadding
                 .top +
                 kToolbarHeight));
     print('actualHeight: $actualHeight');
     print('height: $height');
-    // double actualHeight = _minExtent *
-    //     (widget.constraints.maxHeight -
-    //         (kToolbarHeight));
-    // double _minExtent = _m < 0.5 ? 0.5 : (_m > 1 ? 0.5 : _m);
 
-    // bool _isAdditionalSheetVisible = widget.ref.watch(widget.provider.select(
-    //     (viewState) => viewState.isAdditionalSheetVisible));
-    // if (_isAdditionalSheetVisible) {
-    //   AnimatedBottomSheet.show();
-    // } else {
-    //   AnimatedBottomSheet.hide();
-    // }
+    // return Stack(
+    //   alignment: AlignmentDirectional.bottomStart,
+    //   children: [
+    //     GestureDetector(
+    //       onTap: () async {
+    //         AnimatedBottomSheet.hide();
+    //         bool canPop = await widget.onPop!();
+    //         if (canPop) {
+    //           Navigator.of(context).pop();
+    //         }
+    //       },),
+    //     widget.covers.isNotEmpty
+    //         ? Positioned.fill(
+    //       bottom: height,
+    //       left: 0,
+    //       right: 0,
+    //       child: TweenAnimationBuilder(
+    //         tween: Tween<double>(begin: 1.2, end: 1.0),
+    //         duration: const Duration(milliseconds: 1300),
+    //         curve: Curves.fastEaseInToSlowEaseOut,
+    //         builder: (context, double scale, child) {
+    //           return Transform.scale(
+    //             scale: scale,
+    //             child: child,
+    //           );
+    //         },
+    //         child: PageView(
+    //           children: widget.covers
+    //               .map((coverUrl) => Image.network(
+    //             coverUrl,
+    //             fit: BoxFit
+    //                 .cover, // Covers the entire screen
+    //           ))
+    //               .toList(),
+    //         ),
+    //       ),
+    //     )
+    //         : const SizedBox(),
+    //     Padding(
+    //       padding: EdgeInsets.only(bottom: height),
+    //       child: AnimatedBottomSheet(
+    //           additionalSheetChild: widget.additionalSheetChild),
+    //     ),
+    //     DraggableScrollableSheet(
+    //   initialChildSize: _minExtent,
+    //   maxChildSize: widget.viewModel.maxExtent,
+    //   minChildSize: _minExtent,
+    //   expand: true,
+    //   snap: true,
+    //   snapSizes: [
+    //     _minExtent,
+    //     1,
+    //   ],
+    //   controller: widget.viewModel.controller,
+    //   builder: (BuildContext context,
+    //       ScrollController scrollController) {
+    //     return ColoredBox(
+    //       color: Theme.of(context).colorScheme.surface,
+    //       // color: Colors.purple,
+    //       child: Navigator(
+    //         onGenerateRoute: (context) =>
+    //             MaterialPageRoute(
+    //               builder: (context) =>
+    //                   SingleChildScrollView(
+    //                       controller: scrollController,
+    //                       physics:
+    //                       const ClampingScrollPhysics(),
+    //                       child: Container(
+    //                         key: childKey,
+    //                         // color: Colors.blue,
+    //                         child: Column(
+    //                           children: [
+    //                             ValueListenableBuilder<
+    //                                 double>(
+    //                               valueListenable:
+    //                               extentNotifier,
+    //                               builder: (context, extent,
+    //                                   child) {
+    //                                 final double height = (1 -
+    //                                     (extent -
+    //                                         _minExtent) /
+    //                                         (widget.viewModel
+    //                                             .maxExtent -
+    //                                             _minExtent)) *
+    //                                     16; // Adjust the multiplier as needed
+    //                                 final double width = (1 -
+    //                                     (extent -
+    //                                         _minExtent) /
+    //                                         (widget.viewModel
+    //                                             .maxExtent -
+    //                                             _minExtent)) *
+    //                                     32; // Adjust the multiplier as needed
+    //                                 return SizedBox(
+    //                                   child: Padding(
+    //                                     padding: EdgeInsets
+    //                                         .symmetric(
+    //                                       vertical:
+    //                                       height.clamp(
+    //                                           0.0,
+    //                                           16.0),
+    //                                     ),
+    //                                     child: Container(
+    //                                       width:
+    //                                       width.clamp(
+    //                                           0.0,
+    //                                           32.0),
+    //                                       decoration: BoxDecoration(
+    //                                         color: Theme.of(context).colorScheme.outlineVariant,
+    //                                         borderRadius: BorderRadius.circular(3), // Adjust the radius as needed
+    //                                       ),
+    //                                       height:
+    //                                       3, // Ensure height is within the desired range
+    //                                     ),
+    //                                   ),
+    //                                 );
+    //                               },
+    //                             ),
+    //                             widget.child,
+    //                             // Opacity(
+    //                             //   opacity: 0,
+    //                             //   child: SizedBox(
+    //                             //     child: widget.bottomBar,
+    //                             //   ),
+    //                             // )
+    //                           ],
+    //                         ),
+    //                       )),
+    //             ),
+    //       ),
+    //     );
+    //   },
+    // )]);
 
     return Column(
       children: [
@@ -330,11 +444,10 @@ class _ContentsWidgetState extends State<ContentsWidget> {
               child: Column(
                 children: [
                   Container(
-                    height: MediaQuery.of(NavigationService()
+                    height: MediaQuery.viewPaddingOf(NavigationService()
                             .navigatorKey
                             .currentState!
                             .context)
-                        .viewPadding
                         .top,
                     color: Theme.of(context).colorScheme.surface,
                   ),
@@ -360,9 +473,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
               }
               return true;
             },
-            child: Container(
-                  color: Colors.transparent,
-                  child: Stack(
+            child: Stack(
                     alignment: AlignmentDirectional.bottomStart,
                     children: [
                       GestureDetector(
@@ -375,7 +486,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                           },),
                       widget.covers.isNotEmpty
                           ? Positioned.fill(
-                              bottom: actualHeight,
+                              bottom: height,
                               left: 0,
                               right: 0,
                               child: TweenAnimationBuilder(
@@ -418,7 +529,11 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                         controller: widget.viewModel.controller,
                         builder: (BuildContext context,
                             ScrollController scrollController) {
-                          return ColoredBox(
+                          return GestureDetector(
+                              onTap: widget.shouldAdjustExtentToChild ? null : () {
+                                FocusManager.instance.primaryFocus!.unfocus();
+                              },
+                              child: ColoredBox(
                                   color: Theme.of(context).colorScheme.surface,
                                   // color: Colors.purple,
                                   child: Navigator(
@@ -491,16 +606,11 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                                               )),
                                     ),
                                   ),
-                                );
+                                ));
                         },
                       ),
-                      // Container(
-                      //   color: Colors.red,
-                      //   width: MediaQuery.of(context).size.width,
-                      //   height: 100,
-                      // ),
                     ],
-                  )),
+                  ),
           ),
         ),
       ],
@@ -559,6 +669,7 @@ class _AnimatedBottomSheetState extends State<AnimatedBottomSheet>
   void _show() {
     if (mounted) {
       setState(() {
+        print('ステートセット2');
         _isAdditionalSheetVisible = true;
         _animationController.forward();
       });
@@ -566,6 +677,7 @@ class _AnimatedBottomSheetState extends State<AnimatedBottomSheet>
   }
 
   void _hide() {
+    print('ステートセット3');
     if (!_isAdditionalSheetVisible) {
       return;
     }
@@ -582,6 +694,7 @@ class _AnimatedBottomSheetState extends State<AnimatedBottomSheet>
   }
 
   void _toggle() {
+    print('ステートセット4');
     if (mounted) {
       if (_isAdditionalSheetVisible) {
         _animationController.reverse().then((_) {
@@ -661,129 +774,3 @@ class _AnimatedBottomSheetController {
     }
   }
 }
-
-// class AnimatedBottomSheet extends StatefulWidget {
-//   final Widget additionalSheetChild;
-//
-//   const AnimatedBottomSheet({Key? key, required this.additionalSheetChild})
-//       : super(key: key);
-//
-//   static final _controller = _AnimatedBottomSheetController();
-//
-//   static void show() => _controller.show();
-//   static void hide() => _controller.hide();
-//   static void toggle() => _controller.toggle();
-//
-//   @override
-//   State<AnimatedBottomSheet> createState() => _AnimatedBottomSheetState();
-// }
-//
-// class _AnimatedBottomSheetState extends State<AnimatedBottomSheet> {
-//   bool _isAdditionalSheetVisible = false;
-//   double _childHeight = 0;
-//
-//   // `GlobalKey`を使って高さを取得
-//   final GlobalKey _childKey = GlobalKey();
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     AnimatedBottomSheet._controller._bindState(this);
-//
-//     // ウィジェットが描画された後に高さを取得
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       final renderBox = _childKey.currentContext?.findRenderObject() as RenderBox?;
-//       if (renderBox != null) {
-//         setState(() {
-//           _childHeight = renderBox.size.height;
-//         });
-//       }
-//     });
-//   }
-//
-//   void _show() {
-//     if (mounted) {
-//       setState(() {
-//         _isAdditionalSheetVisible = true;
-//       });
-//     }
-//   }
-//
-//   void _hide() {
-//     if (mounted) {
-//       setState(() {
-//         _isAdditionalSheetVisible = false;
-//       });
-//     }
-//   }
-//
-//   void _toggle() {
-//     if (mounted) {
-//       setState(() {
-//         _isAdditionalSheetVisible = !_isAdditionalSheetVisible;
-//       });
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // もしシートが非表示なら、childの高さ分だけ負の値を設定
-//     double bottomValue = _isAdditionalSheetVisible ? 0 : -_childHeight;
-//
-//     return AnimatedPositioned(
-//       duration: const Duration(milliseconds: 300),
-//       curve: Curves.easeInOut,
-//       bottom: bottomValue,
-//       left: 0,
-//       right: 0,
-//       child: GestureDetector(
-//         onVerticalDragUpdate: (details) {
-//           // ユーザーがドラッグしている間、bottomValueを更新
-//           setState(() {
-//             double dragPosition = details.primaryDelta ?? 0;
-//             double newBottomValue = bottomValue + dragPosition;
-//             // 最大値はheightより大きくならないようにする
-//             _isAdditionalSheetVisible = newBottomValue >= -_childHeight;
-//             bottomValue = newBottomValue.clamp(-_childHeight, double.infinity);
-//           });
-//         },
-//         onVerticalDragEnd: (details) {
-//           // ドラッグが終了したときに、シートを閉じるか表示するか決める
-//           if (bottomValue < -_childHeight / 2) {
-//             _hide();
-//           } else {
-//             _show();
-//           }
-//         },
-//         child: Container(
-//           color: Theme.of(context).colorScheme.surface,
-//           child: Column(
-//             key: _childKey,
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.symmetric(vertical: 20),
-//                 child: SizedBox(
-//                   child: widget.additionalSheetChild,
-//                 ),
-//               ),
-//               const Divider(height: 0, thickness: 1),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-// // コントローラーでシートの制御
-// class _AnimatedBottomSheetController {
-//   _AnimatedBottomSheetState? _state;
-//
-//   void _bindState(_AnimatedBottomSheetState state) {
-//     _state = state;
-//   }
-//
-//   void show() => _state?._show();
-//   void hide() => _state?._hide();
-//   void toggle() => _state?._toggle();
-// }

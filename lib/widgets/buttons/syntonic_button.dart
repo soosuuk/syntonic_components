@@ -1,5 +1,10 @@
+import 'package:syntonic_components/widgets/syntonic_base_view.dart';
+import 'package:syntonic_components/widgets/texts/body_1_text.dart';
+import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
 import 'package:flutter/material.dart';
+
+import '../texts/subtitle_2_text.dart';
 
 /// A state of [BasicListView].
 enum _SyntonicButtonStyle {
@@ -138,11 +143,11 @@ class SyntonicButton extends StatelessWidget {
 
     switch (style) {
       case _SyntonicButtonStyle.elevated:
-        _textColor = Theme.of(context).colorScheme.onPrimary;
+        _textColor = Theme.of(context).colorScheme.onSurface;
         break;
       case _SyntonicButtonStyle.outlined:
       case _SyntonicButtonStyle.tonal:
-        _textColor = Theme.of(context).colorScheme.primary;
+        _textColor = Theme.of(context).colorScheme.onSurface;
         break;
       case _SyntonicButtonStyle.text:
         _textColor = Theme.of(context).colorScheme.onSurface;
@@ -160,19 +165,18 @@ class SyntonicButton extends StatelessWidget {
           ),
         style == _SyntonicButtonStyle.text
             ? textStyle == null
-                ? Subtitle1Text(
+                ? Body1Text(
                     text: text,
-                    textColor: isEnabled ? _textColor : null,
-                    isLined: isLined,
+                    textColor: isEnabled ? _textColor : Theme.of(context).colorScheme.onSurface,
                   )
                 : Text(
                     text,
                     style: textStyle,
                   )
-            : Subtitle1Text(
-                text: text.toUpperCase(),
+            : Body1Text(
+                text: text.toTitleCase(),
                 textColor:
-                    isNegative ? Colors.red : (isEnabled ? _textColor : null),
+                    isNegative ? Colors.red : (isEnabled ? _textColor ?? Theme.of(context).colorScheme.onSurface : null),
               ),
       ],
     );
@@ -206,11 +210,12 @@ class SyntonicButton extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: OutlinedButton(
               style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
+                    borderRadius: BorderRadius.circular(6),
                   ),
                   side:
-                      isNegative ? const BorderSide(color: Colors.red) : null),
+                      isNegative ? const BorderSide(color: Colors.red) : BorderSide(color: Theme.of(context).colorScheme.onSurface)),
               onPressed: isEnabled ? onTap : null,
               child: _button),
         );
@@ -222,12 +227,12 @@ class SyntonicButton extends StatelessWidget {
           opacity: isInput ? 0.38 : 1,
           child: TextButton(
             onPressed: onTap,
-            style: ButtonStyle(
-              padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(vertical: 0)),
-              minimumSize: WidgetStateProperty.all(Size.zero),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
+            // style: ButtonStyle(
+            //   padding: WidgetStateProperty.all(
+            //       const EdgeInsets.symmetric(vertical: 0)),
+            //   minimumSize: WidgetStateProperty.all(Size.zero),
+            //   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            // ),
             child: _button,
           ),
         );

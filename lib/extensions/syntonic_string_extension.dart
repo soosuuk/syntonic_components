@@ -59,4 +59,15 @@ extension SyntonicStringExtension on String {
         r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
     return replaceAll(_regExp, '').replaceAll('\n', '').replaceAll('\r', '');
   }
+
+  String toTitleCase() {
+    if (trim().isEmpty) return this;
+
+    return toLowerCase().split(RegExp(r'\s+')).map((word) {
+      if (word.isEmpty) return word;
+      final firstLetter = word[0].toUpperCase();
+      final rest = word.length > 1 ? word.substring(1) : '';
+      return '$firstLetter$rest';
+    }).join(' ');
+  }
 }

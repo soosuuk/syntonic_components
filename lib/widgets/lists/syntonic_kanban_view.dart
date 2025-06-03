@@ -43,6 +43,7 @@ class _KanbanViewState extends State<KanbanView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('PageView Example')),
       body: Padding(
         padding:

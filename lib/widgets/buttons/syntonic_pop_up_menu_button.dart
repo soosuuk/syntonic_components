@@ -57,7 +57,12 @@ class SyntonicPopupMenuButton extends StatelessWidget {
       return const SizedBox();
     }
 
-    return Container(
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        minWidth: 32,
+        minHeight: 32,
+      ),
+      child: Container(
       // width: IconSize.mini.size,
       // height: IconSize.mini.size,
       decoration: BoxDecoration(
@@ -67,8 +72,7 @@ class SyntonicPopupMenuButton extends StatelessWidget {
         border: borderColor != null
             ? Border.all(color: Theme.of(context).colorScheme.outlineVariant)
             : null,
-        color: backgroundColor ??
-            Theme.of(context).colorScheme.surface.withOpacity(0.48),
+        color: backgroundColor,
       ),
       child: PopupMenuButton<String>(
         padding: EdgeInsets.zero,
@@ -97,7 +101,7 @@ class SyntonicPopupMenuButton extends StatelessWidget {
                 ))
             .toList(),
       ),
-    );
+    ));
     return PopupMenuButton<String>(
       enabled: isEnabled,
       offset: const Offset(-26, -20),
