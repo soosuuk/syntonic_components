@@ -28,14 +28,23 @@ class Headline6Text extends BaseText {
 
   @override
   Widget textWidget({required BuildContext context}) {
-    return Text(
+    return needsSeeMore
+        ? Text(
       text.capitalize(),
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
-      overflow: needsSeeMore ? TextOverflow.visible : overflow,
-      maxLines: needsSeeMore ? null : maxLines,
+      overflow: TextOverflow.visible,
+      maxLines: null,
+    )
+        : SelectableText(
+      text.capitalize(),
+      style: textStyle(context: context),
+      textHeightBehavior: const TextHeightBehavior(
+          applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
+      textAlign: textAlign,
+      maxLines: maxLines,
     );
   }
 

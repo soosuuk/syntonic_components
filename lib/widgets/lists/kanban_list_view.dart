@@ -1029,13 +1029,14 @@ class BoardListState extends State<BoardList>
 
     return CustomScrollView(
       physics: const NeverScrollableScrollPhysics(),
-        // controller: ScrollController(),
+        controller: ScrollController(),
         slivers: [
           AutoSizeSliverHeader(child: _headerBuilder(context: context, index: widget.index!)),
           SliverFillRemaining(
             child: ScrollablePositionedList.builder(
               itemCount: widget.items!.length + 1, // Adjust childCount
               itemBuilder: (context, index) {
+                print('アイテムの数 : ${widget.items!.length}, index : $index');
                 if (index == widget.items!.length) {
                   // Add your processing here
                   return Column(mainAxisSize: MainAxisSize.min, children: [widget.footerBuilder(context, widget.index!), SizedBox(height: MediaQuery.sizeOf(context).height / 3,)],);

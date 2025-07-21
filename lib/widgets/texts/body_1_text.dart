@@ -29,14 +29,23 @@ class Body1Text extends BaseText {
 
   @override
   Widget textWidget({required BuildContext context}) {
-    return Text(
+    return needsSeeMore
+        ? Text(
       text,
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
-      overflow: needsSeeMore ? TextOverflow.visible : overflow,
-      maxLines: maxLines ?? (needsSeeMore ? null : maxLines),
+      overflow: TextOverflow.visible,
+      maxLines: null,
+    )
+        : SelectableText(
+      text,
+      style: textStyle(context: context),
+      textHeightBehavior: const TextHeightBehavior(
+          applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
+      textAlign: textAlign,
+      maxLines: maxLines,
     );
   }
 

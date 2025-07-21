@@ -85,13 +85,12 @@ extension Material3Palette on Color {
 class SyntonicTextTheme {
   static TextStyle headline1(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    return TextStyle(
-      fontFamily: 'caslon 540 italic',
-      fontWeight: FontWeight.w400,
-      fontSize: 48,
+    return GoogleFonts.workSans(
       color: textColor,
-      letterSpacing: -1,
-      height: 1.10,
+      fontSize: 40,
+      fontWeight: FontWeight.w500,
+      height: 1.02,
+      letterSpacing: 0.20,
       decoration: isLined ? TextDecoration.underline : null,
     );
   }

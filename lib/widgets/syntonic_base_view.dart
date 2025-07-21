@@ -811,6 +811,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             hasTabBar: hasTabBar,
             manualUrl: _appBar.manualUrl,
             bottom: _appBar.bottom,
+            leading: _appBar.leading,
+            logo: _appBar.logo,
             trailing: _appBar.trailing);
       } else {
         double _height = kToolbarHeight;

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -34,14 +35,23 @@ class OverlineText extends BaseText {
         padding: backgroundColor != null ? const EdgeInsets.all(4) : null,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2), color: backgroundColor),
-        child: Text(
+        child: needsSeeMore
+            ? Text(
           text,
           style: textStyle(context: context),
           textHeightBehavior: const TextHeightBehavior(
               applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
           textAlign: textAlign,
-          overflow: needsSeeMore ? TextOverflow.visible : overflow,
-          maxLines: needsSeeMore ? null : maxLines,
+          overflow: TextOverflow.visible,
+          maxLines: null,
+        )
+            : SelectableText(
+          text,
+          style: textStyle(context: context),
+          textHeightBehavior: const TextHeightBehavior(
+              applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
+          textAlign: textAlign,
+          maxLines: maxLines,
         ));
   }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -27,14 +28,23 @@ class Headline5Text extends BaseText {
 
   @override
   Widget textWidget({required BuildContext context}) {
-    return Text(
+    return needsSeeMore
+        ? Text(
       text.toUpperCase(),
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
-      overflow: needsSeeMore ? TextOverflow.visible : overflow,
-      maxLines: needsSeeMore ? null : maxLines,
+      overflow: TextOverflow.visible,
+      maxLines: null,
+    )
+        : SelectableText(
+      text.toUpperCase(),
+      style: textStyle(context: context),
+      textHeightBehavior: const TextHeightBehavior(
+          applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
+      textAlign: textAlign,
+      maxLines: maxLines,
     );
   }
 

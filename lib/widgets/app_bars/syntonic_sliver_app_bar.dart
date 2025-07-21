@@ -21,6 +21,7 @@ class SyntonicSliverAppBar extends StatelessWidget
   final double? expandedHeight;
   final String? title;
   final Color? accentColor;
+  final Image? logo;
   final double? elevation;
   final Widget? flexibleSpace;
   final bool isBackButtonEnabled;
@@ -46,6 +47,7 @@ class SyntonicSliverAppBar extends StatelessWidget
     this.actions,
     this.accentColor,
     this.bottom,
+    this.logo,
     this.elevation,
     this.expandedHeight = kToolbarHeight,
     this.flexibleSpace,
@@ -73,6 +75,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       List<Widget>? actions,
       Color? accentColor,
       PreferredSizeWidget? bottom,
+        Image? logo,
       double? elevation,
       double? expandedHeight = kToolbarHeight,
       Widget? flexibleSpace,
@@ -98,6 +101,7 @@ class SyntonicSliverAppBar extends StatelessWidget
             actions: actions,
             accentColor: accentColor,
             bottom: bottom,
+      logo: logo,
             elevation: elevation,
             expandedHeight: expandedHeight,
             flexibleSpace: flexibleSpace,
@@ -123,6 +127,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       List<Widget>? actions,
       Color? accentColor,
       PreferredSizeWidget? bottom,
+      Image? logo,
       double? elevation,
       double? expandedHeight = kToolbarHeight,
       Widget? flexibleSpace,
@@ -147,6 +152,7 @@ class SyntonicSliverAppBar extends StatelessWidget
             actions: actions,
             accentColor: accentColor,
             bottom: bottom,
+            logo: logo,
             elevation: elevation,
             expandedHeight: expandedHeight,
             flexibleSpace: flexibleSpace,
@@ -174,6 +180,7 @@ class SyntonicSliverAppBar extends StatelessWidget
     List<Widget>? actionIcons,
     Color? accentColor,
     PreferredSize? bottom,
+    Image? logo,
     double? elevation,
     Widget? flexibleSpace,
     bool isActionButtonEnabled = true,
@@ -218,6 +225,7 @@ class SyntonicSliverAppBar extends StatelessWidget
             isBackButtonEnabled: isBackButtonEnabled,
             needsNavigationDrawer: needsNavigationDrawer,
             bottom: bottom,
+            logo: logo,
             elevation: elevation,
             expandedHeight: expandedHeight,
             flexibleSpace: FlexibleSpaceBar(
@@ -268,23 +276,24 @@ class SyntonicSliverAppBar extends StatelessWidget
     //       // }
     //     },
     //     onSearchButtonTap: (searchWord) {});
-    Widget? _title = searchBox ??
+    print('ロゴ: $leading');
+    Widget? _title = logo ?? searchBox ??
         (title != null
             ? SyntonicListItem(
-                title: (title == null || title == '') ? 'No title' : title!,
-                subtitle: subtitle,
-                titleTextStyle: TitleTextStyle.Subtitle2,
-                hasDivider: false,
-                padding: EdgeInsets.zero,
-                titleColor: accentColor,
-                leadingWidget: leading,
-                trailingWidget: trailing,
-                needsTitleOverFlowStateVisible: false,
-                needsSubtitleOverFlowStateVisible: false,
-                optionalWidgetTitle: onTap != null
-                    ? const Icon(Icons.arrow_drop_down_outlined)
-                    : null,
-              )
+          title: (title == null || title == '') ? 'No title' : title!,
+          subtitle: subtitle,
+          titleTextStyle: TitleTextStyle.Subtitle2,
+          hasDivider: false,
+          padding: EdgeInsets.zero,
+          titleColor: accentColor,
+          leadingWidget: leading,
+          trailingWidget: trailing,
+          needsTitleOverFlowStateVisible: false,
+          needsSubtitleOverFlowStateVisible: false,
+          optionalWidgetTitle: onTap != null
+              ? const Icon(Icons.arrow_drop_down_outlined)
+              : null,
+        )
             : null);
     // return SliverAppBar(title: TextField(),);
 
