@@ -230,7 +230,7 @@ class SyntonicCard extends StatelessWidget {
                   Colors.black.withAlpha(50),
                   Colors.transparent,
                 ],
-                startAt: GradientStartPosition.left,
+                startAt: GradientStartPosition.bottom,
                 child: image!,
               )),
               isGlassmorphismEnabled

@@ -180,13 +180,14 @@ class SyntonicTextTheme {
     // );
 
 
-    return GoogleFonts.workSans(
-    fontWeight: FontWeight.w400,
-    fontSize: 18,
-    color: textColor,
-    height: 1.33,
-    letterSpacing: 1.17,
-    decoration: isLined ? TextDecoration.underline : null,
+    return TextStyle(
+      fontFamily: 'gt-america',
+      fontSize: 24,
+      fontWeight: FontWeight.w500,
+      height: 1,
+      letterSpacing: 0.12,
+      color: textColor,
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
@@ -205,13 +206,14 @@ class SyntonicTextTheme {
       );
     }
 
-    return GoogleFonts.workSans(
-    fontWeight: FontWeight.w300,
-    fontSize: 18,
-    color: textColor,
-    height: 1.50,
-    letterSpacing: 1.35,
-    decoration: isLined ? TextDecoration.underline : null,
+    return TextStyle(
+      fontFamily: 'gt-america',
+      fontSize: 21,
+      fontWeight: FontWeight.w500,
+      height: 1.10,
+      letterSpacing: -0.53,
+      color: textColor,
+      decoration: isLined ? TextDecoration.underline : null,
     );
 
     return TextStyle(
@@ -242,11 +244,11 @@ class SyntonicTextTheme {
 
     return TextStyle(
       fontFamily: 'gt-america',
-      fontSize: 17,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 1.50,
+      letterSpacing: 0.08,
       color: textColor,
-      height: 2.36,
-      letterSpacing: -0.34,
-      fontWeight: FontWeight.w600,
       decoration: isLined ? TextDecoration.underline : null,
     );
 
@@ -268,21 +270,13 @@ class SyntonicTextTheme {
       );
     }
 
-    return GoogleFonts.workSans(
-      fontWeight: FontWeight.w600,
-      color: textColor,
-      height: 1.20,
-      letterSpacing: -0.30,
-      decoration: isLined ? TextDecoration.underline : null,
-    );
-
     return TextStyle(
+      fontSize: 14,
       fontFamily: 'gt-america',
       fontWeight: FontWeight.w500,
-      fontSize: 15,
+      height: 1.14,
+      letterSpacing: 0.07,
       color: textColor,
-      height: 1.20,
-      letterSpacing: -0.15,
       decoration: isLined ? TextDecoration.underline : null,
     );
   }
@@ -307,25 +301,14 @@ class SyntonicTextTheme {
       );
     }
 
-    return GoogleFonts.workSans(
-    fontWeight: FontWeight.w500,
-    fontSize: 14,
-    color: textColor,
-    height: 1.43,
-    letterSpacing: 0.14,
-    decoration: isLined ? TextDecoration.underline : null,
-    );
-
     return TextStyle(
+      fontSize: 14,
       fontFamily: 'gt-america',
       fontWeight: FontWeight.w400,
-      fontSize: 15,
+      height: 1.43,
+      letterSpacing: 0.07,
       color: textColor,
-      letterSpacing: -0.15,
-      height: 1.20,
-      decoration: isLined
-          ? TextDecoration.underline
-          : (isLineThrough == true ? TextDecoration.lineThrough : null),
+      decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
@@ -345,12 +328,12 @@ class SyntonicTextTheme {
     }
 
     return TextStyle(
+      fontSize: 14,
       fontFamily: 'gt-america',
       fontWeight: FontWeight.w400,
-      fontSize: 13,
-      color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
-      height: 1.38,
-      letterSpacing: 0.26,
+      height: 1.43,
+      letterSpacing: 0.07,
+      color: textColor,
       decoration: isLined ? TextDecoration.underline : null,
     );
   }
@@ -372,11 +355,10 @@ class SyntonicTextTheme {
 
     return TextStyle(
       fontFamily: 'gt-america',
+      fontSize: 12,
       fontWeight: FontWeight.w400,
-      fontSize: 13,
-      color: textColor ?? Theme.of(context).colorScheme.onSurface,
-      height: 1.38,
-      letterSpacing: -0.13,
+      height: 1.33,
+      color: textColor,
       decoration: isLined ? TextDecoration.underline : null,
     );
   }
@@ -398,11 +380,10 @@ class SyntonicTextTheme {
 
     return TextStyle(
       fontFamily: 'gt-america',
+      fontSize: 10,
       fontWeight: FontWeight.w400,
-      fontSize: 12,
+      height: 1.60,
       color: textColor,
-      height: 1.17,
-      letterSpacing: 0.36,
       decoration: isLined ? TextDecoration.underline : null,
     );
   }
