@@ -78,7 +78,7 @@ class BoardViewState extends State<BoardView>
 
   bool canDrag = true;
 
-  PageController boardViewController = PageController(viewportFraction: 1);
+  PageController boardViewController = PageController(viewportFraction: 0.9);
 
   List<BoardListState> listStates = [];
 

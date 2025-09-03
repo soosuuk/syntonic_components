@@ -17,6 +17,7 @@ class SyntonicDateRangePicker {
         lastDate:
             DateTime.now().withSomeDateTime(year: DateTime.now().year + 100),
         builder: (BuildContext context, Widget? child) {
+          return child!;
           return Theme(
             data: Theme.of(context).copyWith(
               colorScheme: const ColorScheme.light(

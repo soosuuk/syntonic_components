@@ -88,7 +88,7 @@ class SyntonicTextTheme {
     return GoogleFonts.workSans(
       color: textColor,
       fontSize: 40,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       height: 1.02,
       letterSpacing: 0.20,
       decoration: isLined ? TextDecoration.underline : null,
@@ -97,14 +97,14 @@ class SyntonicTextTheme {
 
   static TextStyle headline3(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
+    Locale currentLocale = Localizations.localeOf(context);
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w400,
-        fontSize: 32,
         color: textColor,
-        height: 1.16,
-        letterSpacing: -0.38,
+        fontSize: 28,
+        fontWeight: FontWeight.w400,
+        height: 1.46,
+        letterSpacing: 2.38,
         decoration: isLined ? TextDecoration.underline : null,
       );
     }
@@ -121,15 +121,15 @@ class SyntonicTextTheme {
 
   static TextStyle headline4(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
+    Locale currentLocale = Localizations.localeOf(context);
 
     if (currentLocale.languageCode == 'ja') {
       return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w500,
-        fontSize: 27,
         color: textColor,
-        height: 1.07,
-        letterSpacing: 0.14,
+        fontSize: 25,
+        fontWeight: FontWeight.w400,
+        height: 1.64,
+        letterSpacing: 0.50,
         decoration: isLined ? TextDecoration.underline : null,
       );
     }
@@ -142,48 +142,30 @@ class SyntonicTextTheme {
       letterSpacing: 0.50,
       decoration: isLined ? TextDecoration.underline : null,
     );
-
-
-    return TextStyle(
-      fontFamily: 'gt-america',
-      fontWeight: FontWeight.w500,
-      fontSize: 27,
-      color: textColor,
-      height: 1.07,
-      letterSpacing: 0.14,
-      decoration: isLined ? TextDecoration.underline : null,
-    );
   }
 
   static TextStyle headline5(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
+    // Locale currentLocale = Localizations.localeOf(context);
 
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w700,
-        fontSize: 23,
-        color: textColor,
-        height: 1.26,
-        letterSpacing: 0.69,
-        decoration: isLined ? TextDecoration.underline : null,
-      );
-    }
-
-    // return GoogleFonts.workSans(
-    //   fontWeight: FontWeight.w400,
-    //   fontSize: 25,
-    //   color: textColor,
-    //   height: 1.64,
-    //   letterSpacing: 0.50,
-    //   decoration: isLined ? TextDecoration.underline : null,
-    // );
-
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 24,
+    //     fontWeight: FontWeight.w600,
+    //     height: 1,
+    //     letterSpacing: 0.12,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
 
     return TextStyle(
       fontFamily: 'gt-america',
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
       fontSize: 24,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       height: 1,
       letterSpacing: 0.12,
       color: textColor,
@@ -193,87 +175,84 @@ class SyntonicTextTheme {
 
   static TextStyle headline6(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
-
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w700,
-        fontSize: 17,
-        color: textColor,
-        height: 1.18,
-        letterSpacing: -0.17,
-        decoration: isLined ? TextDecoration.underline : null,
-      );
-    }
+    // Locale currentLocale = Localizations.localeOf(context);
+    //
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 21,
+    //     fontWeight: FontWeight.w600,
+    //     height: 1.10,
+    //     letterSpacing: -0.53,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
 
     return TextStyle(
       fontFamily: 'gt-america',
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
       fontSize: 21,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       height: 1.10,
       letterSpacing: -0.53,
       color: textColor,
-      decoration: isLined ? TextDecoration.underline : null,
-    );
-
-    return TextStyle(
-      fontFamily: 'gt-america',
-      fontWeight: FontWeight.w500,
-      fontSize: 17,
-      color: textColor,
-      height: 1.18,
-      letterSpacing: -0.17,
       decoration: isLined ? TextDecoration.underline : null,
     );
   }
 
   static TextStyle subtitle1(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
-
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w700,
-        fontSize: 14,
-        color: textColor,
-        height: 2.36,
-        letterSpacing: 0.70,
-        decoration: isLined ? TextDecoration.underline : null,
-      );
-    }
+    // Locale currentLocale = Localizations.localeOf(context);
+    //
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 16,
+    //     fontWeight: FontWeight.w600,
+    //     height: 1.50,
+    //     letterSpacing: 0.08,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
 
     return TextStyle(
       fontFamily: 'gt-america',
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
       fontSize: 16,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       height: 1.50,
       letterSpacing: 0.08,
       color: textColor,
       decoration: isLined ? TextDecoration.underline : null,
     );
-
-
   }
 
   static TextStyle subtitle2(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
-
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w700,
-        fontSize: 15,
-        color: textColor,
-        height: 1.20,
-        letterSpacing: -0.15,
-        decoration: isLined ? TextDecoration.underline : null,
-      );
-    }
+    // Locale currentLocale = Localizations.localeOf(context);
+    //
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 14,
+    //     fontWeight: FontWeight.w600,
+    //     height: 1.14,
+    //     letterSpacing: 0.07,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
 
     return TextStyle(
       fontSize: 14,
       fontFamily: 'gt-america',
-      fontWeight: FontWeight.w500,
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
+      fontWeight: FontWeight.w600,
       height: 1.14,
       letterSpacing: 0.07,
       color: textColor,
@@ -286,24 +265,25 @@ class SyntonicTextTheme {
       Color? textColor,
       bool? isLineThrough,
       bool isLined = false}) {
-    Locale currentLocale = window.locale;
-
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w400,
-        fontSize: 15,
-        color: textColor,
-        letterSpacing: -0.15,
-        height: 1.20,
-        decoration: isLined
-            ? TextDecoration.underline
-            : (isLineThrough == true ? TextDecoration.lineThrough : null),
-      );
-    }
+    // Locale currentLocale = Localizations.localeOf(context);
+    //
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 14,
+    //     fontWeight: FontWeight.w400,
+    //     height: 1.43,
+    //     letterSpacing: 0.07,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
 
     return TextStyle(
       fontSize: 14,
       fontFamily: 'gt-america',
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
       fontWeight: FontWeight.w400,
       height: 1.43,
       letterSpacing: 0.07,
@@ -314,22 +294,25 @@ class SyntonicTextTheme {
 
   static TextStyle body2(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
-
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w400,
-        fontSize: 13,
-        color: textColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
-        height: 1.38,
-        letterSpacing: 0.26,
-        decoration: isLined ? TextDecoration.underline : null,
-      );
-    }
+    // Locale currentLocale = Localizations.localeOf(context);
+    //
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 14,
+    //     fontWeight: FontWeight.w400,
+    //     height: 1.43,
+    //     letterSpacing: 0.07,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
 
     return TextStyle(
       fontSize: 14,
       fontFamily: 'gt-america',
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
       fontWeight: FontWeight.w400,
       height: 1.43,
       letterSpacing: 0.07,
@@ -340,21 +323,23 @@ class SyntonicTextTheme {
 
   static TextStyle caption(
       {required BuildContext context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
-
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w500,
-        fontSize: 13,
-        color: textColor,
-        height: 1.38,
-        letterSpacing: -0.13,
-        decoration: isLined ? TextDecoration.underline : null,
-      );
-    }
+    // Locale currentLocale = Localizations.localeOf(context);
+    //
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 12,
+    //     fontWeight: FontWeight.w400,
+    //     height: 1.33,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
 
     return TextStyle(
       fontFamily: 'gt-america',
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
       fontSize: 12,
       fontWeight: FontWeight.w400,
       height: 1.33,
@@ -364,22 +349,24 @@ class SyntonicTextTheme {
   }
 
   static TextStyle overline(
-      {BuildContext? context, Color? textColor, bool isLined = false}) {
-    Locale currentLocale = window.locale;
-
-    if (currentLocale.languageCode == 'ja') {
-      return GoogleFonts.notoSansJp(
-        fontWeight: FontWeight.w400,
-        fontSize: 12,
-        color: textColor,
-        height: 1.17,
-        letterSpacing: 0.36,
-        decoration: isLined ? TextDecoration.underline : null,
-      );
-    }
+      {required BuildContext? context, Color? textColor, bool isLined = false}) {
+    // Locale? currentLocale = context != null ? Localizations.localeOf(context) : null;
+    //
+    // if (currentLocale?.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 10,
+    //     fontWeight: FontWeight.w400,
+    //     height: 1.60,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
 
     return TextStyle(
       fontFamily: 'gt-america',
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
       fontSize: 10,
       fontWeight: FontWeight.w400,
       height: 1.60,

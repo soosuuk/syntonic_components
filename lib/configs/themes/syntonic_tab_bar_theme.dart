@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
+import 'package:syntonic_components/services/navigation_service.dart';
 
 class SyntonicTabBarTheme {
   static TabBarTheme get(
@@ -10,9 +11,9 @@ class SyntonicTabBarTheme {
         indicator: BoxDecoration(),
         labelPadding:
             const EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 0),
-        unselectedLabelStyle: SyntonicTextTheme.overline(),
+        unselectedLabelStyle: SyntonicTextTheme.overline(context: null),
         labelStyle:
-            SyntonicTextTheme.overline().copyWith(fontWeight: FontWeight.w700),
+            SyntonicTextTheme.overline(context: null).copyWith(fontWeight: FontWeight.w700),
         labelColor: colorScheme.onSurface,
         unselectedLabelColor: colorScheme.onSurfaceVariant);
   }

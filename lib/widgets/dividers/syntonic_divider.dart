@@ -67,7 +67,7 @@ class SyntonicDivider extends StatelessWidget {
                   width: type == DividerType.horizontal ? dashWidth : 1.0,
                   height: type == DividerType.horizontal ? 1.0 : dashWidth,
                   color: color ??
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.38),
+                      Theme.of(context).colorScheme.outlineVariant,
                   margin: EdgeInsets.symmetric(
                     horizontal:
                         type == DividerType.horizontal ? dashSpace : 0.0,

@@ -44,6 +44,7 @@ dependencies:
   google_fonts: 6.1.0
   google_mobile_ads: ^6.0.0
   google_sign_in: ^6.3.0
+  google_sign_in_ios: ^5.8.1
   googleapis: ^11.3.0
   html: ^0.15.4
   http: ^1.0.0

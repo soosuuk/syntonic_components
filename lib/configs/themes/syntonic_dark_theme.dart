@@ -25,8 +25,10 @@ ThemeData darkTheme({ColorScheme? colorScheme}) {
           : SyntonicColor.primary_color,
       brightness: Brightness.dark,
       onPrimaryContainer: Colors.white,
-      surface: colorScheme?.surface.tone(0),
-      outline: SyntonicColor().divider,
+      surface: const Color(0xFF1C1C1C),
+      outline: Colors.white,
+      outlineVariant: Colors.white,
+      // outlineVariant: Colors.white.withOpacity(0.284),
       onSurface: colorScheme != null
           ? colorScheme.primary.tone(100)
           : SyntonicColor.primary_color.tone(100));

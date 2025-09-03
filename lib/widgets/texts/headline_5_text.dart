@@ -30,7 +30,7 @@ class Headline5Text extends BaseText {
   Widget textWidget({required BuildContext context}) {
     return needsSeeMore
         ? Text(
-      text.toUpperCase(),
+      text,
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
@@ -39,7 +39,7 @@ class Headline5Text extends BaseText {
       maxLines: null,
     )
         : SelectableText(
-      text.toUpperCase(),
+      text,
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),

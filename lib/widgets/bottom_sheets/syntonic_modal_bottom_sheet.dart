@@ -12,12 +12,15 @@ abstract class SyntonicModalBottomSheet<
       this.actionName,
       required this.vm,
       this.initialSize,
-      this.shouldAdjustExtentToChild = false})
+      this.shouldAdjustExtentToChild = false,
+      this.canDrag = true
+      })
       : super();
   final VM vm;
   final double? initialSize;
   final String? actionName;
   final bool shouldAdjustExtentToChild;
+  final bool canDrag;
   // final GlobalKey childKey = GlobalKey();
   // final GlobalKey bottomBarKey = GlobalKey();
   // final ValueNotifier<double> extentNotifier = ValueNotifier<double>(0.5);
@@ -26,28 +29,28 @@ abstract class SyntonicModalBottomSheet<
   StateNotifierProvider<VM, VS> get provider =>
       StateNotifierProvider<VM, VS>((ref) => vm);
 
-  Widget bottomBar(
+  Widget? bottomBar(
       {required BuildContext context,
       required WidgetRef ref,
-      required double extent});
-  Widget additionalSheetChild(
+      required double extent}) => null;
+  Widget? additionalSheetChild(
       {required BuildContext context,
       required WidgetRef ref,
-      required double extent});
-  List<String> covers(
+      required double extent}) => null;
+  List<String>? covers(
       {required BuildContext context,
       required WidgetRef ref,
-      required double extent});
-  Widget appBar(
+      required double extent}) => null;
+  Widget? appBar(
       {required BuildContext context,
       required WidgetRef ref,
-      required double extent});
+      required double extent}) => null;
   Widget child(
       {required BuildContext context,
       required WidgetRef ref,
       required double extent});
-  Future<bool> Function()? onPop(
-      {required BuildContext context, required WidgetRef ref});
+  Future<bool>? Function()? onPop(
+      {required BuildContext context, required WidgetRef ref}) => null;
 
   onFocusChange({required BuildContext context, required WidgetRef ref}) {
     // final RenderBox renderBox = childKey.currentContext!.findRenderObject() as RenderBox;
@@ -70,7 +73,7 @@ abstract class SyntonicModalBottomSheet<
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {
-          return Consumer(builder: (context, ref, _) {
+          return Padding(padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(NavigationService().navigatorKey.currentState!.context).bottom), child: Consumer(builder: (context, ref, _) {
             return LayoutBuilder(builder: (_, constraints) {
               return Scaffold(
                 backgroundColor: Colors.transparent,
@@ -78,8 +81,8 @@ abstract class SyntonicModalBottomSheet<
                 //     context: context,
                 //     ref: ref,
                 //     extent: viewModel(ref).state.currentExtent) as PreferredSizeWidget?,
-                // resizeToAvoidBottomInset: false,
-                bottomSheet: bottomBar(
+                resizeToAvoidBottomInset: false,
+                bottomNavigationBar: bottomBar(
                     context: context,
                     ref: ref,
                     extent: viewModel(ref).state.currentExtent),
@@ -107,6 +110,7 @@ abstract class SyntonicModalBottomSheet<
                   viewModel: vm,
                   provider: provider,
                   shouldAdjustExtentToChild: shouldAdjustExtentToChild,
+                  canDrag: canDrag,
                   child: child(
                       context: context,
                       ref: ref,
@@ -114,14 +118,14 @@ abstract class SyntonicModalBottomSheet<
                 ),
               );
             });
-          });
+          }),);
         });
   }
 }
 
 abstract class SyntonicModalBottomSheetViewModel<
     VS extends SyntonicModalBottomSheetViewState> extends StateNotifier<VS> {
-  SyntonicModalBottomSheetViewModel({required VS viewState})
+  SyntonicModalBottomSheetViewModel({required VS viewState, this.shouldAdjustExtentToChild = false, this.canDrag = true})
       : super(viewState) {
     pageController.addListener(() {
       if (pageController.positions.isNotEmpty) {
@@ -130,6 +134,8 @@ abstract class SyntonicModalBottomSheetViewModel<
     });
   }
 
+  final bool canDrag;
+  final bool shouldAdjustExtentToChild;
   final double maxExtent = 1.0;
   final DraggableScrollableController controller =
       DraggableScrollableController();
@@ -196,15 +202,16 @@ class ContentsWidget<VM extends SyntonicModalBottomSheetViewModel<VS>,
   final WidgetRef ref;
   final BoxConstraints constraints;
   final Widget child;
-  final Future<bool> Function()? onPop;
-  final List<String> covers;
-  final Widget appBar;
-  final Widget bottomBar;
-  final Widget additionalSheetChild;
+  final Future<bool>? Function()? onPop;
+  final List<String>? covers;
+  final Widget? appBar;
+  final Widget? bottomBar;
+  final Widget? additionalSheetChild;
   final String? actionName;
   final VM viewModel;
   final StateNotifierProvider<VM, VS> provider;
   final bool shouldAdjustExtentToChild;
+  final bool canDrag;
 
   const ContentsWidget({
     required this.context,
@@ -220,6 +227,7 @@ class ContentsWidget<VM extends SyntonicModalBottomSheetViewModel<VS>,
     required this.viewModel,
     required this.provider,
     required this.shouldAdjustExtentToChild,
+    required this.canDrag,
   });
 
   @override
@@ -230,7 +238,12 @@ class _ContentsWidgetState extends State<ContentsWidget> {
   late PageController pageController;
   late ValueNotifier<double> extentNotifier;
   late GlobalKey childKey;
+  final GlobalKey handleKey = GlobalKey();
+  final GlobalKey bottomBarKey = GlobalKey();
   double _contentHeight = 0.5;
+  double _contentHeightJustice = 0.0;
+  double _handleHeight = 0.0;
+  double _bottomBarHeight = 0.0;
   double height = 0.0;
 
   @override
@@ -242,11 +255,36 @@ class _ContentsWidgetState extends State<ContentsWidget> {
     childKey = GlobalKey();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      double handleHeight = 0.0;
+      if (widget.canDrag) {
+        handleHeight =
+           (handleKey.currentContext!.findRenderObject() as RenderBox)
+               .size
+               .height;
+     }
       final double childHeight =
           (childKey.currentContext!.findRenderObject() as RenderBox)
               .size
               .height;
+      print('childHeightttt: $childHeight');
+      final double bottomBarHeight =
+          (bottomBarKey.currentContext!.findRenderObject() as RenderBox)
+              .size
+              .height;
+      print('bottomBarHeight: $bottomBarHeight');
+      final _handleExtent = handleHeight /
+          (widget.constraints.maxHeight -
+              kToolbarHeight -
+              MediaQuery.viewPaddingOf(
+                      NavigationService().navigatorKey.currentState!.context)
+                  .top);
       final _extent = childHeight /
+          (widget.constraints.maxHeight -
+              kToolbarHeight -
+              MediaQuery.viewPaddingOf(
+                      NavigationService().navigatorKey.currentState!.context)
+                  .top);
+      final _bottomBarExtent = bottomBarHeight /
           (widget.constraints.maxHeight -
               kToolbarHeight -
               MediaQuery.viewPaddingOf(
@@ -259,8 +297,11 @@ class _ContentsWidgetState extends State<ContentsWidget> {
       setState(() {
         print('ステートセット1');
         height = childHeight;
-        extentNotifier.value = _extent;
+        extentNotifier.value = _extent + _handleExtent;
         _contentHeight = _extent;
+        _handleHeight = handleHeight;
+        _contentHeightJustice = childHeight;
+        _bottomBarHeight = _bottomBarExtent;
       });
     });
     // }
@@ -268,15 +309,34 @@ class _ContentsWidgetState extends State<ContentsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double adjustedMinChildSize = (kToolbarHeight +
-            MediaQuery.viewPaddingOf(
-                    NavigationService().navigatorKey.currentState!.context)
-                .top) /
-        widget.constraints.maxHeight;
+    // double adjustedMinChildSize = (kToolbarHeight +
+    //         MediaQuery.viewPaddingOf(
+    //                 NavigationService().navigatorKey.currentState!.context)
+    //             .top) /
+    //     widget.constraints.maxHeight;
+    double adjustedMinChildSize = _bottomBarHeight;
     print('adjustedMinChildSize: $adjustedMinChildSize');
     print('contentHeight: $_contentHeight');
+    print('bottom:: ${MediaQuery.viewInsetsOf(NavigationService().navigatorKey.currentState!.context).bottom}');
+    final _bottomExtent = MediaQuery.viewInsetsOf(NavigationService()
+            .navigatorKey
+            .currentState!
+            .context)
+        .bottom /
+        (widget.constraints.maxHeight -
+        kToolbarHeight -
+            MediaQuery.viewInsetsOf(
+                NavigationService().navigatorKey.currentState!.context)
+                .top);
     print('m: ${_contentHeight + adjustedMinChildSize}');
-    double _m = _contentHeight + adjustedMinChildSize;
+    print('contentHeightJustice: $_contentHeightJustice');
+    print('handleHeight: $_handleHeight');
+    double _m = (_contentHeightJustice + (widget.canDrag ? 34 : 0)) / (MediaQuery.sizeOf(context).height - MediaQuery.viewInsetsOf(NavigationService()
+        .navigatorKey
+        .currentState!
+        .context).bottom - kToolbarHeight - MediaQuery.viewPaddingOf(
+        NavigationService().navigatorKey.currentState!.context)
+        .top);
 
     double _minExtent = widget.shouldAdjustExtentToChild ? _m : 0.5;
     // double _minExtent = 0.1745049504950495;
@@ -440,7 +500,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                     (widget.viewModel.maxExtent - _minExtent)
                 : 0;
             return Opacity(
-              opacity: opacity.clamp(widget.covers.isNotEmpty ? 1 : 0.0, 1.0),
+              opacity: opacity.clamp(widget.covers?.isNotEmpty == true ? 1 : 0.0, 1.0),
               child: Column(
                 children: [
                   Container(
@@ -451,7 +511,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                         .top,
                     color: Theme.of(context).colorScheme.surface,
                   ),
-                  widget.appBar
+                  widget.appBar ?? SizedBox()
                 ],
               ),
             );
@@ -479,12 +539,12 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                       GestureDetector(
                           onTap: () async {
                             AnimatedBottomSheet.hide();
-                            bool canPop = await widget.onPop!();
+                            bool canPop = await widget.onPop?.call() ?? true;
                             if (canPop) {
                               Navigator.of(context).pop();
                             }
                           },),
-                      widget.covers.isNotEmpty
+                      widget.covers?.isNotEmpty == true
                           ? Positioned.fill(
                               bottom: height,
                               left: 0,
@@ -500,7 +560,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                                   );
                                 },
                                 child: PageView(
-                                  children: widget.covers
+                                  children: widget.covers!
                                       .map((coverUrl) => Image.network(
                                             coverUrl,
                                             fit: BoxFit
@@ -511,10 +571,10 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                               ),
                             )
                           : const SizedBox(),
-                      Padding(
+                      if (widget.additionalSheetChild != null) Padding(
                         padding: EdgeInsets.only(bottom: actualHeight),
                         child: AnimatedBottomSheet(
-                            additionalSheetChild: widget.additionalSheetChild),
+                            additionalSheetChild: widget.additionalSheetChild!),
                       ),
                       DraggableScrollableSheet(
                         initialChildSize: _minExtent,
@@ -530,7 +590,9 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                         builder: (BuildContext context,
                             ScrollController scrollController) {
                           return GestureDetector(
-                              onTap: widget.shouldAdjustExtentToChild ? null : () {
+                              onTap:
+                              widget.shouldAdjustExtentToChild ? null :
+                                  () {
                                 FocusManager.instance.primaryFocus!.unfocus();
                               },
                               child: ColoredBox(
@@ -543,13 +605,13 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                                           SingleChildScrollView(
                                               controller: scrollController,
                                               physics:
-                                                  const ClampingScrollPhysics(),
+                                                  !widget.canDrag ? NeverScrollableScrollPhysics() : ClampingScrollPhysics(),
                                               child: Container(
-                                                key: childKey,
+                                                // key: childKey,
                                                 // color: Colors.blue,
                                                 child: Column(
                                                   children: [
-                                                    ValueListenableBuilder<
+                                                    if (widget.canDrag) ValueListenableBuilder<
                                                         double>(
                                                       valueListenable:
                                                           extentNotifier,
@@ -570,6 +632,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                                                                         _minExtent)) *
                                                             32; // Adjust the multiplier as needed
                                                         return SizedBox(
+                                                          key: handleKey,
                                                           child: Padding(
                                                             padding: EdgeInsets
                                                                 .symmetric(
@@ -582,24 +645,22 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                                                               width:
                                                                   width.clamp(
                                                                       0.0,
-                                                                      32.0),
+                                                                      56.0),
                                                               decoration: BoxDecoration(
-                                                                color: Theme.of(context).colorScheme.outlineVariant,
-                                                                borderRadius: BorderRadius.circular(3), // Adjust the radius as needed
+                                                                color: Theme.of(context).colorScheme.onSurface,
+                                                                borderRadius: BorderRadius.circular(0), // Adjust the radius as needed
                                                               ),
                                                               height:
-                                                                  3, // Ensure height is within the desired range
+                                                                  2, // Ensure height is within the desired range
                                                             ),
                                                           ),
                                                         );
                                                       },
                                                     ),
-                                                    widget.child,
+                                                    KeyedSubtree(key: childKey, child: widget.child),
                                                     Opacity(
                                                       opacity: 0,
-                                                      child: SizedBox(
-                                                        child: widget.bottomBar,
-                                                      ),
+                                                      child: KeyedSubtree(key: bottomBarKey, child: widget.bottomBar ?? SizedBox()),
                                                     )
                                                   ],
                                                 ),

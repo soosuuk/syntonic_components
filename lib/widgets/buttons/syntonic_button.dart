@@ -143,7 +143,7 @@ class SyntonicButton extends StatelessWidget {
 
     switch (style) {
       case _SyntonicButtonStyle.elevated:
-        _textColor = Theme.of(context).colorScheme.onSurface;
+        _textColor = Theme.of(context).colorScheme.surface;
         break;
       case _SyntonicButtonStyle.outlined:
       case _SyntonicButtonStyle.tonal:
@@ -154,7 +154,7 @@ class SyntonicButton extends StatelessWidget {
         break;
     }
 
-    final Widget _button = Row(
+    final Widget _button = IgnorePointer(child: Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -165,21 +165,21 @@ class SyntonicButton extends StatelessWidget {
           ),
         style == _SyntonicButtonStyle.text
             ? textStyle == null
-                ? Body1Text(
-                    text: text,
-                    textColor: isEnabled ? _textColor : Theme.of(context).colorScheme.onSurface,
-                  )
-                : Text(
-                    text,
-                    style: textStyle,
-                  )
-            : Body1Text(
-                text: text.toTitleCase(),
-                textColor:
-                    isNegative ? Colors.red : (isEnabled ? _textColor ?? Theme.of(context).colorScheme.onSurface : null),
-              ),
+            ? Subtitle2Text(
+          text: text.toUpperCase(),
+          textColor: isEnabled ? _textColor : Theme.of(context).colorScheme.onSurface,
+        )
+            : Text(
+          text,
+          style: textStyle,
+        )
+            : Subtitle2Text(
+          text: text.toUpperCase(),
+          textColor:
+          isNegative ? Theme.of(context).colorScheme.error : (isEnabled ? _textColor ?? Theme.of(context).colorScheme.onSurface : null),
+        ),
       ],
-    );
+    ),);
 
     switch (style) {
       case _SyntonicButtonStyle.elevated:
@@ -188,7 +188,7 @@ class SyntonicButton extends StatelessWidget {
           padding: padding ??
               const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: FilledButton(
-              style: _style,
+              style: _style.copyWith(minimumSize: WidgetStateProperty.all(Size(44, 44))),
               onPressed: isEnabled ? onTap : null,
               child: _button),
         );
@@ -198,7 +198,7 @@ class SyntonicButton extends StatelessWidget {
           padding: padding ??
               const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: FilledButton.tonal(
-            style: _style,
+            style: _style.copyWith(minimumSize: WidgetStateProperty.all(Size(44, 44))),
             onPressed: isEnabled ? onTap : null,
             child: _button,
           ),
@@ -210,12 +210,13 @@ class SyntonicButton extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                minimumSize: Size(44, 44),
+                // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(0),
                   ),
                   side:
-                      isNegative ? const BorderSide(color: Colors.red) : BorderSide(color: Theme.of(context).colorScheme.onSurface)),
+                      isNegative ? BorderSide(color: Theme.of(context).colorScheme.error) : BorderSide(color: Theme.of(context).colorScheme.onSurface),),
               onPressed: isEnabled ? onTap : null,
               child: _button),
         );
@@ -224,16 +225,27 @@ class SyntonicButton extends StatelessWidget {
         //   return _button;
         // }
         return Opacity(
-          opacity: isInput ? 0.38 : 1,
+          opacity: isInput || !isEnabled ? 0.38 : 1,
           child: TextButton(
-            onPressed: onTap,
-            // style: ButtonStyle(
-            //   padding: WidgetStateProperty.all(
-            //       const EdgeInsets.symmetric(vertical: 0)),
-            //   minimumSize: WidgetStateProperty.all(Size.zero),
-            //   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            // ),
-            child: _button,
+            onPressed: isEnabled ?onTap : null,
+            style: ButtonStyle(
+              padding: WidgetStateProperty.all(
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 20)),
+              minimumSize: WidgetStateProperty.all(Size.zero),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: isLined ? IntrinsicWidth(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _button,
+                  Container(
+                    height: 0.5,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ],
+              ),
+            ) : _button
           ),
         );
     }

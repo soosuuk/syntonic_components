@@ -49,6 +49,7 @@ class SyntonicTextField extends StatefulWidget {
   final bool hasBorder;
   final FocusNode? focusNode;
   final Function(bool)? onFocusChanged;
+  final Function(String)? onFieldSubmitted;
   final bool isScalable;
 
   TextInputAction? get _textInputAction =>
@@ -87,6 +88,7 @@ class SyntonicTextField extends StatefulWidget {
     this.hasBorder = true,
     this.focusNode,
     this.onFocusChanged,
+    this.onFieldSubmitted,
     this.isScalable = false,
   });
 
@@ -118,6 +120,7 @@ class SyntonicTextField extends StatefulWidget {
     bool hasBorder = true,
     FocusNode? focusNode,
     Function(bool)? onFocusChanged,
+    Function(String)? onFieldSubmitted,
     bool isScalable = false,
   }) : this._(
             label: label,
@@ -147,6 +150,7 @@ class SyntonicTextField extends StatefulWidget {
             hasBorder: hasBorder,
             focusNode: focusNode,
             onFocusChanged: onFocusChanged,
+      onFieldSubmitted: onFieldSubmitted,
             isScalable: isScalable);
 
   @override
@@ -280,6 +284,7 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
                   widget.onFocused!();
                 }
               },
+              onFieldSubmitted: widget.onFieldSubmitted?.call,
               style: scaledStyle,
             ),
             // const SizedBox(
