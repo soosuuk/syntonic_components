@@ -322,7 +322,7 @@ class SyntonicTextTheme {
   }
 
   static TextStyle caption(
-      {required BuildContext context, Color? textColor, bool isLined = false}) {
+      {Color? textColor, bool isLined = false}) {
     // Locale currentLocale = Localizations.localeOf(context);
     //
     // if (currentLocale.languageCode == 'ja') {

@@ -413,13 +413,13 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
         print('こども');
         return riverpod.Consumer(
           builder: (context, ref, child) {
+            return mainContents(context: context, ref: ref);
             return Scaffold(
               resizeToAvoidBottomInset: false,
-              // primary: true,
+              primary: false,
               // // extendBody: true,
               //   extendBodyBehindAppBar: false,
-              body: SafeArea(
-                  top: false, child: mainContents(context: context, ref: ref)),
+              body: mainContents(context: context, ref: ref),
               floatingActionButton: _floatingActionButtons(context: context),
               // bottomSheet: bottomSheet(context: context, ref: ref),
               bottomNavigationBar:

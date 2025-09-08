@@ -132,8 +132,9 @@ class SyntonicButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ButtonStyle _style = ButtonStyle(
-      backgroundColor: WidgetStateProperty.all<Color>(
-          Theme.of(context).colorScheme.onSurface),
+      backgroundColor: isEnabled ? WidgetStateProperty.all<Color>(
+          Theme.of(context).colorScheme.onSurface) : WidgetStateProperty.all<Color>(
+          Theme.of(context).colorScheme.onSurface.withOpacity(0.38)),
       shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
@@ -176,7 +177,7 @@ class SyntonicButton extends StatelessWidget {
             : Subtitle2Text(
           text: text.toUpperCase(),
           textColor:
-          isNegative ? Theme.of(context).colorScheme.error : (isEnabled ? _textColor ?? Theme.of(context).colorScheme.onSurface : null),
+          isNegative ? Theme.of(context).colorScheme.error : (isEnabled ? _textColor ?? Theme.of(context).colorScheme.onSurface : (_textColor ?? Theme.of(context).colorScheme.onSurface)),
         ),
       ],
     ),);
@@ -186,7 +187,7 @@ class SyntonicButton extends StatelessWidget {
         return Container(
           width: isExtended ? double.infinity : null,
           padding: padding ??
-              const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           child: FilledButton(
               style: _style.copyWith(minimumSize: WidgetStateProperty.all(Size(44, 44))),
               onPressed: isEnabled ? onTap : null,
@@ -230,7 +231,7 @@ class SyntonicButton extends StatelessWidget {
             onPressed: isEnabled ?onTap : null,
             style: ButtonStyle(
               padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 20)),
+                  const EdgeInsets.symmetric(vertical: 4, horizontal: 20)),
               minimumSize: WidgetStateProperty.all(Size.zero),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),

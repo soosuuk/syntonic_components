@@ -50,5 +50,5 @@ class CaptionText extends BaseText {
 
   @override
   TextStyle textStyle({required BuildContext context}) =>
-      SyntonicTextTheme.caption(context: context, textColor: textColor);
+      SyntonicTextTheme.caption(textColor: textColor);
 }

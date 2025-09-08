@@ -22,6 +22,7 @@ ThemeData lightTheme({ColorScheme? colorScheme}) {
         : increaseSaturation(_primaryColor, 0.2),
     brightness: Brightness.light,
     surface: Colors.white,
+      surfaceContainerHigh: Colors.white,
     primary: increaseSaturation(colorScheme?.primary ?? _primaryColor, 0.8),
     primaryContainer:
         increaseSaturation(colorScheme?.primaryContainer ?? _primaryColor, 1),
@@ -29,7 +30,7 @@ ThemeData lightTheme({ColorScheme? colorScheme}) {
     onSurfaceVariant: const Color(0xFF707070),
     background: Colors.white,
     outline: SyntonicColor().divider,
-    outlineVariant: colorScheme?.outlineVariant.withAlpha(95),
+    outlineVariant: Colors.black.withOpacity(0.145),
   );
 
   return ThemeData(

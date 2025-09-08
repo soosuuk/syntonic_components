@@ -78,7 +78,7 @@ class BoardViewState extends State<BoardView>
 
   bool canDrag = true;
 
-  PageController boardViewController = PageController(viewportFraction: 0.9);
+  late PageController boardViewController;
 
   List<BoardListState> listStates = [];
 
@@ -99,6 +99,8 @@ class BoardViewState extends State<BoardView>
   @override
   void initState() {
     super.initState();
+    boardViewController = PageController(viewportFraction: widget.width ?? 0.9);
+
     if (widget.boardViewController != null) {
       widget.boardViewController!.state = this;
     }
@@ -1028,7 +1030,7 @@ class BoardListState extends State<BoardList>
     widget.boardView!.listStates.insert(widget.index!, this);
 
     return CustomScrollView(
-      physics: const NeverScrollableScrollPhysics(),
+      // physics: const ClampingScrollPhysics(),
         controller: ScrollController(),
         slivers: [
           AutoSizeSliverHeader(child: _headerBuilder(context: context, index: widget.index!)),
@@ -1345,7 +1347,7 @@ class _AutoSizeSliverHeaderState extends State<AutoSizeSliverHeader> {
     }
 
     return SliverPersistentHeader(
-      // floating: true,
+      pinned: true,
       delegate: _CustomHeaderDelegate(
         child: widget.child,
         height: _height,

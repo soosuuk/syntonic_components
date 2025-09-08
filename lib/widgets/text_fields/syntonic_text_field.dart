@@ -259,7 +259,7 @@ class _SyntonicTextFieldState extends State<SyntonicTextField> {
                         icon: Icons.error, color: SyntonicColor.torch_red)
                     : null,
                 contentPadding: widget.theme == TextFieldTheme.underline
-                    ? const EdgeInsets.all(0)
+                    ? const EdgeInsets.symmetric(vertical: 8)
                     : null,
                 isDense: widget.theme == TextFieldTheme.underline,
               ),

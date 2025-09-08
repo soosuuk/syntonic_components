@@ -2,13 +2,12 @@ part of '../../widgets/syntonic_base_view.dart';
 
 extension SyntonicDateTimeRangeExtension on DateTimeRange {
   String formatDateRange(
-    BuildContext context,
-  ) {
+      BuildContext context,
+      ) {
     final locale = Localizations.localeOf(context).toString();
     // initializeMessages(locale);
 
     final DateFormat monthDayWeekFormat = DateFormat('E, MMMM d', locale);
-    final DateFormat dayWeekFormat = DateFormat('E, d', locale);
     final DateFormat fullDateFormat = DateFormat('E, MMMM d, y', locale);
 
     if (start.year != end.year) {
@@ -16,23 +15,35 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
       return '${fullDateFormat.format(start)} - ${fullDateFormat.format(end)}';
     } else if (start.month != end.month) {
       // 月を跨ぐ場合
-      final String startFormat = (start.year == DateTime.now().year)
+      final String startFormat = (start.year == DateTime
+          .now()
+          .year)
           ? monthDayWeekFormat.format(start)
           : fullDateFormat.format(start);
       return '$startFormat - ${fullDateFormat.format(end)}';
-    } else {
-      // 同じ月の場合
-      final String startFormat = (start.year == DateTime.now().year)
+    } else if (start.day != end.day) {
+      // 同じ月で異なる日付の場合
+      final String startFormat = (start.year == DateTime
+          .now()
+          .year)
           ? monthDayWeekFormat.format(start)
           : fullDateFormat.format(start);
-      final String endFormat = (start.year == DateTime.now().year)
-          ? dayWeekFormat.format(end)
+      final String endFormat = (start.year == DateTime
+          .now()
+          .year)
+          ? DateFormat('E, d', locale).format(end)
           : fullDateFormat.format(end);
       return '$startFormat - $endFormat';
+    } else {
+      return (start.year == DateTime
+          .now()
+          .year)
+          ? monthDayWeekFormat.format(start)
+          : fullDateFormat.format(start);
     }
   }
 
-  String formatStartDate(
+      String formatStartDate(
     BuildContext context,
   ) {
     final locale = Localizations.localeOf(context).toString();

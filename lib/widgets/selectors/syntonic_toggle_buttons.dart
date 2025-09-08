@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syntonic_components/configs/themes/syntonic_text_theme.dart';
 import 'package:syntonic_components/widgets/texts/caption_text.dart';
+import 'package:syntonic_components/widgets/texts/subtitle_1_text.dart';
+import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 
 class SyntonicToggleButtons extends StatelessWidget {
   final List<String> buttonNames;
@@ -43,8 +45,9 @@ class SyntonicToggleButtons extends StatelessWidget {
                     // constraints: BoxConstraints.expand(
                     // width: constraints.maxWidth / buttonNames.length - _padding.horizontal,
                     //     height: 40),
+                    selectedBorderColor: Theme.of(context).colorScheme.onSurface,
                     constraints: BoxConstraints.expand(
-                        width: (constraints.maxWidth - 4) / 2, height: 32),
+                        width: (constraints.maxWidth - 4) / 2, height: 44),
                     borderWidth: 1,
                     borderColor: Theme.of(context).colorScheme.onSurfaceVariant,
                     borderRadius:
@@ -53,7 +56,7 @@ class SyntonicToggleButtons extends StatelessWidget {
                       model.changeSelection(index);
                       onToggleButtonPressed(index);
                     },
-                    textStyle: SyntonicTextTheme.caption(context: context),
+                    // textStyle: SyntonicTextTheme.caption(),
                     isSelected: model.selectedStates,
                     fillColor: Theme.of(context).colorScheme.onSurface,
                     color: Theme.of(context)
@@ -73,9 +76,9 @@ class SyntonicToggleButtons extends StatelessWidget {
   List<Widget> getButtonTexts() {
     List<Widget> buttonTexts = [];
     for (int i = 0; i < buttonNames.length; i++) {
-      buttonTexts.add(CaptionText(
+      buttonTexts.add(IgnorePointer(child: Subtitle1Text(
         text: buttonNames[i],
-      ));
+      ),));
     }
     return buttonTexts;
   }
