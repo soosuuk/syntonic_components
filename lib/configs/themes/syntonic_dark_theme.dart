@@ -42,6 +42,12 @@ ThemeData darkTheme({ColorScheme? colorScheme}) {
     // background: SyntonicColor.raisinBlack,
 
     // ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: _colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+    ),
     applyElevationOverlayColor: true,
     // scaffoldBackgroundColor: SyntonicColor.raisinBlack,
     brightness: brightness,

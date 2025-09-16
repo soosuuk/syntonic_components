@@ -40,6 +40,9 @@ class App extends StatelessWidget {
           navigatorKey: NavigationService().navigatorKey,
           theme: lightTheme(colorScheme: colorScheme),
           darkTheme: darkTheme(colorScheme: colorScheme),
+          navigatorObservers: <NavigatorObserver>[
+            NavigationService.routeObserver
+          ],
           home: (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.data == true)
               ? Container(color: Colors.white)

@@ -10,6 +10,7 @@ import 'package:syntonic_components/configs/constants/syntonic_language.dart';
 import 'package:syntonic_components/configs/themes/syntonic_dark_theme.dart';
 import 'package:syntonic_components/configs/themes/syntonic_light_theme.dart';
 import 'package:syntonic_components/widgets/banners/syntonic_ad_banner.dart';
+import 'package:syntonic_components/widgets/dividers/syntonic_divider.dart';
 import 'package:syntonic_components/widgets/enhancers/syntonic_fade.dart';
 import 'package:syntonic_components/widgets/texts/body_2_text.dart';
 import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
@@ -18,6 +19,7 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 
+import '../services/navigation_service.dart';
 import 'base_view_state.dart';
 import 'buttons/syntonic_floating_action_button.dart';
 import 'app_bars/syntonic_sliver_app_bar.dart';
@@ -352,7 +354,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                     : _blank,
               ];
             },
-            body: _mainContents(context: context, ref: ref),
+            body: _notificationListener(context: context, ref: ref, child: _mainContents(context: context, ref: ref))
+        ,
           );
         }
       }),
@@ -375,7 +378,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     bottomSheet(context: context, ref: ref) ?? const SizedBox(),
-                    // SyntonicAdBanner()
+                    SyntonicAdBanner()
                   ],
                 ),
         );
@@ -393,7 +396,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[];
                     },
-                    body: _mainContents(context: context, ref: ref),
+                    body: _notificationListener(context: context, ref: ref, child: _mainContents(context: context, ref: ref))
+                  ,
                   );
                 },
               ),
@@ -443,15 +447,22 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           resizeToAvoidBottomInset: false,
           body: riverpod.Consumer(
             builder: (context, ref, child) {
-              return mainContents(context: context, ref: ref);
-              // return _notificationListener(context: context, ref: ref);
+              // return mainContents(context: context, ref: ref);
+              return _notificationListener(context: context, ref: ref, child: _mainContents(context: context, ref: ref));
             },
           ),
           // bottomSheet: bottomSheet(context: context, ref: ref),
           bottomNavigationBar:
               bottomSheet(context: context, ref: ref) != null || !hasAds
                   ? bottomSheet(context: context, ref: ref)
-                  : const SizedBox(),
+                  : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  bottomSheet(context: context, ref: ref) ?? const SizedBox(),
+                  SizedBox(height: 16,),
+                  SyntonicAdBanner()
+                ],
+              ),
         );
       }
     }
@@ -1072,7 +1083,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 }
 
 abstract class BaseViewModel<VS extends BaseViewState>
-    extends riverpod.StateNotifier<VS> {
+    extends riverpod.StateNotifier<VS> with WidgetsBindingObserver, RouteAware {
   BaseViewModel({required VS viewState}) : super(viewState) {
     // scrollController.addListener(() {
     //   // if (floatingActionButton(context: context, ref: ref) != null &&
@@ -1093,6 +1104,7 @@ abstract class BaseViewModel<VS extends BaseViewState>
     //   // }
     // });
 
+    WidgetsBinding.instance.addObserver(this);
     print('リビルド + $runtimeType');
 
     initialization ??= initializeee();
@@ -1113,6 +1125,39 @@ abstract class BaseViewModel<VS extends BaseViewState>
   final bool _isInitializing = false; // Add this flag
 
   Future<void>? initialization;
+
+  void subscribeToRouteObserver(BuildContext context) {
+    if (ModalRoute.of(context) == null) {
+      return;
+    }
+
+    NavigationService.routeObserver
+        .subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  void unsubscribeFromRouteObserver() {
+    NavigationService.routeObserver.unsubscribe(this);
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didPopNext() {
+    // LogService.print(value: "Returned to this screen: $runtimeType");
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // if (state == AppLifecycleState.resumed) {
+    //   LogService.print(value: "App has resumed: $runtimeType");
+    // }
+  }
+
+  @override
+  void dispose() {
+    unsubscribeFromRouteObserver();
+    onDispose();
+    super.dispose();
+  }
 
   Future<void> initializeee() async {
     await Future.delayed(const Duration(seconds: 2)); // 初期化処理
@@ -1135,11 +1180,7 @@ abstract class BaseViewModel<VS extends BaseViewState>
   }
 
   get isInitialized => state.isInitialized;
-  @override
-  void dispose() {
-    onDispose();
-    super.dispose();
-  }
+
 
   Future<dynamic>? onInit({required BuildContext context}) => null;
 

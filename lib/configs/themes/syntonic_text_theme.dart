@@ -260,6 +260,35 @@ class SyntonicTextTheme {
     );
   }
 
+  static TextStyle subtitle3(
+      {required BuildContext context, Color? textColor, bool isLined = false}) {
+    // Locale currentLocale = Localizations.localeOf(context);
+    //
+    // if (currentLocale.languageCode == 'ja') {
+    //   return GoogleFonts.notoSansJp(
+    //     fontSize: 14,
+    //     fontWeight: FontWeight.w600,
+    //     height: 1.14,
+    //     letterSpacing: 0.07,
+    //     color: textColor,
+    //     decoration: isLined ? TextDecoration.underline : null,
+    //   );
+    // }
+
+    return TextStyle(
+      fontSize: 14,
+      fontFamily: 'gt-america',
+      fontFamilyFallback: [
+        GoogleFonts.notoSansJp().fontFamily!,
+      ],
+      fontWeight: FontWeight.w700,
+      height: 1.29,
+      letterSpacing: 0.20,
+      color: textColor,
+      decoration: isLined ? TextDecoration.underline : null,
+    );
+  }
+
   static TextStyle body1(
       {required BuildContext context,
       Color? textColor,

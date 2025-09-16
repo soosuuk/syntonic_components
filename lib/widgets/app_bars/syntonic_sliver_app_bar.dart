@@ -277,27 +277,54 @@ class SyntonicSliverAppBar extends StatelessWidget
     //     },
     //     onSearchButtonTap: (searchWord) {});
     print('ロゴ: $leading');
-    Widget? _title = logo ?? searchBox ??
-        (title != null
-            ? SyntonicListItem(
-          title: (title == null || title == '') ? 'No title' : title!,
-          subtitle: subtitle,
-          titleTextStyle: TitleTextStyle.Subtitle2,
-          hasDivider: false,
-          padding: EdgeInsets.zero,
-          titleColor: accentColor,
-          leadingWidget: leading,
-          trailingWidget: trailing,
-          needsTitleOverFlowStateVisible: false,
-          needsSubtitleOverFlowStateVisible: false,
-          optionalWidgetTitle: onTap != null
-              ? const Icon(Icons.arrow_drop_down_outlined)
-              : null,
-        )
-            : null);
+    Widget? _title;
+    if (logo != null) {
+      _title = Row(
+        children: [
+          logo!,
+          const SizedBox(width: 8),
+          Expanded(
+            child: SyntonicListItem(
+              title: (title == null || title == '') ? 'No title' : title!,
+              subtitle: subtitle,
+              titleTextStyle: TitleTextStyle.Subtitle2,
+              hasDivider: false,
+              padding: EdgeInsets.zero,
+              titleColor: accentColor,
+              trailingWidget: trailing,
+              needsTitleOverFlowStateVisible: false,
+              needsSubtitleOverFlowStateVisible: false,
+              optionalWidgetTitle: onTap != null
+                  ? const Icon(Icons.arrow_drop_down_outlined)
+                  : null,
+            ),
+          ),
+        ],
+      );
+    } else {
+      _title = searchBox ??
+          (title != null
+              ? SyntonicListItem(
+                  title: (title == null || title == '') ? 'No title' : title!,
+                  subtitle: subtitle,
+                  titleTextStyle: TitleTextStyle.Subtitle2,
+                  hasDivider: false,
+                  padding: EdgeInsets.zero,
+                  titleColor: accentColor,
+                  leadingWidget: leading,
+                  trailingWidget: trailing,
+                  needsTitleOverFlowStateVisible: false,
+                  needsSubtitleOverFlowStateVisible: false,
+                  optionalWidgetTitle: onTap != null
+                      ? const Icon(Icons.arrow_drop_down_outlined)
+                      : null,
+                )
+              : null);
+    }
     // return SliverAppBar(title: TextField(),);
 
     return SliverAppBar(
+        centerTitle: false,
       surfaceTintColor: isStickying
           ? Theme.of(context).colorScheme.surfaceTint
           : Colors.transparent,
@@ -309,14 +336,16 @@ class SyntonicSliverAppBar extends StatelessWidget
           ? null
           : useCloseButton
               ? const SizedBox()
-              : BackButton(onPressed: onBackButtonPressed, color: accentColor),
+              : leading ?? BackButton(onPressed: onBackButtonPressed, color: accentColor),
       iconTheme: IconThemeData(
         color: accentColor, //change your color here
       ),
-      stretch: true,
-      snap: isFadedTitle ? false : true,
-      floating: true,
-      pinned: (isFullscreenDialog || hasTabBar || isFadedTitle) ? true : false,
+      // stretch: true,
+      // snap: isFadedTitle ? false : true,
+      floating: false,
+      pinned: true,
+      // floating: true,
+      // pinned: (isFullscreenDialog || hasTabBar || isFadedTitle) ? true : false,
       title: isFadedTitle
           ? SyntonicFade.on(
               zeroOpacityOffset: 250,

@@ -15,6 +15,9 @@ class NavigationService {
     return _instance;
   }
 
+  static final RouteObserver<PageRoute> routeObserver =
+  RouteObserver<PageRoute>();
+
   /// This key is root key in this application.
   /// Indicate the root screen.
   /// Typically use it like [navigatorKey.currentContext].

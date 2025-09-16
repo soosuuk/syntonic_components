@@ -46,6 +46,12 @@ ThemeData lightTheme({ColorScheme? colorScheme}) {
     //
     // ),
     // scaffoldBackgroundColor: Colors.white,
+    dialogTheme: DialogThemeData(
+      backgroundColor: _colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+    ),
     brightness: brightness,
     tabBarTheme:
         SyntonicTabBarTheme.get(isDarkTheme: false, colorScheme: _colorScheme),

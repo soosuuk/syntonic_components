@@ -19,7 +19,7 @@ class PersonModel {
   });
 
   String get fullName {
-    return '$firstName $lastName';
+    return '$lastName $firstName';
   }
 
   // /// Get a [PersonModel] for dummy.

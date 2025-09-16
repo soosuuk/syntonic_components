@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'dart:io';
 
 class SyntonicAdBanner extends StatefulWidget {
   const SyntonicAdBanner({Key? key}) : super(key: key);
@@ -24,6 +25,8 @@ class _AdBannerState extends State<SyntonicAdBanner> {
     ).then((value) {
       print('ADサイズ');
       _adSize = value;
+    }).catchError((e) {
+      print('広告エラー');
     });
     return _adSize;
   }
@@ -35,15 +38,15 @@ class _AdBannerState extends State<SyntonicAdBanner> {
         return Container(
           color: Theme.of(context).colorScheme.surface,
           alignment: Alignment.center,
-          height: 56,
+          height: AdSize.banner.height.toDouble(),
           child: FutureBuilder<AdSize?>(
             future: _getAdSize(context, constraints),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (!_isAdLoaded) {
                   _ad = BannerAd(
-                    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-                    size: _adSize!,
+                    adUnitId: _unitId,
+                    size: AdSize.banner,
                     request: const AdRequest(),
                     listener: BannerAdListener(
                       onAdLoaded: (_) {
@@ -76,5 +79,23 @@ class _AdBannerState extends State<SyntonicAdBanner> {
   void dispose() {
     _ad?.dispose();
     super.dispose();
+  }
+
+  String get _unitId {
+    const _env = String.fromEnvironment('ENV', defaultValue: 'stg');
+    if (_env == 'prod') {
+      if (Platform.isIOS) {
+        return 'ca-app-pub-4288011253421893/6129705057'; // 本番 iOS
+      } else if (Platform.isAndroid) {
+        return 'ca-app-pub-4288011253421893/7839152798'; // 本番 Android
+      }
+    } else {
+      if (Platform.isIOS) {
+        return 'ca-app-pub-3940256099942544/6300978111'; // ステージング iOS
+      } else if (Platform.isAndroid) {
+        return 'ca-app-pub-3940256099942544/6300978111'; // ステージング Android
+      }
+    }
+    return ''; // fallback
   }
 }
