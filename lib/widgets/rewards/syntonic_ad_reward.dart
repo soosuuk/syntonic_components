@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -58,6 +59,24 @@ class SyntonicAdReward {
   bool _isAdLoaded = false;
   bool _earnedReward = false;
 
+  String get _unitId {
+    const _env = String.fromEnvironment('ENV', defaultValue: 'stg');
+    if (_env == 'prod') {
+      if (Platform.isIOS) {
+        return 'ca-app-pub-4288011253421893/3528248981'; // 本番 iOS
+      } else if (Platform.isAndroid) {
+        return 'ca-app-pub-4288011253421893/1083378036'; // 本番 Android
+      }
+    } else {
+      if (Platform.isIOS) {
+        return 'ca-app-pub-3940256099942544/5224354917'; // ステージング iOS
+      } else if (Platform.isAndroid) {
+        return 'ca-app-pub-3940256099942544/5224354917'; // ステージング Android
+      }
+    }
+    return ''; // fallback
+  }
+
   void _loadRewardedAd({
     VoidCallback? onRewarded,
     required BuildContext context,
@@ -66,7 +85,7 @@ class SyntonicAdReward {
     void Function()? onLoaded,
   }) {
     RewardedAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/5224354917',
+      adUnitId: _unitId,
       request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {

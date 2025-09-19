@@ -16,17 +16,14 @@ class _AdBannerState extends State<SyntonicAdBanner> {
 
   Future<AdSize?> _getAdSize(
       BuildContext context, BoxConstraints constraints) async {
-    print('こうこく');
     await AdSize.getAnchoredAdaptiveBannerAdSize(
       MediaQuery.of(context).orientation == Orientation.portrait
           ? Orientation.portrait
           : Orientation.landscape,
       constraints.maxWidth.toInt(),
     ).then((value) {
-      print('ADサイズ');
       _adSize = value;
     }).catchError((e) {
-      print('広告エラー');
     });
     return _adSize;
   }

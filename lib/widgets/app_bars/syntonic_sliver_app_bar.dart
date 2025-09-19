@@ -276,7 +276,6 @@ class SyntonicSliverAppBar extends StatelessWidget
     //       // }
     //     },
     //     onSearchButtonTap: (searchWord) {});
-    print('ロゴ: $leading');
     Widget? _title;
     if (logo != null) {
       _title = Row(

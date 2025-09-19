@@ -382,9 +382,9 @@ class BoardViewState extends State<BoardView>
 
   @override
   Widget build(BuildContext context) {
-    print("dy:$dy");
-    print("topListY:$topListY");
-    print("bottomListY:$bottomListY");
+    // print("dy:$dy");
+    // print("topListY:$topListY");
+    // print("bottomListY:$bottomListY");
     if (boardViewController.hasClients) {
       WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
         try {

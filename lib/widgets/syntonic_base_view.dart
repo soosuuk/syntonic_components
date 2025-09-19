@@ -140,7 +140,6 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
 
     Widget get() {
       return riverpod.Consumer(builder: (context, ref, _) {
-        print('baseリビルド+ $runtimeType');
         // if (false) {
         if (colorScheme != null ||
             ref.watch(provider.select((viewState) => viewState.colorScheme)) !=
@@ -228,7 +227,13 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
           !viewModel.state.isInitialized &&
           !viewModel._isInitializing) {
         return FutureBuilder(
-          future: viewModel.onInit(context: context),
+          future: () async {
+            // await viewModel.onInit();
+            viewModel._isInitializing = true;
+            await viewModel.initialization;
+            print('初期化完了');
+            viewModel.state = viewModel.state.copyWith(isInitialized: true) as VS;
+          }(),
           builder: (context, projectSnap) {
             if (projectSnap.hasError) {
               return NestedScrollView(
@@ -771,7 +776,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
   Future<dynamic>? onSwipeToRefresh(
           {required BuildContext context,
           required riverpod.WidgetRef ref}) async =>
-      viewModel(ref).onInit(context: context);
+      viewModel(ref).onInit();
 
   /// Get whether main content can swipe to refresh.
   ///
@@ -1105,9 +1110,10 @@ abstract class BaseViewModel<VS extends BaseViewState>
     // });
 
     WidgetsBinding.instance.addObserver(this);
-    print('リビルド + $runtimeType');
 
-    initialization ??= initializeee();
+    print('ビューモデル作成 + $runtimeType');
+    initialization ??= onInit();
+    // initialization ??= initializeee();
   }
 
   // bool isInitialized = false;
@@ -1122,7 +1128,7 @@ abstract class BaseViewModel<VS extends BaseViewState>
   double offset = 0;
   bool isScrollingAutomatically = false;
   bool canScrollHeaderAutomatically = true;
-  final bool _isInitializing = false; // Add this flag
+  bool _isInitializing = false; // Add this flag
 
   Future<void>? initialization;
 
@@ -1182,7 +1188,7 @@ abstract class BaseViewModel<VS extends BaseViewState>
   get isInitialized => state.isInitialized;
 
 
-  Future<dynamic>? onInit({required BuildContext context}) => null;
+  Future<dynamic>? onInit() => null;
 
   @protected
   void onDispose() {}
