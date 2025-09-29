@@ -28,7 +28,7 @@ class Headline6Text extends BaseText {
 
   @override
   Widget textWidget({required BuildContext context}) {
-    return needsSeeMore
+    return true
         ? Text(
       text.capitalize(),
       style: textStyle(context: context),

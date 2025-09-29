@@ -125,12 +125,13 @@ class SyntonicAdReward {
     );
   }
 
-  void _showRewardedAd({required BuildContext context}) {
+  void _showRewardedAd() {
     if (_rewardedAd != null) {
       _earnedReward = false;
       _rewardedAd!.show(
         onUserEarnedReward: (ad, reward) {
           _earnedReward = true;
+
         },
       );
     }
@@ -165,13 +166,15 @@ class SyntonicAdReward {
               negativeButtonText: 'キャンセル',
               positiveButtonText: _isAdLoaded ? '解放する' : '広告をダウンロードしています',
               isPositiveButtonEnabled: _isAdLoaded,
-              onNegativeButtonTapped: () => Navigator.of(context).pop(),
-              onPositiveButtonTapped: _isAdLoaded
-                  ? () {
-                      Navigator.of(context).pop();
-                      _showRewardedAd(context: context);
-                    }
-                  : () => null,
+              onNegativeButtonTapped: () => null,
+                onPositiveButtonTapped: _isAdLoaded
+                    ? () {
+                  // Navigator.of(context).pop();
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _showRewardedAd();
+                  });
+                }
+                    : () => null,
             );
           },
         );

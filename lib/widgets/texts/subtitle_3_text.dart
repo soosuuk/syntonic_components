@@ -27,7 +27,7 @@ class Subtitle3Text extends BaseText {
 
   @override
   Widget textWidget({required BuildContext context}) {
-    return needsSeeMore
+    return true
         ? Text(
       text,
       style: textStyle(context: context),

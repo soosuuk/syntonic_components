@@ -9,9 +9,9 @@ class SlideFadeInContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<Offset>(
       tween: Tween<Offset>(
-          begin: const Offset(0, 0.2), end: Offset.zero), // 少し下から上に移動
-      duration: const Duration(milliseconds: 600), // アニメーションの長さ
-      curve: Curves.easeOut, // イージング
+          begin: const Offset(0, 0.3), end: Offset.zero), // 少し下から上に移動
+      duration: const Duration(milliseconds: 800), // アニメーションの長さ
+      curve: Curves.easeInOutSine, // イージング
       builder: (context, offset, child) {
         return LayoutBuilder(builder: (context, constraints) {
           return Transform.translate(

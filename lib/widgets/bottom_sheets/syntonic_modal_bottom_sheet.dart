@@ -52,15 +52,6 @@ abstract class SyntonicModalBottomSheet<
   Future<bool>? Function()? onPop(
       {required BuildContext context, required WidgetRef ref}) => null;
 
-  onFocusChange({required BuildContext context, required WidgetRef ref}) {
-    // final RenderBox renderBox = childKey.currentContext!.findRenderObject() as RenderBox;
-    // final double childHeight = renderBox.size.height;
-    // final RenderBox renderBoxBottom = bottomBarKey.currentContext!.findRenderObject() as RenderBox;
-    // final double bottomHeight = renderBoxBottom.size.height;
-    // final bottomInset = MediaQuery.of(context).viewInsets.bottom;
-    // viewModel(ref).updateMinExtent((bottomHeight + childHeight + bottomInset + 34) / (MediaQuery.of(context).size.height - kToolbarHeight * 2));
-  }
-
   /// Open modal bottom sheet.
   openModalBottomSheet<S>({
     required BuildContext context,
@@ -77,10 +68,6 @@ abstract class SyntonicModalBottomSheet<
             return LayoutBuilder(builder: (_, constraints) {
               return Scaffold(
                 backgroundColor: Colors.transparent,
-                // appBar: appBar(
-                //     context: context,
-                //     ref: ref,
-                //     extent: viewModel(ref).state.currentExtent) as PreferredSizeWidget?,
                 resizeToAvoidBottomInset: false,
                 bottomNavigationBar: bottomBar(
                     context: context,
@@ -257,11 +244,14 @@ class _ContentsWidgetState extends State<ContentsWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       double handleHeight = 0.0;
       if (widget.canDrag) {
-        handleHeight =
-           (handleKey.currentContext!.findRenderObject() as RenderBox)
-               .size
-               .height;
+        handleHeight = 34;
+        // handleHeight =
+        //    (handleKey.currentContext!.findRenderObject() as RenderBox)
+        //        .size
+        //        .height;
      }
+      print('handleHeighttt: $handleHeight');
+
       final double childHeight =
           (childKey.currentContext!.findRenderObject() as RenderBox)
               .size
@@ -301,7 +291,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
         _contentHeight = _extent;
         _handleHeight = handleHeight;
         _contentHeightJustice = childHeight;
-        _bottomBarHeight = _bottomBarExtent;
+        _bottomBarHeight = bottomBarHeight;
       });
     });
     // }
@@ -314,369 +304,253 @@ class _ContentsWidgetState extends State<ContentsWidget> {
     //                 NavigationService().navigatorKey.currentState!.context)
     //             .top) /
     //     widget.constraints.maxHeight;
-    double adjustedMinChildSize = _bottomBarHeight;
-    print('adjustedMinChildSize: $adjustedMinChildSize');
-    print('contentHeight: $_contentHeight');
-    print('bottom:: ${MediaQuery.viewInsetsOf(NavigationService().navigatorKey.currentState!.context).bottom}');
-    final _bottomExtent = MediaQuery.viewInsetsOf(NavigationService()
-            .navigatorKey
-            .currentState!
-            .context)
-        .bottom /
-        (widget.constraints.maxHeight -
-        kToolbarHeight -
-            MediaQuery.viewInsetsOf(
-                NavigationService().navigatorKey.currentState!.context)
-                .top);
-    print('m: ${_contentHeight + adjustedMinChildSize}');
-    print('contentHeightJustice: $_contentHeightJustice');
-    print('handleHeight: $_handleHeight');
-    double _m = (_contentHeightJustice + (widget.canDrag ? 34 : 0)) / (MediaQuery.sizeOf(context).height - MediaQuery.viewInsetsOf(NavigationService()
-        .navigatorKey
-        .currentState!
-        .context).bottom - kToolbarHeight - MediaQuery.viewPaddingOf(
-        NavigationService().navigatorKey.currentState!.context)
-        .top);
+    // double adjustedMinChildSize = _bottomBarHeight;
+    // print('adjustedMinChildSize: $adjustedMinChildSize');
+    return LayoutBuilder(builder: (con, constraints) {
+      print('contentHeight: $_contentHeight');
+      print('bottom:: ${MediaQuery.viewInsetsOf(NavigationService().navigatorKey.currentState!.context).bottom}');
+      final _bottomExtent = MediaQuery.viewInsetsOf(NavigationService()
+          .navigatorKey
+          .currentState!
+          .context)
+          .bottom /
+          (widget.constraints.maxHeight -
+              kToolbarHeight -
+              MediaQuery.viewInsetsOf(
+                  NavigationService().navigatorKey.currentState!.context)
+                  .top);
+      // print('m: ${_contentHeight + adjustedMinChildSize}');
+      print('contentHeightJustice: $_contentHeightJustice');
+      print('handleHeight: $_handleHeight');
+      print('bottomBarHeight: $_bottomBarHeight');
+      print("root height: ${MediaQuery.sizeOf(NavigationService().navigatorKey.currentState!.context).height}");
+      print("local height: ${MediaQuery.sizeOf(context).height}");
+      print('高さ : ${constraints.maxHeight}');
+      // double _m = (_contentHeightJustice + (widget.canDrag ? _handleHeight : 0)) / (MediaQuery.sizeOf(context).height - MediaQuery.viewInsetsOf(NavigationService()
+      //     .navigatorKey
+      //     .currentState!
+      //     .context).bottom - kToolbarHeight - MediaQuery.viewPaddingOf(
+      //     NavigationService().navigatorKey.currentState!.context)
+      //     .top);
 
-    double _minExtent = widget.shouldAdjustExtentToChild ? _m : 0.5;
-    // double _minExtent = 0.1745049504950495;
-    print('final minExtent: $_minExtent');
-    double actualHeight = _minExtent *
-        (widget.constraints.maxHeight - MediaQuery.viewInsetsOf(NavigationService()
-            .navigatorKey
-            .currentState!
-            .context).bottom -
-            (MediaQuery.viewPaddingOf(NavigationService()
-                .navigatorKey
-                .currentState!
-                .context)
-                .top +
-                kToolbarHeight));
-    print('actualHeight: $actualHeight');
-    print('height: $height');
+      double _m = (_contentHeightJustice + (widget.canDrag ? _handleHeight : 0)) / (constraints.maxHeight  - kToolbarHeight - MediaQuery.viewPaddingOf(
+          NavigationService().navigatorKey.currentState!.context)
+          .top);
 
-    // return Stack(
-    //   alignment: AlignmentDirectional.bottomStart,
-    //   children: [
-    //     GestureDetector(
-    //       onTap: () async {
-    //         AnimatedBottomSheet.hide();
-    //         bool canPop = await widget.onPop!();
-    //         if (canPop) {
-    //           Navigator.of(context).pop();
-    //         }
-    //       },),
-    //     widget.covers.isNotEmpty
-    //         ? Positioned.fill(
-    //       bottom: height,
-    //       left: 0,
-    //       right: 0,
-    //       child: TweenAnimationBuilder(
-    //         tween: Tween<double>(begin: 1.2, end: 1.0),
-    //         duration: const Duration(milliseconds: 1300),
-    //         curve: Curves.fastEaseInToSlowEaseOut,
-    //         builder: (context, double scale, child) {
-    //           return Transform.scale(
-    //             scale: scale,
-    //             child: child,
-    //           );
-    //         },
-    //         child: PageView(
-    //           children: widget.covers
-    //               .map((coverUrl) => Image.network(
-    //             coverUrl,
-    //             fit: BoxFit
-    //                 .cover, // Covers the entire screen
-    //           ))
-    //               .toList(),
-    //         ),
-    //       ),
-    //     )
-    //         : const SizedBox(),
-    //     Padding(
-    //       padding: EdgeInsets.only(bottom: height),
-    //       child: AnimatedBottomSheet(
-    //           additionalSheetChild: widget.additionalSheetChild),
-    //     ),
-    //     DraggableScrollableSheet(
-    //   initialChildSize: _minExtent,
-    //   maxChildSize: widget.viewModel.maxExtent,
-    //   minChildSize: _minExtent,
-    //   expand: true,
-    //   snap: true,
-    //   snapSizes: [
-    //     _minExtent,
-    //     1,
-    //   ],
-    //   controller: widget.viewModel.controller,
-    //   builder: (BuildContext context,
-    //       ScrollController scrollController) {
-    //     return ColoredBox(
-    //       color: Theme.of(context).colorScheme.surface,
-    //       // color: Colors.purple,
-    //       child: Navigator(
-    //         onGenerateRoute: (context) =>
-    //             MaterialPageRoute(
-    //               builder: (context) =>
-    //                   SingleChildScrollView(
-    //                       controller: scrollController,
-    //                       physics:
-    //                       const ClampingScrollPhysics(),
-    //                       child: Container(
-    //                         key: childKey,
-    //                         // color: Colors.blue,
-    //                         child: Column(
-    //                           children: [
-    //                             ValueListenableBuilder<
-    //                                 double>(
-    //                               valueListenable:
-    //                               extentNotifier,
-    //                               builder: (context, extent,
-    //                                   child) {
-    //                                 final double height = (1 -
-    //                                     (extent -
-    //                                         _minExtent) /
-    //                                         (widget.viewModel
-    //                                             .maxExtent -
-    //                                             _minExtent)) *
-    //                                     16; // Adjust the multiplier as needed
-    //                                 final double width = (1 -
-    //                                     (extent -
-    //                                         _minExtent) /
-    //                                         (widget.viewModel
-    //                                             .maxExtent -
-    //                                             _minExtent)) *
-    //                                     32; // Adjust the multiplier as needed
-    //                                 return SizedBox(
-    //                                   child: Padding(
-    //                                     padding: EdgeInsets
-    //                                         .symmetric(
-    //                                       vertical:
-    //                                       height.clamp(
-    //                                           0.0,
-    //                                           16.0),
-    //                                     ),
-    //                                     child: Container(
-    //                                       width:
-    //                                       width.clamp(
-    //                                           0.0,
-    //                                           32.0),
-    //                                       decoration: BoxDecoration(
-    //                                         color: Theme.of(context).colorScheme.outlineVariant,
-    //                                         borderRadius: BorderRadius.circular(3), // Adjust the radius as needed
-    //                                       ),
-    //                                       height:
-    //                                       3, // Ensure height is within the desired range
-    //                                     ),
-    //                                   ),
-    //                                 );
-    //                               },
-    //                             ),
-    //                             widget.child,
-    //                             // Opacity(
-    //                             //   opacity: 0,
-    //                             //   child: SizedBox(
-    //                             //     child: widget.bottomBar,
-    //                             //   ),
-    //                             // )
-    //                           ],
-    //                         ),
-    //                       )),
-    //             ),
-    //       ),
-    //     );
-    //   },
-    // )]);
 
-    return Column(
-      children: [
-        ValueListenableBuilder<double>(
-          valueListenable: extentNotifier,
-          builder: (context, extent, child) {
-            print('extent: $extent');
-            print('minExtent: $_minExtent');
-            final double opacity = extent > _minExtent
-                ? (extent - _minExtent) /
-                    (widget.viewModel.maxExtent - _minExtent)
-                : 0;
-            return Opacity(
-              opacity: opacity.clamp(widget.covers?.isNotEmpty == true ? 1 : 0.0, 1.0),
-              child: Column(
+      double _minExtent = widget.shouldAdjustExtentToChild ? _m : 0.5;
+      // double _minExtent = 0.1745049504950495;
+      print('final minExtent: $_minExtent');
+      double actualHeight = _minExtent *
+          (widget.constraints.maxHeight - MediaQuery.viewInsetsOf(NavigationService()
+              .navigatorKey
+              .currentState!
+              .context).bottom -
+              (MediaQuery.viewPaddingOf(NavigationService()
+                  .navigatorKey
+                  .currentState!
+                  .context)
+                  .top +
+                  kToolbarHeight));
+
+      actualHeight = _contentHeightJustice + (widget.canDrag ? _handleHeight : 0);
+      print('actualHeight: $actualHeight');
+      print('height: $height');
+
+      return Column(
+        children: [
+          ValueListenableBuilder<double>(
+            valueListenable: extentNotifier,
+            builder: (context, extent, child) {
+              print('extent: $extent');
+              print('minExtent: $_minExtent');
+              final double opacity = extent > _minExtent
+                  ? (extent - _minExtent) /
+                  (widget.viewModel.maxExtent - _minExtent)
+                  : 0;
+              return Opacity(
+                opacity: opacity.clamp(widget.covers?.isNotEmpty == true ? 1 : 0.0, 1.0),
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.viewPaddingOf(NavigationService()
+                          .navigatorKey
+                          .currentState!
+                          .context)
+                          .top,
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
+                    widget.appBar ?? SizedBox()
+                  ],
+                ),
+              );
+            },
+          ),
+          Expanded(
+            child: NotificationListener<DraggableScrollableNotification>(
+              onNotification: (notification) {
+                print('きた');
+                print('extent: ${notification.extent}');
+                print('minExtent: ${widget.viewModel.state.minExtent}');
+                print('maxExtent: ${widget.viewModel.maxExtent}');
+                AnimatedBottomSheet.hide();
+                // widget.viewModel.updateAdditionalSheetVisibility(false);
+                extentNotifier.value = notification.extent;
+                if (notification.maxExtent == notification.extent ||
+                    widget.viewModel.state.minExtent == notification.extent) {
+                  widget.viewModel.updateExtent(notification.extent);
+                }
+                return true;
+              },
+              child: Stack(
+                alignment: AlignmentDirectional.bottomStart,
                 children: [
-                  Container(
-                    height: MediaQuery.viewPaddingOf(NavigationService()
-                            .navigatorKey
-                            .currentState!
-                            .context)
-                        .top,
-                    color: Theme.of(context).colorScheme.surface,
+                  GestureDetector(
+                    onTap: () async {
+                      AnimatedBottomSheet.hide();
+                      bool canPop = await widget.onPop?.call() ?? true;
+                      if (canPop) {
+                        Navigator.of(context).pop();
+                      }
+                    },),
+                  widget.covers?.isNotEmpty == true
+                      ? Positioned.fill(
+                    bottom: height,
+                    left: 0,
+                    right: 0,
+                    child: TweenAnimationBuilder(
+                      tween: Tween<double>(begin: 1.2, end: 1.0),
+                      duration: const Duration(milliseconds: 1300),
+                      curve: Curves.fastEaseInToSlowEaseOut,
+                      builder: (context, double scale, child) {
+                        return Transform.scale(
+                          scale: scale,
+                          child: child,
+                        );
+                      },
+                      child: PageView(
+                        children: widget.covers!
+                            .map((coverUrl) => Image.network(
+                          coverUrl,
+                          fit: BoxFit
+                              .cover, // Covers the entire screen
+                        ))
+                            .toList(),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
+                  if (widget.additionalSheetChild != null) Padding(
+                    padding: EdgeInsets.only(bottom: actualHeight),
+                    child: AnimatedBottomSheet(
+                        additionalSheetChild: widget.additionalSheetChild!),
                   ),
-                  widget.appBar ?? SizedBox()
+                  DraggableScrollableSheet(
+                    initialChildSize: _minExtent,
+                    maxChildSize: widget.viewModel.maxExtent,
+                    minChildSize: _minExtent,
+                    expand: false,
+                    snap: true,
+                    snapSizes: [
+                      _minExtent,
+                      widget.viewModel.maxExtent,
+                    ],
+                    controller: widget.viewModel.controller,
+                    builder: (BuildContext context,
+                        ScrollController scrollController) {
+                      return GestureDetector(
+                          onTap:
+                          widget.shouldAdjustExtentToChild ? null :
+                              () {
+                            FocusManager.instance.primaryFocus!.unfocus();
+                          },
+                          child: ColoredBox(
+                            color: Theme.of(context).colorScheme.surface,
+                            // color: Colors.purple,
+                            child: Navigator(
+                              onGenerateRoute: (context) =>
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SingleChildScrollView(
+                                            controller: scrollController,
+                                            physics:
+                                            !widget.canDrag ? NeverScrollableScrollPhysics() : ClampingScrollPhysics(),
+                                            child: Stack(children: [Container(
+                                              // key: childKey,
+                                              // color: Colors.blue,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  if (widget.canDrag) ValueListenableBuilder<
+                                                      double>(
+                                                    valueListenable:
+                                                    extentNotifier,
+                                                    builder: (context, extent,
+                                                        child) {
+                                                      extent = _minExtent;
+                                                      final double height = (1 -
+                                                          (extent -
+                                                              _minExtent) /
+                                                              (widget.viewModel
+                                                                  .maxExtent -
+                                                                  _minExtent)) *
+                                                          16; // Adjust the multiplier as needed
+                                                      final double width = (1 -
+                                                          (extent -
+                                                              _minExtent) /
+                                                              (widget.viewModel
+                                                                  .maxExtent -
+                                                                  _minExtent)) *
+                                                          32; // Adjust the multiplier as needed
+                                                      return SizedBox(
+                                                        key: handleKey,
+                                                        child: Padding(
+                                                          padding: EdgeInsets
+                                                              .only(
+                                                            top:
+                                                            height.clamp(
+                                                                16.0,
+                                                                16.0),
+                                                            bottom:
+                                                              height.clamp(8, 8),
+                                                          ),
+                                                          child: Container(
+                                                            width:
+                                                            width.clamp(56.0,
+                                                                56.0),
+                                                            decoration: BoxDecoration(
+                                                              color: Theme.of(context).colorScheme.onSurface,
+                                                              borderRadius: BorderRadius.circular(0), // Adjust the radius as needed
+                                                            ),
+                                                            height:
+                                                            2, // Ensure height is within the desired range
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                  KeyedSubtree(key: childKey, child: widget.child),
+                                                ],
+                                              ),
+                                            ),
+                                              Opacity(
+                                                opacity: 0,
+                                                child: KeyedSubtree(key: bottomBarKey, child: widget.bottomBar ?? SizedBox()),
+                                              )
+                                            ],)),
+                                  ),
+                            ),
+                          ));
+                    },
+                  ),
                 ],
               ),
-            );
-          },
-        ),
-        Expanded(
-          child: NotificationListener<DraggableScrollableNotification>(
-            onNotification: (notification) {
-              print('きた');
-              print('extent: ${notification.extent}');
-              print('minExtent: ${widget.viewModel.state.minExtent}');
-              print('maxExtent: ${widget.viewModel.maxExtent}');
-              AnimatedBottomSheet.hide();
-              // widget.viewModel.updateAdditionalSheetVisibility(false);
-              extentNotifier.value = notification.extent;
-              if (notification.maxExtent == notification.extent ||
-                  widget.viewModel.state.minExtent == notification.extent) {
-                widget.viewModel.updateExtent(notification.extent);
-              }
-              return true;
-            },
-            child: Stack(
-                    alignment: AlignmentDirectional.bottomStart,
-                    children: [
-                      GestureDetector(
-                          onTap: () async {
-                            AnimatedBottomSheet.hide();
-                            bool canPop = await widget.onPop?.call() ?? true;
-                            if (canPop) {
-                              Navigator.of(context).pop();
-                            }
-                          },),
-                      widget.covers?.isNotEmpty == true
-                          ? Positioned.fill(
-                              bottom: height,
-                              left: 0,
-                              right: 0,
-                              child: TweenAnimationBuilder(
-                                tween: Tween<double>(begin: 1.2, end: 1.0),
-                                duration: const Duration(milliseconds: 1300),
-                                curve: Curves.fastEaseInToSlowEaseOut,
-                                builder: (context, double scale, child) {
-                                  return Transform.scale(
-                                    scale: scale,
-                                    child: child,
-                                  );
-                                },
-                                child: PageView(
-                                  children: widget.covers!
-                                      .map((coverUrl) => Image.network(
-                                            coverUrl,
-                                            fit: BoxFit
-                                                .cover, // Covers the entire screen
-                                          ))
-                                      .toList(),
-                                ),
-                              ),
-                            )
-                          : const SizedBox(),
-                      if (widget.additionalSheetChild != null) Padding(
-                        padding: EdgeInsets.only(bottom: actualHeight),
-                        child: AnimatedBottomSheet(
-                            additionalSheetChild: widget.additionalSheetChild!),
-                      ),
-                      DraggableScrollableSheet(
-                        initialChildSize: _minExtent,
-                        maxChildSize: widget.viewModel.maxExtent,
-                        minChildSize: _minExtent,
-                        expand: false,
-                        snap: true,
-                        snapSizes: [
-                          _minExtent,
-                          1,
-                        ],
-                        controller: widget.viewModel.controller,
-                        builder: (BuildContext context,
-                            ScrollController scrollController) {
-                          return GestureDetector(
-                              onTap:
-                              widget.shouldAdjustExtentToChild ? null :
-                                  () {
-                                FocusManager.instance.primaryFocus!.unfocus();
-                              },
-                              child: ColoredBox(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  // color: Colors.purple,
-                                  child: Navigator(
-                                    onGenerateRoute: (context) =>
-                                        MaterialPageRoute(
-                                      builder: (context) =>
-                                          SingleChildScrollView(
-                                              controller: scrollController,
-                                              physics:
-                                                  !widget.canDrag ? NeverScrollableScrollPhysics() : ClampingScrollPhysics(),
-                                              child: Container(
-                                                // key: childKey,
-                                                // color: Colors.blue,
-                                                child: Column(
-                                                  children: [
-                                                    if (widget.canDrag) ValueListenableBuilder<
-                                                        double>(
-                                                      valueListenable:
-                                                          extentNotifier,
-                                                      builder: (context, extent,
-                                                          child) {
-                                                        final double height = (1 -
-                                                                (extent -
-                                                                        _minExtent) /
-                                                                    (widget.viewModel
-                                                                            .maxExtent -
-                                                                        _minExtent)) *
-                                                            16; // Adjust the multiplier as needed
-                                                        final double width = (1 -
-                                                                (extent -
-                                                                        _minExtent) /
-                                                                    (widget.viewModel
-                                                                            .maxExtent -
-                                                                        _minExtent)) *
-                                                            32; // Adjust the multiplier as needed
-                                                        return SizedBox(
-                                                          key: handleKey,
-                                                          child: Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                              vertical:
-                                                                  height.clamp(
-                                                                      0.0,
-                                                                      16.0),
-                                                            ),
-                                                            child: Container(
-                                                              width:
-                                                                  width.clamp(
-                                                                      0.0,
-                                                                      56.0),
-                                                              decoration: BoxDecoration(
-                                                                color: Theme.of(context).colorScheme.onSurface,
-                                                                borderRadius: BorderRadius.circular(0), // Adjust the radius as needed
-                                                              ),
-                                                              height:
-                                                                  2, // Ensure height is within the desired range
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ),
-                                                    KeyedSubtree(key: childKey, child: widget.child),
-                                                    Opacity(
-                                                      opacity: 0,
-                                                      child: KeyedSubtree(key: bottomBarKey, child: widget.bottomBar ?? SizedBox()),
-                                                    )
-                                                  ],
-                                                ),
-                                              )),
-                                    ),
-                                  ),
-                                ));
-                        },
-                      ),
-                    ],
-                  ),
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
+    });
+    }
 }
 
 class AnimatedBottomSheet extends StatefulWidget {

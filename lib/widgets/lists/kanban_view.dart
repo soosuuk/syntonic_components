@@ -79,6 +79,8 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
 
   late PageController pageController;
 
+  bool _itemMovedDuringDrag = false; // 追加: ドラッグ中にitemが入れ替わったか
+
   @override
   bool get wantKeepAlive => true;
 
@@ -110,6 +112,9 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
 
   void moveDown() {
     VibrateService().click();
+    if (draggedItemIndex != null) {
+      _itemMovedDuringDrag = true; // 追加
+    }
     if(topItemY != null){
       topItemY = topItemY! + listStates[draggedListIndex!].itemStates[draggedItemIndex! + 1].height;
     }
@@ -132,6 +137,9 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
 
   void moveUp() {
     VibrateService().click();
+    if (draggedItemIndex != null) {
+      _itemMovedDuringDrag = true; // 追加
+    }
     if(topItemY != null){
       topItemY = topItemY! - listStates[draggedListIndex!].itemStates[draggedItemIndex! - 1].height;
     }
@@ -745,7 +753,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
         child: Material(
           color: Theme.of(context).colorScheme.surfaceContainerHigh,
           elevation: 8, // Adjust the elevation value as needed
-          child: draggedItem,
+          child: draggedItem, // overlayはopacity 1.0のまま
         ),
         left: (dx! - offsetX!) + initialX!,
         top: (dy! - offsetY!) + initialY!,
@@ -802,6 +810,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
                   onDropList!(tempDraggedListIndex);
                 }
               }
+              // ドラッグ終了時にリセット
               draggedItem = null;
               offsetX = null;
               offsetY = null;
@@ -823,6 +832,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
               bottomItemY = null;
               startListIndex = null;
               startItemIndex = null;
+              _itemMovedDuringDrag = false; // 追加: ドラッグ終了時にリセット
               if(mounted) {
                 setState(() {});
               }
@@ -840,6 +850,14 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
         setState(() {});
       }
     }
+  }
+
+  // draggedItemがoverlayとしてStackに積まれているか判定
+  bool isOverlay(BoardItemState itemState) {
+    // draggedItemはBoardItemのwidget
+    if (draggedItem == null) return false;
+    // BoardItemStateのwidgetがdraggedItemと同じならoverlay
+    return identical(itemState.widget, draggedItem);
   }
 }
 
@@ -994,15 +1012,8 @@ class BoardListState extends State<BoardList> with AutomaticKeepAliveClientMixin
                       onStartDragItem: widget.items![index].onStartDragItem,
                     );
                   }
-                  if (widget.boardView!.draggedItemIndex == index &&
-                      widget.boardView!.draggedListIndex == widget.index) {
-                    return Opacity(
-                      opacity: 0.0,
-                      child: widget.items![index],
-                    );
-                  } else {
-                    return widget.items![index];
-                  }
+                  // --- 修正: リスト内itemは常にopacity 1.0で返す ---
+                  return widget.items![index];
                 },
               ))));
     }
@@ -1237,40 +1248,54 @@ class BoardItemState extends State<BoardItem> with AutomaticKeepAliveClientMixin
       widget.boardList!.itemStates.removeAt(widget.index!);
     }
     widget.boardList!.itemStates.insert(widget.index!, this);
-    return GestureDetector(
-      onTapDown: (otd) {
-        if(widget.draggable) {
-          RenderBox object = context.findRenderObject() as RenderBox;
-          Offset pos = object.localToGlobal(Offset.zero);
-          RenderBox box = widget.boardList!.context.findRenderObject() as RenderBox;
-          Offset listPos = box.localToGlobal(Offset.zero);
-          widget.boardList!.widget.boardView!.leftListX = listPos.dx;
-          widget.boardList!.widget.boardView!.topListY = listPos.dy;
-          widget.boardList!.widget.boardView!.topItemY = pos.dy;
-          widget.boardList!.widget.boardView!.bottomItemY =
-              pos.dy + object.size.height;
-          widget.boardList!.widget.boardView!.bottomListY =
-              listPos.dy + box.size.height;
-          widget.boardList!.widget.boardView!.rightListX =
-              listPos.dx + box.size.width;
 
-          widget.boardList!.widget.boardView!.initialX = pos.dx;
-          widget.boardList!.widget.boardView!.initialY = pos.dy;
-        }
-      },
-      onTapCancel: () {},
-      onTap: () {
-        if (widget.onTapItem != null) {
-          widget.onTapItem!(widget.boardList!.widget.index, widget.index, this);
-        }
-      },
-      onLongPress: () {
-        VibrateService().clickMedium();
-        if(!widget.boardList!.widget.boardView!.widget.isSelecting && widget.draggable) {
-          _startDrag(widget, context);
-        }
-      },
-      child: widget.item,
+    final boardView = widget.boardList!.widget.boardView;
+    // overlayが表示されている間、リスト内の自分自身は0.38
+    bool isDragging = boardView?.draggedItemIndex == widget.index &&
+        boardView?.draggedListIndex == widget.boardList!.widget.index &&
+        boardView?.draggedItem != null;
+    double opacity = 1.0;
+    if (isDragging && boardView != null && !boardView.isOverlay(this)) {
+      opacity = 0.38;
+    }
+
+    return Opacity(
+      opacity: opacity,
+      child: GestureDetector(
+        onTapDown: (otd) {
+          if(widget.draggable) {
+            RenderBox object = context.findRenderObject() as RenderBox;
+            Offset pos = object.localToGlobal(Offset.zero);
+            RenderBox box = widget.boardList!.context.findRenderObject() as RenderBox;
+            Offset listPos = box.localToGlobal(Offset.zero);
+            widget.boardList!.widget.boardView!.leftListX = listPos.dx;
+            widget.boardList!.widget.boardView!.topListY = listPos.dy;
+            widget.boardList!.widget.boardView!.topItemY = pos.dy;
+            widget.boardList!.widget.boardView!.bottomItemY =
+                pos.dy + object.size.height;
+            widget.boardList!.widget.boardView!.bottomListY =
+                listPos.dy + box.size.height;
+            widget.boardList!.widget.boardView!.rightListX =
+                listPos.dx + box.size.width;
+
+            widget.boardList!.widget.boardView!.initialX = pos.dx;
+            widget.boardList!.widget.boardView!.initialY = pos.dy;
+          }
+        },
+        onTapCancel: () {},
+        onTap: () {
+          if (widget.onTapItem != null) {
+            widget.onTapItem!(widget.boardList!.widget.index, widget.index, this);
+          }
+        },
+        onLongPress: () {
+          VibrateService().clickMedium();
+          if(!widget.boardList!.widget.boardView!.widget.isSelecting && widget.draggable) {
+            _startDrag(widget, context);
+          }
+        },
+        child: widget.item,
+      ),
     );
   }
 }

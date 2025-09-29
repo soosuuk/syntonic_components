@@ -35,7 +35,7 @@ class OverlineText extends BaseText {
         padding: backgroundColor != null ? const EdgeInsets.all(4) : null,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2), color: backgroundColor),
-        child: needsSeeMore
+        child: true
             ? Text(
           text,
           style: textStyle(context: context),

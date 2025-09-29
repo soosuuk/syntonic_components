@@ -30,7 +30,7 @@ class Subtitle1Text extends BaseText {
 
   @override
   Widget textWidget({required BuildContext context}) {
-    return needsSeeMore
+    return true
         ? Text(
       text.toUpperCase(),
       style: textStyle(context: context),
