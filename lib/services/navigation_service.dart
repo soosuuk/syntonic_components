@@ -96,4 +96,12 @@ class NavigationService {
           message: 'Could not get url');
     }
   }
+
+  static Future<dynamic> replaceScreen(
+      {required context, required Widget screen}) {
+    return Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => ProviderScope(child: screen)),
+            (route) => false);
+  }
 }

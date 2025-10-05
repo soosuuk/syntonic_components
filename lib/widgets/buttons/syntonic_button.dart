@@ -231,7 +231,7 @@ class SyntonicButton extends StatelessWidget {
             onPressed: isEnabled ?onTap : null,
             style: ButtonStyle(
               padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(vertical: 4, horizontal: 20)),
+                  const EdgeInsets.symmetric(vertical: 4, horizontal: 16)),
               minimumSize: WidgetStateProperty.all(Size.zero),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),

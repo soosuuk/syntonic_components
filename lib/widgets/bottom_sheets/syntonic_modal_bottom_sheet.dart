@@ -257,11 +257,11 @@ class _ContentsWidgetState extends State<ContentsWidget> {
               .size
               .height;
       print('childHeightttt: $childHeight');
-      final double bottomBarHeight =
-          (bottomBarKey.currentContext!.findRenderObject() as RenderBox)
-              .size
-              .height;
-      print('bottomBarHeight: $bottomBarHeight');
+      // final double bottomBarHeight =
+      //     (bottomBarKey.currentContext!.findRenderObject() as RenderBox)
+      //         .size
+      //         .height;
+      // print('bottomBarHeight: $bottomBarHeight');
       final _handleExtent = handleHeight /
           (widget.constraints.maxHeight -
               kToolbarHeight -
@@ -274,12 +274,12 @@ class _ContentsWidgetState extends State<ContentsWidget> {
               MediaQuery.viewPaddingOf(
                       NavigationService().navigatorKey.currentState!.context)
                   .top);
-      final _bottomBarExtent = bottomBarHeight /
-          (widget.constraints.maxHeight -
-              kToolbarHeight -
-              MediaQuery.viewPaddingOf(
-                      NavigationService().navigatorKey.currentState!.context)
-                  .top);
+      // final _bottomBarExtent = bottomBarHeight /
+      //     (widget.constraints.maxHeight -
+      //         kToolbarHeight -
+      //         MediaQuery.viewPaddingOf(
+      //                 NavigationService().navigatorKey.currentState!.context)
+      //             .top);
       print('キーボード処理中');
       print('childHeight: $childHeight');
       print('extent: $_extent');
@@ -291,7 +291,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
         _contentHeight = _extent;
         _handleHeight = handleHeight;
         _contentHeightJustice = childHeight;
-        _bottomBarHeight = bottomBarHeight;
+        // _bottomBarHeight = bottomBarHeight;
       });
     });
     // }
@@ -533,10 +533,10 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                                                 ],
                                               ),
                                             ),
-                                              Opacity(
-                                                opacity: 0,
-                                                child: KeyedSubtree(key: bottomBarKey, child: widget.bottomBar ?? SizedBox()),
-                                              )
+                                              // Opacity(
+                                              //   opacity: 0,
+                                              //   child: KeyedSubtree(key: bottomBarKey, child: widget.bottomBar ?? SizedBox()),
+                                              // )
                                             ],)),
                                   ),
                             ),
