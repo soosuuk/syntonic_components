@@ -4,40 +4,37 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
   String formatDateRange(
       BuildContext context,
       ) {
-    final locale = Localizations.localeOf(context).toString();
-    // initializeMessages(locale);
+    // Use Japanese formatting explicitly
+    const String jaLocale = 'ja';
 
-    final DateFormat monthDayWeekFormat = DateFormat('E, MMMM d', locale);
-    final DateFormat fullDateFormat = DateFormat('E, MMMM d, y', locale);
+    final DateFormat monthDayWeekFormat = DateFormat('M月d日(E)', jaLocale);
+    final DateFormat dayWeekFormat = DateFormat('d日(E)', jaLocale);
+    final DateFormat fullDateFormat = DateFormat('y年M月d日(E)', jaLocale);
 
     if (start.year != end.year) {
-      // 年を跨ぐ場合
+      // 年を跨ぐ場合: 年を含めて表示
       return '${fullDateFormat.format(start)} - ${fullDateFormat.format(end)}';
     } else if (start.month != end.month) {
-      // 月を跨ぐ場合
-      final String startFormat = (start.year == DateTime
-          .now()
-          .year)
+      // 月を跨ぐ場合: 年が今年であれば年を省略
+      final String startFormat = (start.year == DateTime.now().year)
           ? monthDayWeekFormat.format(start)
           : fullDateFormat.format(start);
-      return '$startFormat - ${fullDateFormat.format(end)}';
+      final String endFormat = (end.year == DateTime.now().year)
+          ? monthDayWeekFormat.format(end)
+          : fullDateFormat.format(end);
+      return '$startFormat - $endFormat';
     } else if (start.day != end.day) {
-      // 同じ月で異なる日付の場合
-      final String startFormat = (start.year == DateTime
-          .now()
-          .year)
+      // 同じ月で異なる日付: 開始はM月d日、終了は日付のみ(d日)
+      final String startFormat = (start.year == DateTime.now().year)
           ? monthDayWeekFormat.format(start)
           : fullDateFormat.format(start);
-      final String endFormat = (start.year == DateTime
-          .now()
-          .year)
-          ? DateFormat('E, d', locale).format(end)
+      final String endFormat = (end.year == DateTime.now().year)
+          ? dayWeekFormat.format(end)
           : fullDateFormat.format(end);
       return '$startFormat - $endFormat';
     } else {
-      return (start.year == DateTime
-          .now()
-          .year)
+      // 同じ日: 年が今年なら年を省略して表示
+      return (start.year == DateTime.now().year)
           ? monthDayWeekFormat.format(start)
           : fullDateFormat.format(start);
     }

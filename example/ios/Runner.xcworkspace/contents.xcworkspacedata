@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Runner.xcodeproj">
+      schedule = "group:Runner.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Pods/Pods.xcodeproj">
+      schedule = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

@@ -330,7 +330,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       // backgroundColor: Colors.transparent,
       backgroundColor: isStickying
           ? Theme.of(context).colorScheme.surface
-          : Colors.transparent,
+          : Theme.of(context).colorScheme.surface,
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
