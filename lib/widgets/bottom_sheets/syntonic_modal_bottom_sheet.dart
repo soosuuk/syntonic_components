@@ -333,7 +333,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
       //     NavigationService().navigatorKey.currentState!.context)
       //     .top);
 
-      double _m = (_contentHeightJustice + (widget.canDrag ? _handleHeight : 0)) / (constraints.maxHeight  - kToolbarHeight - MediaQuery.viewPaddingOf(
+      double _m = (_contentHeightJustice + (widget.canDrag ? _handleHeight : 0)) / (constraints.maxHeight + 34 - kToolbarHeight - MediaQuery.viewPaddingOf(
           NavigationService().navigatorKey.currentState!.context)
           .top);
 

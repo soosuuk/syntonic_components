@@ -138,8 +138,8 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
       }
     }
 
-    Widget get() {
-      return riverpod.Consumer(builder: (context, ref, _) {
+    Widget get({required BuildContext context, required riverpod.WidgetRef ref}) {
+      // return riverpod.Consumer(builder: (context, ref, _) {
         // if (false) {
         if (colorScheme != null ||
             ref.watch(provider.select((viewState) => viewState.colorScheme)) !=
@@ -170,10 +170,16 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
             child: child(),
           );
         }
-      });
+      // });
     }
 
-    return useStreamBuilder ? buildStreamBuilder(context, get())! : get();
+    return riverpod.Consumer(builder: (context, ref, _) {
+      final bool _shouldRebuildStreamBuilder = ref.watch(provider.select((state) => state.isChangedAppBar));
+      if (_shouldRebuildStreamBuilder) {
+        print('ストリームリビルド');
+        // viewModel(ref).state = viewModel(ref).state.copyWith(isChangedAppBar: false) as VS;
+      }
+      return useStreamBuilder ? buildStreamBuilder(context, get(context: context,ref: ref))! : get(context: context, ref: ref);});
   }
 
   Widget? buildStreamBuilder(
