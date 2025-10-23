@@ -9,9 +9,9 @@ import 'package:syntonic_components/widgets/texts/subtitle_2_text.dart';
 class SyntonicNewDialog extends StatelessWidget {
   final String title;
   final String? body;
-  final String negativeButtonText;
+  final String? negativeButtonText;
   final String positiveButtonText;
-  final VoidCallback onNegativeButtonTapped;
+  final VoidCallback? onNegativeButtonTapped;
   final VoidCallback onPositiveButtonTapped;
   final bool isPositiveButtonEnabled;
 
@@ -19,9 +19,9 @@ class SyntonicNewDialog extends StatelessWidget {
     super.key,
     required this.title,
     this.body,
-    required this.negativeButtonText,
+    this.negativeButtonText,
     required this.positiveButtonText,
-    required this.onNegativeButtonTapped,
+    this.onNegativeButtonTapped,
     required this.onPositiveButtonTapped,
     this.isPositiveButtonEnabled = true,
   });
@@ -32,14 +32,15 @@ class SyntonicNewDialog extends StatelessWidget {
       title: Subtitle2Text(text: title),
       content: body != null ? Body1Text(text: body!) : null,
       actions: [
-        SyntonicButton.outlined(
-          padding: EdgeInsets.zero,
-          text: negativeButtonText,
-          onTap: () {
-            Navigator.pop(context, null);
-            onNegativeButtonTapped.call();
+        if (negativeButtonText != null)
+          SyntonicButton.outlined(
+            padding: EdgeInsets.zero,
+            text: negativeButtonText!,
+            onTap: () {
+              Navigator.pop(context, null);
+              onNegativeButtonTapped?.call();
             },
-        ),
+          ),
         SyntonicButton.filled(
           padding: EdgeInsets.zero,
           onTap: () {
@@ -131,7 +132,6 @@ class SyntonicAdReward {
       _rewardedAd!.show(
         onUserEarnedReward: (ad, reward) {
           _earnedReward = true;
-
         },
       );
     }
@@ -167,14 +167,14 @@ class SyntonicAdReward {
               positiveButtonText: _isAdLoaded ? '解放する' : '広告をダウンロードしています',
               isPositiveButtonEnabled: _isAdLoaded,
               onNegativeButtonTapped: () => null,
-                onPositiveButtonTapped: _isAdLoaded
-                    ? () {
-                  // Navigator.of(context).pop();
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _showRewardedAd();
-                  });
-                }
-                    : () => null,
+              onPositiveButtonTapped: _isAdLoaded
+                  ? () {
+                      // Navigator.of(context).pop();
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _showRewardedAd();
+                      });
+                    }
+                  : () => null,
             );
           },
         );
