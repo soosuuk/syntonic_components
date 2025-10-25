@@ -103,9 +103,16 @@ extension SyntonicDateTimeRangeExtension on DateTimeRange {
   }
 
   List<DateTime> toList() {
+    // Create date-only versions (midnight) for start and end to detect calendar-day boundaries.
+    final DateTime startDateOnly = DateTime(start.year, start.month, start.day);
+    final DateTime endDateOnly = DateTime(end.year, end.month, end.day);
+
+    final int dayCount = endDateOnly.difference(startDateOnly).inDays;
+    if (dayCount < 0) return [];
+
     List<DateTime> dateTimes = [];
-    for (int i = 0; i <= end.difference(start).inDays; i++) {
-      dateTimes.add(DateTime(start.year, start.month, start.day + i));
+    for (int i = 0; i <= dayCount; i++) {
+      dateTimes.add(startDateOnly.add(Duration(days: i)));
     }
     return dateTimes;
   }
