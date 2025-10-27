@@ -49,7 +49,7 @@ abstract class SyntonicModalBottomSheet<
       {required BuildContext context,
       required WidgetRef ref,
       required double extent});
-  Future<bool>? Function()? onPop(
+  Future<bool> Function()? onPop(
       {required BuildContext context, required WidgetRef ref}) => null;
 
   /// Open modal bottom sheet.
