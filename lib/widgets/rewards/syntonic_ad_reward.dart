@@ -61,7 +61,7 @@ class SyntonicAdReward {
   bool _earnedReward = false;
 
   String get _unitId {
-    const _env = String.fromEnvironment('ENV', defaultValue: 'stg');
+    const _env = String.fromEnvironment('ENV', defaultValue: 'prod');
     if (_env == 'prod') {
       if (Platform.isIOS) {
         return 'ca-app-pub-4288011253421893/3528248981'; // 本番 iOS
@@ -84,6 +84,7 @@ class SyntonicAdReward {
     required String title,
     required String body,
     void Function()? onLoaded,
+    void Function()? onLoadFailed, // added callback
   }) {
     RewardedAd.load(
       adUnitId: _unitId,
@@ -115,12 +116,13 @@ class SyntonicAdReward {
         },
         onAdFailedToLoad: (error) {
           _isAdLoaded = false;
-          if (onLoaded != null) {
-            onLoaded();
+          // if (onLoaded != null) {
+          //   onLoaded();
+          // }
+          // notify caller about load failure so it can close UI if needed
+          if (onLoadFailed != null) {
+            onLoadFailed();
           }
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to load ad: $error')),
-          );
         },
       ),
     );
@@ -158,13 +160,18 @@ class SyntonicAdReward {
                 onLoaded: () {
                   setState(() {});
                 },
+                onLoadFailed: () {
+                  // close the dialog when load fails
+                  Navigator.of(context).pop();
+                  onRewarded?.call();
+                },
               );
             }
             return SyntonicNewDialog(
               title: title,
               body: body,
               negativeButtonText: 'キャンセル',
-              positiveButtonText: _isAdLoaded ? '解放する' : '広告をダウンロードしています',
+              positiveButtonText: _isAdLoaded ? '広告を視聴' : '広告をダウンロードしています',
               isPositiveButtonEnabled: _isAdLoaded,
               onNegativeButtonTapped: () => null,
               onPositiveButtonTapped: _isAdLoaded

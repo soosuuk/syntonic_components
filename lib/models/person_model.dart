@@ -19,6 +19,9 @@ class PersonModel {
   });
 
   String get fullName {
+    if (firstName == null && lastName == null) {
+      return '名前がありません';
+    }
     return '$lastName $firstName';
   }
 

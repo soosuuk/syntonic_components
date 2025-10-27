@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:io';
 
+import '../snack_bars/syntonic_snack_bar.dart';
+
 class SyntonicAdBanner extends StatefulWidget {
   const SyntonicAdBanner({Key? key}) : super(key: key);
 
@@ -58,6 +60,7 @@ class _AdBannerState extends State<SyntonicAdBanner> {
                       },
                     ),
                   );
+
                   _ad!.load();
                   // return AdWidget(ad: _ad!);
                 }
@@ -79,7 +82,7 @@ class _AdBannerState extends State<SyntonicAdBanner> {
   }
 
   String get _unitId {
-    const _env = String.fromEnvironment('ENV', defaultValue: 'stg');
+    const _env = String.fromEnvironment('ENV', defaultValue: 'prod');
     if (_env == 'prod') {
       if (Platform.isIOS) {
         return 'ca-app-pub-4288011253421893/6129705057'; // 本番 iOS
