@@ -45,10 +45,14 @@ abstract class SyntonicModalBottomSheet<
       {required BuildContext context,
       required WidgetRef ref,
       required double extent}) => null;
+
+  // changed: child now receives a Key for its internal subtree
   Widget child(
       {required BuildContext context,
       required WidgetRef ref,
-      required double extent});
+      required double extent,
+      required Key childKey});
+
   Future<bool> Function()? onPop(
       {required BuildContext context, required WidgetRef ref}) => null;
 
@@ -98,10 +102,8 @@ abstract class SyntonicModalBottomSheet<
                   provider: provider,
                   shouldAdjustExtentToChild: shouldAdjustExtentToChild,
                   canDrag: canDrag,
-                  child: child(
-                      context: context,
-                      ref: ref,
-                      extent: viewModel(ref).state.currentExtent),
+                  // pass the method tear-off (builder) instead of an already-built Widget
+                  child: child,
                 ),
               );
             });
@@ -188,7 +190,8 @@ class ContentsWidget<VM extends SyntonicModalBottomSheetViewModel<VS>,
   final BuildContext context;
   final WidgetRef ref;
   final BoxConstraints constraints;
-  final Widget child;
+  // changed: child is now a builder that receives the childKey
+  final Widget Function({required BuildContext context, required WidgetRef ref, required double extent, required Key childKey}) child;
   final Future<bool>? Function()? onPop;
   final List<String>? covers;
   final Widget? appBar;
@@ -346,12 +349,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
               .navigatorKey
               .currentState!
               .context).bottom -
-              (MediaQuery.viewPaddingOf(NavigationService()
-                  .navigatorKey
-                  .currentState!
-                  .context)
-                  .top +
-                  kToolbarHeight));
+              (MediaQuery.viewPaddingOf(NavigationService().navigatorKey.currentState!.context).top + kToolbarHeight));
 
       actualHeight = _contentHeightJustice + (widget.canDrag ? _handleHeight : 0);
       print('actualHeight: $actualHeight');
@@ -529,7 +527,15 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                                                       );
                                                     },
                                                   ),
-                                                  KeyedSubtree(key: childKey, child: widget.child),
+                                                  // Removed KeyedSubtree: pass childKey into the builder instead
+                                                  // ...existing code...
+                                                  // call the provided child builder with the local childKey
+                                                  widget.child(
+                                                    context: widget.context,
+                                                    ref: widget.ref,
+                                                    extent: widget.viewModel.state.currentExtent,
+                                                    childKey: childKey,
+                                                  ),
                                                 ],
                                               ),
                                             ),
