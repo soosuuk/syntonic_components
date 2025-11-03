@@ -114,8 +114,8 @@ abstract class SyntonicModalBottomSheet<
 
 abstract class SyntonicModalBottomSheetViewModel<
     VS extends SyntonicModalBottomSheetViewState> extends StateNotifier<VS> {
-  SyntonicModalBottomSheetViewModel({required VS viewState, this.shouldAdjustExtentToChild = false, this.canDrag = true})
-      : super(viewState) {
+  SyntonicModalBottomSheetViewModel({required VS viewState, this.shouldAdjustExtentToChild = false, this.canDrag = true, DraggableScrollableController? controller})
+      : this.controller = controller ?? DraggableScrollableController(), super(viewState) {
     pageController.addListener(() {
       if (pageController.positions.isNotEmpty) {
         state = state.copyWith(currentPageIndex: pageController.page!) as VS;
@@ -126,9 +126,9 @@ abstract class SyntonicModalBottomSheetViewModel<
   final bool canDrag;
   final bool shouldAdjustExtentToChild;
   final double maxExtent = 1.0;
-  final DraggableScrollableController controller =
-      DraggableScrollableController();
+  final DraggableScrollableController controller;
   PageController pageController = PageController();
+  double midExtent = 0.5;
 
   void scrollToMaxExtent() {
     controller.animateTo(
@@ -138,8 +138,11 @@ abstract class SyntonicModalBottomSheetViewModel<
     );
   }
 
+  void setMidExtent(double midExtent) {
+    this.midExtent = midExtent;
+  }
   void updateExtent(double extent) {
-    state = state.copyWith(currentExtent: extent) as VS;
+    // state = state.copyWith(currentExtent: extent) as VS;
   }
 
   void updateMinExtent(double extent) {
@@ -340,6 +343,8 @@ class _ContentsWidgetState extends State<ContentsWidget> {
           NavigationService().navigatorKey.currentState!.context)
           .top);
 
+      widget.viewModel.setMidExtent(_m);
+
 
       double _minExtent = widget.shouldAdjustExtentToChild ? _m : 0.5;
       // double _minExtent = 0.1745049504950495;
@@ -395,7 +400,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                 // widget.viewModel.updateAdditionalSheetVisibility(false);
                 extentNotifier.value = notification.extent;
                 if (notification.maxExtent == notification.extent ||
-                    widget.viewModel.state.minExtent == notification.extent) {
+                    widget.viewModel.state.minExtent == notification.extent || widget.viewModel.midExtent == notification.extent) {
                   widget.viewModel.updateExtent(notification.extent);
                 }
                 return true;
