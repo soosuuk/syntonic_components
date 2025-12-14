@@ -381,7 +381,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                           .currentState!
                           .context)
                           .top,
-                      color: Theme.of(context).colorScheme.surface,
+                      color: Theme.of(context).colorScheme.surfaceContainerLow,
                     ),
                     widget.appBar ?? SizedBox()
                   ],
@@ -468,7 +468,7 @@ class _ContentsWidgetState extends State<ContentsWidget> {
                             FocusManager.instance.primaryFocus!.unfocus();
                           },
                           child: ColoredBox(
-                            color: Theme.of(context).colorScheme.surface,
+                            color: Theme.of(context).colorScheme.surfaceContainerLow,
                             // color: Colors.purple,
                             child: Navigator(
                               onGenerateRoute: (context) =>
@@ -669,7 +669,7 @@ class _AnimatedBottomSheetState extends State<AnimatedBottomSheet>
           child: LayoutBuilder(
             builder: (context, constraints) {
               return ColoredBox(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: Theme.of(context).colorScheme.surfaceContainerLow,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

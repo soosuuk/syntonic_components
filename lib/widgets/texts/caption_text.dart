@@ -23,27 +23,19 @@ class CaptionText extends BaseText {
       Color? linkColor,
       this.maxLines,
       bool needsLinkify = true,
-      this.needsSeeMore = false})
-      : super(linkColor: linkColor, needsLinkify: needsLinkify);
+      this.needsSeeMore = false,
+      Widget? trailingWidget})
+      : super(linkColor: linkColor, needsLinkify: needsLinkify, trailingWidget: trailingWidget);
 
   @override
   Widget textWidget({required BuildContext context}) {
-    return true
-        ? Text(
+    return Text(
       text,
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
-      overflow: TextOverflow.visible,
-      maxLines: null,
-    )
-        : SelectableText(
-      text,
-      style: textStyle(context: context),
-      textHeightBehavior: const TextHeightBehavior(
-          applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
-      textAlign: textAlign,
+      overflow: overflow,
       maxLines: maxLines,
     );
   }
@@ -51,4 +43,13 @@ class CaptionText extends BaseText {
   @override
   TextStyle textStyle({required BuildContext context}) =>
       SyntonicTextTheme.caption(textColor: textColor);
+  
+  @override
+  TextAlign getTextAlign() => textAlign;
+  
+  @override
+  TextOverflow getOverflow() => overflow;
+  
+  @override
+  int? getMaxLines() => maxLines;
 }

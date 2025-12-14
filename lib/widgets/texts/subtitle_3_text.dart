@@ -23,26 +23,18 @@ class Subtitle3Text extends BaseText {
     this.maxLines,
     bool needsLinkify = false,
     this.needsSeeMore = false,
-  }) : super(linkColor: linkColor, needsLinkify: needsLinkify);
+    Widget? trailingWidget,
+  }) : super(linkColor: linkColor, needsLinkify: needsLinkify, trailingWidget: trailingWidget);
 
   @override
   Widget textWidget({required BuildContext context}) {
-    return true
-        ? Text(
+    return Text(
       text,
       style: textStyle(context: context),
       textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
       textAlign: textAlign,
-      overflow: TextOverflow.visible,
-      maxLines: null,
-    )
-        : SelectableText(
-      text,
-      style: textStyle(context: context),
-      textHeightBehavior: const TextHeightBehavior(
-          applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
-      textAlign: textAlign,
+      overflow: overflow,
       maxLines: maxLines,
     );
   }
@@ -50,4 +42,13 @@ class Subtitle3Text extends BaseText {
   @override
   TextStyle textStyle({required BuildContext context}) =>
       SyntonicTextTheme.subtitle3(context: context, textColor: textColor);
+  
+  @override
+  TextAlign getTextAlign() => textAlign;
+  
+  @override
+  TextOverflow getOverflow() => overflow;
+  
+  @override
+  int? getMaxLines() => maxLines;
 }

@@ -27,6 +27,8 @@ class SyntonicCard extends StatelessWidget {
   final double borderRadius;
   final ImagePosition imagePosition;
   final bool isGlassmorphismEnabled;
+  final bool isFilled;
+  final Color? backgroundColor;
 
   const SyntonicCard(
       {this.borderRadius = 0,
@@ -40,7 +42,9 @@ class SyntonicCard extends StatelessWidget {
       this.hasMargin = true,
       this.hasPadding = true,
       this.imagePosition = ImagePosition.top,
-      this.isGlassmorphismEnabled = false});
+      this.isGlassmorphismEnabled = false,
+      this.isFilled = false,
+      this.backgroundColor});
 
   const SyntonicCard.transparent({
     double borderRadius = 0,
@@ -85,19 +89,51 @@ class SyntonicCard extends StatelessWidget {
           imagePosition: imagePosition ?? ImagePosition.top,
         );
 
+  const SyntonicCard.filled({
+    double borderRadius = 0,
+    VoidCallback? onTap,
+    bool isSelected = false,
+    Widget? child,
+    bool hasMargin = true,
+    bool hasPadding = true,
+    Widget? image,
+    ImagePosition? imagePosition,
+    double? elevation,
+    Color? backgroundColor,
+  }) : this(
+          borderRadius: borderRadius,
+          onTap: onTap,
+          isSelected: isSelected,
+          image: image,
+          child: child,
+          elevation: elevation ?? 2,
+          needsBorder: false,
+          hasMargin: hasMargin,
+          hasPadding: hasPadding,
+          imagePosition: imagePosition ?? ImagePosition.top,
+          isFilled: true,
+          backgroundColor: backgroundColor,
+        );
+
   @override
   Widget build(BuildContext context) {
     bool isDarkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final surfaceColor = backgroundColor ??
+        (isFilled
+            ? Theme.of(context).colorScheme.surface
+            : (colorScheme != null
+                ? colorScheme!.surface
+                : Colors.transparent));
     Widget _card = Card(
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       // color: isGlassmorphismEnabled ? Colors.transparent : null,
       // color: colorScheme != null ? colorScheme!.surface : Theme.of(context).colorScheme.surfaceBright,
-      color: colorScheme != null ? colorScheme!.surface : Colors.transparent,
+      color: surfaceColor,
       surfaceTintColor: colorScheme?.surfaceTint,
       // shadowColor: colorScheme != null ? Colors.transparent : null,
-      shadowColor: Colors.transparent,
+      shadowColor: elevation == 0 ? Colors.transparent : null,
       elevation: elevation,
       // color: isSelected ? Theme.of(context).colorScheme.primary.toAlpha : color,
       shape: RoundedRectangleBorder(

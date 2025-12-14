@@ -30,6 +30,7 @@ ThemeData lightTheme({ColorScheme? colorScheme}) {
     onSurfaceVariant: const Color(0xFF707070),
     background: Colors.white,
     outline: SyntonicColor().divider,
+    surfaceContainerLow: Colors.white,
     outlineVariant: Colors.black.withOpacity(0.145),
   );
 

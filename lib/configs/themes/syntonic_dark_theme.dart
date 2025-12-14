@@ -6,7 +6,7 @@ import '../constants/syntonic_color.dart';
 import 'syntonic_tab_bar_theme.dart';
 
 const brightness = Brightness.dark;
-const primaryColor = Colors.black87;
+const primaryColor = Colors.black;
 const backgroundColor = Colors.white70;
 
 ThemeData darkTheme({ColorScheme? colorScheme}) {
@@ -25,7 +25,7 @@ ThemeData darkTheme({ColorScheme? colorScheme}) {
           : SyntonicColor.primary_color,
       brightness: Brightness.dark,
       onPrimaryContainer: Colors.white,
-      surface: const Color(0xFF1C1C1C),
+      surface: primaryColor,
       outline: Colors.white,
       // outlineVariant: Colors.white,
       outlineVariant: Colors.white.withOpacity(0.3),

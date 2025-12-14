@@ -19,6 +19,8 @@ class RatingService {
     remindLaunches: 1,
   );
 
+  static bool isReviewDialogShown = false;
+
   static void init({required BuildContext context}) {
     _rating.init().then((_) {
       if (_rating.shouldOpenDialog) {
@@ -27,5 +29,11 @@ class RatingService {
         );
       }
     });
+  }
+
+  /// 直接評価ダイアログを表示する
+  static Future<void> showRateDialog({required BuildContext context}) async {
+    await _rating.init();
+    _rating.showRateDialog(context);
   }
 }

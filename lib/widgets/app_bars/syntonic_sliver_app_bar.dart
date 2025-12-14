@@ -250,8 +250,59 @@ class SyntonicSliverAppBar extends StatelessWidget
     final ModalRoute<dynamic>? parentRoute = ModalRoute.of(context);
     final bool useCloseButton =
         parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
-    // bool isDarkTheme =
-    //     MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    
+    // bottomの構築：dark themeの場合はdividerなし、light themeの場合はdividerを追加
+    PreferredSizeWidget? _bottom;
+    if (isDarkTheme) {
+      // dark theme: dividerなし、bottomが渡されている場合はそのまま使用
+      _bottom = bottom;
+    } else {
+      // light theme: デフォルトでdividerを追加
+      final dividerWidget = Divider(
+        height: 1.0,
+        thickness: 1.0,
+        color: Theme.of(context).colorScheme.outline,
+      );
+      final dividerBottom = PreferredSize(
+        preferredSize: const Size.fromHeight(1.0),
+        child: dividerWidget,
+      );
+      
+      if (bottom != null) {
+        // bottomが渡されている場合、Columnで結合
+        // bottomの実装を確認して適切に結合
+        _bottom = PreferredSize(
+          preferredSize: Size.fromHeight(
+            1.0 + bottom!.preferredSize.height,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              dividerWidget,
+              // bottomの内容を取得するために、buildメソッドを使って取得
+              Builder(
+                builder: (context) {
+                  // PreferredSizeWidgetをWidgetに変換する必要がある
+                  // 通常、PreferredSizeWidgetはbuildメソッドを持たないため、
+                  // 直接childを取得できないので、PreferredSizeでラップされた内容を再構築
+                  if (bottom is PreferredSize) {
+                    final preferredSize = bottom as PreferredSize;
+                    return preferredSize.child;
+                  }
+                  // 他のPreferredSizeWidgetの場合は、そのまま使用できないため、
+                  // SliverAppBarが適切に処理することを期待
+                  return const SizedBox();
+                },
+              ),
+            ],
+          ),
+        );
+      } else {
+        // bottomが渡されていない場合、dividerのみ
+        _bottom = dividerBottom;
+      }
+    }
 
     // Widget _title = SyntonicSearchBox(
     //     value: "null",
@@ -328,9 +379,9 @@ class SyntonicSliverAppBar extends StatelessWidget
           ? Theme.of(context).colorScheme.surfaceTint
           : Colors.transparent,
       // backgroundColor: Colors.transparent,
-      backgroundColor: isStickying
-          ? Theme.of(context).colorScheme.surface
-          : Theme.of(context).colorScheme.surface,
+      backgroundColor: isDarkTheme 
+              ? Theme.of(context).colorScheme.surfaceDim
+              : Theme.of(context).colorScheme.surface,
       leading: needsNavigationDrawer
           ? null
           : useCloseButton
@@ -382,7 +433,7 @@ class SyntonicSliverAppBar extends StatelessWidget
       // forceMaterialTransparency: true,
       // expandedHeight: this.expandedHeight,
       // flexibleSpace: flexibleSpace,
-      bottom: bottom,
+      bottom: _bottom,
       // bottom: bottom != null ? PreferredSize(preferredSize: Size.fromHeight(kToolbarHeight), child: Material(
       //     // elevation: overlapsContent ? 4.0 : 0,
       //     color: Colors.transparent,
@@ -426,8 +477,20 @@ class SyntonicSliverAppBar extends StatelessWidget
   @override
   Size get preferredSize {
     double _height = kToolbarHeight;
+    // bottomが渡されている場合と、light themeでdividerを追加する場合を考慮
+    final bool isDarkTheme = context != null
+        ? Theme.of(context!).brightness == Brightness.dark
+        : false;
+    
     if (bottom != null) {
       _height += bottom!.preferredSize.height;
+      // light themeの場合、dividerの高さ（1.0）を追加
+      if (!isDarkTheme) {
+        _height += 1.0;
+      }
+    } else if (!isDarkTheme) {
+      // light themeでbottomが渡されていない場合、dividerの高さ（1.0）を追加
+      _height += 1.0;
     }
     return Size.fromHeight(_height);
   }

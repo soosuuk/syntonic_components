@@ -470,7 +470,7 @@ abstract class SyntonicBaseView<VM extends BaseViewModel<VS>,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   bottomSheet(context: context, ref: ref) ?? const SizedBox(),
-                  SizedBox(height: 16,),
+                  // SizedBox(height: 16,),
                   SyntonicAdBanner()
                 ],
               ),

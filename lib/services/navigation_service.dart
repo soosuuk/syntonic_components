@@ -104,4 +104,38 @@ class NavigationService {
         MaterialPageRoute(builder: (context) => ProviderScope(child: screen)),
             (route) => false);
   }
+
+  /// サインアウト処理を実行
+  /// [onSignOut] はサインアウト前の処理（ローカルストレージの削除、Firebase Authのサインアウトなど）を実行するコールバック
+  /// [loginScreen] はログイン画面のWidget
+  /// [message] はサインアウト後に表示するメッセージ（オプション）
+  static Future<void> signOut({
+    required Future<void> Function() onSignOut,
+    required Widget loginScreen,
+    String? message,
+  }) async {
+    try {
+      // サインアウト前の処理を実行
+      await onSignOut();
+      
+      // ログイン画面に遷移
+      final context = NavigationService().navigatorKey.currentState?.context;
+      if (context != null) {
+        NavigationService.replaceScreen(
+          context: context,
+          screen: loginScreen,
+        );
+        
+        // メッセージが指定されている場合は表示
+        if (message != null) {
+          SyntonicSnackBar().showSnackBar(
+            context: context,
+            message: message,
+          );
+        }
+      }
+    } catch (e) {
+      print('Error during signOut: $e');
+    }
+  }
 }
